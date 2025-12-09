@@ -8,6 +8,9 @@ require Pod::Executable.execute_command('node', ['-p',
 platform :ios, min_ios_version_supported
 prepare_react_native_project!
 
+# Remove the problematic source - use default instead
+source 'https://cdn.cocoapods.org/'
+
 #add this line to use static framework for RNFirebase
 $RNFirebaseAsStaticFramework = true
 use_frameworks! :linkage => :static
