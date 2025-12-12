@@ -30,9 +30,9 @@ const SubscriptionModal: React.FC<SubscriptionModalProps> = ({
   const [showPaymentModal, setShowPaymentModal] = useState(false);
   const [selectedPriceId, setSelectedPriceId] = useState<string>('');
 
-  const weeklyPrice = Number(Config.EXPO_PUBLIC_WEEKLY_PRICE || '0');
-  const monthlyPrice = Number(Config.EXPO_PUBLIC_MONTHLY_PRICE || '0');
-  const yearlyPrice = Number(Config.EXPO_PUBLIC_YEARLY_PRICE || '0');
+  const weeklyPrice = Number(Config.WEEKLY_PRICE || '0');
+  const monthlyPrice = Number(Config.MONTHLY_PRICE || '0');
+  const yearlyPrice = Number(Config.YEARLY_PRICE || '0');
 
   const monthlyPricePerWeek = monthlyPrice / 4.33;
   const yearlyPricePerWeek = yearlyPrice / 52;
@@ -50,7 +50,7 @@ const SubscriptionModal: React.FC<SubscriptionModalProps> = ({
       subtitle: 'Basic access',
       badge: '',
       popular: false,
-      priceId: Config.EXPO_PUBLIC_WEEKLY_PRICE_ID || '',
+      priceId: Config.WEEKLY_PRICE_ID || '',
     },
     {
       name: 'MONTHLY',
@@ -59,7 +59,7 @@ const SubscriptionModal: React.FC<SubscriptionModalProps> = ({
       subtitle: `(only $${monthlyPricePerWeek.toFixed(2)} / week)`,
       badge: `-${Math.round(monthlyDiscount)}%`,
       popular: false,
-      priceId: Config.EXPO_PUBLIC_MONTHLY_PRICE_ID || '',
+      priceId: Config.MONTHLY_PRICE_ID || '',
     },
     {
       name: 'YEARLY',
@@ -68,7 +68,7 @@ const SubscriptionModal: React.FC<SubscriptionModalProps> = ({
       subtitle: `(only $${yearlyPricePerWeek.toFixed(2)} / week)`,
       badge: `-${Math.round(yearlyDiscount)}%`,
       popular: true,
-      priceId: Config.EXPO_PUBLIC_YEARLY_PRICE_ID || '',
+      priceId: Config.YEARLY_PRICE_ID || '',
     },
   ];
 

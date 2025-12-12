@@ -18,7 +18,7 @@ import {
   getServices,
   updateServices,
 } from '../../services/artistServices';
-import { Service } from '../../redux/types';
+import { Service } from '../../types';
 import { Alert } from 'react-native';
 
 interface UpdateServicesModalProps {
@@ -57,14 +57,14 @@ const UpdateServicesModal: React.FC<UpdateServicesModalProps> = ({
           _id: service._id,
           id: service.id,
           service: service.service,
-        })
+        }),
       );
-      setSelectedServices((prev) => {
-        return services.filter((service) =>
+      setSelectedServices(prev => {
+        return services.filter(service =>
           prev.some(
-            (selected) =>
-              selected._id === service._id || selected.id === service.id
-          )
+            selected =>
+              selected._id === service._id || selected.id === service.id,
+          ),
         );
       });
       setAllServices(services);
@@ -77,10 +77,10 @@ const UpdateServicesModal: React.FC<UpdateServicesModalProps> = ({
   };
 
   const toggleService = (service: Service) => {
-    setSelectedServices((prev) => {
-      const isSelected = prev.some((s) => s._id === service._id);
+    setSelectedServices(prev => {
+      const isSelected = prev.some(s => s._id === service._id);
       if (isSelected) {
-        return prev.filter((s) => s._id !== service._id);
+        return prev.filter(s => s._id !== service._id);
       } else {
         return [...prev, service];
       }
@@ -88,7 +88,7 @@ const UpdateServicesModal: React.FC<UpdateServicesModalProps> = ({
   };
 
   const handleSave = async () => {
-    const serviceIds = selectedServices.map((s) => s.id);
+    const serviceIds = selectedServices.map(s => s.id);
     try {
       await updateServices({ services: serviceIds });
       await getAuthUser();
@@ -142,9 +142,9 @@ const UpdateServicesModal: React.FC<UpdateServicesModalProps> = ({
                 </View>
               ) : (
                 <View style={styles.servicesGrid}>
-                  {allServices.map((service) => {
+                  {allServices.map(service => {
                     const isSelected = selectedServices.some(
-                      (s) => s._id === service._id
+                      s => s._id === service._id,
                     );
                     return (
                       <TouchableOpacity

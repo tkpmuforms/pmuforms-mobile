@@ -13,14 +13,15 @@ import {
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import useAuth from '../../hooks/useAuth';
-import {
-  GoogleLoginButton,
-  AppleLoginButton,
-  LogoSvg,
-  EyeIconSvg,
-} from '../../components/AuthSvgs';
+// import {
+//   GoogleLoginButton,
+//   AppleLoginButton,
+//   LogoSvg,
+//   EyeIconSvg,
+// } from '../../components/AuthSvgs';
 import { createArtist } from '../../services/artistServices';
 import { auth } from '../../config/firebase';
+import { AppleIcon, EyeIcon, GeorgianLariIcon } from 'lucide-react-native';
 
 type AuthPage = 'login' | 'signup';
 type SignupStep = 'email' | 'password' | 'verification';
@@ -182,7 +183,7 @@ const AuthScreen = () => {
             style={styles.eyeIcon}
             onPress={() => setShowPassword(!showPassword)}
           >
-            <EyeIconSvg visible={showPassword} width={20} height={20} />
+            <EyeIcon />
           </TouchableOpacity>
         </View>
       </View>
@@ -210,8 +211,8 @@ const AuthScreen = () => {
       </View>
 
       <View style={styles.socialButtonsContainer}>
-        <GoogleLoginButton width={48} height={48} onPress={() => {}} />
-        <AppleLoginButton width={48} height={48} onPress={() => {}} />
+        <GeorgianLariIcon width={48} height={48} onPress={() => {}} />
+        <AppleIcon width={48} height={48} onPress={() => {}} />
       </View>
     </View>
   );
@@ -219,7 +220,7 @@ const AuthScreen = () => {
   const renderEmailStep = () => (
     <View style={styles.formContainer}>
       <View style={styles.logoContainer}>
-        <LogoSvg width={80} height={80} />
+        <GeorgianLariIcon width={80} height={80} />
       </View>
       <Text style={styles.title}>Create Account</Text>
       <Text style={styles.subtitle}>Sign up to get started</Text>

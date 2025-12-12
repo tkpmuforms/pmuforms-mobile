@@ -14,7 +14,7 @@ import {
 } from 'react-native';
 import { X, Camera } from 'lucide-react-native';
 import { useDispatch } from 'react-redux';
-import { launchImageLibrary } from 'react-native-image-picker';
+// import { launchImageLibrary } from 'react-native-image-picker';
 import useAuth from '../../hooks/useAuth';
 import { setUser } from '../../redux/auth';
 import { updateBusinessInfo, getAuthMe } from '../../services/artistServices';
@@ -32,7 +32,7 @@ const EditBusinessInformationModal: React.FC<
   const dispatch = useDispatch();
   const [businessName, setBusinessName] = useState(user?.businessName || '');
   const [phoneNumber, setPhoneNumber] = useState(
-    user?.businessPhoneNumber || ''
+    user?.businessPhoneNumber || '',
   );
   const [address, setAddress] = useState(user?.businessAddress || '');
   const [website, setWebsite] = useState(user?.website || '');
@@ -40,19 +40,19 @@ const EditBusinessInformationModal: React.FC<
   const [isSaving, setIsSaving] = useState(false);
 
   const handleLogoChange = () => {
-    launchImageLibrary(
-      {
-        mediaType: 'photo',
-        quality: 0.8,
-        maxWidth: 500,
-        maxHeight: 500,
-      },
-      (response) => {
-        if (response.assets && response.assets[0]) {
-          setLogoUri(response.assets[0].uri || '');
-        }
-      }
-    );
+    // launchImageLibrary(
+    //   {
+    //     mediaType: 'photo',
+    //     quality: 0.8,
+    //     maxWidth: 500,
+    //     maxHeight: 500,
+    //   },
+    //   (response) => {
+    //     if (response.assets && response.assets[0]) {
+    //       setLogoUri(response.assets[0].uri || '');
+    //     }
+    //   }
+    // );
   };
 
   const handleSave = async () => {
