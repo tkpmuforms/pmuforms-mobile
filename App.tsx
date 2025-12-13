@@ -49,6 +49,7 @@ import React, { useEffect } from 'react';
 import { StatusBar, useColorScheme } from 'react-native';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 import { Provider } from 'react-redux';
+import Toast from 'react-native-toast-message';
 import { AuthProvider } from './src/context/AuthContext';
 import { store } from './src/redux/store';
 import RouteGuard from './src/routes/RouteGuard';
@@ -71,6 +72,7 @@ function App() {
             <RouteGuard />
           </AuthProvider>
         </NavigationContainer>
+        <Toast />
       </SafeAreaProvider>
     </Provider>
   );

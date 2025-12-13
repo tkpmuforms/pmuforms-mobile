@@ -8,9 +8,9 @@ import {
   KeyboardAvoidingView,
   Platform,
   ActivityIndicator,
-  Alert,
   ScrollView,
 } from 'react-native';
+import Toast from 'react-native-toast-message';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import useAuth from '../../hooks/useAuth';
 // import {
@@ -43,7 +43,11 @@ const AuthScreen = () => {
 
   const handleLogin = async () => {
     if (!email || !password) {
-      Alert.alert('Error', 'Please fill in all fields');
+      Toast.show({
+        type: 'error',
+        text1: 'Error',
+        text2: 'Please fill in all fields',
+      });
       return;
     }
 
@@ -65,7 +69,11 @@ const AuthScreen = () => {
         error?.message ||
         error?.response?.data?.error ||
         'Login failed! Try again later.';
-      Alert.alert('Error', errorMessage);
+      Toast.show({
+        type: 'error',
+        text1: 'Error',
+        text2: errorMessage,
+      });
     } finally {
       setLoading(false);
     }
@@ -73,7 +81,11 @@ const AuthScreen = () => {
 
   const handleEmailSubmit = () => {
     if (!email) {
-      Alert.alert('Error', 'Please enter your email');
+      Toast.show({
+        type: 'error',
+        text1: 'Error',
+        text2: 'Please enter your email',
+      });
       return;
     }
     setSignupStep('password');
@@ -81,17 +93,29 @@ const AuthScreen = () => {
 
   const handlePasswordSubmit = async () => {
     if (!password) {
-      Alert.alert('Error', 'Please enter a password');
+      Toast.show({
+        type: 'error',
+        text1: 'Error',
+        text2: 'Please enter a password',
+      });
       return;
     }
 
     if (password !== confirmPassword) {
-      Alert.alert('Error', 'Passwords do not match');
+      Toast.show({
+        type: 'error',
+        text1: 'Error',
+        text2: 'Passwords do not match',
+      });
       return;
     }
 
     if (!businessName) {
-      Alert.alert('Error', 'Please enter your business name');
+      Toast.show({
+        type: 'error',
+        text1: 'Error',
+        text2: 'Please enter your business name',
+      });
       return;
     }
 
@@ -108,7 +132,11 @@ const AuthScreen = () => {
 
       if (res.data) {
         setSignupStep('verification');
-        Alert.alert('Success', 'Account created! Please verify your email.');
+        Toast.show({
+          type: 'success',
+          text1: 'Success',
+          text2: 'Account created! Please verify your email.',
+        });
       }
     } catch (error: any) {
       console.error('Registration error:', error);
@@ -116,7 +144,11 @@ const AuthScreen = () => {
         error?.message ||
         error?.response?.data?.error ||
         'Registration failed! Try again later.';
-      Alert.alert('Error', errorMessage);
+      Toast.show({
+        type: 'error',
+        text1: 'Error',
+        text2: errorMessage,
+      });
     } finally {
       setLoading(false);
     }
