@@ -23,11 +23,13 @@ import { createArtist } from '../../services/artistServices';
 import { auth } from '../../config/firebase';
 import { AppleIcon, EyeIcon, Chrome, Circle } from 'lucide-react-native';
 import { Image } from 'react-native';
+import ImageSlider from '../../components/ImageSlider';
 
 type AuthPage = 'login' | 'signup';
 type SignupStep = 'email' | 'password' | 'verification';
 
 const AuthScreen = () => {
+  const [showAuthForms, setShowAuthForms] = useState(false);
   const [page, setPage] = useState<AuthPage>('login');
   const [signupStep, setSignupStep] = useState<SignupStep>('email');
   const [email, setEmail] = useState('');
@@ -361,26 +363,34 @@ const AuthScreen = () => {
 
   return (
     <SafeAreaView style={styles.container}>
-      <KeyboardAvoidingView
-        behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
-        style={styles.content}
-      >
-        <ScrollView contentContainerStyle={styles.scrollContent}>
-          <Image source={require('../../../assets/images/pmulog.png')} />
-          {page === 'login' ? renderLoginForm() : renderSignupContent()}
+      {!showAuthForms ? (
+        // Image Slider View - shown first
+        <View style={styles.sliderContainer}>
+          <ImageSlider onComplete={() => setShowAuthForms(true)} />
+        </View>
+      ) : (
+        // Auth Forms View - shown after "Get Started" is clicked
+        <KeyboardAvoidingView
+          behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+          style={styles.content}
+        >
+          <ScrollView contentContainerStyle={styles.scrollContent}>
+            <Image source={require('../../../assets/images/pmulog.png')} />
+            {page === 'login' ? renderLoginForm() : renderSignupContent()}
 
-          <TouchableOpacity style={styles.toggleButton} onPress={toggleMode}>
-            <Text style={styles.toggleText}>
-              {page === 'login'
-                ? "Don't have an account? "
-                : 'Already have an account? '}
-              <Text style={styles.toggleTextBold}>
-                {page === 'login' ? 'Sign Up' : 'Sign In'}
+            <TouchableOpacity style={styles.toggleButton} onPress={toggleMode}>
+              <Text style={styles.toggleText}>
+                {page === 'login'
+                  ? "Don't have an account? "
+                  : 'Already have an account? '}
+                <Text style={styles.toggleTextBold}>
+                  {page === 'login' ? 'Sign Up' : 'Sign In'}
+                </Text>
               </Text>
-            </Text>
-          </TouchableOpacity>
-        </ScrollView>
-      </KeyboardAvoidingView>
+            </TouchableOpacity>
+          </ScrollView>
+        </KeyboardAvoidingView>
+      )}
     </SafeAreaView>
   );
 };
@@ -389,6 +399,10 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#fff',
+  },
+  sliderContainer: {
+    flex: 1,
+    position: 'relative',
   },
   content: {
     flex: 1,
