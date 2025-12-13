@@ -34,7 +34,7 @@
 		<true/>
 	</dict>
 	<key>NSLocationWhenInUseUsageDescription</key>
-	<string></string>
+	<string/>
 	<key>RCTNewArchEnabled</key>
 	<true/>
 	<key>UILaunchStoryboardName</key>
@@ -51,5 +51,26 @@
 	</array>
 	<key>UIViewControllerBasedStatusBarAppearance</key>
 	<false/>
+	<key>UIAppFonts</key>
+	<array>
+		<string>RedditSans-Italic-VariableFont_wght.ttf</string>
+		<string>RedditSans-VariableFont_wght.ttf</string>
+		<string>RedditSans-Black.ttf</string>
+		<string>RedditSans-BlackItalic.ttf</string>
+		<string>RedditSans-Bold.ttf</string>
+		<string>RedditSans-BoldItalic.ttf</string>
+		<string>RedditSans-ExtraBold.ttf</string>
+		<string>RedditSans-ExtraBoldItalic.ttf</string>
+		<string>RedditSans-ExtraLight.ttf</string>
+		<string>RedditSans-ExtraLightItalic.ttf</string>
+		<string>RedditSans-Italic.ttf</string>
+		<string>RedditSans-Light.ttf</string>
+		<string>RedditSans-LightItalic.ttf</string>
+		<string>RedditSans-Medium.ttf</string>
+		<string>RedditSans-MediumItalic.ttf</string>
+		<string>RedditSans-Regular.ttf</string>
+		<string>RedditSans-SemiBold.ttf</string>
+		<string>RedditSans-SemiBoldItalic.ttf</string>
+	</array>
 </dict>
 </plist>

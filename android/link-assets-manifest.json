@@ -1,0 +1,85 @@
+{
+  "migIndex": 1,
+  "data": [
+    {
+      "path": "assets/fonts/Reddit_Sans/OFL.txt",
+      "sha1": "73fbc641050025d54bed66f4603f762b1fd77d5d"
+    },
+    {
+      "path": "assets/fonts/Reddit_Sans/README.txt",
+      "sha1": "b816b9712abc8a18814321f614df78b7dde2aa1d"
+    },
+    {
+      "path": "assets/fonts/Reddit_Sans/RedditSans-Italic-VariableFont_wght.ttf",
+      "sha1": "dc5f67e24638a1cb6d0426f9939b4e6108a4222a"
+    },
+    {
+      "path": "assets/fonts/Reddit_Sans/RedditSans-VariableFont_wght.ttf",
+      "sha1": "dbf01f7eb7ce00616d2e6df6f55351d482f94151"
+    },
+    {
+      "path": "assets/fonts/Reddit_Sans/static/RedditSans-Black.ttf",
+      "sha1": "db4b4f27cb774396ae239f174550a803dcc2ffb4"
+    },
+    {
+      "path": "assets/fonts/Reddit_Sans/static/RedditSans-BlackItalic.ttf",
+      "sha1": "6f513ba2e50151179e858243b2002e2bca36a987"
+    },
+    {
+      "path": "assets/fonts/Reddit_Sans/static/RedditSans-Bold.ttf",
+      "sha1": "9c100a09fcd123605e41a6619e3310f57ff88f4d"
+    },
+    {
+      "path": "assets/fonts/Reddit_Sans/static/RedditSans-BoldItalic.ttf",
+      "sha1": "f2e924af388c3d9649fe6c466c0b0c288e642d63"
+    },
+    {
+      "path": "assets/fonts/Reddit_Sans/static/RedditSans-ExtraBold.ttf",
+      "sha1": "5cd09d9f00433970bc8bf38a9c38b206b348b932"
+    },
+    {
+      "path": "assets/fonts/Reddit_Sans/static/RedditSans-ExtraBoldItalic.ttf",
+      "sha1": "0c7407388a9ca9ec8aebcc94c7b796ba3349b32a"
+    },
+    {
+      "path": "assets/fonts/Reddit_Sans/static/RedditSans-ExtraLight.ttf",
+      "sha1": "b36ab53cc20408832767ed247a0f6f40f8697264"
+    },
+    {
+      "path": "assets/fonts/Reddit_Sans/static/RedditSans-ExtraLightItalic.ttf",
+      "sha1": "6c201d573a413b37857e9ef4465549833b983786"
+    },
+    {
+      "path": "assets/fonts/Reddit_Sans/static/RedditSans-Italic.ttf",
+      "sha1": "31fb283744ed6b15d831701c9d7d79c4705839fa"
+    },
+    {
+      "path": "assets/fonts/Reddit_Sans/static/RedditSans-Light.ttf",
+      "sha1": "6afecaff0e57ba31b325c6e6967d5ec5e82de1ad"
+    },
+    {
+      "path": "assets/fonts/Reddit_Sans/static/RedditSans-LightItalic.ttf",
+      "sha1": "fd66de13de94f536338310c2383067f337f605a4"
+    },
+    {
+      "path": "assets/fonts/Reddit_Sans/static/RedditSans-Medium.ttf",
+      "sha1": "f917408d32f78ec2cdd44a14379a4b9db42b1fc0"
+    },
+    {
+      "path": "assets/fonts/Reddit_Sans/static/RedditSans-MediumItalic.ttf",
+      "sha1": "3c3c5f04a37abfd1e89c12de53390516e049dea0"
+    },
+    {
+      "path": "assets/fonts/Reddit_Sans/static/RedditSans-Regular.ttf",
+      "sha1": "24417769faf7853c5d1b19dcc085c9d451d303f1"
+    },
+    {
+      "path": "assets/fonts/Reddit_Sans/static/RedditSans-SemiBold.ttf",
+      "sha1": "b7cb735d1c3a90909a7a34306eeba9b53e1c157e"
+    },
+    {
+      "path": "assets/fonts/Reddit_Sans/static/RedditSans-SemiBoldItalic.ttf",
+      "sha1": "4637508b52d18d8b1a4b5b76107b9ababfb39259"
+    }
+  ]
+}

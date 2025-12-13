@@ -21,7 +21,8 @@ import useAuth from '../../hooks/useAuth';
 // } from '../../components/AuthSvgs';
 import { createArtist } from '../../services/artistServices';
 import { auth } from '../../config/firebase';
-import { AppleIcon, EyeIcon, GeorgianLariIcon } from 'lucide-react-native';
+import { AppleIcon, EyeIcon, Chrome, Circle } from 'lucide-react-native';
+import { Image } from 'react-native';
 
 type AuthPage = 'login' | 'signup';
 type SignupStep = 'email' | 'password' | 'verification';
@@ -211,8 +212,12 @@ const AuthScreen = () => {
       </View>
 
       <View style={styles.socialButtonsContainer}>
-        <GeorgianLariIcon width={48} height={48} onPress={() => {}} />
-        <AppleIcon width={48} height={48} onPress={() => {}} />
+        <TouchableOpacity onPress={() => {}}>
+          <Chrome width={48} height={48} color="#DB4437" />
+        </TouchableOpacity>
+        <TouchableOpacity onPress={() => {}}>
+          <AppleIcon width={48} height={48} color="#000" />
+        </TouchableOpacity>
       </View>
     </View>
   );
@@ -220,7 +225,7 @@ const AuthScreen = () => {
   const renderEmailStep = () => (
     <View style={styles.formContainer}>
       <View style={styles.logoContainer}>
-        <GeorgianLariIcon width={80} height={80} />
+        <Circle width={80} height={80} color="#8e2d8e" />
       </View>
       <Text style={styles.title}>Create Account</Text>
       <Text style={styles.subtitle}>Sign up to get started</Text>
@@ -361,6 +366,7 @@ const AuthScreen = () => {
         style={styles.content}
       >
         <ScrollView contentContainerStyle={styles.scrollContent}>
+          <Image source={require('../../../assets/images/pmulog.png')} />
           {page === 'login' ? renderLoginForm() : renderSignupContent()}
 
           <TouchableOpacity style={styles.toggleButton} onPress={toggleMode}>

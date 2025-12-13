@@ -45,16 +45,22 @@
 // export default App;
 
 import { NavigationContainer } from '@react-navigation/native';
-import React from 'react';
+import React, { useEffect } from 'react';
 import { StatusBar, useColorScheme } from 'react-native';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 import { Provider } from 'react-redux';
 import { AuthProvider } from './src/context/AuthContext';
 import { store } from './src/redux/store';
 import RouteGuard from './src/routes/RouteGuard';
+import { setupGlobalFonts } from './src/config/setupGlobalFonts';
 
 function App() {
   const isDarkMode = useColorScheme() === 'dark';
+
+  // Setup global fonts on app initialization
+  useEffect(() => {
+    setupGlobalFonts();
+  }, []);
 
   return (
     <Provider store={store}>

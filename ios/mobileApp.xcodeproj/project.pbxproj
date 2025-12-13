@@ -7,25 +7,65 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		04F419216A3642DE867A2300 /* RedditSans-MediumItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 8EA42E77DCD24467961F4350 /* RedditSans-MediumItalic.ttf */; };
 		13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB51A68108700A75B9A /* Images.xcassets */; };
+		152AA18D55F348B9BB4CD678 /* RedditSans-Black.ttf in Resources */ = {isa = PBXBuildFile; fileRef = E561C23F5EB44267988A41FE /* RedditSans-Black.ttf */; };
+		465BE28396B94E40B17C262B /* RedditSans-ExtraLight.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 5E69759A4A2245C295886B95 /* RedditSans-ExtraLight.ttf */; };
+		4660C134840C467EA6D93FC1 /* RedditSans-Italic-VariableFont_wght.ttf in Resources */ = {isa = PBXBuildFile; fileRef = A26DF6F6585845BF92202409 /* RedditSans-Italic-VariableFont_wght.ttf */; };
+		4F2BDCFF53544350A2A34DCD /* RedditSans-SemiBoldItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = E9BB3391C96340F7BD13A5C5 /* RedditSans-SemiBoldItalic.ttf */; };
+		532E72E8C26A46CF8B9BC4C6 /* RedditSans-Medium.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 8D345A60DC104394A26AC55C /* RedditSans-Medium.ttf */; };
+		6B4EF5C3AD474CF2A8DA3505 /* RedditSans-ExtraBoldItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 1C607FD0D2B543369BD2CB56 /* RedditSans-ExtraBoldItalic.ttf */; };
+		6D3A52FE97E448B1B9E94031 /* RedditSans-ExtraBold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = D8DEDBE9BA2A43D092CEBE85 /* RedditSans-ExtraBold.ttf */; };
 		761780ED2CA45674006654EE /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 761780EC2CA45674006654EE /* AppDelegate.swift */; };
+		7804CA76857543F2A322EBB4 /* RedditSans-Light.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 98334834F8544D778D54DB4F /* RedditSans-Light.ttf */; };
+		7CD010F02B524166BDCC3A29 /* RedditSans-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 0A155242A9644229A9B04A9C /* RedditSans-Regular.ttf */; };
+		7EA0456E16524E50B61F0F6A /* RedditSans-VariableFont_wght.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 0437502DA45D40219DF46E10 /* RedditSans-VariableFont_wght.ttf */; };
 		81AB9BB82411601600AC10FF /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */; };
+		AD59861F79624C098DAFE189 /* OFL.txt in Resources */ = {isa = PBXBuildFile; fileRef = 740B3A3C558948E5807B7025 /* OFL.txt */; };
+		B8C71B71B3124C4FB26C0DA3 /* RedditSans-Italic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = F017A8DBD40F4B5993209926 /* RedditSans-Italic.ttf */; };
 		C0685726611D9125D81FC74B /* PrivacyInfo.xcprivacy in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB81A68108700A75B9A /* PrivacyInfo.xcprivacy */; };
+		CF2F98000CCC4872954223B2 /* RedditSans-SemiBold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = EF92A680FD14407BA0B744C9 /* RedditSans-SemiBold.ttf */; };
+		DBCCE538B9984EB5B14E2B75 /* RedditSans-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 5CF7B0CB51114D1F84CCAA44 /* RedditSans-Bold.ttf */; };
 		ECEB6F49E816E214C3430F1D /* Pods_mobileApp.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 720A0B0259EDBA27C8B70965 /* Pods_mobileApp.framework */; };
+		EF3021E5A9384999B73C6C7C /* README.txt in Resources */ = {isa = PBXBuildFile; fileRef = 1CA457BDD33C4DCAA11452D4 /* README.txt */; };
 		F613C5692EE7B86A007772F4 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = F613C5682EE7B86A007772F4 /* GoogleService-Info.plist */; };
+		F72CCF5B763845A4804E475B /* RedditSans-ExtraLightItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = BC632B3276F8491CB30F3594 /* RedditSans-ExtraLightItalic.ttf */; };
+		F75888167E2C4D12B2E27F7B /* RedditSans-BoldItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 7D48483F3BB34212A9892318 /* RedditSans-BoldItalic.ttf */; };
+		FB3BD38A3C22461FBE6C2826 /* RedditSans-LightItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 7751703CBCCE415BB98A7E47 /* RedditSans-LightItalic.ttf */; };
+		FD0118D508A24D6DB8F690E9 /* RedditSans-BlackItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 839865A80AA64374AD6285B0 /* RedditSans-BlackItalic.ttf */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		0437502DA45D40219DF46E10 /* RedditSans-VariableFont_wght.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = undefined; includeInIndex = 0; lastKnownFileType = unknown; name = "RedditSans-VariableFont_wght.ttf"; path = "../assets/fonts/Reddit_Sans/RedditSans-VariableFont_wght.ttf"; sourceTree = "<group>"; };
+		0A155242A9644229A9B04A9C /* RedditSans-Regular.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = undefined; includeInIndex = 0; lastKnownFileType = unknown; name = "RedditSans-Regular.ttf"; path = "../assets/fonts/Reddit_Sans/static/RedditSans-Regular.ttf"; sourceTree = "<group>"; };
 		13B07F961A680F5B00A75B9A /* mobileApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = mobileApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		13B07FB51A68108700A75B9A /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = Images.xcassets; path = mobileApp/Images.xcassets; sourceTree = "<group>"; };
 		13B07FB61A68108700A75B9A /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = Info.plist; path = mobileApp/Info.plist; sourceTree = "<group>"; };
 		13B07FB81A68108700A75B9A /* PrivacyInfo.xcprivacy */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = PrivacyInfo.xcprivacy; path = mobileApp/PrivacyInfo.xcprivacy; sourceTree = "<group>"; };
+		1C607FD0D2B543369BD2CB56 /* RedditSans-ExtraBoldItalic.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = undefined; includeInIndex = 0; lastKnownFileType = unknown; name = "RedditSans-ExtraBoldItalic.ttf"; path = "../assets/fonts/Reddit_Sans/static/RedditSans-ExtraBoldItalic.ttf"; sourceTree = "<group>"; };
+		1CA457BDD33C4DCAA11452D4 /* README.txt */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = undefined; includeInIndex = 0; lastKnownFileType = unknown; name = README.txt; path = ../assets/fonts/Reddit_Sans/README.txt; sourceTree = "<group>"; };
 		3B4392A12AC88292D35C810B /* Pods-mobileApp.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-mobileApp.debug.xcconfig"; path = "Target Support Files/Pods-mobileApp/Pods-mobileApp.debug.xcconfig"; sourceTree = "<group>"; };
 		5709B34CF0A7D63546082F79 /* Pods-mobileApp.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-mobileApp.release.xcconfig"; path = "Target Support Files/Pods-mobileApp/Pods-mobileApp.release.xcconfig"; sourceTree = "<group>"; };
+		5CF7B0CB51114D1F84CCAA44 /* RedditSans-Bold.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = undefined; includeInIndex = 0; lastKnownFileType = unknown; name = "RedditSans-Bold.ttf"; path = "../assets/fonts/Reddit_Sans/static/RedditSans-Bold.ttf"; sourceTree = "<group>"; };
+		5E69759A4A2245C295886B95 /* RedditSans-ExtraLight.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = undefined; includeInIndex = 0; lastKnownFileType = unknown; name = "RedditSans-ExtraLight.ttf"; path = "../assets/fonts/Reddit_Sans/static/RedditSans-ExtraLight.ttf"; sourceTree = "<group>"; };
 		720A0B0259EDBA27C8B70965 /* Pods_mobileApp.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_mobileApp.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		740B3A3C558948E5807B7025 /* OFL.txt */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = undefined; includeInIndex = 0; lastKnownFileType = unknown; name = OFL.txt; path = ../assets/fonts/Reddit_Sans/OFL.txt; sourceTree = "<group>"; };
 		761780EC2CA45674006654EE /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = AppDelegate.swift; path = mobileApp/AppDelegate.swift; sourceTree = "<group>"; };
+		7751703CBCCE415BB98A7E47 /* RedditSans-LightItalic.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = undefined; includeInIndex = 0; lastKnownFileType = unknown; name = "RedditSans-LightItalic.ttf"; path = "../assets/fonts/Reddit_Sans/static/RedditSans-LightItalic.ttf"; sourceTree = "<group>"; };
+		7D48483F3BB34212A9892318 /* RedditSans-BoldItalic.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = undefined; includeInIndex = 0; lastKnownFileType = unknown; name = "RedditSans-BoldItalic.ttf"; path = "../assets/fonts/Reddit_Sans/static/RedditSans-BoldItalic.ttf"; sourceTree = "<group>"; };
 		81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = LaunchScreen.storyboard; path = mobileApp/LaunchScreen.storyboard; sourceTree = "<group>"; };
+		839865A80AA64374AD6285B0 /* RedditSans-BlackItalic.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = undefined; includeInIndex = 0; lastKnownFileType = unknown; name = "RedditSans-BlackItalic.ttf"; path = "../assets/fonts/Reddit_Sans/static/RedditSans-BlackItalic.ttf"; sourceTree = "<group>"; };
+		8D345A60DC104394A26AC55C /* RedditSans-Medium.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = undefined; includeInIndex = 0; lastKnownFileType = unknown; name = "RedditSans-Medium.ttf"; path = "../assets/fonts/Reddit_Sans/static/RedditSans-Medium.ttf"; sourceTree = "<group>"; };
+		8EA42E77DCD24467961F4350 /* RedditSans-MediumItalic.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = undefined; includeInIndex = 0; lastKnownFileType = unknown; name = "RedditSans-MediumItalic.ttf"; path = "../assets/fonts/Reddit_Sans/static/RedditSans-MediumItalic.ttf"; sourceTree = "<group>"; };
+		98334834F8544D778D54DB4F /* RedditSans-Light.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = undefined; includeInIndex = 0; lastKnownFileType = unknown; name = "RedditSans-Light.ttf"; path = "../assets/fonts/Reddit_Sans/static/RedditSans-Light.ttf"; sourceTree = "<group>"; };
+		A26DF6F6585845BF92202409 /* RedditSans-Italic-VariableFont_wght.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = undefined; includeInIndex = 0; lastKnownFileType = unknown; name = "RedditSans-Italic-VariableFont_wght.ttf"; path = "../assets/fonts/Reddit_Sans/RedditSans-Italic-VariableFont_wght.ttf"; sourceTree = "<group>"; };
+		BC632B3276F8491CB30F3594 /* RedditSans-ExtraLightItalic.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = undefined; includeInIndex = 0; lastKnownFileType = unknown; name = "RedditSans-ExtraLightItalic.ttf"; path = "../assets/fonts/Reddit_Sans/static/RedditSans-ExtraLightItalic.ttf"; sourceTree = "<group>"; };
+		D8DEDBE9BA2A43D092CEBE85 /* RedditSans-ExtraBold.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = undefined; includeInIndex = 0; lastKnownFileType = unknown; name = "RedditSans-ExtraBold.ttf"; path = "../assets/fonts/Reddit_Sans/static/RedditSans-ExtraBold.ttf"; sourceTree = "<group>"; };
+		E561C23F5EB44267988A41FE /* RedditSans-Black.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = undefined; includeInIndex = 0; lastKnownFileType = unknown; name = "RedditSans-Black.ttf"; path = "../assets/fonts/Reddit_Sans/static/RedditSans-Black.ttf"; sourceTree = "<group>"; };
+		E9BB3391C96340F7BD13A5C5 /* RedditSans-SemiBoldItalic.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = undefined; includeInIndex = 0; lastKnownFileType = unknown; name = "RedditSans-SemiBoldItalic.ttf"; path = "../assets/fonts/Reddit_Sans/static/RedditSans-SemiBoldItalic.ttf"; sourceTree = "<group>"; };
 		ED297162215061F000B7C4FE /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = System/Library/Frameworks/JavaScriptCore.framework; sourceTree = SDKROOT; };
+		EF92A680FD14407BA0B744C9 /* RedditSans-SemiBold.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = undefined; includeInIndex = 0; lastKnownFileType = unknown; name = "RedditSans-SemiBold.ttf"; path = "../assets/fonts/Reddit_Sans/static/RedditSans-SemiBold.ttf"; sourceTree = "<group>"; };
+		F017A8DBD40F4B5993209926 /* RedditSans-Italic.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = undefined; includeInIndex = 0; lastKnownFileType = unknown; name = "RedditSans-Italic.ttf"; path = "../assets/fonts/Reddit_Sans/static/RedditSans-Italic.ttf"; sourceTree = "<group>"; };
 		F613C5682EE7B86A007772F4 /* GoogleService-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -62,6 +102,34 @@
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
+		65A2EA5C671C4A859F655F74 /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				A26DF6F6585845BF92202409 /* RedditSans-Italic-VariableFont_wght.ttf */,
+				0437502DA45D40219DF46E10 /* RedditSans-VariableFont_wght.ttf */,
+				E561C23F5EB44267988A41FE /* RedditSans-Black.ttf */,
+				839865A80AA64374AD6285B0 /* RedditSans-BlackItalic.ttf */,
+				5CF7B0CB51114D1F84CCAA44 /* RedditSans-Bold.ttf */,
+				7D48483F3BB34212A9892318 /* RedditSans-BoldItalic.ttf */,
+				D8DEDBE9BA2A43D092CEBE85 /* RedditSans-ExtraBold.ttf */,
+				1C607FD0D2B543369BD2CB56 /* RedditSans-ExtraBoldItalic.ttf */,
+				5E69759A4A2245C295886B95 /* RedditSans-ExtraLight.ttf */,
+				BC632B3276F8491CB30F3594 /* RedditSans-ExtraLightItalic.ttf */,
+				F017A8DBD40F4B5993209926 /* RedditSans-Italic.ttf */,
+				98334834F8544D778D54DB4F /* RedditSans-Light.ttf */,
+				7751703CBCCE415BB98A7E47 /* RedditSans-LightItalic.ttf */,
+				8D345A60DC104394A26AC55C /* RedditSans-Medium.ttf */,
+				8EA42E77DCD24467961F4350 /* RedditSans-MediumItalic.ttf */,
+				0A155242A9644229A9B04A9C /* RedditSans-Regular.ttf */,
+				EF92A680FD14407BA0B744C9 /* RedditSans-SemiBold.ttf */,
+				E9BB3391C96340F7BD13A5C5 /* RedditSans-SemiBoldItalic.ttf */,
+				740B3A3C558948E5807B7025 /* OFL.txt */,
+				1CA457BDD33C4DCAA11452D4 /* README.txt */,
+			);
+			name = Resources;
+			path = "";
+			sourceTree = "<group>";
+		};
 		832341AE1AAA6A7D00B99B32 /* Libraries */ = {
 			isa = PBXGroup;
 			children = (
@@ -78,6 +146,7 @@
 				83CBBA001A601CBA00E9B192 /* Products */,
 				2D16E6871FA4F8E400B85C8A /* Frameworks */,
 				BBD78D7AC51CEA395F1C20DB /* Pods */,
+				65A2EA5C671C4A859F655F74 /* Resources */,
 			);
 			indentWidth = 2;
 			sourceTree = "<group>";
@@ -166,6 +235,26 @@
 				F613C5692EE7B86A007772F4 /* GoogleService-Info.plist in Resources */,
 				13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */,
 				C0685726611D9125D81FC74B /* PrivacyInfo.xcprivacy in Resources */,
+				4660C134840C467EA6D93FC1 /* RedditSans-Italic-VariableFont_wght.ttf in Resources */,
+				7EA0456E16524E50B61F0F6A /* RedditSans-VariableFont_wght.ttf in Resources */,
+				152AA18D55F348B9BB4CD678 /* RedditSans-Black.ttf in Resources */,
+				FD0118D508A24D6DB8F690E9 /* RedditSans-BlackItalic.ttf in Resources */,
+				DBCCE538B9984EB5B14E2B75 /* RedditSans-Bold.ttf in Resources */,
+				F75888167E2C4D12B2E27F7B /* RedditSans-BoldItalic.ttf in Resources */,
+				6D3A52FE97E448B1B9E94031 /* RedditSans-ExtraBold.ttf in Resources */,
+				6B4EF5C3AD474CF2A8DA3505 /* RedditSans-ExtraBoldItalic.ttf in Resources */,
+				465BE28396B94E40B17C262B /* RedditSans-ExtraLight.ttf in Resources */,
+				F72CCF5B763845A4804E475B /* RedditSans-ExtraLightItalic.ttf in Resources */,
+				B8C71B71B3124C4FB26C0DA3 /* RedditSans-Italic.ttf in Resources */,
+				7804CA76857543F2A322EBB4 /* RedditSans-Light.ttf in Resources */,
+				FB3BD38A3C22461FBE6C2826 /* RedditSans-LightItalic.ttf in Resources */,
+				532E72E8C26A46CF8B9BC4C6 /* RedditSans-Medium.ttf in Resources */,
+				04F419216A3642DE867A2300 /* RedditSans-MediumItalic.ttf in Resources */,
+				7CD010F02B524166BDCC3A29 /* RedditSans-Regular.ttf in Resources */,
+				CF2F98000CCC4872954223B2 /* RedditSans-SemiBold.ttf in Resources */,
+				4F2BDCFF53544350A2A34DCD /* RedditSans-SemiBoldItalic.ttf in Resources */,
+				AD59861F79624C098DAFE189 /* OFL.txt in Resources */,
+				EF3021E5A9384999B73C6C7C /* README.txt in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
