@@ -1,29 +1,25 @@
+import { Circle, EyeIcon } from 'lucide-react-native';
 import React, { useState } from 'react';
 import {
-  View,
+  ActivityIndicator,
+  Image,
+  KeyboardAvoidingView,
+  Platform,
+  ScrollView,
+  StyleSheet,
   Text,
   TextInput,
   TouchableOpacity,
-  StyleSheet,
-  KeyboardAvoidingView,
-  Platform,
-  ActivityIndicator,
-  ScrollView,
+  View,
 } from 'react-native';
-import Toast from 'react-native-toast-message';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import useAuth from '../../hooks/useAuth';
-// import {
-//   GoogleLoginButton,
-//   AppleLoginButton,
-//   LogoSvg,
-//   EyeIconSvg,
-// } from '../../components/AuthSvgs';
-import { createArtist } from '../../services/artistServices';
-import { auth } from '../../config/firebase';
-import { AppleIcon, EyeIcon, Chrome, Circle } from 'lucide-react-native';
-import { Image } from 'react-native';
+import Toast from 'react-native-toast-message';
+import { AppleLoginButton, GoogleLoginButton } from '../../components/AuthSvgs';
 import ImageSlider from '../../components/ImageSlider';
+import auth from '@react-native-firebase/auth';
+import useAuth from '../../hooks/useAuth';
+import { createArtist } from '../../services/artistServices';
+import { GoogleSignin } from '@react-native-google-signin/google-signin';
 
 type AuthPage = 'login' | 'signup';
 type SignupStep = 'email' | 'password' | 'verification';
@@ -39,6 +35,27 @@ const AuthScreen = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [loading, setLoading] = useState(false);
 
+  const useGoogleSignIn = async () => {
+    try {
+      await GoogleSignin.hasPlayServices({
+        showPlayServicesUpdateDialog: true,
+      });
+      const userInfo = await GoogleSignin.signIn();
+      console.log(userInfo);
+      if (userInfo.data) {
+        const idToken = userInfo.data.idToken;
+        const googleCredential = auth.GoogleAuthProvider.credential(idToken);
+        await auth().signInWithCredential(googleCredential);
+        const tokenDetails = await auth().currentUser?.getIdToken();
+        console.log('Google Sign-In successful, token details:', tokenDetails);
+        const email = auth().currentUser?.email;
+        const userId = auth().currentUser?.uid;
+        console.log('User email:', email, 'User ID:', userId);
+      }
+    } catch (error) {
+      console.error('Google Sign-In error:', error);
+    }
+  };
   const { handleAuthSuccess } = useAuth();
 
   const handleLogin = async () => {
@@ -121,23 +138,24 @@ const AuthScreen = () => {
 
     setLoading(true);
     try {
-      const userCredential = await auth().createUserWithEmailAndPassword(
-        email,
-        password,
-      );
-      const user = userCredential.user;
-      const userToken = await user.getIdToken();
+      await useGoogleSignIn();
+      // const userCredential = await auth().createUserWithEmailAndPassword(
+      //   email,
+      //   password,
+      // );
+      // const user = userCredential.user;
+      // const userToken = await user.getIdToken();
 
-      const res = await createArtist(userToken);
+      // const res = await createArtist(userToken);
 
-      if (res.data) {
-        setSignupStep('verification');
-        Toast.show({
-          type: 'success',
-          text1: 'Success',
-          text2: 'Account created! Please verify your email.',
-        });
-      }
+      // if (res.data) {
+      //   setSignupStep('verification');
+      //   Toast.show({
+      //     type: 'success',
+      //     text1: 'Success',
+      //     text2: 'Account created! Please verify your email.',
+      //   });
+      // }
     } catch (error: any) {
       console.error('Registration error:', error);
       const errorMessage =
@@ -247,10 +265,10 @@ const AuthScreen = () => {
 
       <View style={styles.socialButtonsContainer}>
         <TouchableOpacity onPress={() => {}}>
-          <Chrome width={48} height={48} color="#DB4437" />
+          <GoogleLoginButton width={48} height={48} color="#DB4437" />
         </TouchableOpacity>
         <TouchableOpacity onPress={() => {}}>
-          <AppleIcon width={48} height={48} color="#000" />
+          <AppleLoginButton width={48} height={48} color="#000" />
         </TouchableOpacity>
       </View>
     </View>
