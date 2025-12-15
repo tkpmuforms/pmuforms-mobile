@@ -49,9 +49,10 @@ import React, { useEffect } from 'react';
 import { StatusBar, useColorScheme } from 'react-native';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 import { Provider } from 'react-redux';
+import { PersistGate } from 'redux-persist/integration/react';
 import Toast from 'react-native-toast-message';
 import { AuthProvider } from './src/context/AuthContext';
-import { store } from './src/redux/store';
+import { store, persistor } from './src/redux/store';
 import RouteGuard from './src/routes/RouteGuard';
 import { setupGlobalFonts } from './src/config/setupGlobalFonts';
 
@@ -65,15 +66,17 @@ function App() {
 
   return (
     <Provider store={store}>
-      <SafeAreaProvider>
-        <StatusBar barStyle={isDarkMode ? 'light-content' : 'dark-content'} />
-        <NavigationContainer>
-          <AuthProvider>
-            <RouteGuard />
-          </AuthProvider>
-        </NavigationContainer>
-        <Toast />
-      </SafeAreaProvider>
+      <PersistGate loading={null} persistor={persistor}>
+        <SafeAreaProvider>
+          <StatusBar barStyle={isDarkMode ? 'light-content' : 'dark-content'} />
+          <NavigationContainer>
+            <AuthProvider>
+              <RouteGuard />
+            </AuthProvider>
+          </NavigationContainer>
+          <Toast />
+        </SafeAreaProvider>
+      </PersistGate>
     </Provider>
   );
 }

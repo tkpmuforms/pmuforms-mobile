@@ -86,21 +86,14 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
         if (token && isValidToken(token)) {
           setAuthHeader(token);
           dispatch(setAuthenticated(true));
-          dispatch(setLoading(false));
         } else {
-          await AsyncStorage.removeItem('accessToken');
-          dispatch(setLoading(false));
-          dispatch(setAuthenticated(false));
-          dispatch(setUser({}));
-          setAuthHeader();
+          await handleAuthFail();
         }
       } catch (error) {
         console.error('Error during auth initialization:', error);
-        await AsyncStorage.removeItem('accessToken');
+        await handleAuthFail();
+      } finally {
         dispatch(setLoading(false));
-        dispatch(setAuthenticated(false));
-        dispatch(setUser({}));
-        setAuthHeader();
       }
     };
 

@@ -6,11 +6,13 @@ import {
   ScrollView,
   TouchableOpacity,
   RefreshControl,
+  Dimensions,
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Plus } from 'lucide-react-native';
 import useAuth from '../../hooks/useAuth';
 import { Appointment } from '../../types';
+import { colors } from '../../theme/colors';
 import {
   getArtistAppointmentsPaginated,
   getArtistForms,
@@ -161,6 +163,14 @@ const DashboardScreen = ({ navigation }: any) => {
     fetchData();
   }, []);
 
+  useEffect(() => {
+    console.log('=== USER OBJECT DEBUG ===');
+    console.log('Full user object:', JSON.stringify(user, null, 2));
+    console.log('Business Name:', user?.businessName);
+    console.log('Has subscription:', hasActiveSubscription);
+    console.log('========================');
+  }, [user]);
+
   const onRefresh = async () => {
     setRefreshing(true);
     await fetchData();
@@ -240,47 +250,59 @@ const DashboardScreen = ({ navigation }: any) => {
             </TouchableOpacity>
           </View>
           <View style={styles.metricsGrid}>
-            <MetricsCard
-              title="Total Clients"
-              value={
-                metricsLoading
-                  ? 'loading'
-                  : metrics?.totalClients?.toString() || '0'
-              }
-              icon="users"
-              color="#A858F0"
-              onPress={() => navigation.navigate('Clients')}
-            />
-            <MetricsCard
-              title="Forms Shared"
-              value={
-                metricsLoading
-                  ? 'loading'
-                  : metrics?.formsShared?.toString() || '0'
-              }
-              icon="file-text"
-              color="#560056"
-            />
-            <MetricsCard
-              title="Pending Submissions"
-              value={
-                metricsLoading
-                  ? 'loading'
-                  : metrics?.pendingSubmissions?.toString() || '0'
-              }
-              icon="clock"
-              color="#f59e0b"
-            />
-            <MetricsCard
-              title="Today's Schedule"
-              value={
-                metricsLoading
-                  ? 'loading'
-                  : metrics?.todaysSchedule?.toString() || '0'
-              }
-              icon="calendar"
-              color="#ef4444"
-            />
+            <View style={styles.metricsRow}>
+              <View style={styles.metricItem}>
+                <MetricsCard
+                  title="Total Clients"
+                  value={
+                    metricsLoading
+                      ? 'loading'
+                      : metrics?.totalClients?.toString() || '0'
+                  }
+                  icon="users"
+                  color={colors.primary}
+                  onPress={() => navigation.navigate('Clients')}
+                />
+              </View>
+              <View style={styles.metricItem}>
+                <MetricsCard
+                  title="Forms Shared"
+                  value={
+                    metricsLoading
+                      ? 'loading'
+                      : metrics?.formsShared?.toString() || '0'
+                  }
+                  icon="file-text"
+                  color={colors.secondary}
+                />
+              </View>
+            </View>
+            <View style={styles.metricsRow}>
+              <View style={styles.metricItem}>
+                <MetricsCard
+                  title="Pending Submissions"
+                  value={
+                    metricsLoading
+                      ? 'loading'
+                      : metrics?.pendingSubmissions?.toString() || '0'
+                  }
+                  icon="clock"
+                  color={colors.warning}
+                />
+              </View>
+              <View style={styles.metricItem}>
+                <MetricsCard
+                  title="Today's Schedule"
+                  value={
+                    metricsLoading
+                      ? 'loading'
+                      : metrics?.todaysSchedule?.toString() || '0'
+                  }
+                  icon="calendar"
+                  color={colors.error}
+                />
+              </View>
+            </View>
           </View>
         </View>
 
@@ -294,54 +316,60 @@ const DashboardScreen = ({ navigation }: any) => {
               <Text style={styles.viewAllButton}>View all</Text>
             </TouchableOpacity>
           </View>
-          <View style={styles.appointmentsGrid}>
-            {appointments.length === 0 ? (
-              <Text style={styles.emptyText}>No appointments found</Text>
-            ) : (
-              appointments.slice(0, 4).map(appointment => (
-                <AppointmentCard
-                  key={appointment.id}
-                  name={
-                    appointment?.customerId
-                      ? getCustomerName(appointment.customerId)
-                      : 'Unknown Client'
-                  }
-                  avatar={getCustomerAvatar(appointment.customerId)}
-                  time={formatAppointmentTime(appointment.date)}
-                  service={
-                    appointment.serviceDetails[0]?.service ||
-                    'Service not specified'
-                  }
-                  onPress={() =>
-                    navigation.navigate('ClientAppointments', {
-                      clientId: appointment.customerId,
-                    })
-                  }
-                />
-              ))
-            )}
-          </View>
+          {appointments.length === 0 ? (
+            <Text style={styles.emptyText}>No appointments found</Text>
+          ) : (
+            <ScrollView
+              horizontal
+              showsHorizontalScrollIndicator={false}
+              contentContainerStyle={styles.appointmentsScrollContent}
+              style={styles.appointmentsScroll}
+            >
+              {appointments.slice(0, 6).map(appointment => (
+                <View key={appointment.id} style={styles.appointmentItem}>
+                  <AppointmentCard
+                    name={
+                      appointment?.customerId
+                        ? getCustomerName(appointment.customerId)
+                        : 'Unknown Client'
+                    }
+                    avatar={getCustomerAvatar(appointment.customerId)}
+                    time={formatAppointmentTime(appointment.date)}
+                    service={
+                      appointment.serviceDetails[0]?.service ||
+                      'Service not specified'
+                    }
+                    onPress={() =>
+                      navigation.navigate('ClientAppointments', {
+                        clientId: appointment.customerId,
+                      })
+                    }
+                  />
+                </View>
+              ))}
+            </ScrollView>
+          )}
         </View>
 
         {/* Recent Forms */}
-        <View style={styles.section}>
+        <View style={[styles.section, { marginBottom: 40 }]}>
           <View style={styles.sectionHeader}>
             <Text style={styles.sectionTitle}>RECENT FORMS</Text>
             <TouchableOpacity onPress={() => navigation.navigate('Forms')}>
               <Text style={styles.viewAllButton}>View all</Text>
             </TouchableOpacity>
           </View>
-          <View style={styles.formsGrid}>
-            {recentForms.length === 0 ? (
-              <Text style={styles.emptyText}>No recent forms found</Text>
-            ) : (
-              recentForms
+          {recentForms.length === 0 ? (
+            <Text style={styles.emptyText}>No recent forms found</Text>
+          ) : (
+            <View style={styles.formsGrid}>
+              {recentForms
                 .sort(
                   (a: any, b: any) =>
                     new Date(b.updatedAt).getTime() -
                     new Date(a.updatedAt).getTime(),
                 )
-                .slice(0, 8)
+                .slice(0, 6)
                 .map(form => (
                   <FormCard
                     key={form.id}
@@ -353,9 +381,9 @@ const DashboardScreen = ({ navigation }: any) => {
                       navigation.navigate('FormEdit', { formId: form.id })
                     }
                   />
-                ))
-            )}
-          </View>
+                ))}
+            </View>
+          )}
         </View>
       </ScrollView>
 
@@ -406,7 +434,7 @@ const styles = StyleSheet.create({
   },
   scrollContent: {
     paddingHorizontal: 20,
-    paddingBottom: 24,
+    paddingBottom: 40,
   },
   header: {
     marginBottom: 24,
@@ -429,7 +457,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
-    backgroundColor: '#A858F0',
+    backgroundColor: colors.primary,
     paddingVertical: 12,
     paddingHorizontal: 20,
     borderRadius: 12,
@@ -447,7 +475,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    marginBottom: 12,
+    marginBottom: 16,
   },
   sectionTitle: {
     fontSize: 12,
@@ -468,7 +496,7 @@ const styles = StyleSheet.create({
   },
   viewAllButton: {
     fontSize: 12,
-    color: '#A858F0',
+    color: colors.primary,
     fontWeight: '600',
   },
   quickActionsGrid: {
@@ -477,8 +505,23 @@ const styles = StyleSheet.create({
   metricsGrid: {
     gap: 12,
   },
-  appointmentsGrid: {
+  metricsRow: {
+    flexDirection: 'row',
     gap: 12,
+  },
+  metricItem: {
+    flex: 1,
+  },
+  appointmentsScroll: {
+    marginHorizontal: -20,
+    paddingHorizontal: 20,
+  },
+  appointmentsScrollContent: {
+    paddingRight: 20,
+    gap: 12,
+  },
+  appointmentItem: {
+    width: Dimensions.get('window').width * 0.85,
   },
   formsGrid: {
     gap: 12,
