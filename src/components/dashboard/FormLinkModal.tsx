@@ -71,7 +71,7 @@ const FormLinkModal: React.FC<FormLinkModalProps> = ({
                   onPress={handleCopyLink}
                 >
                   {copied ? (
-                    <Check size={16} color="#A858F0" />
+                    <Check size={16} color="#8e2d8e" />
                   ) : (
                     <Copy size={16} color="#6b7280" />
                   )}
@@ -164,7 +164,7 @@ const styles = StyleSheet.create({
     flex: 1,
     padding: 12,
     fontSize: 14,
-    color: '#A858F0',
+    color: '#8e2d8e',
     fontFamily: 'monospace',
   },
   copyIconButton: {
@@ -182,7 +182,7 @@ const styles = StyleSheet.create({
     marginBottom: 24,
   },
   copyButton: {
-    backgroundColor: '#A858F0',
+    backgroundColor: '#8e2d8e',
     paddingVertical: 16,
     paddingHorizontal: 32,
     borderRadius: 12,

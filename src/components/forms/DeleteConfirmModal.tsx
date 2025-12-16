@@ -42,15 +42,18 @@ const DeleteConfirmModal: React.FC<DeleteConfirmModalProps> = ({
 
             <Text style={styles.title}>Are you sure you want to delete?</Text>
             <Text style={styles.description}>
-              If you do, you will need to contact us to fix any mistakes that have
-              been made
+              If you do, you will need to contact us to fix any mistakes that
+              have been made
             </Text>
 
             <View style={styles.actions}>
               <TouchableOpacity style={styles.cancelButton} onPress={onClose}>
                 <Text style={styles.cancelButtonText}>Cancel</Text>
               </TouchableOpacity>
-              <TouchableOpacity style={styles.confirmButton} onPress={onConfirm}>
+              <TouchableOpacity
+                style={styles.confirmButton}
+                onPress={onConfirm}
+              >
                 <Text style={styles.confirmButtonText}>
                   Delete this {type === 'section' ? 'Section' : 'Form'}
                 </Text>
@@ -133,7 +136,7 @@ const styles = StyleSheet.create({
   },
   confirmButton: {
     flex: 1,
-    backgroundColor: '#A858F0',
+    backgroundColor: '#8e2d8e',
     paddingVertical: 16,
     borderRadius: 12,
     alignItems: 'center',

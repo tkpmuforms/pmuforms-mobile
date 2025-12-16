@@ -38,31 +38,31 @@ const AddFieldModal: React.FC<AddFieldModalProps> = ({
   const fieldTypes: FieldType[] = [
     {
       type: 'paragraph',
-      icon: <FileText size={28} color="#A858F0" />,
+      icon: <FileText size={28} color="#8e2d8e" />,
       title: 'Paragraph Only',
       description: 'For texts sections without input',
     },
     {
       type: 'text',
-      icon: <Type size={28} color="#A858F0" />,
+      icon: <Type size={28} color="#8e2d8e" />,
       title: 'Text Field',
       description: 'For inputs like name, occupation e.t.c',
     },
     {
       type: 'checkbox',
-      icon: <CheckSquare size={28} color="#A858F0" />,
+      icon: <CheckSquare size={28} color="#8e2d8e" />,
       title: 'Checkbox',
       description: 'For Yes/No questions',
     },
     {
       type: 'numberOfField',
-      icon: <Hash size={28} color="#A858F0" />,
+      icon: <Hash size={28} color="#8e2d8e" />,
       title: 'Number',
       description: 'For Numeric input like age',
     },
     {
       type: 'date',
-      icon: <Calendar size={28} color="#A858F0" />,
+      icon: <Calendar size={28} color="#8e2d8e" />,
       title: 'Date',
       description: 'For Date input like birth date',
     },

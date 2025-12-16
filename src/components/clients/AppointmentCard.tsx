@@ -64,7 +64,7 @@ const AppointmentCard: React.FC<AppointmentCardProps> = ({
       <View style={styles.header}>
         <View style={styles.serviceInfo}>
           <View style={styles.serviceIcon}>
-            <Calendar size={20} color="#A858F0" />
+            <Calendar size={20} color="#8e2d8e" />
           </View>
           <View style={styles.serviceContent}>
             <Text style={styles.serviceName} numberOfLines={1}>

@@ -32,7 +32,7 @@ const AddClientModal: React.FC<AddClientModalProps> = ({
   });
 
   const handleInputChange = (field: keyof typeof formData, value: string) => {
-    setFormData((prev) => ({ ...prev, [field]: value }));
+    setFormData(prev => ({ ...prev, [field]: value }));
   };
 
   const handleSubmit = async () => {
@@ -73,7 +73,8 @@ const AddClientModal: React.FC<AddClientModalProps> = ({
             <View style={styles.header}>
               <Text style={styles.title}>Add a New Client</Text>
               <Text style={styles.subtitle}>
-                Please provide the necessary information to onboard a new client.
+                Please provide the necessary information to onboard a new
+                client.
               </Text>
             </View>
 
@@ -90,7 +91,9 @@ const AddClientModal: React.FC<AddClientModalProps> = ({
                     placeholder="First Name"
                     placeholderTextColor="#94a3b8"
                     value={formData.firstName}
-                    onChangeText={(value) => handleInputChange('firstName', value)}
+                    onChangeText={value =>
+                      handleInputChange('firstName', value)
+                    }
                   />
                 </View>
 
@@ -101,7 +104,7 @@ const AddClientModal: React.FC<AddClientModalProps> = ({
                     placeholder="Last Name"
                     placeholderTextColor="#94a3b8"
                     value={formData.lastName}
-                    onChangeText={(value) => handleInputChange('lastName', value)}
+                    onChangeText={value => handleInputChange('lastName', value)}
                   />
                 </View>
               </View>
@@ -114,7 +117,7 @@ const AddClientModal: React.FC<AddClientModalProps> = ({
                     placeholder="Email Address"
                     placeholderTextColor="#94a3b8"
                     value={formData.email}
-                    onChangeText={(value) => handleInputChange('email', value)}
+                    onChangeText={value => handleInputChange('email', value)}
                     keyboardType="email-address"
                     autoCapitalize="none"
                   />
@@ -127,14 +130,17 @@ const AddClientModal: React.FC<AddClientModalProps> = ({
                     placeholder="Phone number"
                     placeholderTextColor="#94a3b8"
                     value={formData.phone}
-                    onChangeText={(value) => handleInputChange('phone', value)}
+                    onChangeText={value => handleInputChange('phone', value)}
                     keyboardType="phone-pad"
                   />
                 </View>
               </View>
             </ScrollView>
 
-            <TouchableOpacity style={styles.submitButton} onPress={handleSubmit}>
+            <TouchableOpacity
+              style={styles.submitButton}
+              onPress={handleSubmit}
+            >
               <Text style={styles.submitButtonText}>Add Client</Text>
             </TouchableOpacity>
           </View>
@@ -216,7 +222,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#f8fafc',
   },
   submitButton: {
-    backgroundColor: '#A858F0',
+    backgroundColor: '#8e2d8e',
     paddingVertical: 16,
     borderRadius: 12,
     alignItems: 'center',

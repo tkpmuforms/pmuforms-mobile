@@ -1,24 +1,32 @@
 import React from 'react';
 import { View, ActivityIndicator, StyleSheet } from 'react-native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import { createDrawerNavigator } from '@react-navigation/drawer';
 import { authorizedRoutes, nonAuthRoutes } from './routeConfig';
 import useAuth from '../hooks/useAuth';
+import AuthenticatedLayout from '../components/layout/AuthenticatedLayout';
 
 const Stack = createNativeStackNavigator();
-const Drawer = createDrawerNavigator();
 
-const AuthenticatedDrawer = () => {
+const AuthenticatedStack = ({ navigation }: any) => {
   return (
-    <Drawer.Navigator screenOptions={{ headerShown: false }}>
+    <Stack.Navigator
+      screenOptions={{
+        headerShown: false,
+      }}
+    >
       {authorizedRoutes.map(route => (
-        <Drawer.Screen
-          key={route.name}
-          name={route.name}
-          component={route.component}
-        />
+        <Stack.Screen key={route.name} name={route.name}>
+          {props => (
+            <AuthenticatedLayout
+              breadcrumbs={route.breadcrumbs}
+              navigation={props.navigation}
+            >
+              <route.component {...props} />
+            </AuthenticatedLayout>
+          )}
+        </Stack.Screen>
       ))}
-    </Drawer.Navigator>
+    </Stack.Navigator>
   );
 };
 
@@ -46,7 +54,7 @@ const RouteGuard = () => {
           ))}
         </>
       ) : (
-        <Stack.Screen name="Main" component={AuthenticatedDrawer} />
+        <Stack.Screen name="Main" component={AuthenticatedStack} />
       )}
     </Stack.Navigator>
   );

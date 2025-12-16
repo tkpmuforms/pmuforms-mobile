@@ -22,7 +22,7 @@ const FormCard: React.FC<FormCardProps> = ({
     <View style={styles.card}>
       <View style={styles.content}>
         <View style={styles.header}>
-          <FileText size={20} color="#A858F0" style={styles.icon} />
+          <FileText size={20} color="#8e2d8e" style={styles.icon} />
           <Text style={styles.title} numberOfLines={2}>
             {title}
           </Text>

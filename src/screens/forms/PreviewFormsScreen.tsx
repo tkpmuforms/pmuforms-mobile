@@ -91,7 +91,7 @@ const PreviewFormsScreen = ({ route, navigation }: any) => {
   if (loading) {
     return (
       <View style={styles.loadingContainer}>
-        <ActivityIndicator size="large" color="#A858F0" />
+        <ActivityIndicator size="large" color="#8e2d8e" />
       </View>
     );
   }
@@ -127,7 +127,7 @@ const PreviewFormsScreen = ({ route, navigation }: any) => {
             <Trash2 size={20} color="#ef4444" />
           </TouchableOpacity>
           <TouchableOpacity onPress={handleEdit} style={styles.iconButton}>
-            <Edit size={20} color="#A858F0" />
+            <Edit size={20} color="#8e2d8e" />
           </TouchableOpacity>
         </View>
       </View>
@@ -281,7 +281,7 @@ const styles = StyleSheet.create({
     marginBottom: 20,
   },
   backButton: {
-    backgroundColor: '#A858F0',
+    backgroundColor: '#8e2d8e',
     paddingVertical: 12,
     paddingHorizontal: 24,
     borderRadius: 12,

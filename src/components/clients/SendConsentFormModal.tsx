@@ -36,10 +36,10 @@ const SendConsentFormModal: React.FC<SendConsentFormModalProps> = ({
   const [showPreviewAppointment, setShowPreviewAppointment] = useState(false);
 
   const toggleService = (serviceId: string) => {
-    setSelectedServices((prev) =>
+    setSelectedServices(prev =>
       prev.includes(serviceId)
-        ? prev.filter((s) => s !== serviceId)
-        : [...prev, serviceId]
+        ? prev.filter(s => s !== serviceId)
+        : [...prev, serviceId],
     );
   };
 
@@ -108,7 +108,9 @@ const SendConsentFormModal: React.FC<SendConsentFormModalProps> = ({
                     style={styles.dateInput}
                     onPress={() => setShowDatePicker(true)}
                   >
-                    <Text style={styles.dateText}>{formatDate(appointmentDate)}</Text>
+                    <Text style={styles.dateText}>
+                      {formatDate(appointmentDate)}
+                    </Text>
                   </TouchableOpacity>
 
                   {showDatePicker && (
@@ -156,7 +158,8 @@ const SendConsentFormModal: React.FC<SendConsentFormModalProps> = ({
               <TouchableOpacity
                 style={[
                   styles.continueButton,
-                  selectedServices.length === 0 && styles.continueButtonDisabled,
+                  selectedServices.length === 0 &&
+                    styles.continueButtonDisabled,
                 ]}
                 onPress={handleContinue}
                 disabled={selectedServices.length === 0}
@@ -265,8 +268,8 @@ const styles = StyleSheet.create({
     backgroundColor: '#fff',
   },
   serviceTagSelected: {
-    backgroundColor: '#A858F0',
-    borderColor: '#A858F0',
+    backgroundColor: '#8e2d8e',
+    borderColor: '#8e2d8e',
   },
   serviceText: {
     fontSize: 14,
@@ -276,7 +279,7 @@ const styles = StyleSheet.create({
     color: '#fff',
   },
   continueButton: {
-    backgroundColor: '#A858F0',
+    backgroundColor: '#8e2d8e',
     paddingVertical: 16,
     borderRadius: 12,
     alignItems: 'center',

@@ -138,7 +138,7 @@ const UpdateServicesModal: React.FC<UpdateServicesModalProps> = ({
               <Text style={styles.sectionTitle}>Select services</Text>
               {loading ? (
                 <View style={styles.loadingContainer}>
-                  <ActivityIndicator size="large" color="#A858F0" />
+                  <ActivityIndicator size="large" color="#8e2d8e" />
                 </View>
               ) : (
                 <View style={styles.servicesGrid}>
@@ -269,8 +269,8 @@ const styles = StyleSheet.create({
     backgroundColor: '#fff',
   },
   serviceTagSelected: {
-    backgroundColor: '#A858F0',
-    borderColor: '#A858F0',
+    backgroundColor: '#8e2d8e',
+    borderColor: '#8e2d8e',
   },
   serviceText: {
     fontSize: 14,
@@ -300,7 +300,7 @@ const styles = StyleSheet.create({
   },
   saveButton: {
     flex: 1,
-    backgroundColor: '#A858F0',
+    backgroundColor: '#8e2d8e',
     paddingVertical: 16,
     borderRadius: 12,
     alignItems: 'center',

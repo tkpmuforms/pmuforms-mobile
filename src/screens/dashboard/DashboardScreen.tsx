@@ -253,7 +253,7 @@ const DashboardScreen = ({ navigation }: any) => {
             <View style={styles.metricsRow}>
               <View style={styles.metricItem}>
                 <MetricsCard
-                  title="Total Clients"
+                  title="Total   Clients"
                   value={
                     metricsLoading
                       ? 'loading'

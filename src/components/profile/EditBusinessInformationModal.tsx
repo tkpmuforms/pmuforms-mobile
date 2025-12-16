@@ -283,7 +283,7 @@ const styles = StyleSheet.create({
     width: 28,
     height: 28,
     borderRadius: 14,
-    backgroundColor: '#A858F0',
+    backgroundColor: '#8e2d8e',
     justifyContent: 'center',
     alignItems: 'center',
   },
@@ -319,7 +319,7 @@ const styles = StyleSheet.create({
     color: '#9ca3af',
   },
   saveButton: {
-    backgroundColor: '#A858F0',
+    backgroundColor: '#8e2d8e',
     paddingVertical: 16,
     borderRadius: 12,
     alignItems: 'center',

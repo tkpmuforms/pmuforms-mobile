@@ -97,11 +97,11 @@ const FeaturesModal: React.FC<FeaturesModalProps> = ({
               showsVerticalScrollIndicator={false}
             >
               <View style={styles.header}>
-                <Crown size={48} color="#A858F0" />
+                <Crown size={48} color="#8e2d8e" />
                 <Text style={styles.title}>Your First 7 days is on us</Text>
                 <Text style={styles.subtitle}>
-                  Subscribe to unlock the ultimate experience and enjoy free 7 days on
-                  us
+                  Subscribe to unlock the ultimate experience and enjoy free 7
+                  days on us
                 </Text>
               </View>
 
@@ -109,7 +109,7 @@ const FeaturesModal: React.FC<FeaturesModalProps> = ({
                 {features.map((feature, index) => (
                   <View key={index} style={styles.featureItem}>
                     <View style={styles.featureIcon}>
-                      <feature.icon size={20} color="#A858F0" />
+                      <feature.icon size={20} color="#8e2d8e" />
                     </View>
                     <View style={styles.featureContent}>
                       <Text style={styles.featureTitle}>{feature.title}</Text>
@@ -121,7 +121,10 @@ const FeaturesModal: React.FC<FeaturesModalProps> = ({
                 ))}
               </View>
 
-              <TouchableOpacity style={styles.subscribeButton} onPress={onSubscribe}>
+              <TouchableOpacity
+                style={styles.subscribeButton}
+                onPress={onSubscribe}
+              >
                 <Text style={styles.subscribeButtonText}>Subscribe Now</Text>
               </TouchableOpacity>
             </ScrollView>
@@ -212,7 +215,7 @@ const styles = StyleSheet.create({
     lineHeight: 20,
   },
   subscribeButton: {
-    backgroundColor: '#A858F0',
+    backgroundColor: '#8e2d8e',
     paddingVertical: 16,
     borderRadius: 12,
     alignItems: 'center',

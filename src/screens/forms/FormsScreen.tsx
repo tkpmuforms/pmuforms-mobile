@@ -210,7 +210,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
-    backgroundColor: '#A858F0',
+    backgroundColor: '#8e2d8e',
     paddingVertical: 12,
     paddingHorizontal: 20,
     borderRadius: 12,
@@ -257,7 +257,7 @@ const styles = StyleSheet.create({
     borderRadius: 24,
   },
   tabActive: {
-    borderColor: '#A858F0',
+    borderColor: '#8e2d8e',
   },
   tabText: {
     color: '#64748b',
@@ -283,7 +283,7 @@ const styles = StyleSheet.create({
   emptyButton: {
     flexDirection: 'row',
     alignItems: 'center',
-    backgroundColor: '#A858F0',
+    backgroundColor: '#8e2d8e',
     paddingVertical: 12,
     paddingHorizontal: 20,
     borderRadius: 12,

@@ -42,7 +42,7 @@ const EditClientModal: React.FC<EditClientModalProps> = ({
   const [success, setSuccess] = useState(false);
 
   const handleInputChange = (field: keyof typeof formData, value: string) => {
-    setFormData((prev) => ({ ...prev, [field]: value }));
+    setFormData(prev => ({ ...prev, [field]: value }));
   };
 
   const handleSave = async () => {
@@ -100,7 +100,9 @@ const EditClientModal: React.FC<EditClientModalProps> = ({
                   <TextInput
                     style={styles.input}
                     value={formData.firstName}
-                    onChangeText={(value) => handleInputChange('firstName', value)}
+                    onChangeText={value =>
+                      handleInputChange('firstName', value)
+                    }
                     placeholder="First Name"
                     placeholderTextColor="#94a3b8"
                   />
@@ -111,7 +113,7 @@ const EditClientModal: React.FC<EditClientModalProps> = ({
                   <TextInput
                     style={styles.input}
                     value={formData.lastName}
-                    onChangeText={(value) => handleInputChange('lastName', value)}
+                    onChangeText={value => handleInputChange('lastName', value)}
                     placeholder="Last Name"
                     placeholderTextColor="#94a3b8"
                   />
@@ -124,7 +126,7 @@ const EditClientModal: React.FC<EditClientModalProps> = ({
                   <TextInput
                     style={styles.input}
                     value={formData.email}
-                    onChangeText={(value) => handleInputChange('email', value)}
+                    onChangeText={value => handleInputChange('email', value)}
                     placeholder="Email Address"
                     placeholderTextColor="#94a3b8"
                     keyboardType="email-address"
@@ -137,7 +139,7 @@ const EditClientModal: React.FC<EditClientModalProps> = ({
                   <TextInput
                     style={styles.input}
                     value={formData.phone}
-                    onChangeText={(value) => handleInputChange('phone', value)}
+                    onChangeText={value => handleInputChange('phone', value)}
                     placeholder="Phone number"
                     placeholderTextColor="#94a3b8"
                     keyboardType="phone-pad"
@@ -240,7 +242,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#f8fafc',
   },
   saveButton: {
-    backgroundColor: '#A858F0',
+    backgroundColor: '#8e2d8e',
     paddingVertical: 16,
     borderRadius: 12,
     alignItems: 'center',

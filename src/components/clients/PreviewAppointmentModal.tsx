@@ -140,7 +140,7 @@ const PreviewAppointmentModal: React.FC<PreviewAppointmentModalProps> = ({
     if (isLoadingForms) {
       return (
         <View style={styles.loadingContainer}>
-          <ActivityIndicator size="small" color="#A858F0" />
+          <ActivityIndicator size="small" color="#8e2d8e" />
         </View>
       );
     }
@@ -208,7 +208,7 @@ const PreviewAppointmentModal: React.FC<PreviewAppointmentModalProps> = ({
                 <View style={styles.detailSection}>
                   <Text style={styles.detailLabel}>Appointment Date</Text>
                   <View style={styles.dateContent}>
-                    <Calendar size={16} color="#A858F0" />
+                    <Calendar size={16} color="#8e2d8e" />
                     <Text style={styles.detailValue}>
                       {formatAppointmentTime(appointmentDate)}
                     </Text>
@@ -332,7 +332,7 @@ const styles = StyleSheet.create({
   avatarText: {
     fontSize: 14,
     fontWeight: '600',
-    color: '#A858F0',
+    color: '#8e2d8e',
   },
   dateContent: {
     flexDirection: 'row',
@@ -368,7 +368,7 @@ const styles = StyleSheet.create({
   },
   bullet: {
     fontSize: 16,
-    color: '#A858F0',
+    color: '#8e2d8e',
   },
   serviceText: {
     fontSize: 14,
@@ -406,7 +406,7 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   continueButton: {
-    backgroundColor: '#A858F0',
+    backgroundColor: '#8e2d8e',
     paddingVertical: 16,
     borderRadius: 12,
     alignItems: 'center',

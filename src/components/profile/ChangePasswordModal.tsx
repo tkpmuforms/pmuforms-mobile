@@ -31,22 +31,18 @@ const ChangePasswordModal: React.FC<ChangePasswordModalProps> = ({
 
     try {
       await auth().sendPasswordResetEmail(email.trim());
-      Alert.alert(
-        'Success',
-        `Reset link sent to: ${email}`,
-        [
-          {
-            text: 'OK',
-            onPress: () => onClose(),
-          },
-        ]
-      );
+      Alert.alert('Success', `Reset link sent to: ${email}`, [
+        {
+          text: 'OK',
+          onPress: () => onClose(),
+        },
+      ]);
     } catch (error) {
       console.error('Error sending password reset email:', error);
       const err = error as any;
       Alert.alert(
         'Error',
-        err?.message || 'Failed to send reset link. Please try again.'
+        err?.message || 'Failed to send reset link. Please try again.',
       );
     }
   };
@@ -160,7 +156,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#f8fafc',
   },
   saveButton: {
-    backgroundColor: '#A858F0',
+    backgroundColor: '#8e2d8e',
     paddingVertical: 16,
     borderRadius: 12,
     alignItems: 'center',

@@ -150,7 +150,7 @@ const ClientSearchModal: React.FC<ClientSearchModalProps> = ({
 
               {isSearching ? (
                 <View style={styles.loadingState}>
-                  <ActivityIndicator size="small" color="#A858F0" />
+                  <ActivityIndicator size="small" color="#8e2d8e" />
                   <Text style={styles.loadingText}>Searching...</Text>
                 </View>
               ) : displayItems.length > 0 ? (
@@ -271,7 +271,7 @@ const styles = StyleSheet.create({
     width: 40,
     height: 40,
     borderRadius: 20,
-    backgroundColor: '#A858F0',
+    backgroundColor: '#8e2d8e',
     justifyContent: 'center',
     alignItems: 'center',
   },
