@@ -14,7 +14,7 @@ const QuickActionCard: React.FC<QuickActionCardProps> = ({
   onPress,
 }) => {
   const renderIcon = () => {
-    const iconSize = 24;
+    const iconSize = 18;
     const iconColor = '#fff';
 
     switch (icon) {
@@ -43,25 +43,20 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'space-between',
     backgroundColor: '#f8f8f8',
-    borderRadius: 16,
-    padding: 20,
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 1 },
-    shadowOpacity: 0.1,
-    shadowRadius: 3,
-    elevation: 2,
-    gap: 12,
+    borderRadius: 12,
+    padding: 12,
+    gap: 8,
   },
   title: {
-    fontSize: 14,
+    fontSize: 13,
     fontWeight: '500',
     color: '#1e293b',
     flex: 1,
   },
   iconContainer: {
-    width: 48,
-    height: 48,
-    borderRadius: 12,
+    width: 36,
+    height: 36,
+    borderRadius: 10,
     backgroundColor: '#8e2d8e',
     justifyContent: 'center',
     alignItems: 'center',

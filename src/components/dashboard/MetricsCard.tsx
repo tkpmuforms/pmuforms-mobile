@@ -1,5 +1,11 @@
 import React from 'react';
-import { View, Text, StyleSheet, TouchableOpacity, ActivityIndicator } from 'react-native';
+import {
+  View,
+  Text,
+  StyleSheet,
+  TouchableOpacity,
+  ActivityIndicator,
+} from 'react-native';
 import { Users, FileText, Clock, Calendar } from 'lucide-react-native';
 
 export interface MetricsCardProps {
@@ -38,11 +44,13 @@ const MetricsCard: React.FC<MetricsCardProps> = ({
   };
 
   const content = (
-    <View style={styles.card}>
+    <View style={[styles.card, { backgroundColor: `${color}15` }]}>
       <View style={styles.header}>
-        <View style={styles.iconContainer}>{renderIcon()}</View>
-        <Text style={styles.title}>{title}</Text>
+        <View style={[styles.iconContainer, { backgroundColor: `${color}25` }]}>
+          {renderIcon()}
+        </View>
       </View>
+      <Text style={styles.title}>{title}</Text>
       <View style={styles.valueContainer}>
         {isLoading ? (
           <ActivityIndicator size="small" color={color} />
@@ -66,37 +74,33 @@ const MetricsCard: React.FC<MetricsCardProps> = ({
 
 const styles = StyleSheet.create({
   card: {
-    backgroundColor: '#f8f8f8',
     borderRadius: 16,
-    padding: 24,
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 1 },
-    shadowOpacity: 0.1,
-    shadowRadius: 3,
-    elevation: 2,
+    padding: 16,
+    minHeight: 120,
+    justifyContent: 'space-between',
   },
   header: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    marginBottom: 20,
-    gap: 16,
+    marginBottom: 8,
   },
   iconContainer: {
+    width: 40,
+    height: 40,
+    borderRadius: 10,
     justifyContent: 'center',
     alignItems: 'center',
   },
   title: {
-    fontSize: 14,
+    fontSize: 11,
     fontWeight: '500',
     color: '#64748b',
-    flex: 1,
+    marginBottom: 4,
   },
   valueContainer: {
-    minHeight: 40,
+    minHeight: 32,
     justifyContent: 'center',
   },
   value: {
-    fontSize: 32,
+    fontSize: 28,
     fontWeight: '700',
   },
 });

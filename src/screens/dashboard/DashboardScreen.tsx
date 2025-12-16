@@ -214,24 +214,28 @@ const DashboardScreen = ({ navigation }: any) => {
                 : 'Hey there 👋'}
             </Text>
             <Text style={styles.welcomeSubtitle}>
-              Here's your activity for today
+              {user?.businessName || 'Glow Beauty Bar'}
             </Text>
           </View>
-          <TouchableOpacity
-            style={styles.addClientButton}
-            onPress={() => setShowAddClient(true)}
-          >
-            <Plus size={16} color="#fff" />
-            <Text style={styles.addClientButtonText}>Add New Client</Text>
-          </TouchableOpacity>
         </View>
-        <View style={styles.section}>
-          <View style={styles.sectionHeader}>
-            <Text style={styles.sectionTitle}>KEY METRICS</Text>
-            <TouchableOpacity style={styles.filterButton}>
-              <Text style={styles.filterButtonText}>Last 7 days</Text>
-            </TouchableOpacity>
+
+        {/* Setup Banner */}
+        {/* <View style={styles.setupBanner}>
+          <Text style={styles.setupIcon}>💼</Text>
+          <View style={styles.setupContent}>
+            <Text style={styles.setupTitle}>Let's complete your setup</Text>
+            <Text style={styles.setupSubtitle}>
+              Include your business name, address, contact details, and logo for
+              brand visibility.
+            </Text>
           </View>
+          <TouchableOpacity style={styles.setupButton}>
+            <Text style={styles.setupButtonText}>Set Up My Business</Text>
+          </TouchableOpacity>
+        </View> */}
+
+        {/* Metrics */}
+        <View style={styles.section}>
           <View style={styles.metricsGrid}>
             <View style={styles.metricsRow}>
               <View style={styles.metricItem}>
@@ -288,24 +292,10 @@ const DashboardScreen = ({ navigation }: any) => {
             </View>
           </View>
         </View>
-        {/* Quick Actions */}
-        <View style={styles.section}>
-          <Text style={styles.sectionTitle}>QUICK ACTIONS</Text>
-          <View style={styles.quickActionsGrid}>
-            {quickActions.map((action, index) => (
-              <QuickActionCard
-                key={index}
-                title={action.title}
-                icon={action.icon}
-                onPress={action.onPress}
-              />
-            ))}
-          </View>
-        </View>
         {/* Recent Appointments */}
         <View style={styles.section}>
           <View style={styles.sectionHeader}>
-            <Text style={styles.sectionTitle}>RECENT APPOINTMENTS</Text>
+            <Text style={styles.sectionTitle}>Next Appointment</Text>
             <TouchableOpacity
               onPress={() => navigation.navigate('Appointments')}
             >
@@ -346,39 +336,32 @@ const DashboardScreen = ({ navigation }: any) => {
             </ScrollView>
           )}
         </View>
-        {/* Recent Forms */}
-        <View style={[styles.section, { marginBottom: 40 }]}>
-          <View style={styles.sectionHeader}>
-            <Text style={styles.sectionTitle}>RECENT FORMS</Text>
-            <TouchableOpacity onPress={() => navigation.navigate('Forms')}>
-              <Text style={styles.viewAllButton}>View all</Text>
-            </TouchableOpacity>
-          </View>
-          {recentForms.length === 0 ? (
-            <Text style={styles.emptyText}>No recent forms found</Text>
-          ) : (
-            <View style={styles.formsGrid}>
-              {recentForms
-                .sort(
-                  (a: any, b: any) =>
-                    new Date(b.updatedAt).getTime() -
-                    new Date(a.updatedAt).getTime(),
-                )
-                .slice(0, 6)
-                .map(form => (
-                  <FormCard
-                    key={form.id}
-                    {...form}
-                    onPreview={() =>
-                      navigation.navigate('FormPreview', { formId: form.id })
-                    }
-                    onEdit={() =>
-                      navigation.navigate('FormEdit', { formId: form.id })
-                    }
-                  />
-                ))}
+        {/* Quick Actions */}
+        <View style={styles.section}>
+          <Text style={styles.sectionTitle}>Quick Actions</Text>
+          <View style={styles.quickActionsGrid}>
+            <View style={styles.quickActionsRow}>
+              <View style={styles.quickActionItem}>
+                <QuickActionCard
+                  title={quickActions[0].title}
+                  icon={quickActions[0].icon}
+                  onPress={quickActions[0].onPress}
+                />
+              </View>
+              <View style={styles.quickActionItem}>
+                <QuickActionCard
+                  title={quickActions[1].title}
+                  icon={quickActions[1].icon}
+                  onPress={quickActions[1].onPress}
+                />
+              </View>
             </View>
-          )}
+            <QuickActionCard
+              title={quickActions[2].title}
+              icon={quickActions[2].icon}
+              onPress={quickActions[2].onPress}
+            />
+          </View>
         </View>
       </ScrollView>
 
@@ -429,65 +412,76 @@ const styles = StyleSheet.create({
   },
   scrollContent: {
     paddingHorizontal: 20,
-    paddingBottom: 40,
+    paddingBottom: 20,
   },
   header: {
-    marginBottom: 24,
-    marginTop: 16,
+    marginBottom: 16,
+    marginTop: 8,
   },
   welcomeSection: {
-    marginBottom: 16,
+    marginBottom: 0,
   },
   welcomeTitle: {
-    fontSize: 28,
+    fontSize: 22,
     fontWeight: '700',
     color: '#1e293b',
-    marginBottom: 4,
+    marginBottom: 2,
   },
   welcomeSubtitle: {
-    fontSize: 14,
+    fontSize: 12,
     color: '#64748b',
   },
-  addClientButton: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'center',
-    backgroundColor: colors.primary,
-    paddingVertical: 12,
-    paddingHorizontal: 20,
-    borderRadius: 12,
-    gap: 8,
+  setupBanner: {
+    backgroundColor: '#f3e8ff',
+    borderRadius: 16,
+    padding: 16,
+    marginBottom: 20,
+    gap: 12,
   },
-  addClientButtonText: {
-    color: '#fff',
+  setupIcon: {
+    fontSize: 32,
+  },
+  setupContent: {
+    gap: 4,
+  },
+  setupTitle: {
     fontSize: 14,
+    fontWeight: '600',
+    color: '#1e293b',
+  },
+  setupSubtitle: {
+    fontSize: 12,
+    color: '#64748b',
+    lineHeight: 16,
+  },
+  setupButton: {
+    backgroundColor: colors.primary,
+    paddingVertical: 8,
+    paddingHorizontal: 12,
+    borderRadius: 8,
+    alignSelf: 'flex-start',
+  },
+  setupButtonText: {
+    color: '#fff',
+    fontSize: 12,
     fontWeight: '600',
   },
   section: {
-    marginBottom: 32,
+    marginBottom: 20,
   },
   sectionHeader: {
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    marginBottom: 16,
+    marginBottom: 12,
   },
   sectionTitle: {
     fontSize: 12,
-    fontWeight: '600',
-    color: '#4a4a4b',
-    letterSpacing: 1.2,
-  },
-  filterButton: {
-    paddingVertical: 8,
-    paddingHorizontal: 12,
-    borderRadius: 8,
-    borderWidth: 1,
-    borderColor: '#e2e8f0',
-  },
-  filterButtonText: {
-    fontSize: 12,
-    color: '#64748b',
+    fontFamily: 'RedditSans-Regular',
+    fontWeight: '400',
+    color: '#000000',
+    letterSpacing: -0.12,
+    lineHeight: 12,
   },
   viewAllButton: {
     fontSize: 12,
@@ -496,6 +490,13 @@ const styles = StyleSheet.create({
   },
   quickActionsGrid: {
     gap: 12,
+  },
+  quickActionsRow: {
+    flexDirection: 'row',
+    gap: 12,
+  },
+  quickActionItem: {
+    flex: 1,
   },
   metricsGrid: {
     gap: 12,
@@ -516,7 +517,7 @@ const styles = StyleSheet.create({
     gap: 12,
   },
   appointmentItem: {
-    width: Dimensions.get('window').width * 0.85,
+    width: Dimensions.get('window').width * 0.7,
   },
   formsGrid: {
     gap: 12,

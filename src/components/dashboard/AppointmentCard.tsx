@@ -18,7 +18,7 @@ const AppointmentCard: React.FC<AppointmentCardProps> = ({
   onPress,
 }) => {
   return (
-    <View style={styles.card}>
+    <TouchableOpacity style={styles.card} onPress={onPress} activeOpacity={0.7}>
       <View style={styles.header}>
         <View style={styles.avatarContainer}>
           <Image
@@ -29,20 +29,17 @@ const AppointmentCard: React.FC<AppointmentCardProps> = ({
         <Text style={styles.name}>{name}</Text>
       </View>
 
-      <View style={styles.infoRow}>
-        <Briefcase size={16} color="#424242" style={styles.icon} />
-        <Text style={styles.infoText}>{service}</Text>
+      <View style={styles.infoContainer}>
+        <View style={styles.infoRow}>
+          <Briefcase size={12} color="#424242" style={styles.icon} />
+          <Text style={styles.infoText}>{service}</Text>
+        </View>
+        <View style={styles.infoRow}>
+          <Clock size={12} color="#424242" style={styles.icon} />
+          <Text style={styles.infoText}>{time}</Text>
+        </View>
       </View>
-
-      <View style={styles.infoRow}>
-        <Clock size={16} color="#424242" style={styles.icon} />
-        <Text style={styles.infoText}>{time}</Text>
-      </View>
-
-      <TouchableOpacity style={styles.button} onPress={onPress}>
-        <Text style={styles.buttonText}>View Full Schedule</Text>
-      </TouchableOpacity>
-    </View>
+    </TouchableOpacity>
   );
 };
 
@@ -50,23 +47,18 @@ const styles = StyleSheet.create({
   card: {
     backgroundColor: '#f8f8f8',
     borderRadius: 12,
-    padding: 20,
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.08,
-    shadowRadius: 8,
-    elevation: 3,
+    padding: 14,
   },
   header: {
     flexDirection: 'row',
     alignItems: 'center',
-    marginBottom: 12,
-    gap: 12,
+    gap: 8,
+    marginBottom: 8,
   },
   avatarContainer: {
-    width: 28,
-    height: 28,
-    borderRadius: 14,
+    width: 32,
+    height: 32,
+    borderRadius: 16,
     overflow: 'hidden',
   },
   avatar: {
@@ -74,33 +66,27 @@ const styles = StyleSheet.create({
     height: '100%',
   },
   name: {
-    fontSize: 18,
+    fontSize: 13,
     fontWeight: '600',
     color: '#000000',
     flex: 1,
   },
+  infoContainer: {
+    flexDirection: 'row',
+    gap: 12,
+  },
   infoRow: {
     flexDirection: 'row',
     alignItems: 'center',
-    paddingVertical: 8,
-    gap: 8,
+    gap: 4,
   },
   icon: {
     opacity: 0.7,
   },
   infoText: {
-    fontSize: 14,
+    fontSize: 11,
     color: '#424242',
     fontWeight: '500',
-  },
-  button: {
-    marginTop: 16,
-    alignItems: 'center',
-  },
-  buttonText: {
-    color: '#8e2d8e',
-    fontSize: 14,
-    fontWeight: '600',
   },
 });
 
