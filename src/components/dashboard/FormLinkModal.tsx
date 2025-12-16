@@ -42,11 +42,11 @@ const FormLinkModal: React.FC<FormLinkModalProps> = ({
       <SafeAreaView style={styles.container}>
         <View style={styles.overlay}>
           <View style={styles.modal}>
+            <TouchableOpacity style={styles.closeButton} onPress={onClose}>
+              <X size={20} color="#64748b" />
+            </TouchableOpacity>
             <View style={styles.header}>
               <Text style={styles.title}>Your Business Form Link</Text>
-              <TouchableOpacity style={styles.closeButton} onPress={onClose}>
-                <X size={20} color="#64748b" />
-              </TouchableOpacity>
             </View>
 
             <View style={styles.content}>
@@ -108,13 +108,13 @@ const styles = StyleSheet.create({
   overlay: {
     flex: 1,
     backgroundColor: 'rgba(0, 0, 0, 0.5)',
-    justifyContent: 'center',
-    padding: 20,
+    justifyContent: 'flex-end',
   },
   modal: {
     backgroundColor: '#fff',
-    borderRadius: 12,
-    maxHeight: '80%',
+    borderTopLeftRadius: 20,
+    borderTopRightRadius: 20,
+    maxHeight: '90%',
     overflow: 'hidden',
   },
   header: {

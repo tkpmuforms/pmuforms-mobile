@@ -1,4 +1,4 @@
-import React from "react";
+import React from 'react';
 import {
   View,
   Text,
@@ -6,13 +6,13 @@ import {
   TouchableOpacity,
   StyleSheet,
   Pressable,
-} from "react-native";
-import { X, Calendar, Bell, ChevronRight } from "lucide-react-native";
+} from 'react-native';
+import { X, Calendar, Bell, ChevronRight } from 'lucide-react-native';
 
 interface SelectReminderTypeModalProps {
   visible: boolean;
   onClose: () => void;
-  onSelectType: (type: "check-in" | "follow-up") => void;
+  onSelectType: (type: 'check-in' | 'follow-up') => void;
 }
 
 const SelectReminderTypeModal: React.FC<SelectReminderTypeModalProps> = ({
@@ -24,7 +24,7 @@ const SelectReminderTypeModal: React.FC<SelectReminderTypeModalProps> = ({
     <Modal
       visible={visible}
       transparent
-      animationType="fade"
+      animationType="slide"
       onRequestClose={onClose}
     >
       <View style={styles.modalOverlay}>
@@ -39,7 +39,7 @@ const SelectReminderTypeModal: React.FC<SelectReminderTypeModalProps> = ({
           <View style={styles.reminderTypes}>
             <TouchableOpacity
               style={styles.reminderTypeCard}
-              onPress={() => onSelectType("check-in")}
+              onPress={() => onSelectType('check-in')}
               activeOpacity={0.7}
             >
               <View style={[styles.iconContainer, styles.checkInIcon]}>
@@ -57,7 +57,7 @@ const SelectReminderTypeModal: React.FC<SelectReminderTypeModalProps> = ({
 
             <TouchableOpacity
               style={styles.reminderTypeCard}
-              onPress={() => onSelectType("follow-up")}
+              onPress={() => onSelectType('follow-up')}
               activeOpacity={0.7}
             >
               <View style={[styles.iconContainer, styles.followUpIcon]}>
@@ -66,8 +66,8 @@ const SelectReminderTypeModal: React.FC<SelectReminderTypeModalProps> = ({
               <View style={styles.cardContent}>
                 <Text style={styles.cardTitle}>Follow-Up</Text>
                 <Text style={styles.cardDescription}>
-                  Receive a reminder as a notification in the future to follow up
-                  on this client
+                  Receive a reminder as a notification in the future to follow
+                  up on this client
                 </Text>
               </View>
               <ChevronRight size={24} color="#64748b" />
@@ -82,26 +82,25 @@ const SelectReminderTypeModal: React.FC<SelectReminderTypeModalProps> = ({
 const styles = StyleSheet.create({
   modalOverlay: {
     flex: 1,
-    justifyContent: "center",
-    alignItems: "center",
-    backgroundColor: "rgba(0, 0, 0, 0.5)",
+    justifyContent: 'flex-end',
+    backgroundColor: 'rgba(0, 0, 0, 0.5)',
   },
   backdrop: {
-    position: "absolute",
+    position: 'absolute',
     top: 0,
     left: 0,
     right: 0,
     bottom: 0,
   },
   modalContent: {
-    backgroundColor: "white",
+    backgroundColor: 'white',
     borderRadius: 20,
     padding: 40,
-    width: "90%",
+    width: '90%',
     maxWidth: 500,
   },
   closeButton: {
-    position: "absolute",
+    position: 'absolute',
     top: 20,
     right: 20,
     padding: 8,
@@ -110,19 +109,19 @@ const styles = StyleSheet.create({
   },
   title: {
     fontSize: 24,
-    fontWeight: "600",
-    color: "#1e293b",
+    fontWeight: '600',
+    color: '#1e293b',
     marginBottom: 24,
   },
   reminderTypes: {
     gap: 16,
   },
   reminderTypeCard: {
-    flexDirection: "row",
-    alignItems: "center",
-    backgroundColor: "#f8f9fa",
+    flexDirection: 'row',
+    alignItems: 'center',
+    backgroundColor: '#f8f9fa',
     borderWidth: 1,
-    borderColor: "#e9ecef",
+    borderColor: '#e9ecef',
     borderRadius: 16,
     padding: 24,
     marginBottom: 16,
@@ -131,28 +130,28 @@ const styles = StyleSheet.create({
     width: 48,
     height: 48,
     borderRadius: 12,
-    justifyContent: "center",
-    alignItems: "center",
+    justifyContent: 'center',
+    alignItems: 'center',
     marginRight: 16,
   },
   checkInIcon: {
-    backgroundColor: "#dbeafe",
+    backgroundColor: '#dbeafe',
   },
   followUpIcon: {
-    backgroundColor: "#fef3c7",
+    backgroundColor: '#fef3c7',
   },
   cardContent: {
     flex: 1,
   },
   cardTitle: {
     fontSize: 16,
-    fontWeight: "600",
-    color: "#1e293b",
+    fontWeight: '600',
+    color: '#1e293b',
     marginBottom: 4,
   },
   cardDescription: {
     fontSize: 14,
-    color: "#64748b",
+    color: '#64748b',
     lineHeight: 20,
   },
 });

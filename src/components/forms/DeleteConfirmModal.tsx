@@ -26,7 +26,7 @@ const DeleteConfirmModal: React.FC<DeleteConfirmModalProps> = ({
     <Modal
       visible={visible}
       transparent
-      animationType="fade"
+      animationType="slide"
       onRequestClose={onClose}
     >
       <SafeAreaView style={styles.container}>
@@ -73,9 +73,7 @@ const styles = StyleSheet.create({
   overlay: {
     flex: 1,
     backgroundColor: 'rgba(0, 0, 0, 0.5)',
-    justifyContent: 'center',
-    alignItems: 'center',
-    padding: 20,
+    justifyContent: 'flex-end',
   },
   modal: {
     backgroundColor: '#fff',

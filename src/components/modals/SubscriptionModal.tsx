@@ -204,8 +204,7 @@ const SubscriptionModal: React.FC<SubscriptionModalProps> = ({
 const styles = StyleSheet.create({
   modalOverlay: {
     flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
+    justifyContent: 'flex-end',
     backgroundColor: 'rgba(0, 0, 0, 0.5)',
   },
   backdrop: {
@@ -217,10 +216,10 @@ const styles = StyleSheet.create({
   },
   modalContent: {
     backgroundColor: 'white',
-    borderRadius: 20,
+    borderTopLeftRadius: 20,
+    borderTopRightRadius: 20,
     padding: 40,
-    maxWidth: 700,
-    width: '90%',
+    width: '100%',
     maxHeight: '90%',
   },
   closeButton: {

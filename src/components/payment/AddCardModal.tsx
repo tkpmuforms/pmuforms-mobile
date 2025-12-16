@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState } from 'react';
 import {
   View,
   Text,
@@ -9,8 +9,8 @@ import {
   TextInput,
   ScrollView,
   ActivityIndicator,
-} from "react-native";
-import { X } from "lucide-react-native";
+} from 'react-native';
+import { X } from 'lucide-react-native';
 
 interface AddCardModalProps {
   visible: boolean;
@@ -23,49 +23,50 @@ const AddCardModal: React.FC<AddCardModalProps> = ({
   onClose,
   onCardAdded,
 }) => {
-  const [cardNumber, setCardNumber] = useState("");
-  const [cardHolder, setCardHolder] = useState("");
-  const [expiryDate, setExpiryDate] = useState("");
-  const [cvv, setCvv] = useState("");
+  const [cardNumber, setCardNumber] = useState('');
+  const [cardHolder, setCardHolder] = useState('');
+  const [expiryDate, setExpiryDate] = useState('');
+  const [cvv, setCvv] = useState('');
   const [loading, setLoading] = useState(false);
-  const [error, setError] = useState("");
+  const [error, setError] = useState('');
 
   const handleAddCard = async () => {
     if (!cardNumber || !cardHolder || !expiryDate || !cvv) {
-      setError("Please fill in all fields");
+      setError('Please fill in all fields');
       return;
     }
 
     setLoading(true);
-    setError("");
+    setError('');
 
     try {
       // TODO: Implement card addition logic here
       // This would typically involve calling your payment service API
 
       // Simulating API call
-      await new Promise((resolve) => setTimeout(resolve, 1000));
+      await new Promise(resolve => setTimeout(resolve, 1000));
 
       onCardAdded();
     } catch (err: any) {
-      const errorMessage = err.message || "Failed to add card. Please try again.";
+      const errorMessage =
+        err.message || 'Failed to add card. Please try again.';
       setError(errorMessage);
-      console.error("Error adding card:", err);
+      console.error('Error adding card:', err);
     } finally {
       setLoading(false);
     }
   };
 
   const formatCardNumber = (text: string) => {
-    const cleaned = text.replace(/\s/g, "");
+    const cleaned = text.replace(/\s/g, '');
     const matches = cleaned.match(/.{1,4}/g);
-    return matches ? matches.join(" ") : cleaned;
+    return matches ? matches.join(' ') : cleaned;
   };
 
   const formatExpiryDate = (text: string) => {
-    const cleaned = text.replace(/\//g, "");
+    const cleaned = text.replace(/\//g, '');
     if (cleaned.length >= 2) {
-      return cleaned.slice(0, 2) + "/" + cleaned.slice(2, 4);
+      return cleaned.slice(0, 2) + '/' + cleaned.slice(2, 4);
     }
     return cleaned;
   };
@@ -74,7 +75,7 @@ const AddCardModal: React.FC<AddCardModalProps> = ({
     <Modal
       visible={visible}
       transparent
-      animationType="fade"
+      animationType="slide"
       onRequestClose={onClose}
     >
       <View style={styles.modalOverlay}>
@@ -89,7 +90,7 @@ const AddCardModal: React.FC<AddCardModalProps> = ({
 
           <Text style={styles.subtitle}>Enter your card details</Text>
 
-          {error !== "" && (
+          {error !== '' && (
             <View style={styles.errorContainer}>
               <Text style={styles.errorText}>{error}</Text>
             </View>
@@ -101,8 +102,8 @@ const AddCardModal: React.FC<AddCardModalProps> = ({
               <TextInput
                 style={styles.input}
                 value={cardNumber}
-                onChangeText={(text) => {
-                  const cleaned = text.replace(/\s/g, "");
+                onChangeText={text => {
+                  const cleaned = text.replace(/\s/g, '');
                   if (cleaned.length <= 16) {
                     setCardNumber(formatCardNumber(cleaned));
                   }
@@ -132,8 +133,8 @@ const AddCardModal: React.FC<AddCardModalProps> = ({
                 <TextInput
                   style={styles.input}
                   value={expiryDate}
-                  onChangeText={(text) => {
-                    const cleaned = text.replace(/\//g, "");
+                  onChangeText={text => {
+                    const cleaned = text.replace(/\//g, '');
                     if (cleaned.length <= 4) {
                       setExpiryDate(formatExpiryDate(cleaned));
                     }
@@ -150,7 +151,7 @@ const AddCardModal: React.FC<AddCardModalProps> = ({
                 <TextInput
                   style={styles.input}
                   value={cvv}
-                  onChangeText={(text) => {
+                  onChangeText={text => {
                     if (text.length <= 4) {
                       setCvv(text);
                     }
@@ -197,34 +198,33 @@ const AddCardModal: React.FC<AddCardModalProps> = ({
 const styles = StyleSheet.create({
   modalOverlay: {
     flex: 1,
-    justifyContent: "center",
-    alignItems: "center",
-    backgroundColor: "rgba(0, 0, 0, 0.5)",
+    justifyContent: 'flex-end',
+    backgroundColor: 'rgba(0, 0, 0, 0.5)',
   },
   backdrop: {
-    position: "absolute",
+    position: 'absolute',
     top: 0,
     left: 0,
     right: 0,
     bottom: 0,
   },
   modalContent: {
-    backgroundColor: "white",
+    backgroundColor: 'white',
     borderRadius: 20,
     padding: 24,
-    width: "90%",
-    maxHeight: "90%",
+    width: '90%',
+    maxHeight: '90%',
   },
   header: {
-    flexDirection: "row",
-    justifyContent: "space-between",
-    alignItems: "center",
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
     marginBottom: 8,
   },
   title: {
     fontSize: 20,
-    fontWeight: "600",
-    color: "#1e293b",
+    fontWeight: '600',
+    color: '#1e293b',
     flex: 1,
   },
   closeButton: {
@@ -232,17 +232,17 @@ const styles = StyleSheet.create({
   },
   subtitle: {
     fontSize: 14,
-    color: "#64748b",
+    color: '#64748b',
     marginBottom: 16,
   },
   errorContainer: {
-    backgroundColor: "#fee2e2",
+    backgroundColor: '#fee2e2',
     padding: 12,
     borderRadius: 8,
     marginBottom: 16,
   },
   errorText: {
-    color: "#dc2626",
+    color: '#dc2626',
     fontSize: 14,
   },
   formGroup: {
@@ -250,58 +250,58 @@ const styles = StyleSheet.create({
   },
   label: {
     fontSize: 14,
-    fontWeight: "500",
-    color: "#374151",
+    fontWeight: '500',
+    color: '#374151',
     marginBottom: 8,
   },
   input: {
-    width: "100%",
+    width: '100%',
     padding: 12,
     borderWidth: 1,
-    borderColor: "#e5e7eb",
+    borderColor: '#e5e7eb',
     borderRadius: 12,
     fontSize: 16,
-    color: "#1e293b",
+    color: '#1e293b',
   },
   row: {
-    flexDirection: "row",
+    flexDirection: 'row',
     gap: 12,
   },
   halfWidth: {
     flex: 1,
   },
   actions: {
-    flexDirection: "row",
+    flexDirection: 'row',
     gap: 12,
     marginTop: 16,
   },
   cancelButton: {
     flex: 1,
-    backgroundColor: "transparent",
+    backgroundColor: 'transparent',
     borderWidth: 1,
-    borderColor: "#e2e8f0",
+    borderColor: '#e2e8f0',
     padding: 14,
     borderRadius: 12,
-    alignItems: "center",
+    alignItems: 'center',
   },
   cancelButtonText: {
-    color: "#64748b",
-    fontWeight: "500",
+    color: '#64748b',
+    fontWeight: '500',
     fontSize: 16,
   },
   confirmButton: {
     flex: 1,
-    backgroundColor: "#8e2d8e",
+    backgroundColor: '#8e2d8e',
     padding: 14,
     borderRadius: 12,
-    alignItems: "center",
+    alignItems: 'center',
   },
   confirmButtonDisabled: {
     opacity: 0.5,
   },
   confirmButtonText: {
-    color: "white",
-    fontWeight: "600",
+    color: 'white',
+    fontWeight: '600',
     fontSize: 16,
   },
 });

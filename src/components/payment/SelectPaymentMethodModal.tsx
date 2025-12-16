@@ -184,7 +184,7 @@ const SelectPaymentMethodModal: React.FC<SelectPaymentMethodModalProps> = ({
     <Modal
       visible={visible}
       transparent
-      animationType="fade"
+      animationType="slide"
       onRequestClose={onClose}
     >
       <View style={styles.modalOverlay}>
@@ -301,8 +301,7 @@ const SelectPaymentMethodModal: React.FC<SelectPaymentMethodModalProps> = ({
 const styles = StyleSheet.create({
   modalOverlay: {
     flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
+    justifyContent: 'flex-end',
     backgroundColor: 'rgba(0, 0, 0, 0.5)',
   },
   backdrop: {
