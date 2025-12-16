@@ -78,6 +78,9 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
     }
 
     const initializeAuth = async () => {
+      // Small delay to ensure Redux persist has rehydrated
+      await new Promise(resolve => setTimeout(resolve, 100));
+
       dispatch(setLoading(true));
 
       try {
@@ -85,6 +88,10 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
 
         if (token && isValidToken(token)) {
           setAuthHeader(token);
+          // Only set authenticated if we don't already have user data from persist
+          if (!user || Object.keys(user).length === 0) {
+            console.log('Token valid but no user data persisted');
+          }
           dispatch(setAuthenticated(true));
         } else {
           await handleAuthFail();
