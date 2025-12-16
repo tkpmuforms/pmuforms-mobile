@@ -17,6 +17,10 @@ import {
 } from 'lucide-react-native';
 import useAuth from '../../hooks/useAuth';
 import { colors } from '../../theme/colors';
+import {
+  SafeAreaView,
+  useSafeAreaInsets,
+} from 'react-native-safe-area-context';
 
 interface SidebarProps {
   isOpen: boolean;
@@ -79,6 +83,7 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen, onClose, navigation }) => {
   };
 
   const currentRoute = getCurrentRoute();
+  const insert = useSafeAreaInsets();
 
   return (
     <Modal
@@ -89,8 +94,7 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen, onClose, navigation }) => {
     >
       <Pressable style={styles.overlay} onPress={onClose}>
         <Pressable style={styles.sidebar} onPress={e => e.stopPropagation()}>
-          <View style={styles.sidebarContent}>
-            {/* Header */}
+          <View style={[styles.sidebarContent, { paddingTop: insert.top }]}>
             <View style={styles.header}>
               <View style={styles.userSection}>
                 <View style={styles.avatar}>

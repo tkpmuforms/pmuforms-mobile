@@ -225,23 +225,6 @@ const DashboardScreen = ({ navigation }: any) => {
             <Text style={styles.addClientButtonText}>Add New Client</Text>
           </TouchableOpacity>
         </View>
-
-        {/* Quick Actions */}
-        <View style={styles.section}>
-          <Text style={styles.sectionTitle}>QUICK ACTIONS</Text>
-          <View style={styles.quickActionsGrid}>
-            {quickActions.map((action, index) => (
-              <QuickActionCard
-                key={index}
-                title={action.title}
-                icon={action.icon}
-                onPress={action.onPress}
-              />
-            ))}
-          </View>
-        </View>
-
-        {/* Metrics */}
         <View style={styles.section}>
           <View style={styles.sectionHeader}>
             <Text style={styles.sectionTitle}>KEY METRICS</Text>
@@ -305,7 +288,20 @@ const DashboardScreen = ({ navigation }: any) => {
             </View>
           </View>
         </View>
-
+        {/* Quick Actions */}
+        <View style={styles.section}>
+          <Text style={styles.sectionTitle}>QUICK ACTIONS</Text>
+          <View style={styles.quickActionsGrid}>
+            {quickActions.map((action, index) => (
+              <QuickActionCard
+                key={index}
+                title={action.title}
+                icon={action.icon}
+                onPress={action.onPress}
+              />
+            ))}
+          </View>
+        </View>
         {/* Recent Appointments */}
         <View style={styles.section}>
           <View style={styles.sectionHeader}>
@@ -350,7 +346,6 @@ const DashboardScreen = ({ navigation }: any) => {
             </ScrollView>
           )}
         </View>
-
         {/* Recent Forms */}
         <View style={[styles.section, { marginBottom: 40 }]}>
           <View style={styles.sectionHeader}>

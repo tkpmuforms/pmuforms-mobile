@@ -17,7 +17,7 @@ interface AuthenticatedNavbarProps {
 
 const AuthenticatedNavbar: React.FC<AuthenticatedNavbarProps> = ({
   breadcrumbs = [],
-  onMobileMenuToggle,
+  // onMobileMenuToggle, // Removed - no sidebar, using bottom tabs
   navigation,
 }) => {
   const handleBackClick = () => {
@@ -35,13 +35,14 @@ const AuthenticatedNavbar: React.FC<AuthenticatedNavbarProps> = ({
       <StatusBar barStyle="dark-content" backgroundColor="#ffffff" />
       <View style={styles.navbarContainer}>
         <View style={styles.navbarLeft}>
-          <TouchableOpacity
+          {/* Menu button removed - using bottom tabs instead */}
+          {/* <TouchableOpacity
             style={styles.mobileMenuToggle}
             onPress={onMobileMenuToggle}
             activeOpacity={0.7}
           >
             <Menu size={24} color={colors.text} />
-          </TouchableOpacity>
+          </TouchableOpacity> */}
 
           <View style={styles.breadcrumbsContainer}>
             {showBackButton && (
