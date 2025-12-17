@@ -22,7 +22,6 @@ import {
   updateMySignature,
 } from '../../services/artistServices';
 import { ref, uploadBytes, getDownloadURL } from 'firebase/storage';
-import { storage } from '../../config/firebase';
 
 interface ProfileData {
   firstName: string;

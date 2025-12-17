@@ -126,11 +126,9 @@ const EditFormsScreen: React.FC = () => {
   const handleEditField = (field: FieldData) => {
     setSelectedField(field);
 
-    // Check if it's a paragraph/heading type
     if (field.type === 'paragraph' || field.type === 'heading') {
       setShowEditParagraphModal(true);
     } else {
-      // For other field types, show field input modal
       setSelectedFieldType({
         type: field.type,
         title: field.type.charAt(0).toUpperCase() + field.type.slice(1),

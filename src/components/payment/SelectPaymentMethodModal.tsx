@@ -1,22 +1,22 @@
-import React, { useState, useEffect } from 'react';
+import { X } from 'lucide-react-native';
+import React, { useEffect, useState } from 'react';
 import {
-  View,
-  Text,
+  ActivityIndicator,
   Modal,
-  TouchableOpacity,
+  Pressable,
   ScrollView,
   StyleSheet,
-  Pressable,
-  ActivityIndicator,
+  Text,
+  TouchableOpacity,
+  View,
 } from 'react-native';
-import { X } from 'lucide-react-native';
 import {
+  changeSubscriptionPlan,
   createSubscription,
   listPaymentMethods,
-  changeSubscriptionPlan,
 } from '../../services/artistServices';
 import AddCardModal from './AddCardModal';
-// import Toast from 'react-native-toast-message';
+import Toast from 'react-native-toast-message';
 import { useDispatch } from 'react-redux';
 import { Card } from '../../types';
 import {
@@ -116,20 +116,20 @@ const SelectPaymentMethodModal: React.FC<SelectPaymentMethodModalProps> = ({
 
       if (shouldChangeSubscription) {
         const response = await changeSubscriptionPlan(priceId, selectedCard);
-        // Toast.show({
-        //   type: 'success',
-        //   text1: 'Subscription plan updated successfully!',
-        // });
+        Toast.show({
+          type: 'success',
+          text1: 'Subscription plan updated successfully!',
+        });
 
         if (response.data) {
           saveSubscriptionToStorage(response.data);
         }
       } else {
         const response = await createSubscription(priceId, selectedCard);
-        // Toast.show({
-        //   type: 'success',
-        //   text1: 'Payment successful! Subscription activated.',
-        // });
+        Toast.show({
+          type: 'success',
+          text1: 'Payment successful! Subscription activated.',
+        });
 
         if (response.data) {
           saveSubscriptionToStorage(response.data);
