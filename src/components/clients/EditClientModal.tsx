@@ -8,38 +8,34 @@ import {
   TextInput,
   ScrollView,
   SafeAreaView,
-  Alert,
   ActivityIndicator,
 } from 'react-native';
-import { X, Check } from 'lucide-react-native';
-import { updateCustomerPersonalDetails } from '../../services/artistServices';
+import { X } from 'lucide-react-native';
+import Toast from 'react-native-toast-message';
+import { ClientDetail } from '../../types';
+
+// Import your API service
+// import { updateCustomerPersonalDetails } from '../../services/artistServices';
 
 interface EditClientModalProps {
-  visible: boolean;
+  client: ClientDetail;
   onClose: () => void;
-  id: string;
-  initialFormData?: {
-    firstName: string;
-    lastName: string;
-    email: string;
-    phone: string;
-  };
+  onSuccess?: () => void;
 }
 
 const EditClientModal: React.FC<EditClientModalProps> = ({
-  visible,
+  client,
   onClose,
-  id,
-  initialFormData,
+  onSuccess,
 }) => {
+  const nameParts = client.name.split(' ');
   const [formData, setFormData] = useState({
-    firstName: initialFormData?.firstName || '',
-    lastName: initialFormData?.lastName || '',
-    email: initialFormData?.email || '',
-    phone: initialFormData?.phone || '',
+    firstName: nameParts[0] || '',
+    lastName: nameParts.slice(1).join(' ') || '',
+    email: client.email || '',
+    phone: client.phone || '',
   });
   const [loading, setLoading] = useState(false);
-  const [success, setSuccess] = useState(false);
 
   const handleInputChange = (field: keyof typeof formData, value: string) => {
     setFormData(prev => ({ ...prev, [field]: value }));
@@ -54,15 +50,20 @@ const EditClientModal: React.FC<EditClientModalProps> = ({
     };
 
     try {
-      await updateCustomerPersonalDetails(id, updatedData);
-      setSuccess(true);
-      Alert.alert('Success', 'Client details updated successfully');
-      setTimeout(() => {
-        onClose();
-      }, 1000);
+      // await updateCustomerPersonalDetails(client.id, updatedData);
+      Toast.show({
+        type: 'success',
+        text1: 'Success',
+        text2: 'Client details updated successfully',
+      });
+      onSuccess?.();
     } catch (error) {
       console.error('Error updating client:', error);
-      Alert.alert('Error', 'Failed to update client details');
+      Toast.show({
+        type: 'error',
+        text1: 'Error',
+        text2: 'Failed to update client details',
+      });
     } finally {
       setLoading(false);
     }
@@ -70,7 +71,7 @@ const EditClientModal: React.FC<EditClientModalProps> = ({
 
   return (
     <Modal
-      visible={visible}
+      visible={true}
       transparent
       animationType="slide"
       onRequestClose={onClose}

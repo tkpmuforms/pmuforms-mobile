@@ -8,19 +8,17 @@ import {
   TextInput,
   ScrollView,
   SafeAreaView,
-  Alert,
 } from 'react-native';
 import { X } from 'lucide-react-native';
+import Toast from 'react-native-toast-message';
 import { createClient } from '../../services/artistServices';
 
 interface AddClientModalProps {
-  visible: boolean;
   onClose: () => void;
   onSuccess?: () => void;
 }
 
 const AddClientModal: React.FC<AddClientModalProps> = ({
-  visible,
   onClose,
   onSuccess,
 }) => {
@@ -42,7 +40,13 @@ const AddClientModal: React.FC<AddClientModalProps> = ({
         primaryPhone: formData.phone,
         email: formData.email,
       });
-      Alert.alert('Success', 'Client added successfully!');
+
+      Toast.show({
+        type: 'success',
+        text1: 'Success',
+        text2: 'Client added successfully!',
+      });
+
       setFormData({
         firstName: '',
         lastName: '',
@@ -52,13 +56,17 @@ const AddClientModal: React.FC<AddClientModalProps> = ({
       onSuccess?.();
     } catch (error) {
       console.error('Error adding client:', error);
-      Alert.alert('Error', 'Failed to add client. Please try again.');
+      Toast.show({
+        type: 'error',
+        text1: 'Error',
+        text2: 'Failed to add client. Please try again.',
+      });
     }
   };
 
   return (
     <Modal
-      visible={visible}
+      visible={true}
       transparent
       animationType="slide"
       onRequestClose={onClose}

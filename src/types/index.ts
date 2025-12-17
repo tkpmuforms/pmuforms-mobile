@@ -259,3 +259,28 @@ export interface Card {
   isDefault: boolean;
   color: string;
 }
+
+export interface ClientDetail {
+  id: string;
+  name: string;
+  email: string;
+  phone?: string;
+}
+
+export interface ClientMetrics {
+  pendingForms: number;
+  totalAppointments: number;
+}
+
+export interface Reminder {
+  id: string;
+  _id: string;
+  customerId: string;
+  artistId: string;
+  reminderDate: string;
+  reminderTime: string;
+  message: string;
+  sent: boolean;
+  createdAt: string;
+  updatedAt: string;
+}

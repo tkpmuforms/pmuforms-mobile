@@ -6,12 +6,10 @@ import ProfileScreen from '../screens/profile/ProfileScreen';
 import FormsScreen from '../screens/forms/FormsScreen';
 import PreviewFormsScreen from '../screens/forms/PreviewFormsScreen';
 import AppointmentsScreen from '../screens/appointments/AppointmentsScreen';
-
-// Screens that don't exist yet - uncomment when created
-// import ClientDetailsScreen from '../screens/client/ClientDetailsScreen';
-// import ClientAppointmentsScreen from '../screens/client/ClientAppointmentsScreen';
-// import ClientNotesScreen from '../screens/client/ClientNotesScreen';
-// import ClientRemindersScreen from '../screens/client/ClientRemindersScreen';
+import ClientDetailsScreen from '../screens/client/ClientDetailsScreen';
+import ClientAppointmentsScreen from '../screens/client/ClientAppointmentsScreen';
+import ClientNotesScreen from '../screens/client/ClientNotesScreen';
+import ClientRemindersScreen from '../screens/client/ClientRemindersScreen';
 // import AppointmentFormsScreen from '../screens/appointments/AppointmentFormsScreen';
 // import FilledFormsPreviewScreen from '../screens/appointments/FilledFormsPreviewScreen';
 // import SignatureScreen from '../screens/appointments/SignatureScreen';
@@ -46,31 +44,26 @@ export const authorizedRoutes: RouteProps[] = [
     component: ClientScreen,
     breadcrumbs: ['Clients'],
   },
-  // {
-  //   name: 'ClientDetails',
-  //   component: ClientDetailsScreen,
-  //   breadcrumbs: ['Clients', 'Client Details'],
-  // },
-  // {
-  //   name: 'ClientReminders',
-  //   component: ClientRemindersScreen,
-  //   breadcrumbs: ['Clients', 'Client Details', 'Reminders'],
-  // },
-  // {
-  //   name: 'ClientAppointments',
-  //   component: ClientAppointmentsScreen,
-  //   breadcrumbs: ['Clients', 'Client Details', 'Appointments'],
-  // },
-  // {
-  //   name: 'AppointmentForms',
-  //   component: AppointmentFormsScreen,
-  //   breadcrumbs: ['Clients', 'Client Details', 'Appointments', 'Forms'],
-  // },
-  // {
-  //   name: 'ClientNotes',
-  //   component: ClientNotesScreen,
-  //   breadcrumbs: ['Clients', 'Client Details', 'Notes'],
-  // },
+  {
+    name: 'ClientDetails',
+    component: ClientDetailsScreen,
+    breadcrumbs: ['Clients', 'Client Details'],
+  },
+  {
+    name: 'ClientReminders',
+    component: ClientRemindersScreen,
+    breadcrumbs: ['Clients', 'Client Details', 'Reminders'],
+  },
+  {
+    name: 'ClientAppointments',
+    component: ClientAppointmentsScreen,
+    breadcrumbs: ['Clients', 'Client Details', 'Appointments'],
+  },
+  {
+    name: 'ClientNotes',
+    component: ClientNotesScreen,
+    breadcrumbs: ['Clients', 'Client Details', 'Notes'],
+  },
   // {
   //   name: 'AppointmentSignature',
   //   component: SignatureScreen,

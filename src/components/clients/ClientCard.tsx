@@ -5,12 +5,12 @@ import { Client } from '../../types';
 
 interface ClientCardProps {
   client: Client;
-  onPress: () => void;
+  onClick: () => void;
 }
 
-const ClientCard: React.FC<ClientCardProps> = ({ client, onPress }) => {
+const ClientCard: React.FC<ClientCardProps> = ({ client, onClick }) => {
   return (
-    <TouchableOpacity style={styles.card} onPress={onPress} activeOpacity={0.7}>
+    <TouchableOpacity style={styles.card} onPress={onClick} activeOpacity={0.7}>
       <View
         style={[
           styles.avatar,
@@ -40,9 +40,10 @@ const styles = StyleSheet.create({
   card: {
     flexDirection: 'row',
     alignItems: 'center',
-    backgroundColor: '#f6f7f7',
-    borderRadius: 16,
+    backgroundColor: '#fff',
+    borderRadius: 12,
     padding: 16,
+    marginHorizontal: 16,
     marginBottom: 12,
     shadowColor: '#000',
     shadowOffset: { width: 0, height: 1 },
