@@ -41,9 +41,7 @@ const AddCardModal: React.FC<AddCardModalProps> = ({
 
     try {
       // TODO: Implement card addition logic here
-      // This would typically involve calling your payment service API
 
-      // Simulating API call
       await new Promise(resolve => setTimeout(resolve, 1000));
 
       onCardAdded();

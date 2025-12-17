@@ -78,9 +78,6 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
     }
 
     const initializeAuth = async () => {
-      // Small delay to ensure Redux persist has rehydrated
-      await new Promise(resolve => setTimeout(resolve, 100));
-
       dispatch(setLoading(true));
 
       try {

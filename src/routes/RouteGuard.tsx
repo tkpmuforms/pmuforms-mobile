@@ -16,7 +16,6 @@ import { colors } from '../theme/colors';
 const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
 
-// Main tab routes
 const mainTabRoutes = ['Dashboard', 'Clients', 'Forms', 'Profile'];
 
 const getTabIcon = (routeName: string, focused: boolean) => {

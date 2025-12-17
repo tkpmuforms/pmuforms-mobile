@@ -14,7 +14,6 @@ import {
 import React, { useCallback, useEffect, useState } from 'react';
 import {
   ActivityIndicator,
-  Clipboard,
   ScrollView,
   StyleSheet,
   Text,
@@ -33,6 +32,7 @@ import {
   getCustomerMetrics,
   deleteCustomer,
 } from '../../services/artistServices';
+import Clipboard from '@react-native-clipboard/clipboard';
 
 type ClientDetailsNavigationProp = NativeStackNavigationProp<
   RootStackParamList,
@@ -111,15 +111,15 @@ const ClientDetailsScreen: React.FC<ClientDetailsScreenProps> = () => {
 
   const handleDeleteClient = async () => {
     try {
-      // await deleteCustomer(clientId);
+      await deleteCustomer(clientId);
       Toast.show({
         type: 'success',
         text1: 'Success',
         text2: 'Client deleted successfully',
       });
       navigation.goBack();
-    } catch (error) {
-      console.error('Error deleting client:', error);
+    } catch (err) {
+      console.error('Error deleting client:', err);
       Toast.show({
         type: 'error',
         text1: 'Error',

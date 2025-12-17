@@ -7,10 +7,10 @@ import {
   TouchableOpacity,
   TextInput,
   ScrollView,
-  SafeAreaView,
   Image,
   ActivityIndicator,
 } from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
 import { X, Camera, Image as ImageIcon } from 'lucide-react-native';
 import { launchImageLibrary } from 'react-native-image-picker';
 import { Note } from '../../types';

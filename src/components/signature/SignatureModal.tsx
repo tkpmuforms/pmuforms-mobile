@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import {
   View,
   Text,
@@ -8,13 +8,12 @@ import {
   ActivityIndicator,
   Alert,
   Dimensions,
+  Image,
 } from 'react-native';
 import { X, Trash2, Check, Undo } from 'lucide-react-native';
 import Svg, { Path } from 'react-native-svg';
-import {
-  GestureHandlerRootView,
-  PanGestureHandler,
-} from 'react-native-gesture-handler';
+import { GestureDetector, Gesture } from 'react-native-gesture-handler';
+import { captureRef } from 'react-native-view-shot';
 import { colors } from '../../theme/colors';
 
 interface SignatureModalProps {
@@ -46,33 +45,31 @@ const SignatureModal: React.FC<SignatureModalProps> = ({
   const [paths, setPaths] = useState<Point[][]>([]);
   const [currentPath, setCurrentPath] = useState<Point[]>([]);
   const [hasSignature, setHasSignature] = useState(false);
+  const canvasRef = useRef<View>(null);
 
   useEffect(() => {
     if (existingSignature) {
       setHasSignature(true);
-      // Note: React Native doesn't have a simple way to load images into signature canvas
-      // You would need to implement image-to-path conversion or use a library
     }
   }, [existingSignature]);
 
-  const handleGestureEvent = (event: any) => {
-    const { x, y } = event.nativeEvent;
-
-    setCurrentPath(prev => [...prev, { x, y }]);
-    setHasSignature(true);
-  };
-
-  const handleGestureEnd = () => {
-    if (currentPath.length > 0) {
-      setPaths(prev => [...prev, currentPath]);
-      setCurrentPath([]);
-    }
-  };
+  const panGesture = Gesture.Pan()
+    .onUpdate(event => {
+      const { x, y } = event;
+      setCurrentPath(prev => [...prev, { x, y }]);
+      setHasSignature(true);
+    })
+    .onEnd(() => {
+      if (currentPath.length > 0) {
+        setPaths(prev => [...prev, currentPath]);
+        setCurrentPath([]);
+      }
+    });
 
   const clearSignature = () => {
     setPaths([]);
     setCurrentPath([]);
-    setHasSignature(false);
+    setHasSignature(!!existingSignature);
   };
 
   const undoLastStroke = () => {
@@ -91,12 +88,18 @@ const SignatureModal: React.FC<SignatureModalProps> = ({
     }
 
     try {
-      // Convert SVG paths to data URL
-      // This is a simplified version - you might need to use a library
-      // like react-native-view-shot to capture the actual canvas as an image
-      const signatureDataUrl = 'data:image/png;base64,signature-placeholder';
-
-      await onSubmit(signatureDataUrl);
+      if (paths.length > 0 && canvasRef.current) {
+        const uri = await captureRef(canvasRef, {
+          format: 'png',
+          quality: 1,
+          result: 'data-uri',
+        });
+        await onSubmit(uri);
+      } else if (existingSignature) {
+        await onSubmit(existingSignature);
+      } else {
+        throw new Error('No signature available');
+      }
     } catch (error) {
       console.error('Error submitting signature:', error);
       Alert.alert('Error', 'Failed to submit signature');
@@ -147,13 +150,23 @@ const SignatureModal: React.FC<SignatureModalProps> = ({
             </TouchableOpacity>
           </View>
 
-          <GestureHandlerRootView style={styles.gestureContainer}>
-            <View style={styles.canvasContainer}>
-              <PanGestureHandler
-                onGestureEvent={handleGestureEvent}
-                onEnded={handleGestureEnd}
-              >
-                <View style={styles.canvas}>
+          <View style={styles.canvasContainer}>
+            {existingSignature && paths.length === 0 ? (
+              <View style={styles.canvas}>
+                <Image
+                  source={{ uri: existingSignature }}
+                  style={styles.existingSignature}
+                  resizeMode="contain"
+                />
+                <View style={styles.existingBadge}>
+                  <Text style={styles.existingBadgeText}>
+                    Existing Signature
+                  </Text>
+                </View>
+              </View>
+            ) : (
+              <GestureDetector gesture={panGesture}>
+                <View style={styles.canvas} ref={canvasRef} collapsable={false}>
                   <Svg width={CANVAS_WIDTH} height={CANVAS_HEIGHT}>
                     {renderPaths()}
                   </Svg>
@@ -163,9 +176,9 @@ const SignatureModal: React.FC<SignatureModalProps> = ({
                     </View>
                   )}
                 </View>
-              </PanGestureHandler>
-            </View>
-          </GestureHandlerRootView>
+              </GestureDetector>
+            )}
+          </View>
 
           <View style={styles.buttonContainer}>
             <TouchableOpacity
@@ -264,9 +277,6 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
   },
-  gestureContainer: {
-    width: '100%',
-  },
   canvasContainer: {
     borderWidth: 2,
     borderColor: colors.border,
@@ -293,6 +303,24 @@ const styles = StyleSheet.create({
     fontSize: 16,
     color: colors.textLight,
     opacity: 0.5,
+  },
+  existingSignature: {
+    width: '100%',
+    height: '100%',
+  },
+  existingBadge: {
+    position: 'absolute',
+    top: 8,
+    right: 8,
+    backgroundColor: colors.primary,
+    paddingHorizontal: 12,
+    paddingVertical: 6,
+    borderRadius: 12,
+  },
+  existingBadgeText: {
+    color: colors.white,
+    fontSize: 12,
+    fontWeight: '600',
   },
   buttonContainer: {
     flexDirection: 'row',

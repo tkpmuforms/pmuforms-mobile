@@ -146,7 +146,6 @@ const SignatureScreen: React.FC = () => {
         text2: 'Signature submitted successfully',
       });
 
-      // Navigate to the first form's preview
       if (forms && forms.length > 0) {
         (navigation as any).navigate('FilledFormsPreview', {
           appointmentId,

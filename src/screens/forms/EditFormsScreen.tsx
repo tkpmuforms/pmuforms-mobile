@@ -43,7 +43,6 @@ const EditFormsScreen: React.FC = () => {
     if (formId) {
       fetchForm();
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [formId]);
 
   const fetchServices = async () => {
