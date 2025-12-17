@@ -17,6 +17,7 @@ import useAuth from '../../hooks/useAuth';
 import AddFieldModal from '../../components/forms/AddFieldModal';
 import FieldInputModal from '../../components/forms/FieldInputModal';
 import EditParagraphModal from '../../components/forms/EditParagraphModal';
+import EditFormServices from '../../components/forms/EditFormServices';
 
 import {
   deleteFormSectionData,
@@ -40,6 +41,7 @@ const EditFormsScreen: React.FC = () => {
   const [showAddFieldModal, setShowAddFieldModal] = useState(false);
   const [showFieldInputModal, setShowFieldInputModal] = useState(false);
   const [showEditParagraphModal, setShowEditParagraphModal] = useState(false);
+  const [showServicesModal, setShowServicesModal] = useState(false);
   const [selectedFieldType, setSelectedFieldType] = useState<any>(null);
   const [selectedField, setSelectedField] = useState<FieldData | null>(null);
   const [currentSectionId, setCurrentSectionId] = useState<string>('');
@@ -199,11 +201,9 @@ const EditFormsScreen: React.FC = () => {
     setSelectedFieldType(fieldType);
     setShowAddFieldModal(false);
 
-    // For paragraph type, show edit paragraph modal
     if (fieldType.type === 'paragraph') {
       setShowEditParagraphModal(true);
     } else {
-      // For other types, show field input modal
       setShowFieldInputModal(true);
     }
   };
@@ -217,16 +217,39 @@ const EditFormsScreen: React.FC = () => {
   };
 
   const handleManageServices = () => {
-    Alert.alert('Manage Services', 'Select services for this form');
+    setShowServicesModal(true);
   };
 
-  // Modal save handlers
+  const handleUpdateServices = async (selectedServiceIds: number[]) => {
+    if (!form) return;
+
+    try {
+      await updateFormServices(form.id, selectedServiceIds);
+
+      const updatedForm = { ...form };
+      updatedForm.services = selectedServiceIds;
+      setForm(updatedForm);
+
+      Toast.show({
+        type: 'success',
+        text1: 'Success',
+        text2: 'Services updated successfully',
+      });
+    } catch (error) {
+      console.error('Error updating services:', error);
+      Toast.show({
+        type: 'error',
+        text1: 'Error',
+        text2: 'Failed to update services',
+      });
+    }
+  };
+
   const handleSaveFieldInput = async (title: string, isRequired: boolean) => {
     if (!form) return;
 
     try {
       if (selectedField) {
-        // Edit existing field
         await updateFormSectionData(
           form.id,
           selectedField.sectionId || '',
@@ -259,7 +282,6 @@ const EditFormsScreen: React.FC = () => {
           text2: 'Field updated successfully',
         });
       } else {
-        // Add new field
         const newField = {
           type: selectedFieldType.type,
           title,
@@ -268,7 +290,6 @@ const EditFormsScreen: React.FC = () => {
 
         await addFormSectionData(form.id, currentSectionId, newField);
 
-        // Refresh form to get the new field with ID from server
         await fetchForm();
 
         Toast.show({
@@ -296,7 +317,6 @@ const EditFormsScreen: React.FC = () => {
 
     try {
       if (selectedField) {
-        // Edit existing paragraph
         await updateFormSectionData(
           form.id,
           selectedField.sectionId || '',
@@ -327,7 +347,6 @@ const EditFormsScreen: React.FC = () => {
           text2: 'Paragraph updated successfully',
         });
       } else {
-        // Add new paragraph
         const newParagraph = {
           type: 'paragraph',
           content,
@@ -335,7 +354,6 @@ const EditFormsScreen: React.FC = () => {
 
         await addFormSectionData(form.id, currentSectionId, newParagraph);
 
-        // Refresh form to get the new field with ID from server
         await fetchForm();
 
         Toast.show({
@@ -490,7 +508,6 @@ const EditFormsScreen: React.FC = () => {
           )}
         </View>
 
-        {/* Form Sections */}
         {form.sections && form.sections.length > 0 ? (
           form.sections.map(section => renderSection(section))
         ) : (
@@ -528,6 +545,14 @@ const EditFormsScreen: React.FC = () => {
         }}
         onSave={handleSaveParagraph}
         initialContent={selectedField?.content}
+      />
+
+      <EditFormServices
+        visible={showServicesModal}
+        onClose={() => setShowServicesModal(false)}
+        allServices={allServices}
+        selectedServices={form?.services || []}
+        onUpdateServices={handleUpdateServices}
       />
     </SafeAreaView>
   );
