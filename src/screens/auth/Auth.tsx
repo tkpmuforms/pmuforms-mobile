@@ -1,3 +1,5 @@
+import auth from '@react-native-firebase/auth';
+import { GoogleSignin } from '@react-native-google-signin/google-signin';
 import { Circle, EyeIcon } from 'lucide-react-native';
 import React, { useState } from 'react';
 import {
@@ -16,10 +18,8 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import Toast from 'react-native-toast-message';
 import { AppleLoginButton, GoogleLoginButton } from '../../components/AuthSvgs';
 import ImageSlider from '../../components/ImageSlider';
-import auth from '@react-native-firebase/auth';
 import useAuth from '../../hooks/useAuth';
 import { createArtist } from '../../services/artistServices';
-import { GoogleSignin } from '@react-native-google-signin/google-signin';
 
 type AuthPage = 'login' | 'signup';
 type SignupStep = 'email' | 'password' | 'verification';

@@ -8,15 +8,19 @@ import {
 } from 'react-native';
 import { useRoute, useNavigation } from '@react-navigation/native';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { FileText, CheckCircle, AlertTriangle, Edit3 } from 'lucide-react-native';
+import {
+  FileText,
+  CheckCircle,
+  AlertTriangle,
+  Edit3,
+} from 'lucide-react-native';
 import Toast from 'react-native-toast-message';
 import SignatureModal from '../../components/signature/SignatureModal';
 import { signAppointment } from '../../services/artistServices';
 import { colors } from '../../theme/colors';
 
-// TODO: Install and configure firebase storage for React Native
-// import storage from '@react-native-firebase/storage';
-// For now, using placeholder for Firebase upload
+import storage from '@react-native-firebase/storage';
+import useAuth from '../../hooks/useAuth';
 
 interface FormTemplate {
   appointmentId: string;
@@ -52,7 +56,8 @@ interface RouteParams {
 const SignatureScreen: React.FC = () => {
   const navigation = useNavigation();
   const route = useRoute();
-  const { appointmentId, clientId, clientName, forms, appointments } = 
+  const { user } = useAuth();
+  const { appointmentId, clientId, clientName, forms, appointments } =
     (route.params as RouteParams) || {};
 
   const [showSignModal, setShowSignModal] = useState(false);
@@ -60,17 +65,17 @@ const SignatureScreen: React.FC = () => {
   const [_signatureUrl, setSignatureUrl] = useState<string | null>(null);
 
   const currentAppointment: Appointment | undefined = appointments?.find(
-    (appointment: Appointment) => appointment.id === appointmentId
+    (appointment: Appointment) => appointment.id === appointmentId,
   );
 
   const appointmentForms =
     forms?.filter(
-      (form: FormTemplate) => form.appointmentId === appointmentId
+      (form: FormTemplate) => form.appointmentId === appointmentId,
     ) || [];
 
   const completedForms = appointmentForms.filter(
     (form: FormTemplate) =>
-      form.status === 'complete' || form.status === 'completed'
+      form.status === 'complete' || form.status === 'completed',
   );
 
   const services = currentAppointment?.serviceDetails || [];
@@ -119,29 +124,15 @@ const SignatureScreen: React.FC = () => {
     setIsSubmitting(true);
 
     try {
-      // TODO: Implement Firebase Storage upload for React Native
-      // For now, using placeholder upload logic
-      
-      // In a real implementation, you would:
-      // 1. Convert data URL to blob/file
-      // 2. Upload to Firebase Storage
-      // 3. Get download URL
-      
-      /*
-      const reference = storage().ref(`signatures/${user?._id}/${appointmentId}/${Date.now()}.png`);
-      
-      // Convert base64 to blob
+      const reference = storage().ref(
+        `signatures/${user?._id}/${appointmentId}/${Date.now()}.png`,
+      );
       const response = await fetch(signatureDataUrl);
       const blob = await response.blob();
-      
+
       await reference.put(blob);
       const downloadUrl = await reference.getDownloadURL();
-      */
 
-      // Placeholder - replace with actual Firebase upload
-      const downloadUrl = signatureDataUrl;
-
-      // Call API to save signature
       await signAppointment(appointmentId, {
         signatureUrl: downloadUrl,
       });
@@ -205,18 +196,13 @@ const SignatureScreen: React.FC = () => {
           <View style={styles.header}>
             <View style={styles.titleSection}>
               <Text style={styles.title}>Sign Appointment Forms</Text>
-              <Text style={styles.subtitle}>
-                Sign Client Appointment Forms
-              </Text>
+              <Text style={styles.subtitle}>Sign Client Appointment Forms</Text>
             </View>
           </View>
 
           {/* Sign Button */}
           <TouchableOpacity
-            style={[
-              styles.signButton,
-              !canSign && styles.signButtonDisabled,
-            ]}
+            style={[styles.signButton, !canSign && styles.signButtonDisabled]}
             onPress={handleSignClick}
             disabled={!canSign || isSubmitting}
           >
@@ -243,10 +229,10 @@ const SignatureScreen: React.FC = () => {
             <Text style={styles.introText}>
               {currentAppointment?.allFormsCompleted
                 ? `Thank you for completing all the forms for your appointment on ${formatAppointmentTime(
-                    currentAppointment?.date
+                    currentAppointment?.date,
                   )}! Now, all you need to do is sign!`
                 : `Please complete all required forms before signing for your appointment on ${formatAppointmentTime(
-                    currentAppointment?.date
+                    currentAppointment?.date,
                   )}.`}
             </Text>
           </View>
@@ -303,9 +289,7 @@ const SignatureScreen: React.FC = () => {
                 ))
               ) : (
                 <View style={styles.listItem}>
-                  <Text style={styles.listItemText}>
-                    No services specified
-                  </Text>
+                  <Text style={styles.listItemText}>No services specified</Text>
                 </View>
               )}
             </View>

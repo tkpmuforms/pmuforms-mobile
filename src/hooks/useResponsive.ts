@@ -26,7 +26,6 @@ export const useResponsiveSize = () => {
   const { width } = useWindowDimensions();
 
   return {
-    // Font sizes
     fontSize: {
       xs: width < 380 ? 11 : 12,
       sm: width < 380 ? 12 : 13,
@@ -35,7 +34,7 @@ export const useResponsiveSize = () => {
       xl: width < 380 ? 18 : 20,
       '2xl': width < 380 ? 20 : 24,
     },
-    // Spacing
+
     spacing: {
       xs: width < 380 ? 4 : 6,
       sm: width < 380 ? 6 : 8,
@@ -43,7 +42,6 @@ export const useResponsiveSize = () => {
       lg: width < 380 ? 12 : 16,
       xl: width < 380 ? 16 : 24,
     },
-    // Common widths
     cardWidth: width < 380 ? width - 24 : width - 32,
     buttonHeight: 44,
     buttonBorderRadius: 8,

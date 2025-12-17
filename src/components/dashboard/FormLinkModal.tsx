@@ -9,7 +9,7 @@ import {
   View,
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
-// import Clipboard from '@react-native-clipboard/clipboard';
+import Clipboard from '@react-native-clipboard/clipboard';
 
 interface FormLinkModalProps {
   visible: boolean;
@@ -27,7 +27,7 @@ const FormLinkModal: React.FC<FormLinkModalProps> = ({
   const formLink = `https://business.pmuforms.com/#/${businessUri}`;
 
   const handleCopyLink = () => {
-    // Clipboard.setString(formLink);
+    Clipboard.setString(formLink);
     setCopied(true);
     setTimeout(() => setCopied(false), 2000);
   };

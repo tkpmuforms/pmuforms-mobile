@@ -1,8 +1,4 @@
-// Font configuration for React Native
-// Maps to the fonts in assets/fonts/Reddit_Sans/static/
-
 export const Fonts = {
-  // Regular weights
   ExtraLight: 'RedditSans-ExtraLight',
   Light: 'RedditSans-Light',
   Regular: 'RedditSans-Regular',
@@ -12,7 +8,6 @@ export const Fonts = {
   ExtraBold: 'RedditSans-ExtraBold',
   Black: 'RedditSans-Black',
 
-  // Italic weights
   ExtraLightItalic: 'RedditSans-ExtraLightItalic',
   LightItalic: 'RedditSans-LightItalic',
   Italic: 'RedditSans-Italic',
@@ -23,7 +18,6 @@ export const Fonts = {
   BlackItalic: 'RedditSans-BlackItalic',
 };
 
-// Aliases for easier use (similar to web)
 export const FontAliases = {
   GeneralFont: Fonts.Regular,
   RegularFont: Fonts.Regular,
@@ -35,10 +29,8 @@ export const FontAliases = {
   ExtraLightFont: Fonts.ExtraLight,
 };
 
-// Default font family
 export const defaultFont = Fonts.Regular;
 
-// Font weight mapping to custom fonts
 export const getFontFamily = (weight?: string | number): string => {
   const numericWeight =
     typeof weight === 'string' ? parseInt(weight, 10) : weight;

@@ -13,7 +13,7 @@ import {
 import { SafeAreaView } from 'react-native-safe-area-context';
 import Toast from 'react-native-toast-message';
 import useAuth from '../../hooks/useAuth';
-// import { sendMessage } from '../../services/artistServices';
+import { sendMessage } from '../../services/artistServices';
 
 interface FormData {
   email: string;
@@ -54,9 +54,8 @@ const ContactSupportScreen: React.FC = () => {
     setIsSubmitting(true);
 
     try {
-      // await sendMessage(formData);
+      await sendMessage(formData);
 
-      // Mock success for now
       setFormData({
         email: user?.email || '',
         firstName: user?.firstName || '',

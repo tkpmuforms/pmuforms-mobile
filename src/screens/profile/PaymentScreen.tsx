@@ -20,6 +20,7 @@ import {
   listPaymentMethods,
   listTransactions,
 } from '../../services/artistServices';
+import { getCardColor, getTransactionStatus } from '../../utils/utils';
 
 interface Card {
   id: string;
@@ -49,7 +50,7 @@ interface SubscriptionData {
 
 const PaymentScreen: React.FC = () => {
   const { user } = useAuth();
-  // const defaultCardId = user?.defaultStripePaymentMethod || '';
+  const defaultCardId = user?.defaultStripePaymentMethod || '';
 
   const [cards, setCards] = useState<Card[]>([]);
   const [subscriptionHistory, setSubscriptionHistory] = useState<
@@ -67,12 +68,8 @@ const PaymentScreen: React.FC = () => {
 
   const fetchSubscriptionData = async () => {
     try {
-      // TODO: Uncomment when API is ready
-      // const response = await getSubscription();
-      // setSubscriptionData(response.data);
-
-      // Mock data
-      setSubscriptionData(null);
+      const response = await getSubscription();
+      setSubscriptionData(response.data);
     } catch (error) {
       console.error('Error fetching subscription:', error);
     }
@@ -80,23 +77,19 @@ const PaymentScreen: React.FC = () => {
 
   const fetchPaymentMethods = async () => {
     try {
-      // TODO: Uncomment when API is ready
-      // const response = await listPaymentMethods();
-      // const paymentMethods = response.data.data || response.data;
+      const response = await listPaymentMethods();
+      const paymentMethods = response.data.data || response.data;
 
-      // const formattedCards: Card[] = paymentMethods.map((pm: any) => ({
-      //   id: pm.id,
-      //   name: pm.billing_details?.name || 'Card Holder',
-      //   lastFour: pm.card?.last4 || '0000',
-      //   brand: pm.card?.brand || 'visa',
-      //   isDefault: pm.id === defaultCardId,
-      //   color: getCardColor(pm.card?.brand || 'visa'),
-      // }));
+      const formattedCards: Card[] = paymentMethods.map((pm: any) => ({
+        id: pm.id,
+        name: pm.billing_details?.name || 'Card Holder',
+        lastFour: pm.card?.last4 || '0000',
+        brand: pm.card?.brand || 'visa',
+        isDefault: pm.id === defaultCardId,
+        color: getCardColor(pm.card?.brand || 'visa'),
+      }));
 
-      // setCards(formattedCards);
-
-      // Mock data
-      setCards([]);
+      setCards(formattedCards);
     } catch (error) {
       console.error('Error fetching payment methods:', error);
     }
@@ -105,22 +98,23 @@ const PaymentScreen: React.FC = () => {
   const fetchTransactionHistory = async () => {
     try {
       setLoading(true);
-      // TODO: Uncomment when API is ready
-      // const response = await listTransactions();
-      // const invoices = response.data?.invoices || response.data;
 
-      // const formattedHistory: SubscriptionHistory[] = invoices.map((invoice: any) => ({
-      //   date: new Date(invoice.created).toLocaleDateString(),
-      //   description: invoice.description || 'Subscription Payment',
-      //   cardUsed: `•••• •••• •••• ${invoice.payment_method_details?.card?.last4 || '0000'}`,
-      //   amount: invoice.amount,
-      //   status: getTransactionStatus(invoice.status),
-      // }));
+      const response = await listTransactions();
+      const invoices = response.data?.invoices || response.data;
 
-      // setSubscriptionHistory(formattedHistory);
+      const formattedHistory: SubscriptionHistory[] = invoices.map(
+        (invoice: any) => ({
+          date: new Date(invoice.created).toLocaleDateString(),
+          description: invoice.description || 'Subscription Payment',
+          cardUsed: `•••• •••• •••• ${
+            invoice.payment_method_details?.card?.last4 || '0000'
+          }`,
+          amount: invoice.amount,
+          status: getTransactionStatus(invoice.status),
+        }),
+      );
 
-      // Mock data
-      setSubscriptionHistory([]);
+      setSubscriptionHistory(formattedHistory);
     } catch (error) {
       console.error('Error fetching transactions:', error);
     } finally {
@@ -139,8 +133,7 @@ const PaymentScreen: React.FC = () => {
           style: 'destructive',
           onPress: async () => {
             try {
-              // TODO: Uncomment when API is ready
-              // await cancelSubscription();
+              await cancelSubscription();
 
               Toast.show({
                 type: 'success',
@@ -174,8 +167,7 @@ const PaymentScreen: React.FC = () => {
           style: 'destructive',
           onPress: async () => {
             try {
-              // TODO: Uncomment when API is ready
-              // await detachPaymentMethod(cardId);
+              await detachPaymentMethod(cardId);
 
               await fetchPaymentMethods();
               Toast.show({
@@ -196,16 +188,6 @@ const PaymentScreen: React.FC = () => {
       ],
     );
   };
-
-  // const getCardColor = (_brand: string) => {
-  //   const cardColors = {
-  //     visa: 'linear-gradient(135deg, #1A1F71 0%, #0D47A1 100%)',
-  //     mastercard: 'linear-gradient(135deg, #EB001B 0%, #F79E1B 100%)',
-  //     amex: 'linear-gradient(135deg, #006FCF 0%, #0099CC 100%)',
-  //     unionpay: 'linear-gradient(135deg, #E21836 0%, #00447C 100%)',
-  //   };
-  //   return cardColors[_brand as keyof typeof cardColors] || '#6B7280';
-  // };
 
   const getPlanName = (interval: string, count: number) => {
     if (interval === 'month' && count === 1) return 'Monthly Plan';

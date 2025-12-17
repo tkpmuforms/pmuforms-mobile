@@ -4,7 +4,7 @@ export const colors = {
   primaryLight: '#c158c1',
   primaryBackground: '#8e2d8e40',
   secondary: '#560056',
-  accent: '#ff9500', // Orange
+  accent: '#ff9500',
   accentOrange: '#ff9500',
   backgroundLight: '#f4eaf4',
   background: '#ffffff',

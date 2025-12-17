@@ -16,13 +16,13 @@ import Toast from 'react-native-toast-message';
 import { colors } from '../../theme/colors';
 import useAuth from '../../hooks/useAuth';
 import SignatureModal from '../../components/signature/SignatureModal';
-
 import {
   getMyProfile,
   updateMyProfile,
   updateMySignature,
 } from '../../services/artistServices';
 import { ref, uploadBytes, getDownloadURL } from 'firebase/storage';
+import { storage } from '../../config/firebase';
 
 interface ProfileData {
   firstName: string;
@@ -180,20 +180,19 @@ const EditProfileScreen: React.FC = () => {
       setUploadingAvatar(true);
       setAvatarUrl(result.assets[0].uri);
 
-      // TODO: Upload to Firebase Storage
-      // try {
-      //   const response = await fetch(result.assets[0].uri);
-      //   const blob = await response.blob();
-      //   const storageRef = ref(storage, `avatars/artists/${user?._id}`);
-      //   const snapshot = await uploadBytes(storageRef, blob);
-      //   const downloadUrl = await getDownloadURL(snapshot.ref);
-      //   setAvatarUrl(downloadUrl);
-      // } catch (error) {
-      //   console.error('Error uploading avatar:', error);
-      //   Toast.show({ type: 'error', text1: 'Failed to upload avatar' });
-      // } finally {
-      //   setUploadingAvatar(false);
-      // }
+      try {
+        const response = await fetch(result.assets[0].uri);
+        const blob = await response.blob();
+        const storageRef = ref(storage, `avatars/artists/${user?._id}`);
+        const snapshot = await uploadBytes(storageRef, blob);
+        const downloadUrl = await getDownloadURL(snapshot.ref);
+        setAvatarUrl(downloadUrl);
+      } catch (uploadError) {
+        console.error('Error uploading avatar:', uploadError);
+        Toast.show({ type: 'error', text1: 'Failed to upload avatar' });
+      } finally {
+        setUploadingAvatar(false);
+      }
 
       setTimeout(() => {
         setUploadingAvatar(false);
@@ -259,8 +258,7 @@ const EditProfileScreen: React.FC = () => {
         updateData = rest;
       }
 
-      // TODO: Uncomment when API is ready
-      // await updateMyProfile(updateData);
+      await updateMyProfile(updateData);
 
       Toast.show({
         type: 'success',
@@ -281,8 +279,7 @@ const EditProfileScreen: React.FC = () => {
 
   const handleSignatureSubmit = async (_signatureDataUrl: string) => {
     try {
-      // TODO: Uncomment when API is ready
-      const response = await fetch(signatureDataUrl);
+      const response = await fetch(_signatureDataUrl);
       const blob = await response.blob();
 
       const timestamp = Date.now();

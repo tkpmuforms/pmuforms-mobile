@@ -14,7 +14,7 @@ import {
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useDispatch } from 'react-redux';
-// import { launchImageLibrary } from 'react-native-image-picker';
+import { launchImageLibrary } from 'react-native-image-picker';
 import useAuth from '../../hooks/useAuth';
 import { setUser } from '../../redux/auth';
 import { getAuthMe, updateBusinessInfo } from '../../services/artistServices';
@@ -40,19 +40,19 @@ const EditBusinessInformationModal: React.FC<
   const [isSaving, setIsSaving] = useState(false);
 
   const handleLogoChange = () => {
-    // launchImageLibrary(
-    //   {
-    //     mediaType: 'photo',
-    //     quality: 0.8,
-    //     maxWidth: 500,
-    //     maxHeight: 500,
-    //   },
-    //   (response) => {
-    //     if (response.assets && response.assets[0]) {
-    //       setLogoUri(response.assets[0].uri || '');
-    //     }
-    //   }
-    // );
+    launchImageLibrary(
+      {
+        mediaType: 'photo',
+        quality: 0.8,
+        maxWidth: 500,
+        maxHeight: 500,
+      },
+      response => {
+        if (response.assets && response.assets[0]) {
+          setLogoUri(response.assets[0].uri || '');
+        }
+      },
+    );
   };
 
   const handleSave = async () => {

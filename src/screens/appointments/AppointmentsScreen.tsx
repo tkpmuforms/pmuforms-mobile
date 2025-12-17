@@ -1,41 +1,30 @@
-import React, { useEffect, useState } from 'react';
 import {
-  View,
-  Text,
-  StyleSheet,
-  ScrollView,
-  TouchableOpacity,
-  TextInput,
-  ActivityIndicator,
-  RefreshControl,
-} from 'react-native';
-import { SafeAreaView } from 'react-native-safe-area-context';
-import {
-  Search,
   Calendar,
   ChevronLeft,
   ChevronRight,
+  Search,
 } from 'lucide-react-native';
+import React, { useEffect, useState } from 'react';
+import {
+  ActivityIndicator,
+  RefreshControl,
+  ScrollView,
+  StyleSheet,
+  Text,
+  TextInput,
+  TouchableOpacity,
+  View,
+} from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
+import Toast from 'react-native-toast-message';
+import AppointmentCard from '../../components/dashboard/AppointmentCard';
 import {
   getArtistAppointmentsPaginated,
   getCustomerById,
 } from '../../services/artistServices';
-import { Appointment } from '../../types';
-import { formatAppointmentTime } from '../../utils/utils';
-import AppointmentCard from '../../components/dashboard/AppointmentCard';
 import { colors } from '../../theme/colors';
-import Toast from 'react-native-toast-message';
-
-interface AppointmentsResponse {
-  metadata: {
-    total: number;
-    currentPage: number;
-    perPage: number;
-    lastPage: number;
-    firstPage: number;
-  };
-  appointments: Appointment[];
-}
+import { Appointment, AppointmentsResponse } from '../../types';
+import { formatAppointmentTime } from '../../utils/utils';
 
 const AppointmentsScreen = ({ navigation }: any) => {
   const [appointments, setAppointments] = useState<Appointment[]>([]);
@@ -251,7 +240,7 @@ const AppointmentsScreen = ({ navigation }: any) => {
                   name={
                     appointment?.customerId
                       ? getCustomerName(appointment.customerId)
-                      : 'Unknown Client'
+                      : ' Client'
                   }
                   avatar={getCustomerAvatar(appointment.customerId)}
                   time={formatAppointmentTime(appointment.date)}

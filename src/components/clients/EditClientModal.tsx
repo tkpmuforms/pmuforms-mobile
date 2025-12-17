@@ -13,9 +13,7 @@ import {
 import { X } from 'lucide-react-native';
 import Toast from 'react-native-toast-message';
 import { ClientDetail } from '../../types';
-
-// Import your API service
-// import { updateCustomerPersonalDetails } from '../../services/artistServices';
+import { updateCustomerPersonalDetails } from '../../services/artistServices';
 
 interface EditClientModalProps {
   client: ClientDetail;
@@ -50,7 +48,7 @@ const EditClientModal: React.FC<EditClientModalProps> = ({
     };
 
     try {
-      // await updateCustomerPersonalDetails(client.id, updatedData);
+      await updateCustomerPersonalDetails(client.id, updatedData);
       Toast.show({
         type: 'success',
         text1: 'Success',

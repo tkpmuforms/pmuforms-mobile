@@ -40,6 +40,16 @@ export interface Service {
   updatedAt?: string;
 }
 
+export interface AppointmentsResponse {
+  metadata: {
+    total: number;
+    currentPage: number;
+    perPage: number;
+    lastPage: number;
+    firstPage: number;
+  };
+  appointments: Appointment[];
+}
 export interface Client {
   id: string;
   name: string;
@@ -284,4 +294,14 @@ export interface Reminder {
   sent: boolean;
   createdAt: string;
   updatedAt: string;
+}
+
+export interface FieldData {
+  id: string;
+  type: string;
+  title: string;
+  required?: boolean;
+  options?: string[];
+  sectionId?: string;
+  [key: string]: any;
 }

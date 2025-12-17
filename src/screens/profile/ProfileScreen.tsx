@@ -21,6 +21,7 @@ import { colors } from '../../theme/colors';
 import ChangePasswordModal from '../../components/profile/ChangePasswordModal';
 import EditBusinessInformationModal from '../../components/profile/EditBusinessInformationModal';
 import UpdateServicesModal from '../../components/profile/UpdateServicesModal';
+import { getAvatarUrl } from '../../utils/utils';
 
 interface ProfileScreenProps {
   navigation?: any;
@@ -31,23 +32,6 @@ const ProfileScreen: React.FC<ProfileScreenProps> = ({ navigation }) => {
   const [showEditBusinessInfo, setShowEditBusinessInfo] = useState(false);
   const [showUpdateServices, setShowUpdateServices] = useState(false);
   const [showChangePassword, setShowChangePassword] = useState(false);
-
-  const getInitials = (name?: string) => {
-    if (!name) return 'U';
-    return name
-      .split(' ')
-      .map(word => word.charAt(0).toUpperCase())
-      .join('')
-      .substring(0, 2);
-  };
-
-  const getAvatarUrl = () => {
-    if (user?.avatarUrl) return user.avatarUrl;
-    const name = user?.businessName || 'User';
-    return `https://ui-avatars.com/api/?name=${encodeURIComponent(
-      name,
-    )}&background=${colors.primary.replace('#', '')}&color=fff&size=120`;
-  };
 
   const profileMenuItems = [
     {
@@ -90,10 +74,9 @@ const ProfileScreen: React.FC<ProfileScreenProps> = ({ navigation }) => {
         contentContainerStyle={styles.scrollContent}
         showsVerticalScrollIndicator={false}
       >
-        {/* Header */}
         <View style={styles.header}>
           <View style={styles.avatarContainer}>
-            <Image source={{ uri: getAvatarUrl() }} style={styles.avatar} />
+            <Image source={{ uri: getAvatarUrl(user) }} style={styles.avatar} />
           </View>
           <View style={styles.userInfo}>
             <Text style={styles.businessName}>

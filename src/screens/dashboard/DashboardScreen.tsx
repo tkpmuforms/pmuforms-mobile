@@ -103,7 +103,6 @@ const DashboardScreen = ({ navigation }: any) => {
 
   const fetchData = async () => {
     try {
-      // Fetch appointments and customers
       const appointmentsResponse = await getArtistAppointmentsPaginated();
       const returnedApp = appointmentsResponse.data?.appointments || [];
       setAppointments(returnedApp);
@@ -138,13 +137,9 @@ const DashboardScreen = ({ navigation }: any) => {
 
         setCustomers(customerMap);
       }
-
-      // Fetch metrics
       const metricsResponse = await getMyMetrics();
       setMetrics(metricsResponse.data?.metrics);
       setMetricsLoading(false);
-
-      // Fetch forms
       const response = await getArtistForms();
       if (response && response.data && response.data.forms) {
         const transformedForms = response.data.forms.map(transformFormData);

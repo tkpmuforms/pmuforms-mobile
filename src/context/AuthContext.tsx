@@ -88,7 +88,7 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
 
         if (token && isValidToken(token)) {
           setAuthHeader(token);
-          // Only set authenticated if we don't already have user data from persist
+
           if (!user || Object.keys(user).length === 0) {
             console.log('Token valid but no user data persisted');
           }

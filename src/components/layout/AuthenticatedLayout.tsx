@@ -2,7 +2,6 @@ import React from 'react';
 import { View, StyleSheet } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import AuthenticatedNavbar from './AuthenticatedNavbar';
-// import Sidebar from './Sidebar'; // Commented out - using bottom tabs instead
 
 interface AuthenticatedLayoutProps {
   children: React.ReactNode;
@@ -15,30 +14,10 @@ const AuthenticatedLayout: React.FC<AuthenticatedLayoutProps> = ({
   breadcrumbs,
   navigation,
 }) => {
-  // Sidebar removed - using bottom tabs navigation instead
-  // const [isSidebarOpen, setIsSidebarOpen] = useState(false);
-
-  // const handleMobileMenuToggle = () => {
-  //   setIsSidebarOpen(!isSidebarOpen);
-  // };
-
-  // const handleCloseSidebar = () => {
-  //   setIsSidebarOpen(false);
-  // };
-
   return (
     <SafeAreaView style={styles.container} edges={['top']}>
-      <AuthenticatedNavbar
-        breadcrumbs={breadcrumbs}
-        // onMobileMenuToggle={handleMobileMenuToggle} // Removed - no sidebar
-        navigation={navigation}
-      />
+      <AuthenticatedNavbar breadcrumbs={breadcrumbs} navigation={navigation} />
       <View style={styles.content}>{children}</View>
-      {/* <Sidebar
-        isOpen={isSidebarOpen}
-        onClose={handleCloseSidebar}
-        navigation={navigation}
-      /> */}
     </SafeAreaView>
   );
 };

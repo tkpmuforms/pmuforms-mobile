@@ -107,8 +107,6 @@ const PreviewAppointmentModal: React.FC<PreviewAppointmentModalProps> = ({
         const baseUrl =
           Config.USER_WEBSITE_URL || 'https://business.pmuforms.com';
         const appointmentUrl = `${baseUrl}/#/appointment/${appointmentId}`;
-
-        // Share the appointment URL
         try {
           await Share.share({
             message: `Your appointment has been booked! View your forms here: ${appointmentUrl}`,

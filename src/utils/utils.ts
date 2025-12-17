@@ -1,4 +1,5 @@
-import { Form } from '../types';
+import { colors } from '../theme/colors';
+import { Form, User } from '../types';
 
 export const generateColor = (name: string): string => {
   const colors = [
@@ -134,4 +135,12 @@ export const getStatusColor = (status: string): string => {
     default:
       return '#6B7280';
   }
+};
+
+export const getAvatarUrl = (user: User) => {
+  if (user?.avatarUrl) return user.avatarUrl;
+  const name = user?.businessName || 'User';
+  return `https://ui-avatars.com/api/?name=${encodeURIComponent(
+    name,
+  )}&background=${colors.primary.replace('#', '')}&color=fff&size=120`;
 };

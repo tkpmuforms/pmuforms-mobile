@@ -75,7 +75,7 @@ const FilledFormsPreviewScreen: React.FC = () => {
             getFormById(templateId || ''),
             getFilledFormByAppointmentAndTemplate(
               appointmentId || '',
-              templateId || ''
+              templateId || '',
             ),
             getAppointmentById(appointmentId || ''),
           ]);
@@ -100,12 +100,11 @@ const FilledFormsPreviewScreen: React.FC = () => {
               })),
           };
 
-          // Replace business name placeholder
           const updatedForm = JSON.parse(
             JSON.stringify(transformedForm).replace(
               /\(?\{\{user\.businessName\}\}\)?/g,
-              user?.businessName || 'Your Business Name'
-            )
+              user?.businessName || 'Your Business Name',
+            ),
           );
 
           setForm(updatedForm);
@@ -135,7 +134,6 @@ const FilledFormsPreviewScreen: React.FC = () => {
     const fieldId = field.id || field._id;
     const value = filledData[fieldId];
 
-    // Handle different field types
     switch (field.type) {
       case 'paragraph':
       case 'heading':
@@ -294,11 +292,11 @@ const FilledFormsPreviewScreen: React.FC = () => {
         {/* Form Sections */}
         <View style={styles.formContent}>
           {form.sections && form.sections.length > 0 ? (
-            form.sections.map((section) => (
+            form.sections.map(section => (
               <View key={section._id || section.id} style={styles.section}>
                 <Text style={styles.sectionTitle}>{section.title}</Text>
                 {section.data && section.data.length > 0 ? (
-                  section.data.map((field) => {
+                  section.data.map(field => {
                     const fieldId = field.id || field._id;
                     const isParagraph =
                       field.type === 'paragraph' || field.type === 'heading';

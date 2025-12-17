@@ -15,7 +15,6 @@ import Toast from 'react-native-toast-message';
 import { colors } from '../../theme/colors';
 import useAuth from '../../hooks/useAuth';
 
-// TODO: Import these from your API services
 import {
   deleteFormSectionData,
   getFormById,
@@ -24,43 +23,12 @@ import {
   updateFormServices,
   addFormSectionData,
 } from '../../services/artistServices';
-
-interface FieldData {
-  id: string;
-  type: string;
-  title: string;
-  required?: boolean;
-  options?: string[];
-  sectionId?: string;
-  [key: string]: any;
-}
-
-interface Section {
-  _id?: string;
-  id: string;
-  title: string;
-  data: FieldData[];
-  skip?: boolean;
-}
-
-interface Service {
-  _id?: string;
-  id: number;
-  service: string;
-}
-
-interface SingleForm {
-  id: string;
-  title: string;
-  type: string;
-  sections: Section[];
-  services?: number[];
-}
+import { FieldData, Section, Service, SingleForm } from '../../types';
 
 const EditFormsScreen: React.FC = () => {
   const route = useRoute();
   const navigation = useNavigation();
-  // const { user } = useAuth();
+  const { user } = useAuth();
   const { formId } = (route.params as { formId?: string }) || {};
 
   const [form, setForm] = useState<SingleForm | null>(null);
@@ -80,17 +48,15 @@ const EditFormsScreen: React.FC = () => {
 
   const fetchServices = async () => {
     try {
-      // TODO: Uncomment when API is ready
-      // const response = await getServices();
-      // const services: Service[] = response.data.services.map((service: Service) => ({
-      //   _id: service._id,
-      //   id: service.id,
-      //   service: service.service,
-      // }));
-      // setAllServices(services);
-
-      // Mock data
-      setAllServices([]);
+      const response = await getServices();
+      const services: Service[] = response.data.services.map(
+        (service: Service) => ({
+          _id: service._id,
+          id: service.id,
+          service: service.service,
+        }),
+      );
+      setAllServices(services);
     } catch (error) {
       console.error('Error fetching services:', error);
       Toast.show({
@@ -107,42 +73,38 @@ const EditFormsScreen: React.FC = () => {
     try {
       setLoading(true);
 
-      // TODO: Uncomment when API is ready
-      // const response = await getFormById(formId);
+      const response = await getFormById(formId);
 
-      // if (response?.data?.form) {
-      //   const formData = response?.data?.form;
+      if (response?.data?.form) {
+        const formData = response?.data?.form;
 
-      //   const transformedForm: SingleForm = {
-      //     id: formData.id || formData._id,
-      //     type: formData.type,
-      //     title: formData.title,
-      //     sections: formData.sections.map((section: Section) => ({
-      //       ...section,
-      //       _id: section._id || section.id,
-      //     })),
-      //     services: formData.services || [],
-      //   };
+        const transformedForm: SingleForm = {
+          id: formData.id || formData._id,
+          type: formData.type,
+          title: formData.title,
+          sections: formData.sections.map((section: Section) => ({
+            ...section,
+            _id: section._id || section.id,
+          })),
+          services: formData.services || [],
+        };
 
-      //   const updatedForm = JSON.parse(
-      //     JSON.stringify(transformedForm).replace(
-      //       /\(?\{\{user\.businessName\}\}\)?/g,
-      //       user?.businessName || 'Your Business Name'
-      //     )
-      //   );
+        const updatedForm = JSON.parse(
+          JSON.stringify(transformedForm).replace(
+            /\(?\{\{user\.businessName\}\}\)?/g,
+            user?.businessName || 'Your Business Name',
+          ),
+        );
 
-      //   setForm(updatedForm);
-      // } else {
-      //   Toast.show({
-      //     type: 'error',
-      //     text1: 'Error',
-      //     text2: 'No form data found',
-      //   });
-      //   setForm(null);
-      // }
-
-      // Mock empty form
-      setForm(null);
+        setForm(updatedForm);
+      } else {
+        Toast.show({
+          type: 'error',
+          text1: 'Error',
+          text2: 'No form data found',
+        });
+        setForm(null);
+      }
     } catch (error) {
       console.error('Error fetching form:', error);
       setForm(null);
@@ -169,10 +131,12 @@ const EditFormsScreen: React.FC = () => {
             if (!form || !field) return;
 
             try {
-              // TODO: Uncomment when API is ready
-              // await deleteFormSectionData(form.id, field.sectionId || '', field.id);
+              await deleteFormSectionData(
+                form.id,
+                field.sectionId || '',
+                field.id,
+              );
 
-              // Optimistically update UI
               const updatedForm = { ...form };
               updatedForm.sections = updatedForm.sections.map(section => {
                 if (
@@ -221,7 +185,6 @@ const EditFormsScreen: React.FC = () => {
   };
 
   const handleManageServices = () => {
-    // TODO: Implement services modal
     Alert.alert('Manage Services', 'Select services for this form');
   };
 
@@ -263,7 +226,6 @@ const EditFormsScreen: React.FC = () => {
         {section.data && section.data.length > 0 ? (
           <View style={styles.fieldsList}>
             {section.data.map((field, index) => {
-              // Add sectionId to field for deletion
               const fieldWithSection = {
                 ...field,
                 sectionId: section._id || section.id,

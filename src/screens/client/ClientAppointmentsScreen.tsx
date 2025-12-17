@@ -1,25 +1,25 @@
-import React, { useEffect, useState } from 'react';
-import {
-  View,
-  Text,
-  StyleSheet,
-  FlatList,
-  ActivityIndicator,
-  TouchableOpacity,
-} from 'react-native';
-import { SafeAreaView } from 'react-native-safe-area-context';
 import { useNavigation, useRoute } from '@react-navigation/native';
 import { Send } from 'lucide-react-native';
-import Toast from 'react-native-toast-message';
-import { ClientAppointmentData } from '../../types';
-import AppointmentCard from '../../components/clients/AppointmentCard';
-import SendConsentFormModal from '../../components/clients/SendConsentFormModal';
-import DeleteModal from '../../components/clients/DeleteModal';
+import React, { useEffect, useState } from 'react';
 import {
+  ActivityIndicator,
+  FlatList,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
+} from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
+import Toast from 'react-native-toast-message';
+import AppointmentCard from '../../components/clients/AppointmentCard';
+import DeleteModal from '../../components/clients/DeleteModal';
+import SendConsentFormModal from '../../components/clients/SendConsentFormModal';
+import {
+  DeleteAppointment,
   getAppointmentsForCustomer,
   getCustomerById,
-  DeleteAppointment,
 } from '../../services/artistServices';
+import { ClientAppointmentData } from '../../types';
 
 interface ClientAppointmentsScreenProps {}
 
@@ -89,7 +89,7 @@ const ClientAppointmentsScreen: React.FC<
   const handleDeleteConfirm = async () => {
     if (appointmentToDelete) {
       try {
-        // await DeleteAppointment(appointmentToDelete);
+        await DeleteAppointment(appointmentToDelete);
         setAppointments(prev =>
           prev.filter(apt => apt.id !== appointmentToDelete),
         );

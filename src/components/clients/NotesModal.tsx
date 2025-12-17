@@ -40,9 +40,8 @@ const NotesModal: React.FC<NotesModalProps> = ({
 
     if (result.assets && result.assets[0]) {
       const asset = result.assets[0];
-      // In a real app, you would upload this image to Firebase Storage
-      // and get the download URL
-      // For now, we'll use the local URI
+      //TODO: Implement actual upload logic here
+
       setImageUrl(asset.uri || '');
     }
   };

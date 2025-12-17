@@ -99,6 +99,6 @@ export const refreshAuthUser = async (dispatch: Dispatch): Promise<void> => {
     }
   } catch (error) {
     console.error('Error refreshing auth user:', error);
-    throw error; // Re-throw to allow caller to handle errors
+    throw error;
   }
 };
