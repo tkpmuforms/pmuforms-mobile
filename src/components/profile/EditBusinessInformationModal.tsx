@@ -7,11 +7,11 @@ import {
   TouchableOpacity,
   TextInput,
   ScrollView,
-  SafeAreaView,
   Image,
   Alert,
   ActivityIndicator,
 } from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
 import { X, Camera } from 'lucide-react-native';
 import { useDispatch } from 'react-redux';
 // import { launchImageLibrary } from 'react-native-image-picker';
@@ -240,7 +240,7 @@ const styles = StyleSheet.create({
   title: {
     fontSize: 24,
     fontWeight: '700',
-    color: '#1e293b',
+    color: '#000000',
     marginBottom: 24,
     textAlign: 'center',
   },
@@ -311,7 +311,7 @@ const styles = StyleSheet.create({
     borderColor: '#e2e8f0',
     borderRadius: 12,
     fontSize: 14,
-    color: '#1e293b',
+    color: '#000000',
     backgroundColor: '#fff',
   },
   inputDisabled: {

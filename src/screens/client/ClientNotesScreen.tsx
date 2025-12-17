@@ -4,12 +4,12 @@ import React, { useEffect, useState } from 'react';
 import {
   ActivityIndicator,
   FlatList,
-  SafeAreaView,
   StyleSheet,
   Text,
   TouchableOpacity,
   View,
 } from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
 import Toast from 'react-native-toast-message';
 import DeleteModal from '../../components/clients/DeleteModal';
 import NoteCard from '../../components/clients/NoteCard';
@@ -188,7 +188,7 @@ const ClientNotesScreen: React.FC<ClientNotesScreenProps> = () => {
     return (
       <SafeAreaView style={styles.container}>
         <View style={styles.loadingContainer}>
-          <ActivityIndicator size="large" color="#007AFF" />
+          <ActivityIndicator size="large" color="#8e2d8e" />
         </View>
       </SafeAreaView>
     );
@@ -276,7 +276,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
-    backgroundColor: '#007AFF',
+    backgroundColor: '#8e2d8e',
     paddingVertical: 12,
     paddingHorizontal: 16,
     borderRadius: 8,

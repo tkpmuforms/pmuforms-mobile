@@ -80,7 +80,7 @@ const styles = StyleSheet.create({
     flex: 1,
     fontSize: 16,
     fontWeight: '600',
-    color: '#1e293b',
+    color: '#000000',
     lineHeight: 22,
   },
   meta: {

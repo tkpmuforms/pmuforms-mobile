@@ -15,13 +15,13 @@ import React, { useCallback, useEffect, useState } from 'react';
 import {
   ActivityIndicator,
   Clipboard,
-  SafeAreaView,
   ScrollView,
   StyleSheet,
   Text,
   TouchableOpacity,
   View,
 } from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
 import Toast from 'react-native-toast-message';
 import DeleteModal from '../../components/clients/DeleteModal';
 import EditClientModal from '../../components/clients/EditClientModal';
@@ -130,24 +130,24 @@ const ClientDetailsScreen: React.FC<ClientDetailsScreenProps> = () => {
 
   const quickActions = [
     {
-      icon: <Calendar size={20} color="#007AFF" />,
+      icon: <Calendar size={20} color="#8e2d8e" />,
       title: 'View Appointment',
       onPress: () =>
         navigation.navigate('ClientAppointments', { clientId, client }),
     },
     {
-      icon: <Send size={20} color="#007AFF" />,
+      icon: <Send size={20} color="#8e2d8e" />,
       title: 'Send Consent Form',
       onPress: () => setShowSendConsentForm(true),
     },
     {
-      icon: <Clock size={20} color="#007AFF" />,
+      icon: <Clock size={20} color="#8e2d8e" />,
       title: 'Set Reminders',
       onPress: () =>
         navigation.navigate('ClientReminders', { clientId, client }),
     },
     {
-      icon: <User size={20} color="#007AFF" />,
+      icon: <User size={20} color="#8e2d8e" />,
       title: 'View Notes',
       onPress: () => navigation.navigate('ClientNotes', { clientId, client }),
     },
@@ -157,7 +157,7 @@ const ClientDetailsScreen: React.FC<ClientDetailsScreenProps> = () => {
     return (
       <SafeAreaView style={styles.container}>
         <View style={styles.loadingContainer}>
-          <ActivityIndicator size="large" color="#007AFF" />
+          <ActivityIndicator size="large" color="#8e2d8e" />
         </View>
       </SafeAreaView>
     );
@@ -188,7 +188,7 @@ const ClientDetailsScreen: React.FC<ClientDetailsScreenProps> = () => {
             style={styles.actionButton}
             onPress={() => setShowEditClient(true)}
           >
-            <Edit size={20} color="#007AFF" />
+            <Edit size={20} color="#8e2d8e" />
             <Text style={styles.actionButtonText}>Edit</Text>
           </TouchableOpacity>
           <TouchableOpacity
@@ -226,7 +226,7 @@ const ClientDetailsScreen: React.FC<ClientDetailsScreenProps> = () => {
               <TouchableOpacity
                 onPress={() => handleCopyToClipboard(client.email, 'Email')}
               >
-                <Copy size={16} color="#007AFF" />
+                <Copy size={16} color="#8e2d8e" />
               </TouchableOpacity>
             </View>
 
@@ -237,7 +237,7 @@ const ClientDetailsScreen: React.FC<ClientDetailsScreenProps> = () => {
                 <TouchableOpacity
                   onPress={() => handleCopyToClipboard(client.phone!, 'Phone')}
                 >
-                  <Copy size={16} color="#007AFF" />
+                  <Copy size={16} color="#8e2d8e" />
                 </TouchableOpacity>
               </View>
             )}
@@ -340,7 +340,7 @@ const styles = StyleSheet.create({
     marginBottom: 16,
   },
   retryButton: {
-    backgroundColor: '#007AFF',
+    backgroundColor: '#8e2d8e',
     paddingHorizontal: 24,
     paddingVertical: 12,
     borderRadius: 8,
@@ -367,7 +367,7 @@ const styles = StyleSheet.create({
     gap: 8,
   },
   actionButtonText: {
-    color: '#007AFF',
+    color: '#8e2d8e',
     fontSize: 14,
     fontWeight: '600',
   },
@@ -392,7 +392,7 @@ const styles = StyleSheet.create({
     width: 80,
     height: 80,
     borderRadius: 40,
-    backgroundColor: '#007AFF',
+    backgroundColor: '#8e2d8e',
     justifyContent: 'center',
     alignItems: 'center',
   },
@@ -437,7 +437,7 @@ const styles = StyleSheet.create({
   metricValue: {
     fontSize: 32,
     fontWeight: 'bold',
-    color: '#007AFF',
+    color: '#8e2d8e',
     marginBottom: 4,
   },
   metricLabel: {

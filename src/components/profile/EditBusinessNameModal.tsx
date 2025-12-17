@@ -6,9 +6,9 @@ import {
   Modal,
   TouchableOpacity,
   TextInput,
-  SafeAreaView,
   Alert,
 } from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
 import { X, Eye, EyeOff } from 'lucide-react-native';
 import { useDispatch } from 'react-redux';
 import useAuth from '../../hooks/useAuth';
@@ -137,7 +137,7 @@ const styles = StyleSheet.create({
   title: {
     fontSize: 24,
     fontWeight: '600',
-    color: '#1e293b',
+    color: '#000000',
     marginBottom: 24,
     textAlign: 'center',
   },
@@ -165,7 +165,7 @@ const styles = StyleSheet.create({
     borderColor: '#e2e8f0',
     borderRadius: 12,
     fontSize: 14,
-    color: '#1e293b',
+    color: '#000000',
     backgroundColor: '#f8fafc',
   },
   iconButton: {

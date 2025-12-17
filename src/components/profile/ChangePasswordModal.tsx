@@ -6,9 +6,9 @@ import {
   Modal,
   TouchableOpacity,
   TextInput,
-  SafeAreaView,
   Alert,
 } from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
 import { X } from 'lucide-react-native';
 import auth from '@react-native-firebase/auth';
 
@@ -121,7 +121,7 @@ const styles = StyleSheet.create({
   title: {
     fontSize: 24,
     fontWeight: '600',
-    color: '#1e293b',
+    color: '#000000',
     marginBottom: 8,
     textAlign: 'center',
   },
@@ -152,7 +152,7 @@ const styles = StyleSheet.create({
     borderColor: '#e2e8f0',
     borderRadius: 12,
     fontSize: 14,
-    color: '#1e293b',
+    color: '#000000',
     backgroundColor: '#f8fafc',
   },
   saveButton: {

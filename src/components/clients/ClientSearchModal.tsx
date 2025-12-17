@@ -241,7 +241,7 @@ const styles = StyleSheet.create({
     borderColor: '#e2e8f0',
     borderRadius: 12,
     fontSize: 14,
-    color: '#1e293b',
+    color: '#000000',
     backgroundColor: '#f8fafc',
   },
   resultsContainer: {
@@ -286,7 +286,7 @@ const styles = StyleSheet.create({
   resultName: {
     fontSize: 14,
     fontWeight: '500',
-    color: '#1e293b',
+    color: '#000000',
     marginBottom: 2,
   },
   resultEmail: {

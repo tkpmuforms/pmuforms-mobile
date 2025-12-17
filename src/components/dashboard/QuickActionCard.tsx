@@ -50,7 +50,7 @@ const styles = StyleSheet.create({
   title: {
     fontSize: 13,
     fontWeight: '500',
-    color: '#1e293b',
+    color: '#000000',
     flex: 1,
   },
   iconContainer: {

@@ -254,7 +254,7 @@ const styles = StyleSheet.create({
   title: {
     fontSize: 24,
     fontWeight: '600',
-    color: '#1e293b',
+    color: '#000000',
     marginVertical: 16,
     textAlign: 'center',
   },
@@ -332,7 +332,7 @@ const styles = StyleSheet.create({
   planName: {
     fontSize: 14,
     fontWeight: '600',
-    color: '#1e293b',
+    color: '#000000',
     marginBottom: 8,
   },
   priceContainer: {
@@ -343,7 +343,7 @@ const styles = StyleSheet.create({
   priceAmount: {
     fontSize: 24,
     fontWeight: '700',
-    color: '#1e293b',
+    color: '#000000',
   },
   pricePeriod: {
     fontSize: 16,

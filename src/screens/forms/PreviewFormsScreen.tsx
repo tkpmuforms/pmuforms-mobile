@@ -117,7 +117,7 @@ const PreviewFormsScreen = ({ route, navigation }: any) => {
       {/* Header */}
       <View style={styles.header}>
         <TouchableOpacity onPress={() => navigation.goBack()}>
-          <ArrowLeft size={24} color="#1e293b" />
+          <ArrowLeft size={24} color="#000000" />
         </TouchableOpacity>
         <View style={styles.headerActions}>
           <TouchableOpacity

@@ -424,7 +424,7 @@ const styles = StyleSheet.create({
   welcomeTitle: {
     fontSize: 22,
     fontWeight: '700',
-    color: '#1e293b',
+    color: '#000000',
     marginBottom: 2,
   },
   welcomeSubtitle: {
@@ -447,7 +447,7 @@ const styles = StyleSheet.create({
   setupTitle: {
     fontSize: 14,
     fontWeight: '600',
-    color: '#1e293b',
+    color: '#000000',
   },
   setupSubtitle: {
     fontSize: 12,

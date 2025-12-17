@@ -110,7 +110,7 @@ const styles = StyleSheet.create({
   title: {
     fontSize: 24,
     fontWeight: '600',
-    color: '#1e293b',
+    color: '#000000',
     marginBottom: 24,
   },
   reminderTypes: {
@@ -146,7 +146,7 @@ const styles = StyleSheet.create({
   cardTitle: {
     fontSize: 16,
     fontWeight: '600',
-    color: '#1e293b',
+    color: '#000000',
     marginBottom: 4,
   },
   cardDescription: {

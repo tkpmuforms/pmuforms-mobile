@@ -6,9 +6,9 @@ import {
   Modal,
   TouchableOpacity,
   ScrollView,
-  SafeAreaView,
   ActivityIndicator,
 } from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
 import { X } from 'lucide-react-native';
 import { useDispatch } from 'react-redux';
 import useAuth from '../../hooks/useAuth';
@@ -230,7 +230,7 @@ const styles = StyleSheet.create({
   title: {
     fontSize: 24,
     fontWeight: '600',
-    color: '#1e293b',
+    color: '#000000',
     marginBottom: 8,
     textAlign: 'center',
   },
@@ -248,7 +248,7 @@ const styles = StyleSheet.create({
   sectionTitle: {
     fontSize: 18,
     fontWeight: '600',
-    color: '#1e293b',
+    color: '#000000',
     marginBottom: 16,
   },
   loadingContainer: {

@@ -3,11 +3,11 @@ import {
   View,
   Text,
   StyleSheet,
-  SafeAreaView,
   FlatList,
   ActivityIndicator,
   TouchableOpacity,
 } from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
 import { useRoute } from '@react-navigation/native';
 import { Plus } from 'lucide-react-native';
 import Toast from 'react-native-toast-message';
@@ -73,7 +73,7 @@ const ClientRemindersScreen: React.FC<ClientRemindersScreenProps> = () => {
   const handleDeleteConfirm = async () => {
     if (selectedReminder) {
       try {
-        // await deleteReminder(selectedReminder.id);
+        await deleteReminder(selectedReminder.id);
         setReminders(prev => prev.filter(r => r.id !== selectedReminder.id));
         setShowDeleteModal(false);
         setSelectedReminder(null);
@@ -154,7 +154,7 @@ const ClientRemindersScreen: React.FC<ClientRemindersScreenProps> = () => {
     return (
       <SafeAreaView style={styles.container}>
         <View style={styles.loadingContainer}>
-          <ActivityIndicator size="large" color="#007AFF" />
+          <ActivityIndicator size="large" color="#8e2d8e" />
         </View>
       </SafeAreaView>
     );
@@ -233,7 +233,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
-    backgroundColor: '#007AFF',
+    backgroundColor: '#8e2d8e',
     paddingVertical: 12,
     paddingHorizontal: 16,
     borderRadius: 8,

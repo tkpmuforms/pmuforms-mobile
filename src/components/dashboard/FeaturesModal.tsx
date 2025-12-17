@@ -6,8 +6,8 @@ import {
   Modal,
   ScrollView,
   TouchableOpacity,
-  SafeAreaView,
 } from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
 import {
   X,
   Edit,
@@ -169,7 +169,7 @@ const styles = StyleSheet.create({
   title: {
     fontSize: 24,
     fontWeight: '600',
-    color: '#1e293b',
+    color: '#000000',
     marginTop: 16,
     marginBottom: 8,
     textAlign: 'center',
@@ -206,7 +206,7 @@ const styles = StyleSheet.create({
   featureTitle: {
     fontSize: 16,
     fontWeight: '600',
-    color: '#1e293b',
+    color: '#000000',
     marginBottom: 4,
   },
   featureDescription: {

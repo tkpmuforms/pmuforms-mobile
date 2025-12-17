@@ -217,7 +217,7 @@ const styles = StyleSheet.create({
   title: {
     fontSize: 24,
     fontWeight: '600',
-    color: '#1e293b',
+    color: '#000000',
     marginBottom: 8,
     textAlign: 'center',
   },
@@ -252,7 +252,7 @@ const styles = StyleSheet.create({
   },
   dateText: {
     fontSize: 14,
-    color: '#1e293b',
+    color: '#000000',
   },
   servicesGrid: {
     flexDirection: 'row',

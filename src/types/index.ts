@@ -46,6 +46,7 @@ export interface Client {
   email: string;
   initials: string;
   color: string;
+  phone?: string;
 }
 
 export interface Appointment {

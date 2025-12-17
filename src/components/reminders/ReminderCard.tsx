@@ -1,11 +1,11 @@
-import React from "react";
-import { View, Text, TouchableOpacity, StyleSheet } from "react-native";
-import { Bell, Calendar } from "lucide-react-native";
-import { formatAppointmentTime } from "../../utils/utils";
+import React from 'react';
+import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
+import { Bell, Calendar } from 'lucide-react-native';
+import { formatAppointmentTime } from '../../utils/utils';
 
 interface Reminder {
   id: string;
-  type: "check-in" | "follow-up";
+  type: 'check-in' | 'follow-up';
   sendAt: string;
   note: string;
   customerId: string;
@@ -28,17 +28,21 @@ const ReminderCard: React.FC<ReminderCardProps> = ({
         <View
           style={[
             styles.iconContainer,
-            reminder.type === "check-in" ? styles.checkInIcon : styles.followUpIcon,
+            reminder.type === 'check-in'
+              ? styles.checkInIcon
+              : styles.followUpIcon,
           ]}
         >
-          {reminder.type === "check-in" ? (
+          {reminder.type === 'check-in' ? (
             <Calendar size={24} color="white" />
           ) : (
             <Bell size={24} color="white" />
           )}
         </View>
         <View style={styles.content}>
-          <Text style={styles.date}>{formatAppointmentTime(reminder.sendAt)}</Text>
+          <Text style={styles.date}>
+            {formatAppointmentTime(reminder.sendAt)}
+          </Text>
           <Text style={styles.note}>{reminder.note}</Text>
         </View>
       </View>
@@ -63,74 +67,74 @@ const ReminderCard: React.FC<ReminderCardProps> = ({
 
 const styles = StyleSheet.create({
   reminderCard: {
-    backgroundColor: "#f8f9fa",
+    backgroundColor: '#f8f9fa',
     borderRadius: 12,
     padding: 16,
     marginBottom: 12,
     borderWidth: 1,
-    borderColor: "#e9ecef",
+    borderColor: '#e9ecef',
   },
   header: {
-    flexDirection: "row",
+    flexDirection: 'row',
     marginBottom: 12,
   },
   iconContainer: {
     width: 48,
     height: 48,
     borderRadius: 12,
-    justifyContent: "center",
-    alignItems: "center",
+    justifyContent: 'center',
+    alignItems: 'center',
     marginRight: 12,
   },
   checkInIcon: {
-    backgroundColor: "#3b82f6",
+    backgroundColor: '#3b82f6',
   },
   followUpIcon: {
-    backgroundColor: "#f59e0b",
+    backgroundColor: '#f59e0b',
   },
   content: {
     flex: 1,
   },
   date: {
     fontSize: 16,
-    fontWeight: "600",
-    color: "#1e293b",
+    fontWeight: '600',
+    color: '#000000',
     marginBottom: 4,
   },
   note: {
     fontSize: 14,
-    color: "#64748b",
+    color: '#64748b',
     lineHeight: 20,
   },
   actions: {
-    flexDirection: "row",
+    flexDirection: 'row',
     gap: 12,
   },
   editButton: {
     flex: 1,
-    backgroundColor: "#8e2d8e",
+    backgroundColor: '#8e2d8e',
     paddingVertical: 10,
     paddingHorizontal: 16,
     borderRadius: 8,
-    alignItems: "center",
+    alignItems: 'center',
   },
   editButtonText: {
-    color: "white",
+    color: 'white',
     fontSize: 14,
-    fontWeight: "600",
+    fontWeight: '600',
   },
   deleteButton: {
     flex: 1,
-    backgroundColor: "#ef4444",
+    backgroundColor: '#ef4444',
     paddingVertical: 10,
     paddingHorizontal: 16,
     borderRadius: 8,
-    alignItems: "center",
+    alignItems: 'center',
   },
   deleteButtonText: {
-    color: "white",
+    color: 'white',
     fontSize: 14,
-    fontWeight: "600",
+    fontWeight: '600',
   },
 });
 

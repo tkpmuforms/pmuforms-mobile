@@ -16,7 +16,7 @@ const ReminderCard: React.FC<ReminderCardProps> = ({ reminder, onDelete }) => {
   return (
     <View style={styles.card}>
       <View style={styles.iconContainer}>
-        <Bell size={24} color={reminder.sent ? '#666' : '#007AFF'} />
+        <Bell size={24} color={reminder.sent ? '#666' : '#8e2d8e'} />
       </View>
 
       <View style={styles.content}>

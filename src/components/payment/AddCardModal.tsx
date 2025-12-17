@@ -84,7 +84,7 @@ const AddCardModal: React.FC<AddCardModalProps> = ({
           <View style={styles.header}>
             <Text style={styles.title}>Add New Card</Text>
             <TouchableOpacity style={styles.closeButton} onPress={onClose}>
-              <X size={24} color="#1e293b" />
+              <X size={24} color="#000000" />
             </TouchableOpacity>
           </View>
 
@@ -224,7 +224,7 @@ const styles = StyleSheet.create({
   title: {
     fontSize: 20,
     fontWeight: '600',
-    color: '#1e293b',
+    color: '#000000',
     flex: 1,
   },
   closeButton: {
@@ -261,7 +261,7 @@ const styles = StyleSheet.create({
     borderColor: '#e5e7eb',
     borderRadius: 12,
     fontSize: 16,
-    color: '#1e293b',
+    color: '#000000',
   },
   row: {
     flexDirection: 'row',

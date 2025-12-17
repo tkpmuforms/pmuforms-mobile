@@ -193,7 +193,7 @@ const SelectPaymentMethodModal: React.FC<SelectPaymentMethodModalProps> = ({
           <View style={styles.header}>
             <Text style={styles.title}>Select a Payment Method</Text>
             <TouchableOpacity style={styles.closeButton} onPress={onClose}>
-              <X size={24} color="#1e293b" />
+              <X size={24} color="#000000" />
             </TouchableOpacity>
           </View>
 
@@ -327,7 +327,7 @@ const styles = StyleSheet.create({
   title: {
     fontSize: 20,
     fontWeight: '600',
-    color: '#1e293b',
+    color: '#000000',
     flex: 1,
   },
   closeButton: {
@@ -360,7 +360,7 @@ const styles = StyleSheet.create({
   sectionTitle: {
     fontSize: 16,
     fontWeight: '600',
-    color: '#1e293b',
+    color: '#000000',
   },
   addCardLink: {
     color: '#8e2d8e',

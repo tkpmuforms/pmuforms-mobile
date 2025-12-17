@@ -102,7 +102,7 @@ const styles = StyleSheet.create({
   title: {
     fontSize: 20,
     fontWeight: '600',
-    color: '#1e293b',
+    color: '#000000',
     marginBottom: 12,
     textAlign: 'center',
   },

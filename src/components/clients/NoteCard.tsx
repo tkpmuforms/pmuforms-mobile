@@ -88,7 +88,7 @@ const styles = StyleSheet.create({
     elevation: 2,
   },
   cardSelected: {
-    borderColor: '#007AFF',
+    borderColor: '#8e2d8e',
     borderWidth: 2,
   },
   content: {

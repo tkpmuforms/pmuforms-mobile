@@ -204,7 +204,7 @@ const styles = StyleSheet.create({
   businessName: {
     fontSize: 28,
     fontWeight: '700',
-    color: '#1e293b',
+    color: '#000000',
     marginBottom: 16,
     textAlign: 'center',
   },
@@ -261,7 +261,7 @@ const styles = StyleSheet.create({
   menuTitle: {
     fontSize: 16,
     fontWeight: '500',
-    color: '#1e293b',
+    color: '#000000',
     flex: 1,
   },
   menuTitleDanger: {

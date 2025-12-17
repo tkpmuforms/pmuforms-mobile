@@ -4,44 +4,24 @@ import React, { useEffect, useState } from 'react';
 import {
   ActivityIndicator,
   FlatList,
-  SafeAreaView,
   StyleSheet,
   Text,
   TextInput,
   TouchableOpacity,
   View,
 } from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
 import Toast from 'react-native-toast-message';
 import AddClientModal from '../../components/clients/AddClientModal';
 import ClientCard from '../../components/clients/ClientCard';
 import ClientSearchModal from '../../components/clients/ClientSearchModal';
 import { searchCustomers } from '../../services/artistServices';
 import { Client, CustomerResponse } from '../../types';
+import { generateColor, generateInitials } from '../../utils/utils';
 
 interface ClientScreenProps {
   navigation?: any;
 }
-
-const generateInitials = (name: string): string => {
-  if (!name) return 'NA';
-  const parts = name.trim().split(' ');
-  if (parts.length === 1) return parts[0].substring(0, 2).toUpperCase();
-  return (parts[0][0] + parts[parts.length - 1][0]).toUpperCase();
-};
-
-const generateColor = (name: string): string => {
-  const colors = [
-    '#FF6B6B',
-    '#4ECDC4',
-    '#45B7D1',
-    '#FFA07A',
-    '#98D8C8',
-    '#F7DC6F',
-    '#BB8FCE',
-  ];
-  const index = name.length % colors.length;
-  return colors[index];
-};
 
 const ClientScreen: React.FC<ClientScreenProps> = () => {
   const navigation = useNavigation();
@@ -50,7 +30,6 @@ const ClientScreen: React.FC<ClientScreenProps> = () => {
   const [searchQuery, setSearchQuery] = useState('');
   const [clients, setClients] = useState<Client[]>([]);
   const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
   const [totalClients, setTotalClients] = useState(0);
 
   const convertToClient = (
@@ -70,7 +49,6 @@ const ClientScreen: React.FC<ClientScreenProps> = () => {
   const fetchCustomers = async (searchName?: string) => {
     try {
       setLoading(true);
-      setError(null);
 
       const response = await searchCustomers(searchName, 1, 30);
       const data: CustomerResponse = response?.data;
@@ -79,7 +57,6 @@ const ClientScreen: React.FC<ClientScreenProps> = () => {
       setTotalClients(data.metadata.total);
     } catch (err) {
       console.error('Error fetching customers:', err);
-      setError('Failed to load clients. Please try again.');
       Toast.show({
         type: 'error',
         text1: 'Error',
@@ -164,7 +141,7 @@ const ClientScreen: React.FC<ClientScreenProps> = () => {
     return (
       <SafeAreaView style={styles.container}>
         <View style={styles.loadingContainer}>
-          <ActivityIndicator size="large" color="#007AFF" />
+          <ActivityIndicator size="large" color="#8e2d8e" />
         </View>
       </SafeAreaView>
     );
@@ -238,7 +215,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
-    backgroundColor: '#007AFF',
+    backgroundColor: '#8e2d8e',
     paddingVertical: 12,
     paddingHorizontal: 16,
     borderRadius: 8,

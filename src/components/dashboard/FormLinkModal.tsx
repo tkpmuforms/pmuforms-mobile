@@ -2,13 +2,13 @@ import { Check, Copy, X } from 'lucide-react-native';
 import React, { useState } from 'react';
 import {
   Modal,
-  SafeAreaView,
   StyleSheet,
   Text,
   TextInput,
   TouchableOpacity,
   View,
 } from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
 // import Clipboard from '@react-native-clipboard/clipboard';
 
 interface FormLinkModalProps {

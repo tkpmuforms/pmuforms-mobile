@@ -179,7 +179,7 @@ const PreviewAppointmentModal: React.FC<PreviewAppointmentModalProps> = ({
           <View style={styles.modal}>
             <View style={styles.header}>
               <TouchableOpacity style={styles.backButton} onPress={onClose}>
-                <ChevronLeft size={20} color="#1e293b" />
+                <ChevronLeft size={20} color="#000000" />
               </TouchableOpacity>
               <Text style={styles.title}>Preview Appointment</Text>
               <TouchableOpacity style={styles.closeButton} onPress={onClose}>
@@ -290,7 +290,7 @@ const styles = StyleSheet.create({
   title: {
     fontSize: 20,
     fontWeight: '600',
-    color: '#1e293b',
+    color: '#000000',
     flex: 1,
     textAlign: 'center',
   },
@@ -341,7 +341,7 @@ const styles = StyleSheet.create({
   },
   detailValue: {
     fontSize: 14,
-    color: '#1e293b',
+    color: '#000000',
     fontWeight: '600',
   },
   divider: {
@@ -355,7 +355,7 @@ const styles = StyleSheet.create({
   sectionLabel: {
     fontSize: 14,
     fontWeight: '600',
-    color: '#1e293b',
+    color: '#000000',
     marginBottom: 12,
   },
   servicesList: {
@@ -402,7 +402,7 @@ const styles = StyleSheet.create({
   },
   formText: {
     fontSize: 14,
-    color: '#1e293b',
+    color: '#000000',
     flex: 1,
   },
   continueButton: {

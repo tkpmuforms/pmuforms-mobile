@@ -64,7 +64,7 @@ const AppointmentCard: React.FC<AppointmentCardProps> = ({
       <View style={styles.header}>
         <View style={styles.serviceInfo}>
           <View style={styles.serviceIcon}>
-            <Calendar size={20} color="#007AFF" />
+            <Calendar size={20} color="#8e2d8e" />
           </View>
           <View style={styles.serviceContent}>
             <Text style={styles.serviceName} numberOfLines={1}>
@@ -123,7 +123,7 @@ const AppointmentCard: React.FC<AppointmentCardProps> = ({
         <Pressable style={styles.modalOverlay} onPress={handleMenuClose}>
           <View style={styles.menuContainer}>
             <TouchableOpacity style={styles.menuItem} onPress={handleViewForms}>
-              <FileText size={16} color="#1e293b" />
+              <FileText size={16} color="#000000" />
               <Text style={styles.menuItemText}>View Forms</Text>
             </TouchableOpacity>
 
@@ -183,7 +183,7 @@ const styles = StyleSheet.create({
   serviceName: {
     fontSize: 16,
     fontWeight: '600',
-    color: '#1e293b',
+    color: '#000000',
   },
   formStatus: {
     marginLeft: 8,
@@ -215,7 +215,7 @@ const styles = StyleSheet.create({
   },
   detailValue: {
     fontSize: 14,
-    color: '#1e293b',
+    color: '#000000',
     fontWeight: '600',
   },
   modalOverlay: {
@@ -250,7 +250,7 @@ const styles = StyleSheet.create({
   menuItemText: {
     fontSize: 14,
     fontWeight: '500',
-    color: '#1e293b',
+    color: '#000000',
   },
   menuItemDeleteText: {
     color: '#ef4444',
