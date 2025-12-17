@@ -12,8 +12,6 @@ import { useRoute, useNavigation } from '@react-navigation/native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { FileText, Download } from 'lucide-react-native';
 import Toast from 'react-native-toast-message';
-import * as RNHTMLtoPDF from 'react-native-html-to-pdf';
-import Share from 'react-native-share';
 import useAuth from '../../hooks/useAuth';
 import {
   getFilledFormByAppointmentAndTemplate,
@@ -66,7 +64,6 @@ const FilledFormsPreviewScreen: React.FC = () => {
   const [form, setForm] = useState<Form | null>(null);
   const [filledData, setFilledData] = useState<FilledData>({});
   const [loading, setLoading] = useState(true);
-  const [generating, setGenerating] = useState(false);
   const [signatureUrl, setSignatureUrl] = useState<string | null>(null);
 
   useEffect(() => {
@@ -78,7 +75,7 @@ const FilledFormsPreviewScreen: React.FC = () => {
             getFormById(templateId || ''),
             getFilledFormByAppointmentAndTemplate(
               appointmentId || '',
-              templateId || '',
+              templateId || ''
             ),
             getAppointmentById(appointmentId || ''),
           ]);
@@ -103,11 +100,12 @@ const FilledFormsPreviewScreen: React.FC = () => {
               })),
           };
 
+          // Replace business name placeholder
           const updatedForm = JSON.parse(
             JSON.stringify(transformedForm).replace(
               /\(?\{\{user\.businessName\}\}\)?/g,
-              user?.businessName || 'Your Business Name',
-            ),
+              user?.businessName || 'Your Business Name'
+            )
           );
 
           setForm(updatedForm);
@@ -137,6 +135,7 @@ const FilledFormsPreviewScreen: React.FC = () => {
     const fieldId = field.id || field._id;
     const value = filledData[fieldId];
 
+    // Handle different field types
     switch (field.type) {
       case 'paragraph':
       case 'heading':
@@ -227,268 +226,14 @@ const FilledFormsPreviewScreen: React.FC = () => {
     }
   };
 
-  const generateFormHTML = () => {
-    let html = `
-      <!DOCTYPE html>
-      <html>
-      <head>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <style>
-          body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-            padding: 40px;
-            color: #1f2937;
-            line-height: 1.6;
-          }
-          .header {
-            text-align: center;
-            margin-bottom: 40px;
-            border-bottom: 3px solid #3b82f6;
-            padding-bottom: 20px;
-          }
-          .title {
-            font-size: 28px;
-            font-weight: bold;
-            margin: 0;
-            color: #111827;
-          }
-          .section {
-            margin-bottom: 30px;
-            page-break-inside: avoid;
-          }
-          .section-title {
-            font-size: 20px;
-            font-weight: 600;
-            color: #374151;
-            margin-bottom: 16px;
-            padding-bottom: 8px;
-            border-bottom: 2px solid #e5e7eb;
-          }
-          .field {
-            margin-bottom: 20px;
-          }
-          .field-label {
-            font-size: 14px;
-            font-weight: 600;
-            color: #374151;
-            margin-bottom: 8px;
-          }
-          .required {
-            color: #ef4444;
-          }
-          .field-value {
-            font-size: 14px;
-            color: #1f2937;
-            background-color: #f9fafb;
-            padding: 12px;
-            border-radius: 6px;
-            border: 1px solid #e5e7eb;
-          }
-          .checkbox-item, .radio-item {
-            margin: 8px 0;
-            display: flex;
-            align-items: center;
-          }
-          .checkbox, .radio {
-            width: 16px;
-            height: 16px;
-            border: 2px solid #d1d5db;
-            display: inline-block;
-            margin-right: 12px;
-          }
-          .checkbox {
-            border-radius: 3px;
-          }
-          .radio {
-            border-radius: 50%;
-          }
-          .checked {
-            background-color: #3b82f6;
-            border-color: #3b82f6;
-            position: relative;
-          }
-          .checked::after {
-            content: '✓';
-            color: white;
-            position: absolute;
-            top: -2px;
-            left: 2px;
-            font-size: 12px;
-          }
-          .signature-section {
-            margin-top: 40px;
-            padding-top: 30px;
-            border-top: 2px solid #e5e7eb;
-            page-break-inside: avoid;
-          }
-          .signature-title {
-            font-size: 18px;
-            font-weight: 600;
-            margin-bottom: 16px;
-          }
-          .signature-container {
-            border: 1px solid #e5e7eb;
-            border-radius: 6px;
-            padding: 16px;
-            background-color: white;
-          }
-          .signature-image {
-            max-width: 100%;
-            height: auto;
-            max-height: 150px;
-          }
-        </style>
-      </head>
-      <body>
-        <div class="header">
-          <h1 class="title">${form?.title || 'Form'}</h1>
-        </div>
-    `;
-
-    form?.sections.forEach(section => {
-      html += `<div class="section">`;
-      html += `<h2 class="section-title">${section.title}</h2>`;
-
-      section.data.forEach(field => {
-        const fieldId = field.id || field._id;
-        const value = filledData[fieldId];
-        const isParagraph =
-          field.type === 'paragraph' || field.type === 'heading';
-
-        if (field.type === 'paragraph' || field.type === 'heading') {
-          html += `<div class="field"><p>${field.content || ''}</p></div>`;
-        } else if (field.type === 'checkbox' && Array.isArray(value)) {
-          html += `<div class="field">`;
-          html += `<div class="field-label">${field.title}${
-            field.required ? '<span class="required"> *</span>' : ''
-          }</div>`;
-          field.options?.forEach(option => {
-            const isChecked = value.includes(option);
-            html += `<div class="checkbox-item">`;
-            html += `<span class="checkbox ${
-              isChecked ? 'checked' : ''
-            }"></span>`;
-            html += `<span>${option}</span>`;
-            html += `</div>`;
-          });
-          html += `</div>`;
-        } else if (
-          field.type === 'radio' ||
-          field.type === 'select' ||
-          field.type === 'dropdown'
-        ) {
-          html += `<div class="field">`;
-          html += `<div class="field-label">${field.title}${
-            field.required ? '<span class="required"> *</span>' : ''
-          }</div>`;
-          field.options?.forEach(option => {
-            const isSelected = value === option;
-            html += `<div class="radio-item">`;
-            html += `<span class="radio ${
-              isSelected ? 'checked' : ''
-            }"></span>`;
-            html += `<span>${option}</span>`;
-            html += `</div>`;
-          });
-          html += `</div>`;
-        } else if (field.type === 'signature') {
-          html += `<div class="field">`;
-          html += `<div class="field-label">${field.title}${
-            field.required ? '<span class="required"> *</span>' : ''
-          }</div>`;
-          if (value) {
-            html += `<div class="signature-container"><img src="${value}" class="signature-image" /></div>`;
-          } else {
-            html += `<div class="field-value">No signature provided</div>`;
-          }
-          html += `</div>`;
-        } else if (field.type === 'date') {
-          html += `<div class="field">`;
-          html += `<div class="field-label">${field.title}${
-            field.required ? '<span class="required"> *</span>' : ''
-          }</div>`;
-          html += `<div class="field-value">${
-            value ? new Date(value).toLocaleDateString() : 'No date selected'
-          }</div>`;
-          html += `</div>`;
-        } else {
-          html += `<div class="field">`;
-          html += `<div class="field-label">${field.title}${
-            field.required ? '<span class="required"> *</span>' : ''
-          }</div>`;
-          html += `<div class="field-value">${
-            value || 'No response provided'
-          }</div>`;
-          html += `</div>`;
-        }
-      });
-
-      html += `</div>`;
+  const handleGeneratePDF = () => {
+    // TODO: Implement PDF generation for mobile
+    // Options: react-native-pdf, react-native-html-to-pdf, or share as HTML
+    Toast.show({
+      type: 'info',
+      text1: 'Coming Soon',
+      text2: 'PDF generation will be available soon',
     });
-
-    if (signatureUrl) {
-      html += `
-        <div class="signature-section">
-          <div class="signature-title">Customer Signature</div>
-          <div class="signature-container">
-            <img src="${signatureUrl}" class="signature-image" />
-          </div>
-        </div>
-      `;
-    }
-
-    if (user?.signature_url) {
-      html += `
-        <div class="signature-section">
-          <div class="signature-title">Artist Signature</div>
-          <div class="signature-container">
-            <img src="${user.signature_url}" class="signature-image" />
-          </div>
-        </div>
-      `;
-    }
-
-    html += `
-      </body>
-      </html>
-    `;
-
-    return html;
-  };
-
-  const handleGeneratePDF = async () => {
-    try {
-      setGenerating(true);
-
-      const html = generateFormHTML();
-      const options = {
-        html,
-        fileName: `${form?.title.replace(/[^a-z0-9]/gi, '_')}_${Date.now()}`,
-        directory: 'Documents',
-      };
-
-      const file = await RNHTMLtoPDF.convert(options);
-
-      if (file.filePath) {
-        await Share.open({
-          url: `file://${file.filePath}`,
-          type: 'application/pdf',
-          title: 'Share Form PDF',
-        });
-      }
-    } catch (error: any) {
-      console.error('Error generating PDF:', error);
-      if (error.message !== 'User did not share') {
-        Toast.show({
-          type: 'error',
-          text1: 'Error',
-          text2: 'Failed to generate PDF',
-        });
-      }
-    } finally {
-      setGenerating(false);
-    }
   };
 
   if (loading) {
@@ -529,21 +274,11 @@ const FilledFormsPreviewScreen: React.FC = () => {
         <View style={styles.header}>
           <Text style={styles.title}>{form.title}</Text>
           <TouchableOpacity
-            style={[styles.pdfButton, generating && styles.pdfButtonDisabled]}
+            style={styles.pdfButton}
             onPress={handleGeneratePDF}
-            disabled={generating}
           >
-            {generating ? (
-              <>
-                <ActivityIndicator size="small" color={colors.white} />
-                <Text style={styles.pdfButtonText}>Generating PDF...</Text>
-              </>
-            ) : (
-              <>
-                <Download size={20} color={colors.white} />
-                <Text style={styles.pdfButtonText}>View as PDF</Text>
-              </>
-            )}
+            <Download size={20} color={colors.white} />
+            <Text style={styles.pdfButtonText}>View as PDF</Text>
           </TouchableOpacity>
         </View>
 
@@ -559,11 +294,11 @@ const FilledFormsPreviewScreen: React.FC = () => {
         {/* Form Sections */}
         <View style={styles.formContent}>
           {form.sections && form.sections.length > 0 ? (
-            form.sections.map(section => (
+            form.sections.map((section) => (
               <View key={section._id || section.id} style={styles.section}>
                 <Text style={styles.sectionTitle}>{section.title}</Text>
                 {section.data && section.data.length > 0 ? (
-                  section.data.map(field => {
+                  section.data.map((field) => {
                     const fieldId = field.id || field._id;
                     const isParagraph =
                       field.type === 'paragraph' || field.type === 'heading';
@@ -656,9 +391,6 @@ const styles = StyleSheet.create({
     paddingVertical: 12,
     paddingHorizontal: 20,
     gap: 8,
-  },
-  pdfButtonDisabled: {
-    opacity: 0.6,
   },
   pdfButtonText: {
     color: colors.white,
