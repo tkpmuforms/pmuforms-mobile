@@ -12,8 +12,8 @@ import ClientNotesScreen from '../screens/client/ClientNotesScreen';
 import ClientRemindersScreen from '../screens/client/ClientRemindersScreen';
 import ContactSupportScreen from '../screens/support/ContactSupportScreen';
 import PrivacyPolicyScreen from '../screens/support/PrivacyPolicyScreen';
-// import FilledFormsPreviewScreen from '../screens/appointments/FilledFormsPreviewScreen';
-// import SignatureScreen from '../screens/appointments/SignatureScreen';
+import FilledFormsPreviewScreen from '../screens/client/FilledFormsPreviewScreen';
+import SignatureScreen from '../screens/client/SignatureScreen';
 import EditFormsScreen from '../screens/forms/EditFormsScreen';
 import EditProfileScreen from '../screens/profile/EditProfileScreen';
 import BusinessInformationScreen from '../screens/profile/BusinessInformationScreen';
@@ -62,22 +62,22 @@ export const authorizedRoutes: RouteProps[] = [
     component: ClientNotesScreen,
     breadcrumbs: ['Clients', 'Client Details', 'Notes'],
   },
-  // {
-  //   name: 'AppointmentSignature',
-  //   component: SignatureScreen,
-  //   breadcrumbs: ['Clients', 'Client Details', 'Appointments', 'Signature'],
-  // },
-  // {
-  //   name: 'FilledFormPreview',
-  //   component: FilledFormsPreviewScreen,
-  //   breadcrumbs: [
-  //     'Clients',
-  //     'Client Details',
-  //     'Appointments',
-  //     'Forms',
-  //     'Filled Form Preview',
-  //   ],
-  // },
+  {
+    name: 'AppointmentSignature',
+    component: SignatureScreen,
+    breadcrumbs: ['Clients', 'Client Details', 'Appointments', 'Signature'],
+  },
+  {
+    name: 'FilledFormsPreview',
+    component: FilledFormsPreviewScreen,
+    breadcrumbs: [
+      'Clients',
+      'Client Details',
+      'Appointments',
+      'Forms',
+      'Filled Form Preview',
+    ],
+  },
   {
     name: 'Forms',
     component: FormsScreen,
