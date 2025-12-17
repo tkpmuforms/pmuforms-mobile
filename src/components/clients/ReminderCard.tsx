@@ -82,7 +82,7 @@ const styles = StyleSheet.create({
   message: {
     fontSize: 15,
     fontWeight: '600',
-    color: '#1a1a1a',
+    color: '#000000',
     marginBottom: 8,
   },
   detailsRow: {

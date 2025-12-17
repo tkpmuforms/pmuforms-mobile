@@ -1,23 +1,23 @@
+import { Camera, X } from 'lucide-react-native';
 import React, { useState } from 'react';
 import {
-  View,
-  Text,
-  StyleSheet,
-  Modal,
-  TouchableOpacity,
-  TextInput,
-  ScrollView,
-  Image,
-  Alert,
   ActivityIndicator,
+  Alert,
+  Image,
+  Modal,
+  ScrollView,
+  StyleSheet,
+  Text,
+  TextInput,
+  TouchableOpacity,
+  View,
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { X, Camera } from 'lucide-react-native';
 import { useDispatch } from 'react-redux';
 // import { launchImageLibrary } from 'react-native-image-picker';
 import useAuth from '../../hooks/useAuth';
 import { setUser } from '../../redux/auth';
-import { updateBusinessInfo, getAuthMe } from '../../services/artistServices';
+import { getAuthMe, updateBusinessInfo } from '../../services/artistServices';
 
 interface EditBusinessInformationModalProps {
   visible: boolean;

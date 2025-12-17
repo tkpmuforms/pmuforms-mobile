@@ -204,7 +204,7 @@ const styles = StyleSheet.create({
   title: {
     fontSize: 28,
     fontWeight: 'bold',
-    color: '#1a1a1a',
+    color: '#000000',
     marginBottom: 4,
   },
   subtitle: {
@@ -248,7 +248,7 @@ const styles = StyleSheet.create({
     flex: 1,
     paddingVertical: 12,
     fontSize: 16,
-    color: '#1a1a1a',
+    color: '#000000',
   },
   clientCount: {
     fontSize: 14,
@@ -274,7 +274,7 @@ const styles = StyleSheet.create({
   emptyStateTitle: {
     fontSize: 20,
     fontWeight: '600',
-    color: '#1a1a1a',
+    color: '#000000',
     marginBottom: 8,
   },
   emptyStateText: {

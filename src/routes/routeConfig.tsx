@@ -10,16 +10,15 @@ import ClientDetailsScreen from '../screens/client/ClientDetailsScreen';
 import ClientAppointmentsScreen from '../screens/client/ClientAppointmentsScreen';
 import ClientNotesScreen from '../screens/client/ClientNotesScreen';
 import ClientRemindersScreen from '../screens/client/ClientRemindersScreen';
-// import AppointmentFormsScreen from '../screens/appointments/AppointmentFormsScreen';
+import ContactSupportScreen from '../screens/support/ContactSupportScreen';
+import PrivacyPolicyScreen from '../screens/support/PrivacyPolicyScreen';
 // import FilledFormsPreviewScreen from '../screens/appointments/FilledFormsPreviewScreen';
 // import SignatureScreen from '../screens/appointments/SignatureScreen';
 // import EditFormsScreen from '../screens/forms/EditFormsScreen';
-// import EditProfileScreen from '../screens/profile/EditProfileScreen';
-// import BusinessInformationScreen from '../screens/profile/BusinessInformationScreen';
-// import IntegrationsScreen from '../screens/profile/IntegrationsScreen';
+import EditProfileScreen from '../screens/profile/EditProfileScreen';
+import BusinessInformationScreen from '../screens/profile/BusinessInformationScreen';
+
 // import PaymentScreen from '../screens/profile/PaymentScreen';
-// import ContactUsScreen from '../screens/support/ContactUsScreen';
-// import PrivacyPolicyScreen from '../screens/support/PrivacyPolicyScreen';
 
 interface RouteProps {
   name: string;
@@ -100,35 +99,30 @@ export const authorizedRoutes: RouteProps[] = [
     component: ProfileScreen,
     breadcrumbs: ['Profile'],
   },
-  // {
-  //   name: 'EditProfile',
-  //   component: EditProfileScreen,
-  //   breadcrumbs: ['Profile', 'Edit Profile'],
-  // },
-  // {
-  //   name: 'BusinessInformation',
-  //   component: BusinessInformationScreen,
-  //   breadcrumbs: ['Profile', 'Business Information'],
-  // },
-  // {
-  //   name: 'Integrations',
-  //   component: IntegrationsScreen,
-  //   breadcrumbs: ['Profile', 'Integrations'],
-  // },
+  {
+    name: 'ContactSupport',
+    component: ContactSupportScreen,
+    breadcrumbs: ['Profile', 'Contact Support'],
+  },
+  {
+    name: 'PrivacyPolicy',
+    component: PrivacyPolicyScreen,
+    breadcrumbs: ['Privacy Policy'],
+  },
+  {
+    name: 'EditProfile',
+    component: EditProfileScreen,
+    breadcrumbs: ['Profile', 'Edit Profile'],
+  },
+  {
+    name: 'BusinessInformation',
+    component: BusinessInformationScreen,
+    breadcrumbs: ['Profile', 'Business Information'],
+  },
   // {
   //   name: 'Payment',
   //   component: PaymentScreen,
   //   breadcrumbs: ['Profile', 'Payment'],
-  // },
-  // {
-  //   name: 'ContactUs',
-  //   component: ContactUsScreen,
-  //   breadcrumbs: ['Profile', 'Contact Us'],
-  // },
-  // {
-  //   name: 'PrivacyPolicy',
-  //   component: PrivacyPolicyScreen,
-  //   breadcrumbs: ['Profile', 'Privacy Policy'],
   // },
 ];
 

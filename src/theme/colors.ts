@@ -8,7 +8,7 @@ export const colors = {
   accentOrange: '#ff9500',
   backgroundLight: '#f4eaf4',
   background: '#ffffff',
-  backgroundDark: '#1a1a1a',
+  backgroundDark: '#000000',
   surfaceLight: '#f9fafb',
   surface: '#ffffff',
   surfaceDark: '#27272a',
@@ -33,7 +33,7 @@ export const darkColors = {
   primary: '#a78bfa',
   secondary: '#c158c1',
   background: '#0f0f0f',
-  surface: '#1a1a1a',
+  surface: '#000000',
   text: '#f0f0f0',
   textLight: '#a0a0a0',
 };

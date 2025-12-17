@@ -115,7 +115,7 @@ const styles = StyleSheet.create({
   },
   noteText: {
     fontSize: 15,
-    color: '#1a1a1a',
+    color: '#000000',
     lineHeight: 22,
   },
   actions: {

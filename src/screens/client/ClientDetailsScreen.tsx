@@ -404,7 +404,7 @@ const styles = StyleSheet.create({
   clientName: {
     fontSize: 24,
     fontWeight: 'bold',
-    color: '#1a1a1a',
+    color: '#000000',
     marginBottom: 24,
   },
   contactSection: {
@@ -419,7 +419,7 @@ const styles = StyleSheet.create({
   contactText: {
     flex: 1,
     fontSize: 16,
-    color: '#1a1a1a',
+    color: '#000000',
   },
   metricsContainer: {
     flexDirection: 'row',
@@ -452,7 +452,7 @@ const styles = StyleSheet.create({
   sectionTitle: {
     fontSize: 20,
     fontWeight: 'bold',
-    color: '#1a1a1a',
+    color: '#000000',
     marginBottom: 16,
   },
   actionsGrid: {
@@ -473,7 +473,7 @@ const styles = StyleSheet.create({
   quickActionText: {
     fontSize: 14,
     fontWeight: '600',
-    color: '#1a1a1a',
+    color: '#000000',
     textAlign: 'center',
   },
 });
