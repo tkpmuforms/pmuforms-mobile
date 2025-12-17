@@ -11,7 +11,10 @@ import {
 } from 'react-native';
 import { X, Trash2, Check, Undo } from 'lucide-react-native';
 import Svg, { Path } from 'react-native-svg';
-import { GestureHandlerRootView, PanGestureHandler } from 'react-native-gesture-handler';
+import {
+  GestureHandlerRootView,
+  PanGestureHandler,
+} from 'react-native-gesture-handler';
 import { colors } from '../../theme/colors';
 
 interface SignatureModalProps {
@@ -54,7 +57,7 @@ const SignatureModal: React.FC<SignatureModalProps> = ({
 
   const handleGestureEvent = (event: any) => {
     const { x, y } = event.nativeEvent;
-    
+
     setCurrentPath(prev => [...prev, { x, y }]);
     setHasSignature(true);
   };
@@ -92,7 +95,7 @@ const SignatureModal: React.FC<SignatureModalProps> = ({
       // This is a simplified version - you might need to use a library
       // like react-native-view-shot to capture the actual canvas as an image
       const signatureDataUrl = 'data:image/png;base64,signature-placeholder';
-      
+
       await onSubmit(signatureDataUrl);
     } catch (error) {
       console.error('Error submitting signature:', error);
@@ -170,7 +173,10 @@ const SignatureModal: React.FC<SignatureModalProps> = ({
               onPress={undoLastStroke}
               disabled={paths.length === 0}
             >
-              <Undo size={20} color={paths.length === 0 ? colors.textLight : colors.text} />
+              <Undo
+                size={20}
+                color={paths.length === 0 ? colors.textLight : colors.text}
+              />
               <Text
                 style={[
                   styles.actionButtonText,
@@ -186,7 +192,10 @@ const SignatureModal: React.FC<SignatureModalProps> = ({
               onPress={clearSignature}
               disabled={!hasSignature}
             >
-              <Trash2 size={20} color={!hasSignature ? colors.textLight : colors.error} />
+              <Trash2
+                size={20}
+                color={!hasSignature ? colors.textLight : colors.error}
+              />
               <Text
                 style={[
                   styles.actionButtonText,
@@ -198,7 +207,10 @@ const SignatureModal: React.FC<SignatureModalProps> = ({
             </TouchableOpacity>
 
             <TouchableOpacity
-              style={[styles.confirmButton, (!hasSignature || isSubmitting) && styles.confirmButtonDisabled]}
+              style={[
+                styles.confirmButton,
+                (!hasSignature || isSubmitting) && styles.confirmButtonDisabled,
+              ]}
               onPress={handleConfirm}
               disabled={!hasSignature || isSubmitting}
             >

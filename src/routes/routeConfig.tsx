@@ -14,11 +14,10 @@ import ContactSupportScreen from '../screens/support/ContactSupportScreen';
 import PrivacyPolicyScreen from '../screens/support/PrivacyPolicyScreen';
 // import FilledFormsPreviewScreen from '../screens/appointments/FilledFormsPreviewScreen';
 // import SignatureScreen from '../screens/appointments/SignatureScreen';
-// import EditFormsScreen from '../screens/forms/EditFormsScreen';
+import EditFormsScreen from '../screens/forms/EditFormsScreen';
 import EditProfileScreen from '../screens/profile/EditProfileScreen';
 import BusinessInformationScreen from '../screens/profile/BusinessInformationScreen';
-
-// import PaymentScreen from '../screens/profile/PaymentScreen';
+import PaymentScreen from '../screens/profile/PaymentScreen';
 
 interface RouteProps {
   name: string;
@@ -89,11 +88,11 @@ export const authorizedRoutes: RouteProps[] = [
     component: PreviewFormsScreen,
     breadcrumbs: ['Forms', 'Preview Form'],
   },
-  // {
-  //   name: 'FormEdit',
-  //   component: EditFormsScreen,
-  //   breadcrumbs: ['Forms', 'Edit Form'],
-  // },
+  {
+    name: 'FormEdit',
+    component: EditFormsScreen,
+    breadcrumbs: ['Forms', 'Edit Form'],
+  },
   {
     name: 'Profile',
     component: ProfileScreen,
@@ -119,11 +118,11 @@ export const authorizedRoutes: RouteProps[] = [
     component: BusinessInformationScreen,
     breadcrumbs: ['Profile', 'Business Information'],
   },
-  // {
-  //   name: 'Payment',
-  //   component: PaymentScreen,
-  //   breadcrumbs: ['Profile', 'Payment'],
-  // },
+  {
+    name: 'Payment',
+    component: PaymentScreen,
+    breadcrumbs: ['Profile', 'Payment'],
+  },
 ];
 
 export const nonAuthRoutes: RouteProps[] = [
