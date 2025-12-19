@@ -1,33 +1,31 @@
 import React, { useEffect, useState } from 'react';
 import {
-  View,
-  Text,
-  StyleSheet,
-  ScrollView,
-  TouchableOpacity,
-  RefreshControl,
   Dimensions,
+  RefreshControl,
+  ScrollView,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { Plus } from 'lucide-react-native';
+import AddClientModal from '../../components/clients/AddClientModal';
+import AppointmentCard from '../../components/dashboard/AppointmentCard';
+import FeaturesModal from '../../components/dashboard/FeaturesModal';
+import FormLinkModal from '../../components/dashboard/FormLinkModal';
+import MetricsCard from '../../components/dashboard/MetricsCard';
+import QuickActionCard from '../../components/dashboard/QuickActionCard';
+import SubscriptionModal from '../../components/modals/SubscriptionModal';
 import useAuth from '../../hooks/useAuth';
-import { Appointment } from '../../types';
-import { colors } from '../../theme/colors';
 import {
   getArtistAppointmentsPaginated,
   getArtistForms,
   getCustomerById,
   getMyMetrics,
 } from '../../services/artistServices';
+import { colors } from '../../theme/colors';
+import { Appointment } from '../../types';
 import { formatAppointmentTime, transformFormData } from '../../utils/utils';
-import MetricsCard from '../../components/dashboard/MetricsCard';
-import QuickActionCard from '../../components/dashboard/QuickActionCard';
-import AppointmentCard from '../../components/dashboard/AppointmentCard';
-import FormCard from '../../components/forms/FormCard';
-import AddClientModal from '../../components/clients/AddClientModal';
-import FormLinkModal from '../../components/dashboard/FormLinkModal';
-import FeaturesModal from '../../components/dashboard/FeaturesModal';
-import SubscriptionModal from '../../components/modals/SubscriptionModal';
 
 interface Metrics {
   totalClients: number;
@@ -192,7 +190,7 @@ const DashboardScreen = ({ navigation }: any) => {
   };
 
   return (
-    <SafeAreaView style={styles.container} edges={['top']}>
+    <View style={styles.container}>
       <ScrollView
         style={styles.scrollView}
         contentContainerStyle={styles.scrollContent}
@@ -331,7 +329,6 @@ const DashboardScreen = ({ navigation }: any) => {
             </ScrollView>
           )}
         </View>
-        {/* Quick Actions */}
         <View style={styles.section}>
           <Text style={styles.sectionTitle}>Quick Actions</Text>
           <View style={styles.quickActionsGrid}>
@@ -360,7 +357,6 @@ const DashboardScreen = ({ navigation }: any) => {
         </View>
       </ScrollView>
 
-      {/* Modals */}
       {showAddClient && (
         <AddClientModal
           visible={showAddClient}
@@ -393,7 +389,7 @@ const DashboardScreen = ({ navigation }: any) => {
           onSubscribe={handleModalFlow.showSubscription}
         />
       )}
-    </SafeAreaView>
+    </View>
   );
 };
 
@@ -407,11 +403,11 @@ const styles = StyleSheet.create({
   },
   scrollContent: {
     paddingHorizontal: 20,
+    paddingTop: 16,
     paddingBottom: 20,
   },
   header: {
     marginBottom: 16,
-    marginTop: 8,
   },
   welcomeSection: {
     marginBottom: 0,
@@ -463,6 +459,7 @@ const styles = StyleSheet.create({
   },
   section: {
     marginBottom: 20,
+    marginTop: 10,
   },
   sectionHeader: {
     flexDirection: 'row',

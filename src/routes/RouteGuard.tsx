@@ -48,9 +48,9 @@ const AuthenticatedTabs = () => {
           backgroundColor: '#fff',
           borderTopWidth: 1,
           borderTopColor: colors.border,
-          paddingBottom: 5,
-          paddingTop: 5,
-          height: 55,
+          paddingBottom: 25,
+          paddingTop: 8,
+          height: 80,
         },
         tabBarLabelStyle: {
           fontSize: 12,

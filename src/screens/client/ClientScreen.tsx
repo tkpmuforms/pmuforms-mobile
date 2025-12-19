@@ -148,7 +148,7 @@ const ClientScreen: React.FC<ClientScreenProps> = () => {
   }
 
   return (
-    <SafeAreaView style={styles.container}>
+    <View style={styles.container}>
       {renderHeader()}
       {renderSearchBar()}
 
@@ -183,7 +183,7 @@ const ClientScreen: React.FC<ClientScreenProps> = () => {
           onSearchChange={setSearchQuery}
         />
       )}
-    </SafeAreaView>
+    </View>
   );
 };
 
