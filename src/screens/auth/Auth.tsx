@@ -1,6 +1,6 @@
 import auth from '@react-native-firebase/auth';
 import { GoogleSignin } from '@react-native-google-signin/google-signin';
-import { Circle, EyeIcon } from 'lucide-react-native';
+import { Circle, EyeIcon, Mail, Apple } from 'lucide-react-native';
 import React, { useState } from 'react';
 import {
   ActivityIndicator,
@@ -16,10 +16,11 @@ import {
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import Toast from 'react-native-toast-message';
-import { AppleLoginButton, GoogleLoginButton } from '../../components/AuthSvgs';
+
 import ImageSlider from '../../components/ImageSlider';
 import useAuth from '../../hooks/useAuth';
 import { createArtist } from '../../services/artistServices';
+import { colors } from '../../theme/colors';
 
 type AuthPage = 'login' | 'signup';
 type SignupStep = 'email' | 'password' | 'verification';
@@ -205,6 +206,14 @@ const AuthScreen = () => {
 
   const renderLoginForm = () => (
     <View style={styles.formContainer}>
+      <View style={styles.logoContainer}>
+        <Image
+          source={require('../../../assets/images/pmulog.png')}
+          style={styles.logo}
+          resizeMode="contain"
+        />
+      </View>
+
       <Text style={styles.title}>Hi, Welcome Back</Text>
       <Text style={styles.subtitle}>
         Enter your login details to access your account
@@ -215,6 +224,7 @@ const AuthScreen = () => {
         <TextInput
           style={styles.input}
           placeholder="Enter your email address"
+          placeholderTextColor="#94a3b8"
           value={email}
           onChangeText={setEmail}
           keyboardType="email-address"
@@ -228,6 +238,7 @@ const AuthScreen = () => {
           <TextInput
             style={[styles.input, styles.passwordInput]}
             placeholder="Enter Password"
+            placeholderTextColor="#94a3b8"
             value={password}
             onChangeText={setPassword}
             secureTextEntry={!showPassword}
@@ -236,7 +247,7 @@ const AuthScreen = () => {
             style={styles.eyeIcon}
             onPress={() => setShowPassword(!showPassword)}
           >
-            <EyeIcon />
+            <EyeIcon size={20} color="#64748b" />
           </TouchableOpacity>
         </View>
       </View>
@@ -263,30 +274,43 @@ const AuthScreen = () => {
         <View style={styles.divider} />
       </View>
 
-      <View style={styles.socialButtonsContainer}>
-        <TouchableOpacity onPress={() => {}}>
-          <GoogleLoginButton width={48} height={48} color="#DB4437" />
-        </TouchableOpacity>
-        <TouchableOpacity onPress={() => {}}>
-          <AppleLoginButton width={48} height={48} color="#000" />
-        </TouchableOpacity>
-      </View>
+      <TouchableOpacity style={styles.socialButton} onPress={useGoogleSignIn}>
+        <Image
+          source={require('../../../assets/images/flat-color-icons_google.png')}
+          style={styles.socialIcon}
+        />
+        <Text style={styles.socialButtonText}>Sign in with Google</Text>
+      </TouchableOpacity>
+
+      <TouchableOpacity style={styles.socialButtonApple} onPress={() => {}}>
+        <Image
+          source={require('../../../assets/images/ant-design_apple-filled.png')}
+          style={styles.socialIcon}
+        />
+        <Text style={styles.socialButtonTextApple}>Sign in with Apple</Text>
+      </TouchableOpacity>
     </View>
   );
 
   const renderEmailStep = () => (
     <View style={styles.formContainer}>
       <View style={styles.logoContainer}>
-        <Circle width={80} height={80} color="#8e2d8e" />
+        <Image
+          source={require('../../../assets/images/pmulog.png')}
+          style={styles.logo}
+          resizeMode="contain"
+        />
       </View>
-      <Text style={styles.title}>Create Account</Text>
-      <Text style={styles.subtitle}>Sign up to get started</Text>
+
+      <Text style={styles.title}>Let's Get You Started</Text>
+      <Text style={styles.subtitle}>Create an account to continue</Text>
 
       <View style={styles.inputGroup}>
         <Text style={styles.label}>Email Address</Text>
         <TextInput
           style={styles.input}
           placeholder="Enter your email address"
+          placeholderTextColor="#94a3b8"
           value={email}
           onChangeText={setEmail}
           keyboardType="email-address"
@@ -295,7 +319,29 @@ const AuthScreen = () => {
       </View>
 
       <TouchableOpacity style={styles.button} onPress={handleEmailSubmit}>
-        <Text style={styles.buttonText}>Continue</Text>
+        <Text style={styles.buttonText}>Create Account</Text>
+      </TouchableOpacity>
+
+      <View style={styles.dividerContainer}>
+        <View style={styles.divider} />
+        <Text style={styles.dividerText}>Or continue with</Text>
+        <View style={styles.divider} />
+      </View>
+
+      <TouchableOpacity style={styles.socialButton} onPress={useGoogleSignIn}>
+        <Image
+          source={require('../../../assets/images/flat-color-icons_google.png')}
+          style={styles.socialIcon}
+        />
+        <Text style={styles.socialButtonText}>Google</Text>
+      </TouchableOpacity>
+
+      <TouchableOpacity style={styles.socialButtonApple} onPress={() => {}}>
+        <Image
+          source={require('../../../assets/images/ant-design_apple-filled.png')}
+          style={styles.socialIcon}
+        />
+        <Text style={styles.socialButtonTextApple}>Apple</Text>
       </TouchableOpacity>
     </View>
   );
@@ -328,6 +374,7 @@ const AuthScreen = () => {
         <TextInput
           style={styles.input}
           placeholder="Enter Password"
+          placeholderTextColor="#94a3b8"
           value={password}
           onChangeText={setPassword}
           secureTextEntry
@@ -339,6 +386,7 @@ const AuthScreen = () => {
         <TextInput
           style={styles.input}
           placeholder="Confirm Password"
+          placeholderTextColor="#94a3b8"
           value={confirmPassword}
           onChangeText={setConfirmPassword}
           secureTextEntry
@@ -350,6 +398,7 @@ const AuthScreen = () => {
         <TextInput
           style={styles.input}
           placeholder="Enter Business Name"
+          placeholderTextColor="#94a3b8"
           value={businessName}
           onChangeText={setBusinessName}
         />
@@ -425,7 +474,6 @@ const AuthScreen = () => {
           style={styles.content}
         >
           <ScrollView contentContainerStyle={styles.scrollContent}>
-            <Image source={require('../../../assets/images/pmulog.png')} />
             {page === 'login' ? renderLoginForm() : renderSignupContent()}
 
             <TouchableOpacity style={styles.toggleButton} onPress={toggleMode}>
@@ -434,7 +482,7 @@ const AuthScreen = () => {
                   ? "Don't have an account? "
                   : 'Already have an account? '}
                 <Text style={styles.toggleTextBold}>
-                  {page === 'login' ? 'Sign Up' : 'Sign In'}
+                  {page === 'login' ? 'Create an account' : 'Login'}
                 </Text>
               </Text>
             </TouchableOpacity>
@@ -490,34 +538,37 @@ const styles = StyleSheet.create({
     borderRadius: 4,
   },
   title: {
-    fontSize: 24,
+    fontSize: 26,
     fontWeight: '700',
     marginBottom: 8,
-    color: '#333',
+    color: '#1e293b',
+    textAlign: 'center',
   },
   subtitle: {
-    fontSize: 16,
-    color: '#666',
-    marginBottom: 30,
-    lineHeight: 24,
+    fontSize: 14,
+    color: '#64748b',
+    marginBottom: 32,
+    lineHeight: 20,
+    textAlign: 'center',
   },
   inputGroup: {
     marginBottom: 20,
   },
   label: {
-    fontSize: 16,
+    fontSize: 14,
     fontWeight: '600',
-    color: '#000',
+    color: '#1e293b',
     marginBottom: 8,
   },
   input: {
     width: '100%',
-    padding: 12,
+    padding: 14,
     borderWidth: 1,
-    borderColor: '#ddd',
-    backgroundColor: '#bcbbc133',
-    borderRadius: 10,
-    fontSize: 16,
+    borderColor: '#e2e8f0',
+    backgroundColor: '#f8fafc',
+    borderRadius: 8,
+    fontSize: 14,
+    color: '#1e293b',
   },
   passwordContainer: {
     position: 'relative',
@@ -541,27 +592,30 @@ const styles = StyleSheet.create({
   },
   button: {
     width: '100%',
-    padding: 12,
-    backgroundColor: '#8e2d8e',
-    borderRadius: 10,
+    padding: 16,
+    backgroundColor: colors.primary,
+    borderRadius: 8,
     alignItems: 'center',
     marginTop: 8,
+    marginBottom: 24,
   },
   buttonText: {
     color: '#fff',
-    fontSize: 16,
+    fontSize: 14,
     fontWeight: '600',
   },
   toggleButton: {
-    marginTop: 24,
+    marginTop: 16,
     alignItems: 'center',
+    paddingVertical: 8,
   },
   toggleText: {
-    fontSize: 14,
-    color: '#666',
+    fontSize: 12,
+    color: '#64748b',
+    textAlign: 'center',
   },
   toggleTextBold: {
-    color: '#8e2d8e',
+    color: colors.primary,
     fontWeight: '600',
   },
   dividerContainer: {
@@ -587,7 +641,48 @@ const styles = StyleSheet.create({
   },
   logoContainer: {
     alignItems: 'center',
-    marginBottom: 24,
+    marginBottom: 32,
+  },
+  logo: {
+    width: 80,
+    height: 80,
+  },
+  socialButton: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    width: '100%',
+    padding: 14,
+    backgroundColor: '#f1f5f9',
+    borderRadius: 8,
+    marginBottom: 12,
+    gap: 12,
+  },
+  socialButtonApple: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    width: '100%',
+    padding: 14,
+    backgroundColor: '#000',
+    borderRadius: 8,
+    marginBottom: 12,
+    gap: 12,
+  },
+
+  socialButtonText: {
+    fontSize: 14,
+    fontWeight: '600',
+    color: '#1e293b',
+  },
+  socialButtonTextApple: {
+    fontSize: 14,
+    fontWeight: '600',
+    color: '#fff',
+  },
+  socialIcon: {
+    width: 24,
+    height: 24,
   },
 });
 

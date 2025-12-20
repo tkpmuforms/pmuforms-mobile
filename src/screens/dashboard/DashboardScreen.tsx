@@ -190,7 +190,7 @@ const DashboardScreen = ({ navigation }: any) => {
   };
 
   return (
-    <View style={styles.container}>
+    <SafeAreaView style={styles.container} edges={[]}>
       <ScrollView
         style={styles.scrollView}
         contentContainerStyle={styles.scrollContent}
@@ -389,7 +389,7 @@ const DashboardScreen = ({ navigation }: any) => {
           onSubscribe={handleModalFlow.showSubscription}
         />
       )}
-    </View>
+    </SafeAreaView>
   );
 };
 

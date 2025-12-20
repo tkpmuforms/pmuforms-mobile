@@ -9,7 +9,7 @@ import {
   Animated,
   TouchableOpacity,
 } from 'react-native';
-import { ChevronRight } from 'lucide-react-native';
+import { ArrowRight } from 'lucide-react-native';
 
 const { width: SCREEN_WIDTH, height: SCREEN_HEIGHT } = Dimensions.get('window');
 
@@ -25,18 +25,18 @@ interface Slide {
 
 const slides: Slide[] = [
   {
-    image: require('../../assets/images/artistauth1.jpg'),
+    image: require('../../assets/images/artistauth3.jpg'),
     title: 'Welcome to PMU Forms',
     description:
       'Streamline your consent form management with our easy-to-use app.',
   },
   {
-    image: require('../../assets/images/artistauth3.jpg'),
+    image: require('../../assets/images/artistauth5.png'),
     title: 'Create and Manage Consent Forms',
     description: 'Quickly create, customize, and track your consent forms.',
   },
   {
-    image: require('../../assets/images/artistauth5.png'),
+    image: require('../../assets/images/artistauth1.jpg'),
     title: 'Stay Organized with Clients',
     description:
       'Manage client details and appointments easily. Keep everything at your fingertips.',
@@ -124,7 +124,6 @@ const ImageSlider: React.FC<ImageSliderProps> = ({ onComplete }) => {
               resizeMode="cover"
             />
 
-            {/* Text overlay - no background, just white text */}
             <View style={styles.gradientOverlay}>
               <View style={styles.textContainer}>
                 <Text style={styles.title}>{slide.title}</Text>
@@ -132,7 +131,6 @@ const ImageSlider: React.FC<ImageSliderProps> = ({ onComplete }) => {
               </View>
             </View>
 
-            {/* Skip and Next buttons for first two slides */}
             {!isLastSlide && (
               <>
                 <TouchableOpacity
@@ -147,13 +145,12 @@ const ImageSlider: React.FC<ImageSliderProps> = ({ onComplete }) => {
                   onPress={handleNext}
                 >
                   <View style={styles.nextButtonCircle}>
-                    <ChevronRight size={24} color="#fff" />
+                    <ArrowRight size={24} color="#fff" />
                   </View>
                 </TouchableOpacity>
               </>
             )}
 
-            {/* Get Started button and terms text only on last slide */}
             {isLastSlide && (
               <View style={styles.lastSlideActions}>
                 <TouchableOpacity
@@ -161,6 +158,9 @@ const ImageSlider: React.FC<ImageSliderProps> = ({ onComplete }) => {
                   onPress={onComplete}
                 >
                   <Text style={styles.getStartedButtonText}>Get Started</Text>
+                  <View style={styles.getStartedArrowCircle}>
+                    <ArrowRight size={12} color="#fff" />
+                  </View>
                 </TouchableOpacity>
                 <Text style={styles.termsText}>
                   By proceeding, you agree to our{' '}
@@ -212,27 +212,33 @@ const styles = StyleSheet.create({
     height: '50%',
     backgroundColor: 'transparent',
     justifyContent: 'flex-end',
-    paddingBottom: 100,
+    paddingBottom: 200,
     paddingHorizontal: 30,
   },
   textContainer: {
     marginBottom: 20,
   },
   title: {
-    fontSize: 32,
+    fontSize: 36,
     fontWeight: '700',
+    fontFamily: 'RedditSans-Bold',
     color: '#ffffff',
     marginBottom: 12,
-    lineHeight: 38,
+    lineHeight: 36,
+    letterSpacing: 0,
+    textAlign: 'center',
     textShadowColor: 'rgba(0, 0, 0, 0.8)',
     textShadowOffset: { width: 0, height: 2 },
     textShadowRadius: 8,
   },
   description: {
-    fontSize: 18,
+    fontSize: 16,
     fontWeight: '400',
+    fontFamily: 'RedditSans-Regular',
     color: '#ffffff',
-    lineHeight: 27,
+    lineHeight: 24,
+    letterSpacing: 0,
+    textAlign: 'center',
     opacity: 0.95,
     textShadowColor: 'rgba(0, 0, 0, 0.8)',
     textShadowOffset: { width: 0, height: 2 },
@@ -240,7 +246,7 @@ const styles = StyleSheet.create({
   },
   skipButton: {
     position: 'absolute',
-    top: 60,
+    bottom: 100,
     left: 24,
     zIndex: 10,
   },
@@ -254,7 +260,7 @@ const styles = StyleSheet.create({
   },
   nextButton: {
     position: 'absolute',
-    bottom: 150,
+    bottom: 100,
     right: 24,
     zIndex: 10,
   },
@@ -262,7 +268,9 @@ const styles = StyleSheet.create({
     width: 56,
     height: 56,
     borderRadius: 28,
-    backgroundColor: '#8e2d8e',
+    backgroundColor: '#D764D7',
+    borderWidth: 2,
+    borderColor: '#ffffff',
     alignItems: 'center',
     justifyContent: 'center',
     elevation: 5,
@@ -280,23 +288,39 @@ const styles = StyleSheet.create({
     zIndex: 10,
   },
   getStartedButton: {
-    backgroundColor: '#8e2d8e',
+    width: 380,
+    height: 56,
+    backgroundColor: '#D764D7',
     paddingVertical: 16,
-    paddingHorizontal: 60,
-    borderRadius: 30,
+    paddingHorizontal: 16,
+    borderRadius: 16,
     elevation: 5,
     shadowColor: '#000',
     shadowOffset: { width: 0, height: 4 },
     shadowOpacity: 0.3,
     shadowRadius: 8,
-    minWidth: 200,
+    flexDirection: 'row',
     alignItems: 'center',
+    justifyContent: 'center',
+    gap: 8,
     marginBottom: 16,
+  },
+  getStartedArrowCircle: {
+    width: 20,
+    height: 20,
+    borderRadius: 10,
+    borderWidth: 1,
+    borderColor: '#ffffff',
+    alignItems: 'center',
+    justifyContent: 'center',
   },
   getStartedButtonText: {
     color: '#fff',
-    fontSize: 18,
+    fontSize: 14,
     fontWeight: '700',
+    fontFamily: 'RedditSans-Bold',
+    lineHeight: 20,
+    letterSpacing: 0,
     textAlign: 'center',
   },
   termsText: {
@@ -333,7 +357,7 @@ const styles = StyleSheet.create({
   },
   activeDot: {
     width: 32,
-    backgroundColor: '#8e2d8e', // var(--pmu-primary)
+    backgroundColor: '#D764D7',
   },
 });
 

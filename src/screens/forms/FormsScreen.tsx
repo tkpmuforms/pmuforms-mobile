@@ -70,7 +70,7 @@ const FormsScreen = ({ navigation }: any) => {
   const careCount = forms.filter(f => f.type === 'care').length;
 
   return (
-    <SafeAreaView style={styles.container} edges={['top']}>
+    <SafeAreaView style={styles.container} edges={[]}>
       <ScrollView
         style={styles.scrollView}
         contentContainerStyle={styles.scrollContent}
@@ -210,7 +210,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
-    backgroundColor: '#8e2d8e',
+    backgroundColor: 'linear-gradient(90deg, #8E2D8E 0%, #A654CD 100%)',
     paddingVertical: 12,
     paddingHorizontal: 20,
     borderRadius: 12,

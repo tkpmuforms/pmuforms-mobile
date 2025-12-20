@@ -279,7 +279,7 @@ const styles = StyleSheet.create({
     color: '#fff',
   },
   continueButton: {
-    backgroundColor: '#8e2d8e',
+    backgroundColor: 'linear-gradient(90deg, #8E2D8E 0%, #A654CD 100%)',
     paddingVertical: 16,
     borderRadius: 12,
     alignItems: 'center',
