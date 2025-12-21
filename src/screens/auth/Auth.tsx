@@ -18,8 +18,12 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import Toast from 'react-native-toast-message';
 import ImageSlider from '../../components/ImageSlider';
 import useAuth from '../../hooks/useAuth';
-import { createArtist } from '../../services/artistServices';
+import {
+  createArtist,
+  sendEmailVerification,
+} from '../../services/artistServices';
 import { colors } from '../../theme/colors';
+import appleAuth from '@invertase/react-native-apple-authentication';
 
 type AuthPage = 'login' | 'signup';
 type SignupStep = 'email' | 'password' | 'verification';
@@ -31,9 +35,9 @@ const AuthScreen = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
-  const [businessName, setBusinessName] = useState('');
   const [showPassword, setShowPassword] = useState(false);
   const [loading, setLoading] = useState(false);
+  const { handleAuthSuccess } = useAuth();
 
   const useGoogleSignIn = async () => {
     setLoading(true);
@@ -66,7 +70,47 @@ const AuthScreen = () => {
       setLoading(false);
     }
   };
-  const { handleAuthSuccess } = useAuth();
+  const useAppleSignIn = async () => {
+    setLoading(true);
+    try {
+      const appleAuthRequestResponse = await appleAuth.performRequest({
+        requestedOperation: appleAuth.Operation.LOGIN,
+        requestedScopes: [appleAuth.Scope.EMAIL, appleAuth.Scope.FULL_NAME],
+      });
+
+      if (!appleAuthRequestResponse.identityToken) {
+        throw new Error('Apple Sign-In failed - no identity token returned');
+      }
+
+      const { identityToken, nonce } = appleAuthRequestResponse;
+      const appleCredential = auth.AppleAuthProvider.credential(
+        identityToken,
+        nonce,
+      );
+      const userCredential = await auth().signInWithCredential(appleCredential);
+      const userToken = await userCredential.user.getIdToken();
+
+      const res = await createArtist(userToken);
+      handleAuthSuccess(res.data?.artist, res.data?.access_token ?? '');
+    } catch (error: any) {
+      if (error.code === appleAuth.Error.CANCELED) {
+        Toast.show({
+          type: 'info',
+          text1: 'Cancelled',
+          text2: 'Apple Sign-In was cancelled',
+        });
+      } else {
+        console.error('Apple Sign-In error:', error);
+        Toast.show({
+          type: 'error',
+          text1: 'Error',
+          text2: error?.message || 'Apple Sign-In failed',
+        });
+      }
+    } finally {
+      setLoading(false);
+    }
+  };
 
   const handleLogin = async () => {
     if (!email || !password) {
@@ -137,27 +181,21 @@ const AuthScreen = () => {
       return;
     }
 
-    if (!businessName) {
-      Toast.show({
-        type: 'error',
-        text1: 'Error',
-        text2: 'Please enter your business name',
-      });
-      return;
-    }
-
     setLoading(true);
     try {
       const userCredential = await auth().createUserWithEmailAndPassword(
         email,
         password,
       );
-      const userToken = await userCredential.user.getIdToken();
-      const res = await createArtist(userToken);
-
-      if (res.data) {
-        handleAuthSuccess(res.data?.artist, res.data?.access_token ?? '');
-      }
+      const user = userCredential.user;
+      await sendEmailVerification(user?.uid).then(() => {
+        Toast.show({
+          type: 'success',
+          text1: 'Success',
+          text2: 'Verification link sent to your email!',
+        });
+      });
+      setSignupStep('verification');
     } catch (error: any) {
       console.error('Registration error:', error);
       Toast.show({
@@ -185,7 +223,6 @@ const AuthScreen = () => {
     setEmail('');
     setPassword('');
     setConfirmPassword('');
-    setBusinessName('');
   };
 
   const getProgressPercentage = (): number => {
@@ -279,7 +316,10 @@ const AuthScreen = () => {
         <Text style={styles.socialButtonText}>Sign in with Google</Text>
       </TouchableOpacity>
 
-      <TouchableOpacity style={styles.socialButtonApple} onPress={() => {}}>
+      <TouchableOpacity
+        style={styles.socialButtonApple}
+        onPress={useAppleSignIn}
+      >
         <Image
           source={require('../../../assets/images/ant-design_apple-filled.png')}
           style={styles.socialIcon}
@@ -387,17 +427,6 @@ const AuthScreen = () => {
           value={confirmPassword}
           onChangeText={setConfirmPassword}
           secureTextEntry
-        />
-      </View>
-
-      <View style={styles.inputGroup}>
-        <Text style={styles.label}>Business Name</Text>
-        <TextInput
-          style={styles.input}
-          placeholder="Enter Business Name"
-          placeholderTextColor="#94a3b8"
-          value={businessName}
-          onChangeText={setBusinessName}
         />
       </View>
 
