@@ -1,6 +1,6 @@
 import auth from '@react-native-firebase/auth';
 import { GoogleSignin } from '@react-native-google-signin/google-signin';
-import { Circle, EyeIcon, Mail, Apple } from 'lucide-react-native';
+import { EyeIcon } from 'lucide-react-native';
 import React, { useState } from 'react';
 import {
   ActivityIndicator,
@@ -16,7 +16,6 @@ import {
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import Toast from 'react-native-toast-message';
-
 import ImageSlider from '../../components/ImageSlider';
 import useAuth from '../../hooks/useAuth';
 import { createArtist } from '../../services/artistServices';

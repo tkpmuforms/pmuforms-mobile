@@ -5,6 +5,7 @@ import {
   useColorScheme,
   ActivityIndicator,
   View,
+  StyleSheet,
 } from 'react-native';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 import { Provider } from 'react-redux';
@@ -14,6 +15,8 @@ import { AuthProvider } from './src/context/AuthContext';
 import { store, persistor } from './src/redux/store';
 import RouteGuard from './src/routes/RouteGuard';
 import { setupGlobalFonts } from './src/config/setupGlobalFonts';
+import { toastConfig } from './src/config/toastConfig';
+import { colors } from './src/theme/colors';
 
 function App() {
   const isDarkMode = useColorScheme() === 'dark';
@@ -26,15 +29,8 @@ function App() {
     <Provider store={store}>
       <PersistGate
         loading={
-          <View
-            style={{
-              flex: 1,
-              justifyContent: 'center',
-              alignItems: 'center',
-              backgroundColor: '#fff',
-            }}
-          >
-            <ActivityIndicator size="large" color="#8e2d8e" />
+          <View style={styles.loadingContainer}>
+            <ActivityIndicator size="large" color={colors.primary} />
           </View>
         }
         persistor={persistor}
@@ -46,11 +42,20 @@ function App() {
               <RouteGuard />
             </AuthProvider>
           </NavigationContainer>
-          <Toast />
+          <Toast config={toastConfig} />
         </SafeAreaProvider>
       </PersistGate>
     </Provider>
   );
 }
+
+const styles = StyleSheet.create({
+  loadingContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: colors.white,
+  },
+});
 
 export default App;
