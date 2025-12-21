@@ -36,24 +36,34 @@ const AuthScreen = () => {
   const [loading, setLoading] = useState(false);
 
   const useGoogleSignIn = async () => {
+    setLoading(true);
     try {
       await GoogleSignin.hasPlayServices({
         showPlayServicesUpdateDialog: true,
       });
       const userInfo = await GoogleSignin.signIn();
-      console.log(userInfo);
-      if (userInfo.data) {
-        const idToken = userInfo.data.idToken;
-        const googleCredential = auth.GoogleAuthProvider.credential(idToken);
-        await auth().signInWithCredential(googleCredential);
-        const tokenDetails = await auth().currentUser?.getIdToken();
-        console.log('Google Sign-In successful, token details:', tokenDetails);
-        const email = auth().currentUser?.email;
-        const userId = auth().currentUser?.uid;
-        console.log('User email:', email, 'User ID:', userId);
+
+      if (userInfo.data?.idToken) {
+        const googleCredential = auth.GoogleAuthProvider.credential(
+          userInfo.data.idToken,
+        );
+        const userCredential = await auth().signInWithCredential(
+          googleCredential,
+        );
+        const userToken = await userCredential.user.getIdToken();
+
+        const res = await createArtist(userToken);
+        handleAuthSuccess(res.data?.artist, res.data?.access_token ?? '');
       }
-    } catch (error) {
+    } catch (error: any) {
       console.error('Google Sign-In error:', error);
+      Toast.show({
+        type: 'error',
+        text1: 'Error',
+        text2: error?.message || 'Google Sign-In failed',
+      });
+    } finally {
+      setLoading(false);
     }
   };
   const { handleAuthSuccess } = useAuth();
@@ -138,34 +148,22 @@ const AuthScreen = () => {
 
     setLoading(true);
     try {
-      await useGoogleSignIn();
-      // const userCredential = await auth().createUserWithEmailAndPassword(
-      //   email,
-      //   password,
-      // );
-      // const user = userCredential.user;
-      // const userToken = await user.getIdToken();
+      const userCredential = await auth().createUserWithEmailAndPassword(
+        email,
+        password,
+      );
+      const userToken = await userCredential.user.getIdToken();
+      const res = await createArtist(userToken);
 
-      // const res = await createArtist(userToken);
-
-      // if (res.data) {
-      //   setSignupStep('verification');
-      //   Toast.show({
-      //     type: 'success',
-      //     text1: 'Success',
-      //     text2: 'Account created! Please verify your email.',
-      //   });
-      // }
+      if (res.data) {
+        handleAuthSuccess(res.data?.artist, res.data?.access_token ?? '');
+      }
     } catch (error: any) {
       console.error('Registration error:', error);
-      const errorMessage =
-        error?.message ||
-        error?.response?.data?.error ||
-        'Registration failed! Try again later.';
       Toast.show({
         type: 'error',
         text1: 'Error',
-        text2: errorMessage,
+        text2: error?.message || 'Registration failed',
       });
     } finally {
       setLoading(false);

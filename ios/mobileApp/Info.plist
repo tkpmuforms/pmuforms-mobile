@@ -72,5 +72,16 @@
 		<string>RedditSans-SemiBold.ttf</string>
 		<string>RedditSans-SemiBoldItalic.ttf</string>
 	</array>
+	<key>CFBundleURLTypes</key>
+<array>
+  <dict>
+    <key>CFBundleTypeRole</key>
+    <string>Editor</string>
+    <key>CFBundleURLSchemes</key>
+    <array>
+      <string>com.googleusercontent.apps.265429654619-sf46b876apqvtn1n5srbarnhe21fj804</string>
+    </array>
+  </dict>
+</array>
 </dict>
 </plist>

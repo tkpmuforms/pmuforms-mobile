@@ -17,6 +17,7 @@ import RouteGuard from './src/routes/RouteGuard';
 import { setupGlobalFonts } from './src/config/setupGlobalFonts';
 import { toastConfig } from './src/config/toastConfig';
 import { colors } from './src/theme/colors';
+import { GoogleSignin } from '@react-native-google-signin/google-signin';
 
 function App() {
   const isDarkMode = useColorScheme() === 'dark';
@@ -24,6 +25,12 @@ function App() {
   useEffect(() => {
     setupGlobalFonts();
   }, []);
+
+  GoogleSignin.configure({
+    webClientId:
+      '265429654619-lglm3v5quq9tnlv9mp64c6fipso6id0g.apps.googleusercontent.com',
+    offlineAccess: true,
+  });
 
   return (
     <Provider store={store}>
