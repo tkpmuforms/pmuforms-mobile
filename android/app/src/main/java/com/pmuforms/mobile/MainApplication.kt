@@ -1,4 +1,4 @@
-package com.mobileapp
+package com.pmuforms.mobile
 
 import android.app.Application
 import com.facebook.react.PackageList

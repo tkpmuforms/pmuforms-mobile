@@ -28,6 +28,7 @@ export const store = configureStore({
           'persist/REGISTER',
         ],
       },
+      immutableCheck: false, // Disable to improve performance with large state
     }),
 });
 

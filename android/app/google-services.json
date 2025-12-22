@@ -8,9 +8,9 @@
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:265429654619:android:8453df23410d8dc706b37e",
+        "mobilesdk_app_id": "1:265429654619:android:79c4e114e420692a06b37e",
         "android_client_info": {
-          "package_name": "com.mobileapp"
+          "package_name": "com.pmuforms.mobile"
         }
       },
       "oauth_client": [

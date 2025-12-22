@@ -3,9 +3,9 @@
 <plist version="1.0">
 <dict>
 	<key>CLIENT_ID</key>
-	<string>265429654619-sf46b876apqvtn1n5srbarnhe21fj804.apps.googleusercontent.com</string>
+	<string>265429654619-qd2ph216bgm6vtmfut7j4lrc6d4ohvlf.apps.googleusercontent.com</string>
 	<key>REVERSED_CLIENT_ID</key>
-	<string>com.googleusercontent.apps.265429654619-sf46b876apqvtn1n5srbarnhe21fj804</string>
+	<string>com.googleusercontent.apps.265429654619-qd2ph216bgm6vtmfut7j4lrc6d4ohvlf</string>
 	<key>API_KEY</key>
 	<string>AIzaSyCGWUFTK6I-ymKiksIMY_bER-MZBwiydBc</string>
 	<key>GCM_SENDER_ID</key>
@@ -13,7 +13,7 @@
 	<key>PLIST_VERSION</key>
 	<string>1</string>
 	<key>BUNDLE_ID</key>
-	<string>org.reactjs.native.example.mobileApp</string>
+	<string>com.pmuforms.mobile</string>
 	<key>PROJECT_ID</key>
 	<string>pmu-beauty-forms</string>
 	<key>STORAGE_BUCKET</key>
@@ -29,7 +29,7 @@
 	<key>IS_SIGNIN_ENABLED</key>
 	<true></true>
 	<key>GOOGLE_APP_ID</key>
-	<string>1:265429654619:ios:bfb5751935b4794606b37e</string>
+	<string>1:265429654619:ios:d650e1a7afaae6ec06b37e</string>
 	<key>DATABASE_URL</key>
 	<string>https://pmu-beauty-forms.firebaseio.com</string>
 </dict>
