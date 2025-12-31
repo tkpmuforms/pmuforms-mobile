@@ -1,26 +1,23 @@
+import {
+  FileText,
+  LayoutDashboard,
+  LogOut,
+  UserCircle,
+  Users,
+} from 'lucide-react-native';
 import React from 'react';
 import {
-  View,
-  Text,
-  StyleSheet,
-  TouchableOpacity,
   Modal,
   Pressable,
   ScrollView,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
 } from 'react-native';
-import {
-  LayoutDashboard,
-  Users,
-  FileText,
-  UserCircle,
-  LogOut,
-} from 'lucide-react-native';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import useAuth from '../../hooks/useAuth';
 import { colors } from '../../theme/colors';
-import {
-  SafeAreaView,
-  useSafeAreaInsets,
-} from 'react-native-safe-area-context';
 
 interface SidebarProps {
   isOpen: boolean;

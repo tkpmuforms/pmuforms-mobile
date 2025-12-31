@@ -13,6 +13,19 @@ const QuickActionCard: React.FC<QuickActionCardProps> = ({
   icon,
   onPress,
 }) => {
+  const getIconBackgroundColor = () => {
+    switch (icon) {
+      case 'user-plus':
+        return '#34C771';
+      case 'file-text':
+        return '#E25FE2';
+      case 'send':
+        return '#FFBC44';
+      default:
+        return '#34C771';
+    }
+  };
+
   const renderIcon = () => {
     const iconSize = 18;
     const iconColor = '#fff';
@@ -32,7 +45,14 @@ const QuickActionCard: React.FC<QuickActionCardProps> = ({
   return (
     <TouchableOpacity style={styles.card} onPress={onPress} activeOpacity={0.7}>
       <Text style={styles.title}>{title}</Text>
-      <View style={styles.iconContainer}>{renderIcon()}</View>
+      <View
+        style={[
+          styles.iconContainer,
+          { backgroundColor: getIconBackgroundColor() },
+        ]}
+      >
+        {renderIcon()}
+      </View>
     </TouchableOpacity>
   );
 };
@@ -57,7 +77,6 @@ const styles = StyleSheet.create({
     width: 36,
     height: 36,
     borderRadius: 10,
-    backgroundColor: '#8e2d8e',
     justifyContent: 'center',
     alignItems: 'center',
   },

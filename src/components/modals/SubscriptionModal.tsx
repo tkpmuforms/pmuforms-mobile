@@ -44,31 +44,37 @@ const SubscriptionModal: React.FC<SubscriptionModalProps> = ({
 
   const pricingPlans = [
     {
-      name: 'WEEKLY',
+      name: '1 MONTH',
       price: `$${weeklyPrice}`,
-      period: 'week',
-      subtitle: 'Basic access',
+      period: 'month',
+      subtitle: '(7days free trial)',
       badge: '',
       popular: false,
       priceId: Config.WEEKLY_PRICE_ID || '',
+      freeTrialLabel: '7-day free trial',
+      specialOffer: false,
     },
     {
-      name: 'MONTHLY',
+      name: '6 MONTHS',
       price: `$${monthlyPrice}`,
       period: 'month',
-      subtitle: `(only $${monthlyPricePerWeek.toFixed(2)} / week)`,
-      badge: `-${Math.round(monthlyDiscount)}%`,
+      subtitle: `(only $${monthlyPricePerWeek.toFixed(2)} / month)`,
+      badge: '-5%',
       popular: false,
       priceId: Config.MONTHLY_PRICE_ID || '',
+      freeTrialLabel: '7-day free trial',
+      specialOffer: false,
     },
     {
-      name: 'YEARLY',
+      name: '12 MONTHS',
       price: `$${yearlyPrice}`,
       period: 'year',
-      subtitle: `(only $${yearlyPricePerWeek.toFixed(2)} / week)`,
-      badge: `-${Math.round(yearlyDiscount)}%`,
-      popular: true,
+      subtitle: `(only $${yearlyPricePerWeek.toFixed(2)} / month)`,
+      badge: '-5%',
+      popular: false,
       priceId: Config.YEARLY_PRICE_ID || '',
+      freeTrialLabel: '7-day free trial',
+      specialOffer: true,
     },
   ];
 
@@ -127,7 +133,7 @@ const SubscriptionModal: React.FC<SubscriptionModalProps> = ({
                 <Text style={styles.sectionTitle}>SELECT YOUR PLAN</Text>
                 {pricingPlans.map((plan, index) => {
                   const isCurrent = isCurrentPlan(plan.priceId);
-                  const isPopular = plan.popular && !currentPriceId;
+                  const isPopular = plan.specialOffer && !currentPriceId;
 
                   return (
                     <TouchableOpacity
@@ -147,10 +153,10 @@ const SubscriptionModal: React.FC<SubscriptionModalProps> = ({
                           <Text style={styles.badgeText}>{plan.badge}</Text>
                         </View>
                       )}
-                      {isPopular && (
-                        <View style={styles.popularLabel}>
-                          <Text style={styles.popularLabelText}>
-                            Best Value
+                      {plan.freeTrialLabel && (
+                        <View style={styles.freeTrialLabel}>
+                          <Text style={styles.freeTrialLabelText}>
+                            {plan.freeTrialLabel}
                           </Text>
                         </View>
                       )}
@@ -162,11 +168,22 @@ const SubscriptionModal: React.FC<SubscriptionModalProps> = ({
                         </View>
                       )}
                       <Text style={styles.planName}>{plan.name}</Text>
-                      <View style={styles.priceContainer}>
-                        <Text style={styles.priceAmount}>{plan.price}</Text>
-                        <Text style={styles.pricePeriod}>/ {plan.period}</Text>
+                      <View style={styles.priceRow}>
+                        <View style={styles.priceContainer}>
+                          <Text style={styles.priceAmount}>{plan.price}</Text>
+                          <Text style={styles.pricePeriod}>
+                            / {plan.period}
+                          </Text>
+                        </View>
+                        <Text style={styles.planSubtitle}>{plan.subtitle}</Text>
                       </View>
-                      <Text style={styles.planSubtitle}>{plan.subtitle}</Text>
+                      {plan.specialOffer && !isCurrent && (
+                        <View style={styles.specialOfferBadge}>
+                          <Text style={styles.specialOfferText}>
+                            Special Offer
+                          </Text>
+                        </View>
+                      )}
                     </TouchableOpacity>
                   );
                 })}
@@ -218,70 +235,70 @@ const styles = StyleSheet.create({
     backgroundColor: 'white',
     borderTopLeftRadius: 20,
     borderTopRightRadius: 20,
-    padding: 40,
+    padding: 16,
     width: '100%',
     maxHeight: '90%',
   },
   closeButton: {
     position: 'absolute',
-    top: 20,
-    right: 20,
-    padding: 8,
+    top: 8,
+    right: 8,
+    padding: 4,
     borderRadius: 8,
     backgroundColor: 'transparent',
     zIndex: 10,
   },
   header: {
     alignItems: 'center',
-    marginBottom: 32,
+    marginBottom: 12,
   },
   logoContainer: {
-    marginBottom: 16,
+    marginBottom: 6,
   },
   logo: {
     backgroundColor: '#8e2d8e',
-    paddingVertical: 12,
-    paddingHorizontal: 16,
-    borderRadius: 8,
+    paddingVertical: 6,
+    paddingHorizontal: 10,
+    borderRadius: 5,
   },
   logoText: {
     color: 'white',
     fontWeight: '600',
-    fontSize: 14,
-    lineHeight: 18,
+    fontSize: 9,
+    lineHeight: 12,
     textAlign: 'center',
   },
   title: {
-    fontSize: 24,
+    fontSize: 16,
     fontWeight: '600',
     color: '#000000',
-    marginVertical: 16,
+    marginVertical: 6,
     textAlign: 'center',
   },
   subtitle: {
     color: '#64748b',
-    fontSize: 16,
+    fontSize: 12,
     textAlign: 'center',
-    lineHeight: 24,
+    lineHeight: 16,
   },
   pricingSection: {
-    marginBottom: 32,
+    marginBottom: 12,
   },
   sectionTitle: {
-    fontSize: 14,
+    fontSize: 10,
     fontWeight: '600',
     color: '#64748b',
     textAlign: 'center',
-    marginBottom: 20,
+    marginBottom: 10,
     letterSpacing: 0.5,
   },
   pricingPlan: {
     position: 'relative',
     borderWidth: 2,
     borderColor: '#e2e8f0',
-    borderRadius: 12,
-    padding: 16,
-    marginBottom: 12,
+    borderRadius: 10,
+    padding: 10,
+    marginBottom: 8,
   },
   pricingPlanPopular: {
     borderColor: '#8e2d8e',
@@ -289,16 +306,30 @@ const styles = StyleSheet.create({
   },
   badge: {
     position: 'absolute',
-    top: -8,
-    right: 16,
+    top: 8,
+    left: 8,
     backgroundColor: '#8e2d8e',
-    paddingVertical: 4,
-    paddingHorizontal: 12,
-    borderRadius: 12,
+    paddingVertical: 2,
+    paddingHorizontal: 6,
+    borderRadius: 4,
   },
   badgeText: {
     color: 'white',
-    fontSize: 12,
+    fontSize: 9,
+    fontWeight: '600',
+  },
+  freeTrialLabel: {
+    position: 'absolute',
+    top: 8,
+    right: 8,
+    backgroundColor: '#8e2d8e',
+    paddingVertical: 2,
+    paddingHorizontal: 6,
+    borderRadius: 4,
+  },
+  freeTrialLabelText: {
+    color: 'white',
+    fontSize: 9,
     fontWeight: '600',
   },
   popularLabel: {
@@ -317,59 +348,77 @@ const styles = StyleSheet.create({
   },
   currentLabel: {
     position: 'absolute',
-    top: -8,
-    left: 16,
+    top: 8,
+    right: 8,
     backgroundColor: '#8e2d8e',
-    paddingVertical: 4,
-    paddingHorizontal: 12,
-    borderRadius: 12,
+    paddingVertical: 2,
+    paddingHorizontal: 6,
+    borderRadius: 4,
   },
   currentLabelText: {
     color: 'white',
-    fontSize: 12,
+    fontSize: 9,
     fontWeight: '600',
   },
   planName: {
-    fontSize: 14,
-    fontWeight: '600',
+    fontSize: 13,
+    fontWeight: '700',
     color: '#000000',
-    marginBottom: 8,
+    marginBottom: 4,
+    marginTop: 18,
+  },
+  priceRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
   },
   priceContainer: {
     flexDirection: 'row',
     alignItems: 'baseline',
-    marginBottom: 4,
   },
   priceAmount: {
-    fontSize: 24,
+    fontSize: 20,
     fontWeight: '700',
     color: '#000000',
   },
   pricePeriod: {
-    fontSize: 16,
+    fontSize: 11,
     color: '#64748b',
-    marginLeft: 4,
+    marginLeft: 2,
   },
   planSubtitle: {
-    fontSize: 14,
+    fontSize: 11,
     color: '#64748b',
   },
+  specialOfferBadge: {
+    alignSelf: 'flex-start',
+    backgroundColor: '#8e2d8e',
+    paddingVertical: 2,
+    paddingHorizontal: 8,
+    borderRadius: 4,
+    marginTop: 6,
+  },
+  specialOfferText: {
+    color: 'white',
+    fontSize: 10,
+    fontWeight: '600',
+  },
   actions: {
-    marginTop: 16,
+    marginTop: 6,
   },
   restoreButton: {
     width: '100%',
     backgroundColor: 'transparent',
     borderWidth: 1,
     borderColor: '#e2e8f0',
-    padding: 14,
-    borderRadius: 12,
+    padding: 10,
+    borderRadius: 8,
     alignItems: 'center',
   },
   restoreButtonText: {
     color: '#64748b',
     fontWeight: '500',
-    fontSize: 16,
+    fontSize: 13,
   },
 });
 

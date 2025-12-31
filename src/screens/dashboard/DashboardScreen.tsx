@@ -50,8 +50,8 @@ const DashboardScreen = ({ navigation }: any) => {
   >({});
   const [recentForms, setRecentForms] = useState<any[]>([]);
 
-  const hasActiveSubscription =
-    user?.appStorePurchaseActive || user?.stripeSubscriptionActive;
+  const hasActiveSubscription = false;
+  // user?.appStorePurchaseActive || user?.stripeSubscriptionActive;
 
   const quickActions = [
     {
