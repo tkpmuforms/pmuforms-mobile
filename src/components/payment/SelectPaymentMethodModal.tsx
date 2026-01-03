@@ -88,7 +88,7 @@ const SelectPaymentMethodModal: React.FC<SelectPaymentMethodModalProps> = ({
       mastercard: '#EB001B',
       amex: '#006FCF',
     };
-    return colors[brand.toLowerCase()] || '#6B2A6B';
+    return colors[brand?.toLowerCase()] || '#6B2A6B';
   };
 
   const handleMakePayment = async () => {
@@ -109,7 +109,9 @@ const SelectPaymentMethodModal: React.FC<SelectPaymentMethodModalProps> = ({
       const subscriptionData = getSubscriptionFromStorage();
       const isSubscriptionActive =
         subscriptionData &&
-        ['active', 'trialing'].includes(subscriptionData.status.toLowerCase());
+        ['active', 'trialing'].includes(
+          subscriptionData?.status?.toLowerCase(),
+        );
 
       const shouldChangeSubscription =
         hasActiveSubscription || isSubscriptionActive;
@@ -178,7 +180,7 @@ const SelectPaymentMethodModal: React.FC<SelectPaymentMethodModalProps> = ({
   const isChangingPlan =
     hasActiveSubscription ||
     (subscriptionData &&
-      ['active', 'trialing'].includes(subscriptionData.status.toLowerCase()));
+      ['active', 'trialing'].includes(subscriptionData?.status?.toLowerCase()));
 
   return (
     <Modal
