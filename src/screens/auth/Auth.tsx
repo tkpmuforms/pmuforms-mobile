@@ -4,6 +4,7 @@ import {
   Platform,
   ScrollView,
   StyleSheet,
+  View,
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import ImageSlider from '../../components/ImageSlider';
@@ -20,25 +21,25 @@ const AuthScreen = () => {
     setPage(page === 'login' ? 'signup' : 'login');
   };
 
+  if (!showAuthForms) {
+    return <ImageSlider onComplete={() => setShowAuthForms(true)} />;
+  }
+
   return (
-    <SafeAreaView style={styles.container}>
-      {!showAuthForms ? (
-        <ImageSlider onComplete={() => setShowAuthForms(true)} />
-      ) : (
-        <KeyboardAvoidingView
-          behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
-          style={styles.content}
-        >
-          <ScrollView contentContainerStyle={styles.scrollContent}>
-            {page === 'login' ? (
-              <Login onToggleToSignup={toggleMode} />
-            ) : (
-              <Signup onToggleToLogin={toggleMode} />
-            )}
-          </ScrollView>
-        </KeyboardAvoidingView>
-      )}
-    </SafeAreaView>
+    <View style={styles.container}>
+      <KeyboardAvoidingView
+        behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+        style={styles.content}
+      >
+        <ScrollView contentContainerStyle={styles.scrollContent}>
+          {page === 'login' ? (
+            <Login onToggleToSignup={toggleMode} />
+          ) : (
+            <Signup onToggleToLogin={toggleMode} />
+          )}
+        </ScrollView>
+      </KeyboardAvoidingView>
+    </View>
   );
 };
 

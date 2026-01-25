@@ -43,7 +43,11 @@ function App() {
         persistor={persistor}
       >
         <SafeAreaProvider>
-          <StatusBar barStyle={isDarkMode ? 'light-content' : 'dark-content'} />
+          <StatusBar
+            barStyle={isDarkMode ? 'light-content' : 'dark-content'}
+            backgroundColor="transparent"
+            translucent={true}
+          />
           <NavigationContainer>
             <AuthProvider>
               <RouteGuard />
