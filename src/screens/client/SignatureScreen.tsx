@@ -13,6 +13,7 @@ import {
   CheckCircle,
   AlertTriangle,
   Edit3,
+  ArrowLeft,
 } from 'lucide-react-native';
 import Toast from 'react-native-toast-message';
 import SignatureModal from '../../components/signature/SignatureModal';
@@ -193,7 +194,15 @@ const SignatureScreen: React.FC = () => {
           {/* Header Section */}
           <View style={styles.header}>
             <View style={styles.titleSection}>
-              <Text style={styles.title}>Sign Appointment Forms</Text>
+              <View style={styles.headerActions}>
+                <TouchableOpacity
+                  style={styles.backButton}
+                  onPress={() => navigation.goBack()}
+                >
+                  <ArrowLeft size={24} color="#000000" />
+                </TouchableOpacity>
+                <Text style={styles.title}>Sign Appointment Forms</Text>
+              </View>
               <Text style={styles.subtitle}>Sign Client Appointment Forms</Text>
             </View>
           </View>
@@ -346,11 +355,20 @@ const styles = StyleSheet.create({
   titleSection: {
     marginBottom: 16,
   },
+  headerActions: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginBottom: 8,
+    gap: 12,
+  },
+  backButton: {
+    padding: 8,
+  },
   title: {
     fontSize: 24,
     fontWeight: '700',
     color: colors.text,
-    marginBottom: 8,
+    flex: 1,
   },
   subtitle: {
     fontSize: 14,
