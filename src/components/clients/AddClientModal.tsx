@@ -7,8 +7,11 @@ import {
   TouchableOpacity,
   TextInput,
   ScrollView,
+  KeyboardAvoidingView,
+  Platform,
+  Keyboard,
+  TouchableWithoutFeedback,
 } from 'react-native';
-import { SafeAreaView } from 'react-native-safe-area-context';
 import { X } from 'lucide-react-native';
 import Toast from 'react-native-toast-message';
 import { createClient } from '../../services/artistServices';
@@ -33,7 +36,18 @@ const AddClientModal: React.FC<AddClientModalProps> = ({
     setFormData(prev => ({ ...prev, [field]: value }));
   };
 
+  const isFormValid = () => {
+    return (
+      formData.firstName.trim() !== '' &&
+      formData.lastName.trim() !== '' &&
+      formData.email.trim() !== ''
+    );
+  };
+
   const handleSubmit = async () => {
+    if (!isFormValid()) {
+      return;
+    }
     try {
       await createClient({
         name: `${formData.firstName} ${formData.lastName}`,
@@ -70,90 +84,105 @@ const AddClientModal: React.FC<AddClientModalProps> = ({
       transparent
       animationType="slide"
       onRequestClose={onClose}
+      statusBarTranslucent
     >
-      <SafeAreaView style={styles.container}>
-        <View style={styles.overlay}>
-          <View style={styles.modal}>
-            <TouchableOpacity style={styles.closeButton} onPress={onClose}>
-              <X size={20} color="#64748b" />
-            </TouchableOpacity>
+      <KeyboardAvoidingView
+        behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+        style={styles.container}
+      >
+        <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+          <View style={styles.overlay}>
+            <TouchableWithoutFeedback onPress={e => e.stopPropagation()}>
+              <View style={styles.modal}>
+                <TouchableOpacity style={styles.closeButton} onPress={onClose}>
+                  <X size={20} color="#64748b" />
+                </TouchableOpacity>
 
-            <View style={styles.header}>
-              <Text style={styles.title}>Add a New Client</Text>
-              <Text style={styles.subtitle}>
-                Please provide the necessary information to onboard a new
-                client.
-              </Text>
-            </View>
-
-            <ScrollView
-              style={styles.scrollView}
-              contentContainerStyle={styles.scrollContent}
-              showsVerticalScrollIndicator={false}
-            >
-              <View style={styles.formRow}>
-                <View style={styles.formGroupHalf}>
-                  <Text style={styles.label}>First Name</Text>
-                  <TextInput
-                    style={styles.input}
-                    placeholder="First Name"
-                    placeholderTextColor="#94a3b8"
-                    value={formData.firstName}
-                    onChangeText={value =>
-                      handleInputChange('firstName', value)
-                    }
-                  />
+                <View style={styles.header}>
+                  <Text style={styles.title}>Add New Client</Text>
+                  <Text style={styles.subtitle}>
+                    Please Fill out the forms to add a new client
+                  </Text>
                 </View>
 
-                <View style={styles.formGroupHalf}>
-                  <Text style={styles.label}>Last Name</Text>
-                  <TextInput
-                    style={styles.input}
-                    placeholder="Last Name"
-                    placeholderTextColor="#94a3b8"
-                    value={formData.lastName}
-                    onChangeText={value => handleInputChange('lastName', value)}
-                  />
-                </View>
+                <ScrollView
+                  style={styles.scrollView}
+                  contentContainerStyle={styles.scrollContent}
+                  showsVerticalScrollIndicator={false}
+                  keyboardShouldPersistTaps="handled"
+                >
+                  <View style={styles.formGroup}>
+                    <Text style={styles.label}>First Name</Text>
+                    <TextInput
+                      style={styles.input}
+                      placeholder="First Name"
+                      placeholderTextColor="#94a3b8"
+                      value={formData.firstName}
+                      onChangeText={value =>
+                        handleInputChange('firstName', value)
+                      }
+                      returnKeyType="next"
+                    />
+                  </View>
+
+                  <View style={styles.formGroup}>
+                    <Text style={styles.label}>Last Name</Text>
+                    <TextInput
+                      style={styles.input}
+                      placeholder="Last Name"
+                      placeholderTextColor="#94a3b8"
+                      value={formData.lastName}
+                      onChangeText={value =>
+                        handleInputChange('lastName', value)
+                      }
+                      returnKeyType="next"
+                    />
+                  </View>
+
+                  <View style={styles.formGroup}>
+                    <Text style={styles.label}>Email Address</Text>
+                    <TextInput
+                      style={styles.input}
+                      placeholder="Email Address"
+                      placeholderTextColor="#94a3b8"
+                      value={formData.email}
+                      onChangeText={value => handleInputChange('email', value)}
+                      keyboardType="email-address"
+                      autoCapitalize="none"
+                      returnKeyType="next"
+                    />
+                  </View>
+
+                  <View style={styles.formGroup}>
+                    <Text style={styles.label}>Phone number</Text>
+                    <TextInput
+                      style={styles.input}
+                      placeholder="Phone number"
+                      placeholderTextColor="#94a3b8"
+                      value={formData.phone}
+                      onChangeText={value => handleInputChange('phone', value)}
+                      keyboardType="phone-pad"
+                      returnKeyType="done"
+                      onSubmitEditing={Keyboard.dismiss}
+                    />
+                  </View>
+                </ScrollView>
+
+                <TouchableOpacity
+                  style={[
+                    styles.submitButton,
+                    !isFormValid() && styles.submitButtonDisabled,
+                  ]}
+                  onPress={handleSubmit}
+                  disabled={!isFormValid()}
+                >
+                  <Text style={styles.submitButtonText}>Add Client</Text>
+                </TouchableOpacity>
               </View>
-
-              <View style={styles.formRow}>
-                <View style={styles.formGroupHalf}>
-                  <Text style={styles.label}>Email Address</Text>
-                  <TextInput
-                    style={styles.input}
-                    placeholder="Email Address"
-                    placeholderTextColor="#94a3b8"
-                    value={formData.email}
-                    onChangeText={value => handleInputChange('email', value)}
-                    keyboardType="email-address"
-                    autoCapitalize="none"
-                  />
-                </View>
-
-                <View style={styles.formGroupHalf}>
-                  <Text style={styles.label}>Phone number</Text>
-                  <TextInput
-                    style={styles.input}
-                    placeholder="Phone number"
-                    placeholderTextColor="#94a3b8"
-                    value={formData.phone}
-                    onChangeText={value => handleInputChange('phone', value)}
-                    keyboardType="phone-pad"
-                  />
-                </View>
-              </View>
-            </ScrollView>
-
-            <TouchableOpacity
-              style={styles.submitButton}
-              onPress={handleSubmit}
-            >
-              <Text style={styles.submitButtonText}>Add Client</Text>
-            </TouchableOpacity>
+            </TouchableWithoutFeedback>
           </View>
-        </View>
-      </SafeAreaView>
+        </TouchableWithoutFeedback>
+      </KeyboardAvoidingView>
     </Modal>
   );
 };
@@ -171,8 +200,11 @@ const styles = StyleSheet.create({
     backgroundColor: '#fff',
     borderTopLeftRadius: 20,
     borderTopRightRadius: 20,
-    padding: 32,
-    maxHeight: '90%',
+    paddingTop: 15,
+    paddingLeft: 15,
+    paddingRight: 15,
+    paddingBottom: 40,
+    maxHeight: '75%',
   },
   closeButton: {
     position: 'absolute',
@@ -187,9 +219,10 @@ const styles = StyleSheet.create({
     marginBottom: 24,
   },
   title: {
-    fontSize: 24,
-    fontWeight: '600',
+    fontSize: 18,
+    fontWeight: '700',
     color: '#000000',
+    lineHeight: 24,
     marginBottom: 8,
     textAlign: 'center',
   },
@@ -200,23 +233,19 @@ const styles = StyleSheet.create({
     lineHeight: 20,
   },
   scrollView: {
-    maxHeight: 400,
+    maxHeight: 500,
   },
   scrollContent: {
     paddingBottom: 16,
   },
-  formRow: {
-    flexDirection: 'row',
-    gap: 12,
-    marginBottom: 16,
-  },
-  formGroupHalf: {
-    flex: 1,
+  formGroup: {
+    marginBottom: 20,
   },
   label: {
     fontSize: 14,
     fontWeight: '500',
-    color: '#374151',
+    color: '#000000',
+    lineHeight: 20,
     marginBottom: 8,
   },
   input: {
@@ -227,7 +256,7 @@ const styles = StyleSheet.create({
     borderRadius: 12,
     fontSize: 14,
     color: '#000000',
-    backgroundColor: '#f8fafc',
+    backgroundColor: '#BCBBC133',
   },
   submitButton: {
     backgroundColor: '#8e2d8e',
@@ -235,8 +264,12 @@ const styles = StyleSheet.create({
     borderRadius: 12,
     alignItems: 'center',
     marginTop: 16,
-    width: '60%',
+    width: '90%',
     alignSelf: 'center',
+  },
+  submitButtonDisabled: {
+    backgroundColor: '#CBD5E1',
+    opacity: 0.6,
   },
   submitButtonText: {
     color: '#fff',

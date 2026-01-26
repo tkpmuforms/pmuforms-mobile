@@ -49,8 +49,9 @@ const MetricsCard: React.FC<MetricsCardProps> = ({
         <View style={[styles.iconContainer, { backgroundColor: `${color}25` }]}>
           {renderIcon()}
         </View>
+        <Text style={styles.title}>{title}</Text>
       </View>
-      <Text style={styles.title}>{title}</Text>
+
       <View style={styles.valueContainer}>
         {isLoading ? (
           <ActivityIndicator size="small" color={color} />
@@ -81,6 +82,9 @@ const styles = StyleSheet.create({
   },
   header: {
     marginBottom: 8,
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 12,
   },
   iconContainer: {
     width: 40,
@@ -90,10 +94,10 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   title: {
-    fontSize: 11,
+    fontSize: 13,
     fontWeight: '500',
-    color: '#64748b',
-    marginBottom: 4,
+    color: '#000000',
+    flex: 1,
   },
   valueContainer: {
     minHeight: 32,

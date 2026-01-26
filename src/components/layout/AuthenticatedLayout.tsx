@@ -16,7 +16,7 @@ const AuthenticatedLayout: React.FC<AuthenticatedLayoutProps> = ({
 }) => {
   return (
     <SafeAreaView style={styles.container} edges={['top']}>
-      <AuthenticatedNavbar breadcrumbs={breadcrumbs} navigation={navigation} />
+      {/* <AuthenticatedNavbar breadcrumbs={breadcrumbs} navigation={navigation} /> */}
       <View style={styles.content}>{children}</View>
     </SafeAreaView>
   );

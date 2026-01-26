@@ -14,7 +14,6 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import Toast from 'react-native-toast-message';
 import AddClientModal from '../../components/clients/AddClientModal';
 import ClientCard from '../../components/clients/ClientCard';
-import ClientSearchModal from '../../components/clients/ClientSearchModal';
 import { searchCustomers } from '../../services/artistServices';
 import { Client, CustomerResponse } from '../../types';
 import { generateColor, generateInitials } from '../../utils/utils';
@@ -25,7 +24,6 @@ interface ClientScreenProps {
 
 const ClientScreen: React.FC<ClientScreenProps> = () => {
   const navigation = useNavigation();
-  const [showSearch, setShowSearch] = useState(false);
   const [showAddClient, setShowAddClient] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
   const [clients, setClients] = useState<Client[]>([]);
@@ -46,9 +44,11 @@ const ClientScreen: React.FC<ClientScreenProps> = () => {
     };
   };
 
-  const fetchCustomers = async (searchName?: string) => {
+  const fetchCustomers = async (searchName?: string, isInitialLoad = false) => {
     try {
-      setLoading(true);
+      if (isInitialLoad) {
+        setLoading(true);
+      }
 
       const response = await searchCustomers(searchName, 1, 30);
       const data: CustomerResponse = response?.data;
@@ -63,12 +63,14 @@ const ClientScreen: React.FC<ClientScreenProps> = () => {
         text2: 'Failed to load clients',
       });
     } finally {
-      setLoading(false);
+      if (isInitialLoad) {
+        setLoading(false);
+      }
     }
   };
 
   useEffect(() => {
-    fetchCustomers();
+    fetchCustomers(undefined, true);
   }, []);
 
   useEffect(() => {
@@ -94,19 +96,12 @@ const ClientScreen: React.FC<ClientScreenProps> = () => {
 
   const renderHeader = () => (
     <View style={styles.header}>
-      <View style={styles.titleSection}>
+      <View>
         <Text style={styles.title}>Your Clients</Text>
         <Text style={styles.subtitle}>
           Clients who fill out your forms will appear here
         </Text>
       </View>
-      <TouchableOpacity
-        style={styles.addButton}
-        onPress={() => setShowAddClient(true)}
-      >
-        <Plus size={20} color="#fff" />
-        <Text style={styles.addButtonText}>Add Client</Text>
-      </TouchableOpacity>
     </View>
   );
 
@@ -119,12 +114,8 @@ const ClientScreen: React.FC<ClientScreenProps> = () => {
           placeholder="Search clients..."
           value={searchQuery}
           onChangeText={setSearchQuery}
-          onFocus={() => setShowSearch(true)}
         />
       </View>
-      <Text style={styles.clientCount}>
-        {totalClients} {totalClients === 1 ? 'Client' : 'Clients'}
-      </Text>
     </View>
   );
 
@@ -151,6 +142,16 @@ const ClientScreen: React.FC<ClientScreenProps> = () => {
     <SafeAreaView style={styles.container} edges={[]}>
       {renderHeader()}
       {renderSearchBar()}
+      <TouchableOpacity
+        style={styles.addButton}
+        onPress={() => setShowAddClient(true)}
+      >
+        <Plus size={20} color="#8E2D8E" />
+        <Text style={styles.addButtonText}>Tap Here to Add a New Client</Text>
+      </TouchableOpacity>
+      <Text style={styles.clientCount}>
+        Total {totalClients === 1 ? 'Client' : 'Clients'} {totalClients}
+      </Text>
 
       <FlatList
         data={clients}
@@ -174,15 +175,6 @@ const ClientScreen: React.FC<ClientScreenProps> = () => {
           onSuccess={handleAddClientSuccess}
         />
       )}
-
-      {showSearch && (
-        <ClientSearchModal
-          visible={showSearch}
-          onClose={() => setShowSearch(false)}
-          searchQuery={searchQuery}
-          onSearchChange={setSearchQuery}
-        />
-      )}
     </SafeAreaView>
   );
 };
@@ -198,14 +190,12 @@ const styles = StyleSheet.create({
     paddingBottom: 12,
     backgroundColor: '#fff',
   },
-  titleSection: {
-    marginBottom: 16,
-  },
+
   title: {
     fontSize: 28,
     fontWeight: 'bold',
     color: '#000000',
-    marginBottom: 4,
+    marginBottom: 8,
   },
   subtitle: {
     fontSize: 14,
@@ -215,28 +205,28 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
-    backgroundColor: 'linear-gradient(90deg, #8E2D8E 0%, #A654CD 100%)',
+    backgroundColor: '#8E2D8E14',
     paddingVertical: 12,
     paddingHorizontal: 16,
+    marginRight: 16,
+    marginLeft: 16,
+    marginBottom: 12,
     borderRadius: 8,
     gap: 8,
   },
   addButtonText: {
-    color: '#fff',
-    fontSize: 16,
-    fontWeight: '600',
+    color: '#8E2D8E',
+    fontSize: 14,
+    fontWeight: '700',
   },
   searchContainer: {
     paddingHorizontal: 16,
     paddingVertical: 12,
-    backgroundColor: '#fff',
-    borderBottomWidth: 1,
-    borderBottomColor: '#E5E5E5',
   },
   searchInputWrapper: {
     flexDirection: 'row',
     alignItems: 'center',
-    backgroundColor: '#F5F5F5',
+    backgroundColor: '#BCBBC133',
     borderRadius: 8,
     paddingHorizontal: 12,
     marginBottom: 8,
@@ -252,7 +242,9 @@ const styles = StyleSheet.create({
   },
   clientCount: {
     fontSize: 14,
-    color: '#666',
+    paddingLeft: 16,
+    color: '#000000',
+    fontWeight: '500',
   },
   listContent: {
     paddingVertical: 8,
