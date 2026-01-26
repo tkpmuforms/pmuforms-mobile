@@ -157,14 +157,6 @@ const DashboardScreen = ({ navigation }: any) => {
     fetchData();
   }, []);
 
-  useEffect(() => {
-    console.log('=== USER OBJECT DEBUG ===');
-    console.log('Full user object:', JSON.stringify(user, null, 2));
-    console.log('Business Name:', user?.businessName);
-    console.log('Has subscription:', hasActiveSubscription);
-    console.log('========================');
-  }, [user]);
-
   const onRefresh = async () => {
     setRefreshing(true);
     await fetchData();
@@ -192,7 +184,11 @@ const DashboardScreen = ({ navigation }: any) => {
 
   return (
     <SafeAreaView style={styles.container} edges={['bottom']}>
-      <StatusBar barStyle="dark-content" backgroundColor="transparent" translucent />
+      <StatusBar
+        barStyle="dark-content"
+        backgroundColor="transparent"
+        translucent
+      />
       <ScrollView
         style={styles.scrollView}
         contentContainerStyle={styles.scrollContent}

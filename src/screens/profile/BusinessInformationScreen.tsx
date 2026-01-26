@@ -111,7 +111,7 @@ const BusinessInformationScreen: React.FC = () => {
               {registeredServices.length > 0 ? (
                 registeredServices.map((service, index) => (
                   <View
-                    key={service._id || service.id || index}
+                    key={`${service._id || service.id}-${index}`}
                     style={styles.serviceItem}
                   >
                     <View style={styles.serviceBullet} />
