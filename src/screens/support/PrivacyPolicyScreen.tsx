@@ -8,8 +8,12 @@ import {
   TouchableOpacity,
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
+import { useNavigation } from '@react-navigation/native';
+import { ArrowLeft } from 'lucide-react-native';
 
 const PrivacyPolicyScreen: React.FC = () => {
+  const navigation = useNavigation();
+
   const handleEmailPress = () => {
     Linking.openURL('mailto:contact@pmuforms.com');
   };
@@ -20,7 +24,15 @@ const PrivacyPolicyScreen: React.FC = () => {
         contentContainerStyle={styles.scrollContent}
         showsVerticalScrollIndicator={false}
       >
-        <Text style={styles.mainTitle}>PMU Forms Privacy Policy</Text>
+        <View style={styles.headerActions}>
+          <TouchableOpacity
+            style={styles.backButton}
+            onPress={() => navigation.goBack()}
+          >
+            <ArrowLeft size={24} color="#000000" />
+          </TouchableOpacity>
+          <Text style={styles.mainTitle}>PMU Forms Privacy Policy</Text>
+        </View>
 
         <Text style={styles.paragraph}>
           Dephyned built the PMU Forms app as a Freemium app. This SERVICE is
@@ -181,11 +193,20 @@ const styles = StyleSheet.create({
     paddingHorizontal: 20,
     paddingVertical: 24,
   },
+  headerActions: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginBottom: 24,
+    gap: 12,
+  },
+  backButton: {
+    padding: 8,
+  },
   mainTitle: {
-    fontSize: 28,
+    fontSize: 24,
     fontWeight: 'bold',
     color: '#000000',
-    marginBottom: 24,
+    flex: 1,
   },
   sectionTitle: {
     fontSize: 20,

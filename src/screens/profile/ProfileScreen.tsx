@@ -35,7 +35,7 @@ const ProfileScreen: React.FC<ProfileScreenProps> = ({ navigation }) => {
     {
       icon: BusinessInfo,
       title: 'Business Information',
-      onPress: () => setShowEditBusinessInfo(true),
+      onPress: () => navigation?.navigate('BusinessInformation'),
     },
     {
       icon: ChangePassword,
@@ -50,7 +50,7 @@ const ProfileScreen: React.FC<ProfileScreenProps> = ({ navigation }) => {
     {
       icon: HelpAndSupport,
       title: 'Help & Support',
-      onPress: () => navigation?.navigate('Support'),
+      onPress: () => navigation?.navigate('ContactSupport'),
     },
     {
       icon: PrivacyPolicy,

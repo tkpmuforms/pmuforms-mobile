@@ -9,7 +9,8 @@ import {
   Alert,
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { CreditCard, Plus } from 'lucide-react-native';
+import { useNavigation } from '@react-navigation/native';
+import { ArrowLeft, CreditCard, Plus } from 'lucide-react-native';
 import Toast from 'react-native-toast-message';
 import { colors } from '../../theme/colors';
 import useAuth from '../../hooks/useAuth';
@@ -49,6 +50,7 @@ interface SubscriptionData {
 }
 
 const PaymentScreen: React.FC = () => {
+  const navigation = useNavigation();
   const { user } = useAuth();
   const defaultCardId = user?.defaultStripePaymentMethod || '';
 
@@ -263,7 +265,15 @@ const PaymentScreen: React.FC = () => {
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.header}>
-        <Text style={styles.title}>Payment & Billing</Text>
+        <View style={styles.headerActions}>
+          <TouchableOpacity
+            style={styles.backButton}
+            onPress={() => navigation.goBack()}
+          >
+            <ArrowLeft size={24} color="#000000" />
+          </TouchableOpacity>
+          <Text style={styles.title}>Payment & Billing</Text>
+        </View>
       </View>
 
       <ScrollView
@@ -413,10 +423,19 @@ const styles = StyleSheet.create({
     borderBottomWidth: 1,
     borderBottomColor: colors.border,
   },
+  headerActions: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 12,
+  },
+  backButton: {
+    padding: 8,
+  },
   title: {
     fontSize: 24,
     fontWeight: 'bold',
     color: colors.text,
+    flex: 1,
   },
   scrollView: {
     flex: 1,

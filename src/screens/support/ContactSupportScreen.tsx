@@ -11,6 +11,8 @@ import {
   Platform,
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
+import { useNavigation } from '@react-navigation/native';
+import { ArrowLeft } from 'lucide-react-native';
 import Toast from 'react-native-toast-message';
 import useAuth from '../../hooks/useAuth';
 import { sendMessage } from '../../services/artistServices';
@@ -23,6 +25,7 @@ interface FormData {
 }
 
 const ContactSupportScreen: React.FC = () => {
+  const navigation = useNavigation();
   const { user } = useAuth();
   const [formData, setFormData] = useState<FormData>({
     email: user?.email || '',
@@ -91,7 +94,15 @@ const ContactSupportScreen: React.FC = () => {
           showsVerticalScrollIndicator={false}
         >
           <View style={styles.header}>
-            <Text style={styles.title}>Contact Support</Text>
+            <View style={styles.headerActions}>
+              <TouchableOpacity
+                style={styles.backButton}
+                onPress={() => navigation.goBack()}
+              >
+                <ArrowLeft size={24} color="#000000" />
+              </TouchableOpacity>
+              <Text style={styles.title}>Contact Support</Text>
+            </View>
             <Text style={styles.subtitle}>
               Have a question or need help? Send us a message and we'll get back
               to you.
@@ -185,11 +196,20 @@ const styles = StyleSheet.create({
   header: {
     marginBottom: 32,
   },
+  headerActions: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginBottom: 8,
+    gap: 12,
+  },
+  backButton: {
+    padding: 8,
+  },
   title: {
-    fontSize: 28,
+    fontSize: 24,
     fontWeight: 'bold',
     color: '#000000',
-    marginBottom: 8,
+    flex: 1,
   },
   subtitle: {
     fontSize: 16,
