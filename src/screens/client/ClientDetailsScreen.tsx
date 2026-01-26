@@ -1,6 +1,7 @@
 import { useNavigation, useRoute, RouteProp } from '@react-navigation/native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import {
+  ArrowLeft,
   Calendar,
   Clock,
   Copy,
@@ -14,6 +15,7 @@ import {
 import React, { useCallback, useEffect, useState } from 'react';
 import {
   ActivityIndicator,
+  Linking,
   ScrollView,
   StyleSheet,
   Text,
@@ -25,6 +27,7 @@ import Toast from 'react-native-toast-message';
 import DeleteModal from '../../components/clients/DeleteModal';
 import EditClientModal from '../../components/clients/EditClientModal';
 import SendConsentFormModal from '../../components/clients/SendConsentFormModal';
+import MetricsCard from '../../components/dashboard/MetricsCard';
 import { ClientDetail, ClientMetrics } from '../../types';
 import { RootStackParamList } from '../../types/navigation';
 import {
@@ -109,6 +112,18 @@ const ClientDetailsScreen: React.FC<ClientDetailsScreenProps> = () => {
     });
   };
 
+  const handleEmailPress = () => {
+    if (client?.email) {
+      Linking.openURL(`mailto:${client.email}`);
+    }
+  };
+
+  const handlePhonePress = () => {
+    if (client?.phone) {
+      Linking.openURL(`tel:${client.phone}`);
+    }
+  };
+
   const handleDeleteClient = async () => {
     try {
       await deleteCustomer(clientId);
@@ -134,22 +149,32 @@ const ClientDetailsScreen: React.FC<ClientDetailsScreenProps> = () => {
       title: 'View Appointment',
       onPress: () =>
         navigation.navigate('ClientAppointments', { clientId, client }),
+      isDelete: false,
     },
     {
       icon: <Send size={20} color="#8e2d8e" />,
       title: 'Send Consent Form',
       onPress: () => setShowSendConsentForm(true),
+      isDelete: false,
     },
     {
       icon: <Clock size={20} color="#8e2d8e" />,
       title: 'Set Reminders',
       onPress: () =>
         navigation.navigate('ClientReminders', { clientId, client }),
+      isDelete: false,
     },
     {
       icon: <User size={20} color="#8e2d8e" />,
       title: 'View Notes',
       onPress: () => navigation.navigate('ClientNotes', { clientId, client }),
+      isDelete: false,
+    },
+    {
+      icon: <Trash2 size={20} color="#FF3B30" />,
+      title: 'Delete this Client',
+      onPress: () => setShowDeleteClient(true),
+      isDelete: true,
     },
   ];
 
@@ -180,49 +205,57 @@ const ClientDetailsScreen: React.FC<ClientDetailsScreenProps> = () => {
   }
 
   return (
-    <SafeAreaView style={styles.container}>
+    <SafeAreaView style={styles.container} edges={[]}>
       <ScrollView contentContainerStyle={styles.scrollContent}>
-        {/* Header Actions */}
         <View style={styles.headerActions}>
+          <TouchableOpacity
+            style={styles.backButton}
+            onPress={() => navigation.goBack()}
+          >
+            <ArrowLeft size={24} color="#000000" />
+          </TouchableOpacity>
+          <Text style={styles.clientName}>{client.name}</Text>
+
           <TouchableOpacity
             style={styles.actionButton}
             onPress={() => setShowEditClient(true)}
           >
             <Edit size={20} color="#8e2d8e" />
-            <Text style={styles.actionButtonText}>Edit</Text>
-          </TouchableOpacity>
-          <TouchableOpacity
-            style={[styles.actionButton, styles.deleteButton]}
-            onPress={() => setShowDeleteClient(true)}
-          >
-            <Trash2 size={20} color="#FF3B30" />
-            <Text style={[styles.actionButtonText, styles.deleteButtonText]}>
-              Delete
-            </Text>
           </TouchableOpacity>
         </View>
 
-        {/* Client Info Card */}
-        <View style={styles.infoCard}>
-          <View style={styles.avatarContainer}>
-            <View style={styles.avatar}>
-              <Text style={styles.avatarText}>
-                {client.name
-                  .split(' ')
-                  .map(n => n[0])
-                  .join('')
-                  .toUpperCase()
-                  .substring(0, 2)}
-              </Text>
+        {!metricsLoading && clientMetrics && (
+          <View style={styles.metricsContainer}>
+            <View style={styles.metricCardWrapper}>
+              <MetricsCard
+                title="Pending Forms"
+                value={clientMetrics.pendingForms.toString()}
+                icon="file-text"
+                color="#8e2d8e"
+              />
+            </View>
+            <View style={styles.metricCardWrapper}>
+              <MetricsCard
+                title="Total Appointments"
+                value={clientMetrics.totalAppointments.toString()}
+                icon="calendar"
+                color="#10b981"
+              />
             </View>
           </View>
-          <Text style={styles.clientName}>{client.name}</Text>
+        )}
 
-          {/* Contact Info */}
+        <View style={styles.infoCard}>
           <View style={styles.contactSection}>
             <View style={styles.contactItem}>
               <Mail size={20} color="#666" />
               <Text style={styles.contactText}>{client.email}</Text>
+              <TouchableOpacity
+                style={styles.contactActionButton}
+                onPress={handleEmailPress}
+              >
+                <Send size={16} color="#8e2d8e" />
+              </TouchableOpacity>
               <TouchableOpacity
                 onPress={() => handleCopyToClipboard(client.email, 'Email')}
               >
@@ -235,6 +268,12 @@ const ClientDetailsScreen: React.FC<ClientDetailsScreenProps> = () => {
                 <Phone size={20} color="#666" />
                 <Text style={styles.contactText}>{client.phone}</Text>
                 <TouchableOpacity
+                  style={styles.contactActionButton}
+                  onPress={handlePhonePress}
+                >
+                  <Phone size={16} color="#10b981" />
+                </TouchableOpacity>
+                <TouchableOpacity
                   onPress={() => handleCopyToClipboard(client.phone!, 'Phone')}
                 >
                   <Copy size={16} color="#8e2d8e" />
@@ -244,36 +283,27 @@ const ClientDetailsScreen: React.FC<ClientDetailsScreenProps> = () => {
           </View>
         </View>
 
-        {/* Metrics */}
-        {!metricsLoading && clientMetrics && (
-          <View style={styles.metricsContainer}>
-            <View style={styles.metricCard}>
-              <Text style={styles.metricValue}>
-                {clientMetrics.pendingForms}
-              </Text>
-              <Text style={styles.metricLabel}>Pending Forms</Text>
-            </View>
-            <View style={styles.metricCard}>
-              <Text style={styles.metricValue}>
-                {clientMetrics.totalAppointments}
-              </Text>
-              <Text style={styles.metricLabel}>Total Appointments</Text>
-            </View>
-          </View>
-        )}
-
-        {/* Quick Actions */}
         <View style={styles.quickActionsContainer}>
           <Text style={styles.sectionTitle}>Quick Actions</Text>
-          <View style={styles.actionsGrid}>
+          <View style={styles.actionsList}>
             {quickActions.map((action, index) => (
               <TouchableOpacity
                 key={index}
-                style={styles.quickActionCard}
+                style={[
+                  styles.quickActionCard,
+                  action.isDelete && styles.quickActionCardDelete,
+                ]}
                 onPress={action.onPress}
               >
                 <View style={styles.quickActionIcon}>{action.icon}</View>
-                <Text style={styles.quickActionText}>{action.title}</Text>
+                <Text
+                  style={[
+                    styles.quickActionText,
+                    action.isDelete && styles.quickActionTextDelete,
+                  ]}
+                >
+                  {action.title}
+                </Text>
               </TouchableOpacity>
             ))}
           </View>
@@ -352,10 +382,15 @@ const styles = StyleSheet.create({
   },
   headerActions: {
     flexDirection: 'row',
-    justifyContent: 'flex-end',
+    alignItems: 'center',
+    justifyContent: 'space-between',
     paddingHorizontal: 16,
     paddingTop: 16,
+    paddingBottom: 16,
     gap: 12,
+  },
+  backButton: {
+    padding: 8,
   },
   actionButton: {
     flexDirection: 'row',
@@ -363,7 +398,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 16,
     paddingVertical: 8,
     borderRadius: 8,
-    backgroundColor: '#fff',
+
     gap: 8,
   },
   actionButtonText: {
@@ -371,11 +406,11 @@ const styles = StyleSheet.create({
     fontSize: 14,
     fontWeight: '600',
   },
-  deleteButton: {
-    backgroundColor: '#FFF5F5',
-  },
-  deleteButtonText: {
-    color: '#FF3B30',
+  clientName: {
+    fontSize: 24,
+    fontWeight: 'bold',
+    color: '#000000',
+    flex: 1,
   },
   infoCard: {
     backgroundColor: '#fff',
@@ -383,29 +418,6 @@ const styles = StyleSheet.create({
     marginTop: 16,
     borderRadius: 12,
     padding: 24,
-    alignItems: 'center',
-  },
-  avatarContainer: {
-    marginBottom: 16,
-  },
-  avatar: {
-    width: 80,
-    height: 80,
-    borderRadius: 40,
-    backgroundColor: '#8e2d8e',
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  avatarText: {
-    fontSize: 28,
-    fontWeight: 'bold',
-    color: '#fff',
-  },
-  clientName: {
-    fontSize: 24,
-    fontWeight: 'bold',
-    color: '#000000',
-    marginBottom: 24,
   },
   contactSection: {
     width: '100%',
@@ -421,29 +433,17 @@ const styles = StyleSheet.create({
     fontSize: 16,
     color: '#000000',
   },
+  contactActionButton: {
+    padding: 4,
+  },
   metricsContainer: {
     flexDirection: 'row',
     marginHorizontal: 16,
     marginTop: 16,
     gap: 12,
   },
-  metricCard: {
+  metricCardWrapper: {
     flex: 1,
-    backgroundColor: '#fff',
-    borderRadius: 12,
-    padding: 20,
-    alignItems: 'center',
-  },
-  metricValue: {
-    fontSize: 32,
-    fontWeight: 'bold',
-    color: '#8e2d8e',
-    marginBottom: 4,
-  },
-  metricLabel: {
-    fontSize: 14,
-    color: '#666',
-    textAlign: 'center',
   },
   quickActionsContainer: {
     marginHorizontal: 16,
@@ -455,26 +455,34 @@ const styles = StyleSheet.create({
     color: '#000000',
     marginBottom: 16,
   },
-  actionsGrid: {
-    flexDirection: 'row',
-    flexWrap: 'wrap',
+  actionsList: {
     gap: 12,
   },
   quickActionCard: {
-    width: '48%',
+    flexDirection: 'row',
+    alignItems: 'center',
     backgroundColor: '#fff',
     borderRadius: 12,
-    padding: 20,
-    alignItems: 'center',
+    padding: 16,
+    gap: 10,
+  },
+  quickActionCardDelete: {
+    backgroundColor: '#FFF5F5',
   },
   quickActionIcon: {
-    marginBottom: 12,
+    width: 40,
+    height: 40,
+    alignItems: 'center',
+    justifyContent: 'center',
   },
   quickActionText: {
-    fontSize: 14,
+    fontSize: 16,
     fontWeight: '600',
     color: '#000000',
-    textAlign: 'center',
+    flex: 1,
+  },
+  quickActionTextDelete: {
+    color: '#FF3B30',
   },
 });
 
