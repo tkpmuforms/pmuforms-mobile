@@ -132,7 +132,10 @@ const EditBusinessInformationModal: React.FC<
                       onPress={handleLogoChange}
                     >
                       {logoUri ? (
-                        <Image source={{ uri: logoUri }} style={styles.logoImage} />
+                        <Image
+                          source={{ uri: logoUri }}
+                          style={styles.logoImage}
+                        />
                       ) : (
                         <View style={styles.logoPlaceholder}>
                           <Text style={styles.logoPlaceholderText}>
@@ -212,7 +215,10 @@ const EditBusinessInformationModal: React.FC<
                 </ScrollView>
 
                 <TouchableOpacity
-                  style={[styles.saveButton, isSaving && styles.saveButtonDisabled]}
+                  style={[
+                    styles.saveButton,
+                    isSaving && styles.saveButtonDisabled,
+                  ]}
                   onPress={handleSave}
                   disabled={isSaving}
                 >
@@ -340,7 +346,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#BCBBC133',
   },
   inputDisabled: {
-    backgroundColor: '#f5f5f5',
+    backgroundColor: '#BCBBC133',
     color: '#9ca3af',
   },
   saveButton: {

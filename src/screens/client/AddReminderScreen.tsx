@@ -4,6 +4,7 @@ import {
   ArrowLeft,
   Calendar as CalendarIcon,
   Clock as ClockIcon,
+  ChevronDown,
 } from 'lucide-react-native';
 import React, { useState } from 'react';
 import {
@@ -20,37 +21,68 @@ import {
   View,
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
+import Toast from 'react-native-toast-message';
 import { RootStackParamList } from '../../types/navigation';
+import { createReminder } from '../../services/artistServices';
 
 type AddReminderRouteProp = RouteProp<RootStackParamList, 'AddReminder'>;
 
 const AddReminderScreen: React.FC = () => {
   const navigation = useNavigation();
   const route = useRoute<AddReminderRouteProp>();
-  const { clientName, onSave } = route.params;
+  const { clientName, clientId } = route.params;
 
-  const [message, setMessage] = useState('');
-  const [date, setDate] = useState(new Date());
-  const [time, setTime] = useState(new Date());
+  const [note, setNote] = useState('');
+  const [reminderType, setReminderType] = useState<'check-in' | 'follow-up'>(
+    'check-in',
+  );
+  const [date, setDate] = useState(new Date(Date.now() + 24 * 60 * 60 * 1000));
+  const [time, setTime] = useState(new Date(Date.now() + 24 * 60 * 60 * 1000));
   const [showDatePicker, setShowDatePicker] = useState(false);
   const [showTimePicker, setShowTimePicker] = useState(false);
+  const [showTypePicker, setShowTypePicker] = useState(false);
   const [isSaving, setIsSaving] = useState(false);
 
   const handleSave = async () => {
-    if (message.trim() && onSave) {
+    if (note.trim() && clientId) {
       setIsSaving(true);
-      const dateString = date.toISOString().split('T')[0];
-      const timeString = time.toTimeString().split(' ')[0].substring(0, 5);
+
+      // Combine date and time into a single ISO string
+      const combinedDate = new Date(date);
+      combinedDate.setHours(time.getHours(), time.getMinutes(), 0, 0);
+
+      // Ensure the date is in the future
+      if (combinedDate <= new Date()) {
+        Toast.show({
+          type: 'error',
+          text1: 'Invalid Date',
+          text2: 'Please select a future date and time',
+        });
+        setIsSaving(false);
+        return;
+      }
 
       try {
-        await onSave({
-          date: dateString,
-          time: timeString,
-          message: message.trim(),
+        await createReminder({
+          customerId: clientId,
+          sendAt: combinedDate.toISOString(),
+          type: reminderType,
+          note: note.trim(),
+        });
+
+        Toast.show({
+          type: 'success',
+          text1: 'Success',
+          text2: 'Reminder set successfully',
         });
         navigation.goBack();
       } catch (error) {
         console.error('Error saving reminder:', error);
+        Toast.show({
+          type: 'error',
+          text1: 'Error',
+          text2: 'Failed to set reminder',
+        });
       } finally {
         setIsSaving(false);
       }
@@ -106,11 +138,70 @@ const AddReminderScreen: React.FC = () => {
               keyboardShouldPersistTaps="handled"
             >
               <View style={styles.formGroup}>
-                <Text style={styles.label}>Message</Text>
+                <Text style={styles.label}>Type</Text>
+                <TouchableOpacity
+                  style={styles.pickerButton}
+                  onPress={() => setShowTypePicker(!showTypePicker)}
+                >
+                  <Text style={styles.pickerButtonText}>
+                    {reminderType === 'check-in' ? 'Check-in' : 'Follow-up'}
+                  </Text>
+                  <ChevronDown size={16} color="#64748b" />
+                </TouchableOpacity>
+                {showTypePicker && (
+                  <View style={styles.typeOptions}>
+                    <TouchableOpacity
+                      style={[
+                        styles.typeOption,
+                        reminderType === 'check-in' &&
+                          styles.typeOptionSelected,
+                      ]}
+                      onPress={() => {
+                        setReminderType('check-in');
+                        setShowTypePicker(false);
+                      }}
+                    >
+                      <Text
+                        style={[
+                          styles.typeOptionText,
+                          reminderType === 'check-in' &&
+                            styles.typeOptionTextSelected,
+                        ]}
+                      >
+                        Check-in
+                      </Text>
+                    </TouchableOpacity>
+                    <TouchableOpacity
+                      style={[
+                        styles.typeOption,
+                        reminderType === 'follow-up' &&
+                          styles.typeOptionSelected,
+                      ]}
+                      onPress={() => {
+                        setReminderType('follow-up');
+                        setShowTypePicker(false);
+                      }}
+                    >
+                      <Text
+                        style={[
+                          styles.typeOptionText,
+                          reminderType === 'follow-up' &&
+                            styles.typeOptionTextSelected,
+                        ]}
+                      >
+                        Follow-up
+                      </Text>
+                    </TouchableOpacity>
+                  </View>
+                )}
+              </View>
+
+              <View style={styles.formGroup}>
+                <Text style={styles.label}>Note</Text>
                 <TextInput
                   style={styles.textArea}
-                  value={message}
-                  onChangeText={setMessage}
+                  value={note}
+                  onChangeText={setNote}
                   placeholder="What do you want to be reminded about?"
                   placeholderTextColor="#94a3b8"
                   multiline
@@ -182,10 +273,10 @@ const AddReminderScreen: React.FC = () => {
               <TouchableOpacity
                 style={[
                   styles.saveButton,
-                  (!message.trim() || isSaving) && styles.saveButtonDisabled,
+                  (!note.trim() || isSaving) && styles.saveButtonDisabled,
                 ]}
                 onPress={handleSave}
-                disabled={!message.trim() || isSaving}
+                disabled={!note.trim() || isSaving}
               >
                 {isSaving ? (
                   <ActivityIndicator color="#fff" />
@@ -270,7 +361,7 @@ const styles = StyleSheet.create({
     borderRadius: 12,
     fontSize: 14,
     color: '#000000',
-    backgroundColor: '#fff',
+    backgroundColor: '#BCBBC133',
     minHeight: 100,
   },
   pickerButton: {
@@ -281,13 +372,38 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: '#e2e8f0',
     borderRadius: 12,
-    backgroundColor: '#fff',
+    backgroundColor: '#BCBBC133',
     gap: 8,
   },
   pickerButtonText: {
     fontSize: 14,
     color: '#000000',
     flex: 1,
+  },
+  typeOptions: {
+    marginTop: 8,
+    borderWidth: 1,
+    borderColor: '#e2e8f0',
+    borderRadius: 12,
+    overflow: 'hidden',
+    backgroundColor: '#fff',
+  },
+  typeOption: {
+    paddingVertical: 12,
+    paddingHorizontal: 16,
+    borderBottomWidth: 1,
+    borderBottomColor: '#e2e8f0',
+  },
+  typeOptionSelected: {
+    backgroundColor: '#F8F5F8',
+  },
+  typeOptionText: {
+    fontSize: 14,
+    color: '#64748b',
+  },
+  typeOptionTextSelected: {
+    color: '#8e2d8e',
+    fontWeight: '600',
   },
   footer: {
     padding: 16,

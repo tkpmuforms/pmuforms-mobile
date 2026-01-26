@@ -224,7 +224,7 @@ const styles = StyleSheet.create({
     borderRadius: 12,
     fontSize: 14,
     color: '#000000',
-    backgroundColor: '#fff',
+    backgroundColor: '#BCBBC133',
     minHeight: 120,
   },
   imageButton: {
@@ -235,7 +235,7 @@ const styles = StyleSheet.create({
     borderStyle: 'dashed',
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: '#fff',
+    backgroundColor: '#BCBBC133',
     position: 'relative',
     overflow: 'hidden',
   },

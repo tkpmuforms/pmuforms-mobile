@@ -181,7 +181,7 @@ const styles = StyleSheet.create({
     borderWidth: 2,
     borderColor: '#ddd',
     borderRadius: 4,
-    backgroundColor: '#f9f9f9',
+    backgroundColor: '#BCBBC133',
   },
   checkboxLabel: {
     fontSize: 16,
@@ -189,7 +189,7 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   imageUpload: {
-    backgroundColor: '#f9f9f9',
+    backgroundColor: '#BCBBC133',
     borderWidth: 1,
     borderColor: '#ddd',
     borderRadius: 8,

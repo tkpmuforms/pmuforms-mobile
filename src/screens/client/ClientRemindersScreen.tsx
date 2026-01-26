@@ -1,24 +1,27 @@
+import {
+  useFocusEffect,
+  useNavigation,
+  useRoute,
+} from '@react-navigation/native';
+import { ArrowLeft, Plus } from 'lucide-react-native';
 import React, { useCallback, useEffect, useState } from 'react';
 import {
-  View,
-  Text,
-  StyleSheet,
-  FlatList,
   ActivityIndicator,
+  FlatList,
+  StyleSheet,
+  Text,
   TouchableOpacity,
+  View,
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { useRoute, useNavigation, useFocusEffect } from '@react-navigation/native';
-import { Plus, ArrowLeft } from 'lucide-react-native';
 import Toast from 'react-native-toast-message';
-import { Reminder } from '../../types';
-import ReminderCard from '../../components/clients/ReminderCard';
 import DeleteModal from '../../components/clients/DeleteModal';
+import ReminderCard from '../../components/clients/ReminderCard';
 import {
-  getRemindersByCustomer,
-  createReminder,
   deleteReminder,
+  getRemindersByCustomer,
 } from '../../services/artistServices';
+import { Reminder } from '../../types';
 
 interface ClientRemindersScreenProps {}
 
@@ -56,6 +59,7 @@ const ClientRemindersScreen: React.FC<ClientRemindersScreenProps> = () => {
     try {
       setLoading(true);
       const response = await getRemindersByCustomer(clientId);
+      console.log('Reminders response:', response);
       setReminders(response.data?.reminders || []);
     } catch (error) {
       console.error('Error loading reminders:', error);
@@ -69,41 +73,10 @@ const ClientRemindersScreen: React.FC<ClientRemindersScreenProps> = () => {
     }
   };
 
-  const handleSaveReminder = async (reminderData: {
-    date: string;
-    time: string;
-    message: string;
-  }) => {
-    try {
-      const response = await createReminder({
-        customerId: clientId,
-        reminderDate: reminderData.date,
-        reminderTime: reminderData.time,
-        message: reminderData.message,
-      });
-      const newReminder = response.data.reminder;
-      setReminders(prev => [newReminder, ...prev]);
-      Toast.show({
-        type: 'success',
-        text1: 'Success',
-        text2: 'Reminder set successfully',
-      });
-    } catch (error) {
-      console.error('Error saving reminder:', error);
-      Toast.show({
-        type: 'error',
-        text1: 'Error',
-        text2: 'Failed to set reminder',
-      });
-      throw error;
-    }
-  };
-
   const handleAddReminder = () => {
     navigation.navigate('AddReminder', {
       clientId,
       clientName: client?.name,
-      onSave: handleSaveReminder,
     });
   };
 

@@ -24,7 +24,6 @@ export type RootStackParamList = {
   AddReminder: {
     clientId: string;
     clientName?: string;
-    onSave?: (reminderData: { date: string; time: string; message: string }) => Promise<void>;
   };
   AddCard: {
     onCardAdded?: () => void;

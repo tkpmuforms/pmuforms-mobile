@@ -326,10 +326,10 @@ const styles = StyleSheet.create({
     borderRadius: 12,
     fontSize: 14,
     color: '#000000',
-    backgroundColor: '#fff',
+    backgroundColor: '#BCBBC133',
   },
   inputDisabled: {
-    backgroundColor: '#f5f5f5',
+    backgroundColor: '#BCBBC133',
     color: '#9ca3af',
   },
   footer: {

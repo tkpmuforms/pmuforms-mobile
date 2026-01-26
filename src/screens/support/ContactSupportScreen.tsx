@@ -234,10 +234,10 @@ const styles = StyleSheet.create({
     borderRadius: 12,
     fontSize: 16,
     color: '#1e293b',
-    backgroundColor: '#fff',
+    backgroundColor: '#BCBBC133',
   },
   inputDisabled: {
-    backgroundColor: '#f1f5f9',
+    backgroundColor: '#BCBBC133',
     color: '#64748b',
   },
   textArea: {

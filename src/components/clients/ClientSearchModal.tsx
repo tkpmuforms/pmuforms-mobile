@@ -242,7 +242,7 @@ const styles = StyleSheet.create({
     borderRadius: 12,
     fontSize: 14,
     color: '#000000',
-    backgroundColor: '#f8fafc',
+    backgroundColor: '#BCBBC133',
   },
   resultsContainer: {
     flex: 1,

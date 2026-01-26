@@ -252,7 +252,7 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: '#e2e8f0',
     borderRadius: 12,
-    backgroundColor: '#f8fafc',
+    backgroundColor: '#BCBBC133',
   },
   dateText: {
     fontSize: 14,
