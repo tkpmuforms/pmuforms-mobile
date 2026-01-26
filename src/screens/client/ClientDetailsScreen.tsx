@@ -1,4 +1,5 @@
-import { useNavigation, useRoute, RouteProp } from '@react-navigation/native';
+import Clipboard from '@react-native-clipboard/clipboard';
+import { RouteProp, useNavigation, useRoute } from '@react-navigation/native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import {
   ArrowLeft,
@@ -29,14 +30,13 @@ import DeleteModal from '../../components/clients/DeleteModal';
 import EditClientModal from '../../components/clients/EditClientModal';
 import SendConsentFormModal from '../../components/clients/SendConsentFormModal';
 import MetricsCard from '../../components/dashboard/MetricsCard';
-import { ClientDetail, ClientMetrics } from '../../types';
-import { RootStackParamList } from '../../types/navigation';
 import {
+  deleteCustomer,
   getCustomerById,
   getCustomerMetrics,
-  deleteCustomer,
 } from '../../services/artistServices';
-import Clipboard from '@react-native-clipboard/clipboard';
+import { ClientDetail, ClientMetrics } from '../../types';
+import { RootStackParamList } from '../../types/navigation';
 
 type ClientDetailsNavigationProp = NativeStackNavigationProp<
   RootStackParamList,

@@ -71,6 +71,54 @@ const FormsScreen = ({ navigation }: any) => {
 
   return (
     <SafeAreaView style={styles.container} edges={[]}>
+      <View style={styles.header}>
+        <Text style={styles.title}>Preview Forms</Text>
+        <Text style={styles.subtitle}>Preview and manage all forms</Text>
+      </View>
+
+      {/* Search */}
+      <View style={styles.searchContainer}>
+        <Search size={20} color="#64748b" style={styles.searchIcon} />
+        <TextInput
+          style={styles.searchInput}
+          placeholder="Search forms by title..."
+          placeholderTextColor="#94a3b8"
+          value={searchTerm}
+          onChangeText={setSearchTerm}
+        />
+      </View>
+
+      {/* Tabs */}
+      <View style={styles.tabs}>
+        <TouchableOpacity
+          style={[styles.tab, activeTab === 'consent' && styles.tabActive]}
+          onPress={() => setActiveTab('consent')}
+        >
+          <Text
+            style={[
+              styles.tabText,
+              activeTab === 'consent' && styles.tabTextActive,
+            ]}
+          >
+            Consent ({consentCount})
+          </Text>
+        </TouchableOpacity>
+        <TouchableOpacity
+          style={[styles.tab, activeTab === 'care' && styles.tabActive]}
+          onPress={() => setActiveTab('care')}
+        >
+          <Text
+            style={[
+              styles.tabText,
+              activeTab === 'care' && styles.tabTextActive,
+            ]}
+          >
+            Care ({careCount})
+          </Text>
+        </TouchableOpacity>
+      </View>
+
+      {/* Forms Grid - Only this scrolls */}
       <ScrollView
         style={styles.scrollView}
         contentContainerStyle={styles.scrollContent}
@@ -78,64 +126,6 @@ const FormsScreen = ({ navigation }: any) => {
           <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
         }
       >
-        {/* Header */}
-        <View style={styles.header}>
-          <View>
-            <Text style={styles.title}>Preview Forms</Text>
-            <Text style={styles.subtitle}>Preview and manage all forms</Text>
-          </View>
-          <TouchableOpacity
-            style={styles.createButton}
-            onPress={() => setShowAddMoreServicesModal(true)}
-          >
-            <Plus size={16} color="#fff" />
-            <Text style={styles.createButtonText}>Unlock More Forms</Text>
-          </TouchableOpacity>
-        </View>
-
-        {/* Search */}
-        <View style={styles.searchContainer}>
-          <Search size={20} color="#64748b" style={styles.searchIcon} />
-          <TextInput
-            style={styles.searchInput}
-            placeholder="Search forms by title..."
-            placeholderTextColor="#94a3b8"
-            value={searchTerm}
-            onChangeText={setSearchTerm}
-          />
-        </View>
-
-        {/* Tabs */}
-        <View style={styles.tabs}>
-          <TouchableOpacity
-            style={[styles.tab, activeTab === 'consent' && styles.tabActive]}
-            onPress={() => setActiveTab('consent')}
-          >
-            <Text
-              style={[
-                styles.tabText,
-                activeTab === 'consent' && styles.tabTextActive,
-              ]}
-            >
-              Consent ({consentCount})
-            </Text>
-          </TouchableOpacity>
-          <TouchableOpacity
-            style={[styles.tab, activeTab === 'care' && styles.tabActive]}
-            onPress={() => setActiveTab('care')}
-          >
-            <Text
-              style={[
-                styles.tabText,
-                activeTab === 'care' && styles.tabTextActive,
-              ]}
-            >
-              Care ({careCount})
-            </Text>
-          </TouchableOpacity>
-        </View>
-
-        {/* Forms Grid */}
         <View style={styles.grid}>
           {filteredForms.length > 0 ? (
             filteredForms.map(form => (
@@ -143,7 +133,6 @@ const FormsScreen = ({ navigation }: any) => {
                 key={form.id}
                 {...form}
                 onPreview={() => handlePreview(form.id)}
-                onEdit={() => handleEdit(form.id)}
               />
             ))
           ) : (
@@ -167,6 +156,14 @@ const FormsScreen = ({ navigation }: any) => {
         </View>
       </ScrollView>
 
+      {/* Floating Action Button */}
+      <TouchableOpacity
+        style={styles.fab}
+        onPress={() => setShowAddMoreServicesModal(true)}
+      >
+        <Plus size={24} color="#fff" />
+      </TouchableOpacity>
+
       {/* Modal */}
       {showAddMoreServicesModal && (
         <UpdateServicesModal
@@ -188,12 +185,12 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   scrollContent: {
-    paddingHorizontal: 20,
     paddingBottom: 24,
   },
   header: {
     marginTop: 16,
     marginBottom: 24,
+    paddingHorizontal: 20,
   },
   title: {
     fontSize: 28,
@@ -204,28 +201,32 @@ const styles = StyleSheet.create({
   subtitle: {
     fontSize: 14,
     color: '#64748b',
-    marginBottom: 16,
   },
-  createButton: {
-    flexDirection: 'row',
+  fab: {
+    position: 'absolute',
+    bottom: 24,
+    right: 20,
+    width: 56,
+    height: 56,
+    borderRadius: 28,
+    backgroundColor: '#8E2D8E',
     alignItems: 'center',
     justifyContent: 'center',
-    backgroundColor: 'linear-gradient(90deg, #8E2D8E 0%, #A654CD 100%)',
-    paddingVertical: 12,
-    paddingHorizontal: 20,
-    borderRadius: 12,
-    gap: 8,
-  },
-  createButtonText: {
-    color: '#fff',
-    fontSize: 14,
-    fontWeight: '500',
+    shadowColor: '#000',
+    shadowOffset: {
+      width: 0,
+      height: 4,
+    },
+    shadowOpacity: 0.3,
+    shadowRadius: 4.65,
+    elevation: 8,
   },
   searchContainer: {
     flexDirection: 'row',
     alignItems: 'center',
     marginBottom: 24,
     position: 'relative',
+    paddingHorizontal: 20,
   },
   searchIcon: {
     position: 'absolute',
@@ -245,19 +246,25 @@ const styles = StyleSheet.create({
   },
   tabs: {
     flexDirection: 'row',
-    gap: 8,
+    gap: 10,
     marginBottom: 24,
+    paddingHorizontal: 20,
   },
   tab: {
+    flex: 1,
+    height: 46,
     paddingVertical: 12,
-    paddingHorizontal: 24,
+    paddingHorizontal: 10,
     borderWidth: 1,
     borderColor: '#e2e8f0',
     backgroundColor: '#fff',
-    borderRadius: 24,
+    borderRadius: 6,
+    alignItems: 'center',
+    justifyContent: 'center',
   },
   tabActive: {
-    borderColor: '#8e2d8e',
+    backgroundColor: '#F8F5F8',
+    borderColor: '#e2e8f0',
   },
   tabText: {
     color: '#64748b',
@@ -266,13 +273,14 @@ const styles = StyleSheet.create({
   },
   tabTextActive: {
     color: '#000',
+    fontWeight: '600',
   },
   grid: {
-    gap: 16,
+    gap: 1,
   },
   emptyContainer: {
     alignItems: 'center',
-    paddingVertical: 40,
+    paddingVertical: 20,
   },
   emptyText: {
     color: '#64748b',

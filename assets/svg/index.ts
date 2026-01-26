@@ -4,3 +4,8 @@ export { default as ChangePassword } from './ChangePassword.svg';
 export { default as PaymentSvg } from './PaymentSvg.svg';
 export { default as PrivacyPolicy } from './PrivacyPolicy.svg';
 export { default as HelpAndSupport } from './HelpAndSupport.svg';
+export { default as Forms } from './Forms.svg';
+export { default as DeleteIcon } from './DeleteIcon.svg';
+export { default as EditDiffBackground } from './EditDiffBackground.svg';
+export { default as EditWhiteBackground } from './EditWhiteBackground.svg';
+export { default as SendIcon } from './SendIcon.svg';

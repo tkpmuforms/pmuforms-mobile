@@ -7,7 +7,6 @@ import {
   TouchableOpacity,
   TextInput,
   ScrollView,
-  SafeAreaView,
   Platform,
 } from 'react-native';
 import {
@@ -16,6 +15,7 @@ import {
   Clock as ClockIcon,
 } from 'lucide-react-native';
 import DateTimePicker from '@react-native-community/datetimepicker';
+import { SafeAreaView } from 'react-native-safe-area-context';
 
 interface SetReminderModalProps {
   visible: boolean;

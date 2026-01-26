@@ -6,7 +6,6 @@ import {
   Modal,
   TouchableOpacity,
   ScrollView,
-  SafeAreaView,
   ActivityIndicator,
   Alert,
   Share,
@@ -18,6 +17,7 @@ import {
   bookAppointment,
 } from '../../services/artistServices';
 import { Config } from 'react-native-config';
+import { SafeAreaView } from 'react-native-safe-area-context';
 
 interface PreviewAppointmentModalProps {
   visible: boolean;

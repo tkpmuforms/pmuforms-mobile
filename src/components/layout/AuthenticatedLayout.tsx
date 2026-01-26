@@ -1,7 +1,6 @@
 import React from 'react';
-import { View, StyleSheet } from 'react-native';
+import { StyleSheet, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import AuthenticatedNavbar from './AuthenticatedNavbar';
 
 interface AuthenticatedLayoutProps {
   children: React.ReactNode;
@@ -11,12 +10,9 @@ interface AuthenticatedLayoutProps {
 
 const AuthenticatedLayout: React.FC<AuthenticatedLayoutProps> = ({
   children,
-  breadcrumbs,
-  navigation,
 }) => {
   return (
     <SafeAreaView style={styles.container} edges={['top']}>
-      {/* <AuthenticatedNavbar breadcrumbs={breadcrumbs} navigation={navigation} /> */}
       <View style={styles.content}>{children}</View>
     </SafeAreaView>
   );

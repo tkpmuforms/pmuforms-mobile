@@ -6,7 +6,6 @@ import {
   StyleSheet,
   View,
 } from 'react-native';
-import { SafeAreaView } from 'react-native-safe-area-context';
 import ImageSlider from '../../components/ImageSlider';
 import Login from './Login';
 import Signup from './Signup';

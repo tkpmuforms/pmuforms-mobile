@@ -6,13 +6,13 @@ import {
   Modal,
   TouchableOpacity,
   ScrollView,
-  SafeAreaView,
   Platform,
 } from 'react-native';
 import { X } from 'lucide-react-native';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import useAuth from '../../hooks/useAuth';
 import PreviewAppointmentModal from './PreviewAppointmentModal';
+import { SafeAreaView } from 'react-native-safe-area-context';
 
 interface SendConsentFormModalProps {
   visible: boolean;
