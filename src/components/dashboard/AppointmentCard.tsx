@@ -66,7 +66,7 @@ const styles = StyleSheet.create({
     height: '100%',
   },
   name: {
-    fontSize: 13,
+    fontSize: 16,
     fontWeight: '600',
     color: '#000000',
     flex: 1,
@@ -84,9 +84,9 @@ const styles = StyleSheet.create({
     opacity: 0.7,
   },
   infoText: {
-    fontSize: 11,
-    color: '#424242',
-    fontWeight: '500',
+    fontSize: 13,
+    color: '#5D5D5D',
+    fontWeight: '300',
   },
 });
 

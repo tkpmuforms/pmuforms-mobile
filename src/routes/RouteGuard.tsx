@@ -1,17 +1,21 @@
-import React from 'react';
-import { View, ActivityIndicator, StyleSheet } from 'react-native';
-import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import React from 'react';
+import { ActivityIndicator, StyleSheet, View } from 'react-native';
 import {
-  LayoutDashboard,
-  Users,
-  FileText,
-  UserCircle,
-} from 'lucide-react-native';
-import { authorizedRoutes, nonAuthRoutes } from './routeConfig';
-import useAuth from '../hooks/useAuth';
+  HomeIcon,
+  HomeActiveIcon,
+  ClientsIcon,
+  ClientsActiveIcon,
+  FormsActiveIcon,
+  FormIcon,
+  ProfileIcon,
+  ProfileActiveIcon,
+} from '../../assets/svg';
 import AuthenticatedLayout from '../components/layout/AuthenticatedLayout';
+import useAuth from '../hooks/useAuth';
 import { colors } from '../theme/colors';
+import { authorizedRoutes, nonAuthRoutes } from './routeConfig';
 
 const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -19,20 +23,40 @@ const Tab = createBottomTabNavigator();
 const mainTabRoutes = ['Dashboard', 'Clients', 'Forms', 'Profile'];
 
 const getTabIcon = (routeName: string, focused: boolean) => {
-  const iconColor = focused ? colors.primary : colors.textLight;
-  const iconSize = 24;
+  const iconSize = { width: 50, height: 50 };
+  const activeIconSize = { width: 80, height: 80 };
 
   switch (routeName) {
     case 'Dashboard':
-      return <LayoutDashboard size={iconSize} color={iconColor} />;
+      return focused ? (
+        <HomeActiveIcon {...activeIconSize} />
+      ) : (
+        <HomeIcon {...iconSize} />
+      );
     case 'Clients':
-      return <Users size={iconSize} color={iconColor} />;
+      return focused ? (
+        <ClientsActiveIcon {...activeIconSize} />
+      ) : (
+        <ClientsIcon {...iconSize} />
+      );
     case 'Forms':
-      return <FileText size={iconSize} color={iconColor} />;
+      return focused ? (
+        <FormsActiveIcon {...activeIconSize} />
+      ) : (
+        <FormIcon {...iconSize} />
+      );
     case 'Profile':
-      return <UserCircle size={iconSize} color={iconColor} />;
+      return focused ? (
+        <ProfileActiveIcon {...activeIconSize} />
+      ) : (
+        <ProfileIcon {...iconSize} />
+      );
     default:
-      return <LayoutDashboard size={iconSize} color={iconColor} />;
+      return focused ? (
+        <HomeActiveIcon {...activeIconSize} />
+      ) : (
+        <HomeIcon {...iconSize} />
+      );
   }
 };
 
@@ -42,6 +66,7 @@ const AuthenticatedTabs = () => {
       screenOptions={({ route }) => ({
         headerShown: false,
         tabBarIcon: ({ focused }) => getTabIcon(route.name, focused),
+        tabBarShowLabel: false,
         tabBarActiveTintColor: colors.primary,
         tabBarInactiveTintColor: colors.textLight,
         tabBarStyle: {
@@ -51,10 +76,6 @@ const AuthenticatedTabs = () => {
           paddingBottom: 25,
           paddingTop: 8,
           height: 80,
-        },
-        tabBarLabelStyle: {
-          fontSize: 12,
-          fontWeight: '500',
         },
       })}
     >

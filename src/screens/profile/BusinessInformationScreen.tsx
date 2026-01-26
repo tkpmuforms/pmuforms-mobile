@@ -8,7 +8,8 @@ import {
   Image,
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { Edit } from 'lucide-react-native';
+import { Edit, ArrowLeft } from 'lucide-react-native';
+import { useNavigation } from '@react-navigation/native';
 import { colors } from '../../theme/colors';
 import useAuth from '../../hooks/useAuth';
 import { Service } from '../../types';
@@ -17,6 +18,7 @@ import UpdateServicesModal from '../../components/profile/UpdateServicesModal';
 
 const BusinessInformationScreen: React.FC = () => {
   const { user } = useAuth();
+  const navigation = useNavigation();
   const [showEditBusinessName, setShowEditBusinessName] = useState(false);
   const [showUpdateServices, setShowUpdateServices] = useState(false);
 
@@ -40,7 +42,15 @@ const BusinessInformationScreen: React.FC = () => {
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.header}>
-        <Text style={styles.title}>Business Information</Text>
+        <View style={styles.headerActions}>
+          <TouchableOpacity
+            style={styles.backButton}
+            onPress={() => navigation.goBack()}
+          >
+            <ArrowLeft size={24} color="#000000" />
+          </TouchableOpacity>
+          <Text style={styles.title}>Business Information</Text>
+        </View>
       </View>
 
       <ScrollView
@@ -101,7 +111,7 @@ const BusinessInformationScreen: React.FC = () => {
               {registeredServices.length > 0 ? (
                 registeredServices.map((service, index) => (
                   <View
-                    key={service._id || service.id || index}
+                    key={`${service._id || service.id}-${index}`}
                     style={styles.serviceItem}
                   >
                     <View style={styles.serviceBullet} />
@@ -152,10 +162,19 @@ const styles = StyleSheet.create({
     borderBottomWidth: 1,
     borderBottomColor: colors.border,
   },
+  headerActions: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 12,
+  },
+  backButton: {
+    padding: 8,
+  },
   title: {
     fontSize: 24,
     fontWeight: 'bold',
     color: colors.text,
+    flex: 1,
   },
   scrollView: {
     flex: 1,

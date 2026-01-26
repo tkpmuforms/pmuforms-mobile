@@ -8,10 +8,8 @@ require Pod::Executable.execute_command('node', ['-p',
 platform :ios, min_ios_version_supported
 prepare_react_native_project!
 
-# Remove the problematic source - use default instead
 source 'https://cdn.cocoapods.org/'
 
-#add this line to use static framework for RNFirebase
 $RNFirebaseAsStaticFramework = true
 use_frameworks! :linkage => :static
 
@@ -26,16 +24,23 @@ target 'PMUForms' do
 
   use_react_native!(
     :path => config[:reactNativePath],
-    # An absolute path to your application root.
-    :app_path => "#{Pod::Config.instance.installation_root}/.."
+    :app_path => "#{Pod::Config.instance.installation_root}/..",
+    :hermes_enabled => true
   )
 
   post_install do |installer|
     react_native_post_install(
       installer,
       config[:reactNativePath],
-      :mac_catalyst_enabled => false,
-      # :ccache_enabled => true
+      :mac_catalyst_enabled => false
     )
+    
+    installer.pods_project.targets.each do |target|
+      if target.name == 'hermes-engine'
+        target.build_configurations.each do |config|
+          config.build_settings['GCC_GENERATE_DEBUGGING_SYMBOLS'] = 'NO'
+        end
+      end
+    end
   end
 end

@@ -1,6 +1,7 @@
+import { ChevronRight } from 'lucide-react-native';
 import React from 'react';
-import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
-import { FileText } from 'lucide-react-native';
+import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { Forms } from '../../../assets/svg';
 
 interface FormCardProps {
   id: string;
@@ -8,7 +9,6 @@ interface FormCardProps {
   lastUpdated: string;
   usedFor: string;
   onPreview: () => void;
-  onEdit: () => void;
 }
 
 const FormCard: React.FC<FormCardProps> = ({
@@ -16,72 +16,61 @@ const FormCard: React.FC<FormCardProps> = ({
   lastUpdated,
   usedFor,
   onPreview,
-  onEdit,
 }) => {
   return (
-    <View style={styles.card}>
+    <TouchableOpacity
+      style={styles.card}
+      onPress={onPreview}
+      activeOpacity={0.7}
+    >
       <View style={styles.content}>
         <View style={styles.header}>
-          <FileText size={20} color="#8e2d8e" style={styles.icon} />
-          <Text style={styles.title} numberOfLines={2}>
-            {title}
-          </Text>
-        </View>
-        <View style={styles.meta}>
-          <Text style={styles.metaText}>{lastUpdated}</Text>
-          <Text style={styles.separator}>•</Text>
-          <Text style={styles.metaText}>{usedFor}</Text>
+          <Forms />
+          <View style={styles.textContainer}>
+            <Text style={styles.title} numberOfLines={2}>
+              {title}
+            </Text>
+            <View style={styles.meta}>
+              <Text style={styles.metaText}>{lastUpdated}</Text>
+              <Text style={styles.separator}>•</Text>
+              <Text style={styles.metaText}>{usedFor}</Text>
+            </View>
+          </View>
+          <ChevronRight size={20} color="#94a3b8" style={styles.chevron} />
         </View>
       </View>
-      <View style={styles.actions}>
-        <TouchableOpacity
-          style={[styles.button, styles.previewButton]}
-          onPress={onPreview}
-        >
-          <Text style={styles.buttonText}>Preview</Text>
-        </TouchableOpacity>
-        <TouchableOpacity
-          style={[styles.button, styles.editButton]}
-          onPress={onEdit}
-        >
-          <Text style={styles.buttonText}>Edit</Text>
-        </TouchableOpacity>
-      </View>
-    </View>
+    </TouchableOpacity>
   );
 };
 
 const styles = StyleSheet.create({
   card: {
-    backgroundColor: '#fff',
-    borderRadius: 16,
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 1 },
-    shadowOpacity: 0.1,
-    shadowRadius: 3,
-    elevation: 2,
-    overflow: 'hidden',
-    marginBottom: 12,
+    borderBottomColor: '#e0e0e0',
+    borderBottomWidth: 1,
   },
   content: {
-    backgroundColor: '#fbfbfb',
     padding: 20,
   },
   header: {
     flexDirection: 'row',
     alignItems: 'flex-start',
     gap: 12,
-    marginBottom: 12,
   },
   icon: {
     marginTop: 2,
   },
-  title: {
+  chevron: {
+    marginTop: 2,
+  },
+  textContainer: {
     flex: 1,
-    fontSize: 16,
+    gap: 8,
+  },
+  title: {
+    fontSize: 14,
     fontWeight: '600',
     color: '#000000',
-    lineHeight: 22,
+    lineHeight: 20,
   },
   meta: {
     flexDirection: 'row',

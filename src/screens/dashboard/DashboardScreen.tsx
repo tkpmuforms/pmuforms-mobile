@@ -3,6 +3,7 @@ import {
   Dimensions,
   RefreshControl,
   ScrollView,
+  StatusBar,
   StyleSheet,
   Text,
   TouchableOpacity,
@@ -156,14 +157,6 @@ const DashboardScreen = ({ navigation }: any) => {
     fetchData();
   }, []);
 
-  useEffect(() => {
-    console.log('=== USER OBJECT DEBUG ===');
-    console.log('Full user object:', JSON.stringify(user, null, 2));
-    console.log('Business Name:', user?.businessName);
-    console.log('Has subscription:', hasActiveSubscription);
-    console.log('========================');
-  }, [user]);
-
   const onRefresh = async () => {
     setRefreshing(true);
     await fetchData();
@@ -190,7 +183,12 @@ const DashboardScreen = ({ navigation }: any) => {
   };
 
   return (
-    <SafeAreaView style={styles.container} edges={[]}>
+    <SafeAreaView style={styles.container} edges={['bottom']}>
+      <StatusBar
+        barStyle="dark-content"
+        backgroundColor="transparent"
+        translucent
+      />
       <ScrollView
         style={styles.scrollView}
         contentContainerStyle={styles.scrollContent}
@@ -233,7 +231,7 @@ const DashboardScreen = ({ navigation }: any) => {
             <View style={styles.metricsRow}>
               <View style={styles.metricItem}>
                 <MetricsCard
-                  title="Total   Clients"
+                  title="Total Clients"
                   value={
                     metricsLoading
                       ? 'loading'
@@ -474,6 +472,7 @@ const styles = StyleSheet.create({
     color: '#000000',
     letterSpacing: -0.12,
     lineHeight: 12,
+    marginBottom: 4,
   },
   viewAllButton: {
     fontSize: 12,

@@ -7,7 +7,6 @@ import {
   TouchableOpacity,
   TextInput,
   ScrollView,
-  SafeAreaView,
   ActivityIndicator,
 } from 'react-native';
 import { Search, ChevronRight } from 'lucide-react-native';
@@ -15,6 +14,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import { searchCustomers } from '../../services/artistServices';
 import { CustomerResponse } from '../../types';
 import { generateInitials } from '../../utils/utils';
+import { SafeAreaView } from 'react-native-safe-area-context';
 
 interface ClientSearchModalProps {
   visible: boolean;

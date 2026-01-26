@@ -10,7 +10,7 @@ import {
 } from 'react-native';
 import { useRoute, useNavigation } from '@react-navigation/native';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { FileText, Download } from 'lucide-react-native';
+import { FileText, Download, ArrowLeft } from 'lucide-react-native';
 import Toast from 'react-native-toast-message';
 import useAuth from '../../hooks/useAuth';
 import {
@@ -268,7 +268,15 @@ const FilledFormsPreviewScreen: React.FC = () => {
       <ScrollView style={styles.scrollView}>
         {/* Header */}
         <View style={styles.header}>
-          <Text style={styles.title}>{form.title}</Text>
+          <View style={styles.headerActions}>
+            <TouchableOpacity
+              style={styles.backButton}
+              onPress={() => navigation.goBack()}
+            >
+              <ArrowLeft size={24} color="#000000" />
+            </TouchableOpacity>
+            <Text style={styles.title}>{form.title}</Text>
+          </View>
           <TouchableOpacity
             style={styles.pdfButton}
             onPress={handleGeneratePDF}
@@ -372,11 +380,20 @@ const styles = StyleSheet.create({
     borderBottomWidth: 1,
     borderBottomColor: colors.border,
   },
+  headerActions: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginBottom: 16,
+    gap: 12,
+  },
+  backButton: {
+    padding: 8,
+  },
   title: {
     fontSize: 24,
     fontWeight: '700',
     color: colors.text,
-    marginBottom: 16,
+    flex: 1,
   },
   pdfButton: {
     flexDirection: 'row',

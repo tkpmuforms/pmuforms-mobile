@@ -6,7 +6,6 @@ import {
   Modal,
   TouchableOpacity,
   ScrollView,
-  SafeAreaView,
 } from 'react-native';
 import {
   X,
@@ -16,6 +15,7 @@ import {
   Hash,
   Calendar,
 } from 'lucide-react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
 
 interface FieldType {
   type: string;

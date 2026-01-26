@@ -1,23 +1,23 @@
 import React from 'react';
-import AuthScreen from '../screens/auth/Auth';
-import DashboardScreen from '../screens/dashboard/DashboardScreen';
-import ClientScreen from '../screens/client/ClientScreen';
-import ProfileScreen from '../screens/profile/ProfileScreen';
-import FormsScreen from '../screens/forms/FormsScreen';
-import PreviewFormsScreen from '../screens/forms/PreviewFormsScreen';
 import AppointmentsScreen from '../screens/appointments/AppointmentsScreen';
-import ClientDetailsScreen from '../screens/client/ClientDetailsScreen';
+import AuthScreen from '../screens/auth/Auth';
 import ClientAppointmentsScreen from '../screens/client/ClientAppointmentsScreen';
+import ClientDetailsScreen from '../screens/client/ClientDetailsScreen';
 import ClientNotesScreen from '../screens/client/ClientNotesScreen';
 import ClientRemindersScreen from '../screens/client/ClientRemindersScreen';
-import ContactSupportScreen from '../screens/support/ContactSupportScreen';
-import PrivacyPolicyScreen from '../screens/support/PrivacyPolicyScreen';
+import ClientScreen from '../screens/client/ClientScreen';
 import FilledFormsPreviewScreen from '../screens/client/FilledFormsPreviewScreen';
 import SignatureScreen from '../screens/client/SignatureScreen';
+import DashboardScreen from '../screens/dashboard/DashboardScreen';
 import EditFormsScreen from '../screens/forms/EditFormsScreen';
-import EditProfileScreen from '../screens/profile/EditProfileScreen';
+import FormsScreen from '../screens/forms/FormsScreen';
+import PreviewFormsScreen from '../screens/forms/PreviewFormsScreen';
 import BusinessInformationScreen from '../screens/profile/BusinessInformationScreen';
+import EditProfileScreen from '../screens/profile/EditProfileScreen';
 import PaymentScreen from '../screens/profile/PaymentScreen';
+import ProfileScreen from '../screens/profile/ProfileScreen';
+import ContactSupportScreen from '../screens/support/ContactSupportScreen';
+import PrivacyPolicyScreen from '../screens/support/PrivacyPolicyScreen';
 
 interface RouteProps {
   name: string;

@@ -6,13 +6,13 @@ import {
   Modal,
   TouchableOpacity,
   ScrollView,
-  SafeAreaView,
   Platform,
 } from 'react-native';
 import { X } from 'lucide-react-native';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import useAuth from '../../hooks/useAuth';
 import PreviewAppointmentModal from './PreviewAppointmentModal';
+import { SafeAreaView } from 'react-native-safe-area-context';
 
 interface SendConsentFormModalProps {
   visible: boolean;
@@ -79,6 +79,7 @@ const SendConsentFormModal: React.FC<SendConsentFormModalProps> = ({
         transparent
         animationType="slide"
         onRequestClose={onClose}
+        statusBarTranslucent
       >
         <SafeAreaView style={styles.container}>
           <View style={styles.overlay}>
@@ -200,8 +201,11 @@ const styles = StyleSheet.create({
     backgroundColor: '#fff',
     borderTopLeftRadius: 20,
     borderTopRightRadius: 20,
-    padding: 32,
-    maxHeight: '90%',
+    paddingTop: 32,
+    paddingLeft: 32,
+    paddingRight: 32,
+    paddingBottom: 40,
+    maxHeight: '75%',
   },
   closeButton: {
     position: 'absolute',

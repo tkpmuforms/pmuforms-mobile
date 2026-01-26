@@ -52,21 +52,26 @@ const UpdateServicesModal: React.FC<UpdateServicesModalProps> = ({
     setLoading(true);
     try {
       const response = await getServices();
-      const services: Service[] = response.data.services.map(
+
+      const services: Service[] = response?.data.services.map(
         (service: Service) => ({
           _id: service._id,
           id: service.id,
           service: service.service,
         }),
       );
+
       setSelectedServices(prev => {
-        return services.filter(service =>
+        const filtered = services.filter(service =>
           prev.some(
             selected =>
               selected._id === service._id || selected.id === service.id,
           ),
         );
+
+        return filtered;
       });
+
       setAllServices(services);
     } catch (error) {
       console.error('Error fetching services:', error);
@@ -240,10 +245,11 @@ const styles = StyleSheet.create({
     textAlign: 'center',
   },
   body: {
-    flex: 1,
+    maxHeight: 400,
   },
   bodyContent: {
     paddingBottom: 16,
+    flexGrow: 1,
   },
   sectionTitle: {
     fontSize: 18,

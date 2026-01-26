@@ -44,13 +44,13 @@ const AuthenticatedNavbar: React.FC<AuthenticatedNavbarProps> = ({
                 <ChevronLeft size={20} color={colors.text} />
               </TouchableOpacity>
             )}
-            {lastBreadcrumb && (
+            {/* {lastBreadcrumb && (
               <View style={styles.breadcrumbItem}>
                 <Text style={styles.breadcrumbText} numberOfLines={1}>
                   {lastBreadcrumb}
                 </Text>
               </View>
-            )}
+            )} */}
           </View>
         </View>
       </View>
@@ -71,7 +71,7 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     paddingHorizontal: 16,
     paddingVertical: 12,
-    height: 56,
+    height: 26,
   },
   navbarLeft: {
     flexDirection: 'row',
@@ -79,13 +79,7 @@ const styles = StyleSheet.create({
     gap: 12,
     flex: 1,
   },
-  mobileMenuToggle: {
-    width: 40,
-    height: 40,
-    justifyContent: 'center',
-    alignItems: 'center',
-    borderRadius: 8,
-  },
+
   breadcrumbsContainer: {
     flexDirection: 'row',
     alignItems: 'center',

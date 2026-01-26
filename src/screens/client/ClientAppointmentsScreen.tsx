@@ -1,5 +1,5 @@
 import { useNavigation, useRoute } from '@react-navigation/native';
-import { Send } from 'lucide-react-native';
+import { ArrowLeft, Send } from 'lucide-react-native';
 import React, { useEffect, useState } from 'react';
 import {
   ActivityIndicator,
@@ -113,12 +113,20 @@ const ClientAppointmentsScreen: React.FC<
 
   const renderHeader = () => (
     <View style={styles.header}>
-      <View style={styles.headerContent}>
-        <Text style={styles.headerTitle}>{clientName}'s Appointments</Text>
-        <Text style={styles.headerSubtitle}>
-          {appointments.length}{' '}
-          {appointments.length === 1 ? 'Appointment' : 'Appointments'}
-        </Text>
+      <View style={styles.headerTop}>
+        <TouchableOpacity
+          style={styles.backButton}
+          onPress={() => navigation.goBack()}
+        >
+          <ArrowLeft size={24} color="#000000" />
+        </TouchableOpacity>
+        <View style={styles.headerContent}>
+          <Text style={styles.headerTitle}>{clientName}'s Appointments</Text>
+          <Text style={styles.headerSubtitle}>
+            {appointments.length}{' '}
+            {appointments.length === 1 ? 'Appointment' : 'Appointments'}
+          </Text>
+        </View>
       </View>
       <TouchableOpacity
         style={styles.sendFormButton}
@@ -209,8 +217,17 @@ const styles = StyleSheet.create({
     borderBottomWidth: 1,
     borderBottomColor: '#E5E5E5',
   },
-  headerContent: {
+  headerTop: {
+    flexDirection: 'row',
+    alignItems: 'center',
     marginBottom: 16,
+    gap: 12,
+  },
+  backButton: {
+    padding: 8,
+  },
+  headerContent: {
+    flex: 1,
   },
   headerTitle: {
     fontSize: 24,

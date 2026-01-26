@@ -1,13 +1,7 @@
 import React from 'react';
-import {
-  View,
-  Text,
-  StyleSheet,
-  Modal,
-  TouchableOpacity,
-  SafeAreaView,
-} from 'react-native';
+import { View, Text, StyleSheet, Modal, TouchableOpacity } from 'react-native';
 import { X, Trash2 } from 'lucide-react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
 
 interface DeleteModalProps {
   visible: boolean;
@@ -30,6 +24,7 @@ const DeleteModal: React.FC<DeleteModalProps> = ({
       transparent
       animationType="slide"
       onRequestClose={onClose}
+      statusBarTranslucent
     >
       <SafeAreaView style={styles.container}>
         <View style={styles.overlay}>
@@ -76,7 +71,10 @@ const styles = StyleSheet.create({
     backgroundColor: '#fff',
     borderTopLeftRadius: 20,
     borderTopRightRadius: 20,
-    padding: 48,
+    paddingTop: 48,
+    paddingLeft: 48,
+    paddingRight: 48,
+    paddingBottom: 40,
     maxWidth: 500,
     width: '100%',
     alignSelf: 'center',

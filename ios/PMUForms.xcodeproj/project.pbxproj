@@ -10,7 +10,6 @@
 		04F419216A3642DE867A2300 /* RedditSans-MediumItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 8EA42E77DCD24467961F4350 /* RedditSans-MediumItalic.ttf */; };
 		13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB51A68108700A75B9A /* Images.xcassets */; };
 		152AA18D55F348B9BB4CD678 /* RedditSans-Black.ttf in Resources */ = {isa = PBXBuildFile; fileRef = E561C23F5EB44267988A41FE /* RedditSans-Black.ttf */; };
-		3BB56DF80CC2413DC6ECB877 /* Pods_PMUForms.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 720A0B0259EDBA27C8B70965 /* Pods_PMUForms.framework */; };
 		465BE28396B94E40B17C262B /* RedditSans-ExtraLight.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 5E69759A4A2245C295886B95 /* RedditSans-ExtraLight.ttf */; };
 		4660C134840C467EA6D93FC1 /* RedditSans-Italic-VariableFont_wght.ttf in Resources */ = {isa = PBXBuildFile; fileRef = A26DF6F6585845BF92202409 /* RedditSans-Italic-VariableFont_wght.ttf */; };
 		4F2BDCFF53544350A2A34DCD /* RedditSans-SemiBoldItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = E9BB3391C96340F7BD13A5C5 /* RedditSans-SemiBoldItalic.ttf */; };
@@ -22,6 +21,7 @@
 		7CD010F02B524166BDCC3A29 /* RedditSans-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 0A155242A9644229A9B04A9C /* RedditSans-Regular.ttf */; };
 		7EA0456E16524E50B61F0F6A /* RedditSans-VariableFont_wght.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 0437502DA45D40219DF46E10 /* RedditSans-VariableFont_wght.ttf */; };
 		81AB9BB82411601600AC10FF /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */; };
+		A115CD2E945BFE5037EE674D /* Pods_PMUForms.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3C27A6C7262FCDC7462DB010 /* Pods_PMUForms.framework */; };
 		AD59861F79624C098DAFE189 /* OFL.txt in Resources */ = {isa = PBXBuildFile; fileRef = 740B3A3C558948E5807B7025 /* OFL.txt */; };
 		B8C71B71B3124C4FB26C0DA3 /* RedditSans-Italic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = F017A8DBD40F4B5993209926 /* RedditSans-Italic.ttf */; };
 		C0685726611D9125D81FC74B /* PrivacyInfo.xcprivacy in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB81A68108700A75B9A /* PrivacyInfo.xcprivacy */; };
@@ -44,11 +44,10 @@
 		13B07FB81A68108700A75B9A /* PrivacyInfo.xcprivacy */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = PrivacyInfo.xcprivacy; path = PMUForms/PrivacyInfo.xcprivacy; sourceTree = "<group>"; };
 		1C607FD0D2B543369BD2CB56 /* RedditSans-ExtraBoldItalic.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "RedditSans-ExtraBoldItalic.ttf"; path = "../assets/fonts/Reddit_Sans/static/RedditSans-ExtraBoldItalic.ttf"; sourceTree = "<group>"; };
 		1CA457BDD33C4DCAA11452D4 /* README.txt */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = README.txt; path = ../assets/fonts/Reddit_Sans/README.txt; sourceTree = "<group>"; };
-		3B4392A12AC88292D35C810B /* Pods-PMUForms.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-PMUForms.debug.xcconfig"; path = "Target Support Files/Pods-PMUForms/Pods-PMUForms.debug.xcconfig"; sourceTree = "<group>"; };
-		5709B34CF0A7D63546082F79 /* Pods-PMUForms.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-PMUForms.release.xcconfig"; path = "Target Support Files/Pods-PMUForms/Pods-PMUForms.release.xcconfig"; sourceTree = "<group>"; };
+		244042C98C6581E95305386A /* Pods-PMUForms.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-PMUForms.release.xcconfig"; path = "Target Support Files/Pods-PMUForms/Pods-PMUForms.release.xcconfig"; sourceTree = "<group>"; };
+		3C27A6C7262FCDC7462DB010 /* Pods_PMUForms.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_PMUForms.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		5CF7B0CB51114D1F84CCAA44 /* RedditSans-Bold.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "RedditSans-Bold.ttf"; path = "../assets/fonts/Reddit_Sans/static/RedditSans-Bold.ttf"; sourceTree = "<group>"; };
 		5E69759A4A2245C295886B95 /* RedditSans-ExtraLight.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "RedditSans-ExtraLight.ttf"; path = "../assets/fonts/Reddit_Sans/static/RedditSans-ExtraLight.ttf"; sourceTree = "<group>"; };
-		720A0B0259EDBA27C8B70965 /* Pods_PMUForms.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_PMUForms.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		740B3A3C558948E5807B7025 /* OFL.txt */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = OFL.txt; path = ../assets/fonts/Reddit_Sans/OFL.txt; sourceTree = "<group>"; };
 		761780EC2CA45674006654EE /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = AppDelegate.swift; path = PMUForms/AppDelegate.swift; sourceTree = "<group>"; };
 		7751703CBCCE415BB98A7E47 /* RedditSans-LightItalic.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "RedditSans-LightItalic.ttf"; path = "../assets/fonts/Reddit_Sans/static/RedditSans-LightItalic.ttf"; sourceTree = "<group>"; };
@@ -60,6 +59,7 @@
 		98334834F8544D778D54DB4F /* RedditSans-Light.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "RedditSans-Light.ttf"; path = "../assets/fonts/Reddit_Sans/static/RedditSans-Light.ttf"; sourceTree = "<group>"; };
 		A26DF6F6585845BF92202409 /* RedditSans-Italic-VariableFont_wght.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "RedditSans-Italic-VariableFont_wght.ttf"; path = "../assets/fonts/Reddit_Sans/RedditSans-Italic-VariableFont_wght.ttf"; sourceTree = "<group>"; };
 		BC632B3276F8491CB30F3594 /* RedditSans-ExtraLightItalic.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "RedditSans-ExtraLightItalic.ttf"; path = "../assets/fonts/Reddit_Sans/static/RedditSans-ExtraLightItalic.ttf"; sourceTree = "<group>"; };
+		BCB2C1212FFCB2B0B19DE61C /* Pods-PMUForms.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-PMUForms.debug.xcconfig"; path = "Target Support Files/Pods-PMUForms/Pods-PMUForms.debug.xcconfig"; sourceTree = "<group>"; };
 		D8DEDBE9BA2A43D092CEBE85 /* RedditSans-ExtraBold.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "RedditSans-ExtraBold.ttf"; path = "../assets/fonts/Reddit_Sans/static/RedditSans-ExtraBold.ttf"; sourceTree = "<group>"; };
 		E561C23F5EB44267988A41FE /* RedditSans-Black.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "RedditSans-Black.ttf"; path = "../assets/fonts/Reddit_Sans/static/RedditSans-Black.ttf"; sourceTree = "<group>"; };
 		E9BB3391C96340F7BD13A5C5 /* RedditSans-SemiBoldItalic.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "RedditSans-SemiBoldItalic.ttf"; path = "../assets/fonts/Reddit_Sans/static/RedditSans-SemiBoldItalic.ttf"; sourceTree = "<group>"; };
@@ -74,7 +74,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				3BB56DF80CC2413DC6ECB877 /* Pods_PMUForms.framework in Frameworks */,
+				A115CD2E945BFE5037EE674D /* Pods_PMUForms.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -97,7 +97,7 @@
 			isa = PBXGroup;
 			children = (
 				ED297162215061F000B7C4FE /* JavaScriptCore.framework */,
-				720A0B0259EDBA27C8B70965 /* Pods_PMUForms.framework */,
+				3C27A6C7262FCDC7462DB010 /* Pods_PMUForms.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -163,8 +163,8 @@
 		BBD78D7AC51CEA395F1C20DB /* Pods */ = {
 			isa = PBXGroup;
 			children = (
-				3B4392A12AC88292D35C810B /* Pods-PMUForms.debug.xcconfig */,
-				5709B34CF0A7D63546082F79 /* Pods-PMUForms.release.xcconfig */,
+				BCB2C1212FFCB2B0B19DE61C /* Pods-PMUForms.debug.xcconfig */,
+				244042C98C6581E95305386A /* Pods-PMUForms.release.xcconfig */,
 			);
 			path = Pods;
 			sourceTree = "<group>";
@@ -176,14 +176,14 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 13B07F931A680F5B00A75B9A /* Build configuration list for PBXNativeTarget "PMUForms" */;
 			buildPhases = (
-				C38B50BA6285516D6DCD4F65 /* [CP] Check Pods Manifest.lock */,
+				0E249CAEA5ED2DF6B65DE748 /* [CP] Check Pods Manifest.lock */,
 				13B07F871A680F5B00A75B9A /* Sources */,
 				13B07F8C1A680F5B00A75B9A /* Frameworks */,
 				13B07F8E1A680F5B00A75B9A /* Resources */,
 				00DD1BFF1BD5951E006B06BC /* Bundle React Native code and images */,
-				00EEFC60759A1932668264C0 /* [CP] Embed Pods Frameworks */,
-				E235C05ADACE081382539298 /* [CP] Copy Pods Resources */,
-				EC4D35043B40D40901A9A89E /* [CP-User] [RNFB] Core Configuration */,
+				A2954186CD63D0DC67BCDD90 /* [CP] Embed Pods Frameworks */,
+				AC0B36986BE36D6D2C81BD33 /* [CP] Copy Pods Resources */,
+				B8AE2C1844C5090DAC3A4950 /* [CP-User] [RNFB] Core Configuration */,
 			);
 			buildRules = (
 			);
@@ -276,24 +276,7 @@
 			shellPath = /bin/sh;
 			shellScript = "set -e\n\nWITH_ENVIRONMENT=\"$REACT_NATIVE_PATH/scripts/xcode/with-environment.sh\"\nREACT_NATIVE_XCODE=\"$REACT_NATIVE_PATH/scripts/react-native-xcode.sh\"\n\n/bin/sh -c \"$WITH_ENVIRONMENT $REACT_NATIVE_XCODE\"\n";
 		};
-		00EEFC60759A1932668264C0 /* [CP] Embed Pods Frameworks */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-PMUForms/Pods-PMUForms-frameworks-${CONFIGURATION}-input-files.xcfilelist",
-			);
-			name = "[CP] Embed Pods Frameworks";
-			outputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-PMUForms/Pods-PMUForms-frameworks-${CONFIGURATION}-output-files.xcfilelist",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-PMUForms/Pods-PMUForms-frameworks.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
-		C38B50BA6285516D6DCD4F65 /* [CP] Check Pods Manifest.lock */ = {
+		0E249CAEA5ED2DF6B65DE748 /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -315,7 +298,24 @@
 			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
 			showEnvVarsInLog = 0;
 		};
-		E235C05ADACE081382539298 /* [CP] Copy Pods Resources */ = {
+		A2954186CD63D0DC67BCDD90 /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-PMUForms/Pods-PMUForms-frameworks-${CONFIGURATION}-input-files.xcfilelist",
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-PMUForms/Pods-PMUForms-frameworks-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-PMUForms/Pods-PMUForms-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		AC0B36986BE36D6D2C81BD33 /* [CP] Copy Pods Resources */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -332,7 +332,7 @@
 			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-PMUForms/Pods-PMUForms-resources.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
-		EC4D35043B40D40901A9A89E /* [CP-User] [RNFB] Core Configuration */ = {
+		B8AE2C1844C5090DAC3A4950 /* [CP-User] [RNFB] Core Configuration */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -361,13 +361,15 @@
 /* Begin XCBuildConfiguration section */
 		13B07F941A680F5B00A75B9A /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 3B4392A12AC88292D35C810B /* Pods-PMUForms.debug.xcconfig */;
+			baseConfigurationReference = BCB2C1212FFCB2B0B19DE61C /* Pods-PMUForms.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_ENTITLEMENTS = PMUForms/PMUForms.entitlements;
+				CODE_SIGN_IDENTITY = "Apple Development";
+				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = 3QHJ6F22RK;
+				DEVELOPMENT_TEAM = 4765QTU39Z;
 				ENABLE_BITCODE = NO;
 				INFOPLIST_FILE = PMUForms/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 15.1;
@@ -383,6 +385,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.pmuforms.mobile;
 				PRODUCT_NAME = PMUForms;
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 5.0;
 				VERSIONING_SYSTEM = "apple-generic";
@@ -391,13 +394,15 @@
 		};
 		13B07F951A680F5B00A75B9A /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 5709B34CF0A7D63546082F79 /* Pods-PMUForms.release.xcconfig */;
+			baseConfigurationReference = 244042C98C6581E95305386A /* Pods-PMUForms.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_ENTITLEMENTS = PMUForms/PMUForms.entitlements;
+				CODE_SIGN_IDENTITY = "Apple Development";
+				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = 3QHJ6F22RK;
+				DEVELOPMENT_TEAM = 4765QTU39Z;
 				INFOPLIST_FILE = PMUForms/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 15.1;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -412,6 +417,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.pmuforms.mobile;
 				PRODUCT_NAME = PMUForms;
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_VERSION = 5.0;
 				VERSIONING_SYSTEM = "apple-generic";
 			};
