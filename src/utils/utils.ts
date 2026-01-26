@@ -142,5 +142,8 @@ export const getAvatarUrl = (user: User) => {
   const name = user?.businessName || 'User';
   return `https://ui-avatars.com/api/?name=${encodeURIComponent(
     name,
-  )}&background=${colors.primary.replace('#', '')}&color=fff&size=120`;
+  )}&background=${colors.avatarBackground.replace(
+    '#',
+    '',
+  )}&color=${colors.primary.replace('#', '')}&size=120`;
 };

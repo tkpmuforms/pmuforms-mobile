@@ -1,27 +1,25 @@
+import { Edit } from 'lucide-react-native';
 import React, { useState } from 'react';
 import {
-  View,
-  Text,
-  StyleSheet,
   ScrollView,
+  StyleSheet,
+  Text,
   TouchableOpacity,
-  Image,
+  View,
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import {
-  Building2,
-  Edit,
-  FileText,
-  HelpCircle,
-  Key,
-  LogOut,
-} from 'lucide-react-native';
-import useAuth from '../../hooks/useAuth';
-import { colors } from '../../theme/colors';
+  BusinessInfo,
+  ChangePassword,
+  HelpAndSupport,
+  Logout,
+  PaymentSvg,
+  PrivacyPolicy,
+} from '../../../assets/svg';
 import ChangePasswordModal from '../../components/profile/ChangePasswordModal';
 import EditBusinessInformationModal from '../../components/profile/EditBusinessInformationModal';
 import UpdateServicesModal from '../../components/profile/UpdateServicesModal';
-import { getAvatarUrl } from '../../utils/utils';
+import useAuth from '../../hooks/useAuth';
 
 interface ProfileScreenProps {
   navigation?: any;
@@ -35,37 +33,46 @@ const ProfileScreen: React.FC<ProfileScreenProps> = ({ navigation }) => {
 
   const profileMenuItems = [
     {
-      icon: Building2,
+      icon: BusinessInfo,
       title: 'Business Information',
       onPress: () => setShowEditBusinessInfo(true),
     },
     {
-      icon: Key,
+      icon: ChangePassword,
       title: 'Change Password',
       onPress: () => setShowChangePassword(true),
     },
     {
-      icon: FileText,
+      icon: PaymentSvg,
       title: 'Payment & Subscriptions',
       onPress: () => navigation?.navigate('Payment'),
     },
     {
-      icon: HelpCircle,
+      icon: HelpAndSupport,
       title: 'Help & Support',
       onPress: () => navigation?.navigate('Support'),
     },
     {
-      icon: FileText,
+      icon: PrivacyPolicy,
       title: 'Privacy Policy',
       onPress: () => navigation?.navigate('PrivacyPolicy'),
     },
     {
-      icon: LogOut,
+      icon: Logout,
       title: 'Log Out',
       onPress: () => logout(),
       variant: 'danger' as const,
     },
   ];
+
+  const getInitials = (name: string) => {
+    if (!name) return 'BN';
+    const parts = name.trim().split(' ');
+    if (parts.length === 1) {
+      return parts[0].substring(0, 2).toUpperCase();
+    }
+    return (parts[0][0] + parts[parts.length - 1][0]).toUpperCase();
+  };
 
   return (
     <SafeAreaView style={styles.container} edges={['top']}>
@@ -74,9 +81,18 @@ const ProfileScreen: React.FC<ProfileScreenProps> = ({ navigation }) => {
         contentContainerStyle={styles.scrollContent}
         showsVerticalScrollIndicator={false}
       >
+        <View style={styles.titleSection}>
+          <Text style={styles.title}>Profile</Text>
+          <Text style={styles.subtitle}>Update your profile settings here</Text>
+        </View>
+
         <View style={styles.header}>
           <View style={styles.avatarContainer}>
-            <Image source={{ uri: getAvatarUrl(user) }} style={styles.avatar} />
+            <View style={styles.avatar}>
+              <Text style={styles.avatarText}>
+                {getInitials(user?.businessName || 'Business Name')}
+              </Text>
+            </View>
           </View>
           <View style={styles.userInfo}>
             <Text style={styles.businessName}>
@@ -86,7 +102,7 @@ const ProfileScreen: React.FC<ProfileScreenProps> = ({ navigation }) => {
               style={styles.editButton}
               onPress={() => setShowEditBusinessInfo(true)}
             >
-              <Edit size={20} color="#fff" />
+              <Edit size={16} color="#8E2D8E" />
               <Text style={styles.editButtonText}>Edit Profile</Text>
             </TouchableOpacity>
           </View>
@@ -104,16 +120,8 @@ const ProfileScreen: React.FC<ProfileScreenProps> = ({ navigation }) => {
               onPress={item.onPress}
               activeOpacity={0.7}
             >
-              <View
-                style={[
-                  styles.menuIcon,
-                  item.variant === 'danger' && styles.menuIconDanger,
-                ]}
-              >
-                <item.icon
-                  size={24}
-                  color={item.variant === 'danger' ? '#ef4444' : '#64748b'}
-                />
+              <View>
+                <item.icon />
               </View>
               <Text
                 style={[
@@ -128,7 +136,6 @@ const ProfileScreen: React.FC<ProfileScreenProps> = ({ navigation }) => {
         </View>
       </ScrollView>
 
-      {/* Modals */}
       {showEditBusinessInfo && (
         <EditBusinessInformationModal
           visible={showEditBusinessInfo}
@@ -158,7 +165,7 @@ const ProfileScreen: React.FC<ProfileScreenProps> = ({ navigation }) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#fff',
+    backgroundColor: '#F8F9FA',
   },
   scrollView: {
     flex: 1,
@@ -167,76 +174,84 @@ const styles = StyleSheet.create({
     paddingHorizontal: 20,
     paddingBottom: 40,
   },
+  titleSection: {
+    paddingTop: 16,
+    paddingBottom: 24,
+  },
+  title: {
+    fontSize: 28,
+    fontWeight: 'bold',
+    color: '#000000',
+    marginBottom: 8,
+  },
+  subtitle: {
+    fontSize: 14,
+    color: '#666',
+  },
   header: {
+    flexDirection: 'row',
     alignItems: 'center',
-    paddingTop: 32,
-    paddingBottom: 48,
+    paddingBottom: 32,
+    backgroundColor: '#fff',
+    borderRadius: 16,
+    padding: 16,
+    alignContent: 'center',
+    gap: 16,
   },
   avatarContainer: {
-    marginBottom: 20,
+    width: 80,
+    height: 80,
   },
   avatar: {
-    width: 120,
-    height: 120,
-    borderRadius: 60,
-    backgroundColor: colors.primary,
+    width: 80,
+    height: 80,
+    borderRadius: 40,
+    backgroundColor: '#8E2D8E1A',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  avatarText: {
+    fontSize: 24,
+    fontWeight: '700',
+    color: '#8E2D8E',
   },
   userInfo: {
-    alignItems: 'center',
+    flex: 1,
   },
   businessName: {
-    fontSize: 28,
+    fontSize: 20,
     fontWeight: '700',
     color: '#000000',
-    marginBottom: 16,
-    textAlign: 'center',
+    marginBottom: 12,
   },
   editButton: {
     flexDirection: 'row',
     alignItems: 'center',
-    justifyContent: 'center',
-    gap: 12,
-    backgroundColor: colors.primary,
-    paddingVertical: 14,
-    paddingHorizontal: 28,
-    borderRadius: 16,
-    shadowColor: colors.primary,
-    shadowOffset: { width: 0, height: 4 },
-    shadowOpacity: 0.2,
-    shadowRadius: 8,
-    elevation: 4,
+    gap: 8,
+    backgroundColor: '#8E2D8E14',
+    paddingVertical: 8,
+    paddingHorizontal: 16,
+    borderRadius: 8,
+    alignSelf: 'flex-start',
   },
   editButtonText: {
-    color: '#fff',
-    fontSize: 16,
+    color: '#8E2D8E',
+    fontSize: 14,
     fontWeight: '600',
   },
   menu: {
-    gap: 16,
+    gap: 10,
   },
   menuItem: {
     flexDirection: 'row',
     alignItems: 'center',
-    backgroundColor: '#f8f8f8',
+    backgroundColor: '#FBFBFB',
     borderRadius: 20,
-    padding: 20,
-    gap: 20,
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.1,
-    shadowRadius: 6,
-    elevation: 2,
+    padding: 15,
+    gap: 15,
   },
   menuItemDanger: {
     backgroundColor: '#fef2f2',
-  },
-  menuIcon: {
-    width: 56,
-    height: 56,
-    backgroundColor: '#f1f5f9',
-    borderRadius: 16,
-    justifyContent: 'center',
-    alignItems: 'center',
   },
   menuIconDanger: {
     backgroundColor: '#fee2e2',

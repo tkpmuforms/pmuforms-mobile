@@ -3,6 +3,7 @@ export const colors = {
   primaryDark: '#5c005c',
   primaryLight: '#c158c1',
   primaryBackground: '#8e2d8e40',
+  avatarBackground: '#8E2D8E1A',
   secondary: '#560056',
   accent: '#ff9500',
   accentOrange: '#ff9500',
