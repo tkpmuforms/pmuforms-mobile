@@ -288,9 +288,9 @@ export interface Reminder {
   _id: string;
   customerId: string;
   artistId: string;
-  reminderDate: string;
-  reminderTime: string;
-  message: string;
+  sendAt: string;
+  type: 'check-in' | 'follow-up';
+  note: string;
   sent: boolean;
   createdAt: string;
   updatedAt: string;

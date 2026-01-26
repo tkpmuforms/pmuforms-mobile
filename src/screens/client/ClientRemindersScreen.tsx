@@ -129,7 +129,7 @@ const ClientRemindersScreen: React.FC<ClientRemindersScreenProps> = () => {
       </View>
       <TouchableOpacity style={styles.addButton} onPress={handleAddReminder}>
         <Plus size={20} color="#fff" />
-        <Text style={styles.addButtonText}>Set Reminder</Text>
+        <Text style={styles.addButtonText}>Tap Here to Add a New Reminder</Text>
       </TouchableOpacity>
     </View>
   );
@@ -225,14 +225,14 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
-    backgroundColor: '#8e2d8e',
+    backgroundColor: '#F4EAF4',
     paddingVertical: 12,
     paddingHorizontal: 16,
     borderRadius: 8,
     gap: 8,
   },
   addButtonText: {
-    color: '#fff',
+    color: '#8E2D8E',
     fontSize: 16,
     fontWeight: '600',
   },
