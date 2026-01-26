@@ -75,7 +75,7 @@ const ProfileScreen: React.FC<ProfileScreenProps> = ({ navigation }) => {
   };
 
   return (
-    <SafeAreaView style={styles.container} edges={['top']}>
+    <SafeAreaView style={styles.container} edges={[]}>
       <ScrollView
         style={styles.scrollView}
         contentContainerStyle={styles.scrollContent}
@@ -107,8 +107,7 @@ const ProfileScreen: React.FC<ProfileScreenProps> = ({ navigation }) => {
             </TouchableOpacity>
           </View>
         </View>
-
-        {/* Menu Items */}
+        <Text style={styles.sectionTitle}>Quick Actions</Text>
         <View style={styles.menu}>
           {profileMenuItems.map((item, index) => (
             <TouchableOpacity
@@ -188,10 +187,20 @@ const styles = StyleSheet.create({
     fontSize: 14,
     color: '#666',
   },
+  sectionTitle: {
+    fontSize: 12,
+    fontFamily: 'RedditSans-Regular',
+    fontWeight: '400',
+    color: '#000000',
+    letterSpacing: -0.12,
+    lineHeight: 12,
+    marginBottom: 4,
+  },
   header: {
     flexDirection: 'row',
     alignItems: 'center',
     paddingBottom: 32,
+    marginBottom: 16,
     backgroundColor: '#fff',
     borderRadius: 16,
     padding: 16,

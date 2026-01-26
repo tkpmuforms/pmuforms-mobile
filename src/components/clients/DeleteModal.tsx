@@ -30,6 +30,7 @@ const DeleteModal: React.FC<DeleteModalProps> = ({
       transparent
       animationType="slide"
       onRequestClose={onClose}
+      statusBarTranslucent
     >
       <SafeAreaView style={styles.container}>
         <View style={styles.overlay}>
@@ -76,7 +77,10 @@ const styles = StyleSheet.create({
     backgroundColor: '#fff',
     borderTopLeftRadius: 20,
     borderTopRightRadius: 20,
-    padding: 48,
+    paddingTop: 48,
+    paddingLeft: 48,
+    paddingRight: 48,
+    paddingBottom: 40,
     maxWidth: 500,
     width: '100%',
     alignSelf: 'center',

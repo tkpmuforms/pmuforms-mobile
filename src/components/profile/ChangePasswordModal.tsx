@@ -7,8 +7,11 @@ import {
   TouchableOpacity,
   TextInput,
   Alert,
+  Keyboard,
+  KeyboardAvoidingView,
+  Platform,
+  TouchableWithoutFeedback,
 } from 'react-native';
-import { SafeAreaView } from 'react-native-safe-area-context';
 import { X } from 'lucide-react-native';
 import auth from '@react-native-firebase/auth';
 
@@ -53,42 +56,52 @@ const ChangePasswordModal: React.FC<ChangePasswordModalProps> = ({
       transparent
       animationType="slide"
       onRequestClose={onClose}
+      statusBarTranslucent
     >
-      <SafeAreaView style={styles.container}>
-        <View style={styles.overlay}>
-          <View style={styles.modal}>
-            <TouchableOpacity style={styles.closeButton} onPress={onClose}>
-              <X size={20} color="#64748b" />
-            </TouchableOpacity>
+      <KeyboardAvoidingView
+        behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+        style={styles.container}
+      >
+        <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+          <View style={styles.overlay}>
+            <TouchableWithoutFeedback onPress={e => e.stopPropagation()}>
+              <View style={styles.modal}>
+                <TouchableOpacity style={styles.closeButton} onPress={onClose}>
+                  <X size={20} color="#64748b" />
+                </TouchableOpacity>
 
-            <Text style={styles.title}>Change Password</Text>
-            <Text style={styles.subtitle}>
-              Provide us with your registered email so we can send you reset
-              instructions.
-            </Text>
+                <Text style={styles.title}>Change Password</Text>
+                <Text style={styles.subtitle}>
+                  Provide us with your registered email so we can send you reset
+                  instructions.
+                </Text>
 
-            <View style={styles.form}>
-              <View style={styles.formGroup}>
-                <Text style={styles.label}>Email Address</Text>
-                <TextInput
-                  style={styles.input}
-                  value={email}
-                  onChangeText={setEmail}
-                  placeholder="Enter registered email address"
-                  placeholderTextColor="#94a3b8"
-                  keyboardType="email-address"
-                  autoCapitalize="none"
-                  autoComplete="email"
-                />
+                <View style={styles.form}>
+                  <View style={styles.formGroup}>
+                    <Text style={styles.label}>Email Address</Text>
+                    <TextInput
+                      style={styles.input}
+                      value={email}
+                      onChangeText={setEmail}
+                      placeholder="Enter registered email address"
+                      placeholderTextColor="#94a3b8"
+                      keyboardType="email-address"
+                      autoCapitalize="none"
+                      autoComplete="email"
+                      returnKeyType="done"
+                      onSubmitEditing={Keyboard.dismiss}
+                    />
+                  </View>
+                </View>
+
+                <TouchableOpacity style={styles.saveButton} onPress={handleSubmit}>
+                  <Text style={styles.saveButtonText}>Send Reset Link</Text>
+                </TouchableOpacity>
               </View>
-            </View>
-
-            <TouchableOpacity style={styles.saveButton} onPress={handleSubmit}>
-              <Text style={styles.saveButtonText}>Send Reset Link</Text>
-            </TouchableOpacity>
+            </TouchableWithoutFeedback>
           </View>
-        </View>
-      </SafeAreaView>
+        </TouchableWithoutFeedback>
+      </KeyboardAvoidingView>
     </Modal>
   );
 };
@@ -106,7 +119,10 @@ const styles = StyleSheet.create({
     backgroundColor: '#fff',
     borderTopLeftRadius: 20,
     borderTopRightRadius: 20,
-    padding: 32,
+    paddingTop: 32,
+    paddingLeft: 32,
+    paddingRight: 32,
+    paddingBottom: 40,
     maxWidth: 500,
     width: '100%',
     alignSelf: 'center',
@@ -117,10 +133,11 @@ const styles = StyleSheet.create({
     right: 16,
     padding: 8,
     borderRadius: 8,
+    zIndex: 10,
   },
   title: {
-    fontSize: 24,
-    fontWeight: '600',
+    fontSize: 18,
+    fontWeight: '700',
     color: '#000000',
     marginBottom: 8,
     textAlign: 'center',
@@ -141,7 +158,7 @@ const styles = StyleSheet.create({
   label: {
     fontSize: 14,
     fontWeight: '500',
-    color: '#374151',
+    color: '#000000',
     marginBottom: 8,
   },
   input: {
@@ -153,13 +170,15 @@ const styles = StyleSheet.create({
     borderRadius: 12,
     fontSize: 14,
     color: '#000000',
-    backgroundColor: '#f8fafc',
+    backgroundColor: '#BCBBC133',
   },
   saveButton: {
     backgroundColor: '#8e2d8e',
     paddingVertical: 16,
     borderRadius: 12,
     alignItems: 'center',
+    width: '90%',
+    alignSelf: 'center',
   },
   saveButtonText: {
     color: '#fff',

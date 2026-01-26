@@ -4,15 +4,18 @@ import {
   ActivityIndicator,
   Alert,
   Image,
+  Keyboard,
+  KeyboardAvoidingView,
   Modal,
+  Platform,
   ScrollView,
   StyleSheet,
   Text,
   TextInput,
   TouchableOpacity,
+  TouchableWithoutFeedback,
   View,
 } from 'react-native';
-import { SafeAreaView } from 'react-native-safe-area-context';
 import { useDispatch } from 'react-redux';
 import { launchImageLibrary } from 'react-native-image-picker';
 import useAuth from '../../hooks/useAuth';
@@ -95,120 +98,135 @@ const EditBusinessInformationModal: React.FC<
       transparent
       animationType="slide"
       onRequestClose={onClose}
+      statusBarTranslucent
     >
-      <SafeAreaView style={styles.container}>
-        <View style={styles.overlay}>
-          <View style={styles.modal}>
-            <TouchableOpacity style={styles.closeButton} onPress={onClose}>
-              <X size={20} color="#64748b" />
-            </TouchableOpacity>
+      <KeyboardAvoidingView
+        behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+        style={styles.container}
+      >
+        <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+          <View style={styles.overlay}>
+            <TouchableWithoutFeedback onPress={e => e.stopPropagation()}>
+              <View style={styles.modal}>
+                <TouchableOpacity style={styles.closeButton} onPress={onClose}>
+                  <X size={20} color="#64748b" />
+                </TouchableOpacity>
 
-            <Text style={styles.title}>Edit Business Information</Text>
+                <View style={styles.header}>
+                  <Text style={styles.title}>Edit Business Information</Text>
+                  <Text style={styles.subtitle}>
+                    Please update your business information
+                  </Text>
+                </View>
 
-            <ScrollView
-              style={styles.scrollView}
-              contentContainerStyle={styles.scrollContent}
-              showsVerticalScrollIndicator={false}
-            >
-              {/* Logo Upload */}
-              <View style={styles.logoSection}>
-                <TouchableOpacity
-                  style={styles.logoContainer}
-                  onPress={handleLogoChange}
+                <ScrollView
+                  style={styles.scrollView}
+                  contentContainerStyle={styles.scrollContent}
+                  showsVerticalScrollIndicator={false}
+                  keyboardShouldPersistTaps="handled"
                 >
-                  {logoUri ? (
-                    <Image source={{ uri: logoUri }} style={styles.logoImage} />
-                  ) : (
-                    <View style={styles.logoPlaceholder}>
-                      <Text style={styles.logoPlaceholderText}>
-                        Upload Business Logo
-                      </Text>
-                    </View>
-                  )}
-                  <View style={styles.editIconContainer}>
-                    <Camera size={16} color="#fff" />
+                  {/* Logo Upload */}
+                  <View style={styles.logoSection}>
+                    <TouchableOpacity
+                      style={styles.logoContainer}
+                      onPress={handleLogoChange}
+                    >
+                      {logoUri ? (
+                        <Image source={{ uri: logoUri }} style={styles.logoImage} />
+                      ) : (
+                        <View style={styles.logoPlaceholder}>
+                          <Text style={styles.logoPlaceholderText}>
+                            Upload Business Logo
+                          </Text>
+                        </View>
+                      )}
+                      <View style={styles.editIconContainer}>
+                        <Camera size={16} color="#fff" />
+                      </View>
+                    </TouchableOpacity>
                   </View>
+
+                  {/* Form Fields */}
+                  <View style={styles.formGroup}>
+                    <Text style={styles.label}>Business Name</Text>
+                    <TextInput
+                      style={styles.input}
+                      value={businessName}
+                      onChangeText={setBusinessName}
+                      placeholder="Business Name"
+                      placeholderTextColor="#94a3b8"
+                      returnKeyType="next"
+                    />
+                  </View>
+
+                  <View style={styles.formGroup}>
+                    <Text style={styles.label}>Email</Text>
+                    <TextInput
+                      style={[styles.input, styles.inputDisabled]}
+                      value={user?.email || ''}
+                      placeholder="Email"
+                      placeholderTextColor="#94a3b8"
+                      editable={false}
+                    />
+                  </View>
+
+                  <View style={styles.formGroup}>
+                    <Text style={styles.label}>Business Phone Number</Text>
+                    <TextInput
+                      style={styles.input}
+                      value={phoneNumber}
+                      onChangeText={setPhoneNumber}
+                      placeholder="Business Phone Number"
+                      placeholderTextColor="#94a3b8"
+                      keyboardType="phone-pad"
+                      returnKeyType="next"
+                    />
+                  </View>
+
+                  <View style={styles.formGroup}>
+                    <Text style={styles.label}>Business Address</Text>
+                    <TextInput
+                      style={styles.input}
+                      value={address}
+                      onChangeText={setAddress}
+                      placeholder="Business Address"
+                      placeholderTextColor="#94a3b8"
+                      returnKeyType="next"
+                    />
+                  </View>
+
+                  <View style={styles.formGroup}>
+                    <Text style={styles.label}>Business Website</Text>
+                    <TextInput
+                      style={styles.input}
+                      value={website}
+                      onChangeText={setWebsite}
+                      placeholder="Business Website"
+                      placeholderTextColor="#94a3b8"
+                      keyboardType="url"
+                      autoCapitalize="none"
+                      returnKeyType="done"
+                      onSubmitEditing={Keyboard.dismiss}
+                    />
+                  </View>
+                </ScrollView>
+
+                <TouchableOpacity
+                  style={[styles.saveButton, isSaving && styles.saveButtonDisabled]}
+                  onPress={handleSave}
+                  disabled={isSaving}
+                >
+                  {isSaving ? (
+                    <ActivityIndicator color="#fff" />
+                  ) : (
+                    <Text style={styles.saveButtonText}>Save Changes</Text>
+                  )}
                 </TouchableOpacity>
               </View>
-
-              {/* Form Fields */}
-              <View style={styles.formRow}>
-                <View style={styles.formGroupHalf}>
-                  <Text style={styles.label}>Business Name</Text>
-                  <TextInput
-                    style={styles.input}
-                    value={businessName}
-                    onChangeText={setBusinessName}
-                    placeholder="Business Name"
-                    placeholderTextColor="#9ca3af"
-                  />
-                </View>
-
-                <View style={styles.formGroupHalf}>
-                  <Text style={styles.label}>Email</Text>
-                  <TextInput
-                    style={[styles.input, styles.inputDisabled]}
-                    value={user?.email || ''}
-                    placeholder="Email"
-                    placeholderTextColor="#9ca3af"
-                    editable={false}
-                  />
-                </View>
-              </View>
-
-              <View style={styles.formRow}>
-                <View style={styles.formGroupHalf}>
-                  <Text style={styles.label}>Business Phone Number</Text>
-                  <TextInput
-                    style={styles.input}
-                    value={phoneNumber}
-                    onChangeText={setPhoneNumber}
-                    placeholder="Business Phone Number"
-                    placeholderTextColor="#9ca3af"
-                    keyboardType="phone-pad"
-                  />
-                </View>
-
-                <View style={styles.formGroupHalf}>
-                  <Text style={styles.label}>Business Address</Text>
-                  <TextInput
-                    style={styles.input}
-                    value={address}
-                    onChangeText={setAddress}
-                    placeholder="Business Address"
-                    placeholderTextColor="#9ca3af"
-                  />
-                </View>
-              </View>
-
-              <View style={styles.formGroup}>
-                <Text style={styles.label}>Business Website</Text>
-                <TextInput
-                  style={styles.input}
-                  value={website}
-                  onChangeText={setWebsite}
-                  placeholder="Business Website"
-                  placeholderTextColor="#9ca3af"
-                  keyboardType="url"
-                  autoCapitalize="none"
-                />
-              </View>
-            </ScrollView>
-
-            <TouchableOpacity
-              style={[styles.saveButton, isSaving && styles.saveButtonDisabled]}
-              onPress={handleSave}
-              disabled={isSaving}
-            >
-              {isSaving ? (
-                <ActivityIndicator color="#fff" />
-              ) : (
-                <Text style={styles.saveButtonText}>Save Changes</Text>
-              )}
-            </TouchableOpacity>
+            </TouchableWithoutFeedback>
           </View>
-        </View>
-      </SafeAreaView>
+        </TouchableWithoutFeedback>
+      </KeyboardAvoidingView>
     </Modal>
   );
 };
@@ -220,29 +238,43 @@ const styles = StyleSheet.create({
   overlay: {
     flex: 1,
     backgroundColor: 'rgba(0, 0, 0, 0.5)',
-    justifyContent: 'center',
+    justifyContent: 'flex-end',
   },
   modal: {
     backgroundColor: '#fff',
-    borderRadius: 20,
-    padding: 32,
-    marginHorizontal: 20,
-    maxHeight: '90%',
+    borderTopLeftRadius: 20,
+    borderTopRightRadius: 20,
+    paddingTop: 15,
+    paddingLeft: 15,
+    paddingRight: 15,
+    paddingBottom: 40,
+    maxHeight: '75%',
   },
   closeButton: {
     position: 'absolute',
     top: 16,
     right: 16,
     padding: 8,
-    borderRadius: 20,
+    borderRadius: 8,
     zIndex: 10,
   },
+  header: {
+    alignItems: 'center',
+    marginBottom: 24,
+  },
   title: {
-    fontSize: 24,
+    fontSize: 18,
     fontWeight: '700',
     color: '#000000',
-    marginBottom: 24,
+    lineHeight: 24,
+    marginBottom: 8,
     textAlign: 'center',
+  },
+  subtitle: {
+    fontSize: 14,
+    color: '#64748b',
+    textAlign: 'center',
+    lineHeight: 20,
   },
   scrollView: {
     maxHeight: 500,
@@ -287,21 +319,14 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
   },
-  formRow: {
-    flexDirection: 'row',
-    gap: 12,
-    marginBottom: 16,
-  },
   formGroup: {
-    marginBottom: 16,
-  },
-  formGroupHalf: {
-    flex: 1,
+    marginBottom: 20,
   },
   label: {
     fontSize: 14,
-    fontWeight: '600',
-    color: '#374151',
+    fontWeight: '500',
+    color: '#000000',
+    lineHeight: 20,
     marginBottom: 8,
   },
   input: {
@@ -312,7 +337,7 @@ const styles = StyleSheet.create({
     borderRadius: 12,
     fontSize: 14,
     color: '#000000',
-    backgroundColor: '#fff',
+    backgroundColor: '#BCBBC133',
   },
   inputDisabled: {
     backgroundColor: '#f5f5f5',
@@ -324,13 +349,16 @@ const styles = StyleSheet.create({
     borderRadius: 12,
     alignItems: 'center',
     marginTop: 16,
+    width: '90%',
+    alignSelf: 'center',
   },
   saveButtonDisabled: {
+    backgroundColor: '#CBD5E1',
     opacity: 0.6,
   },
   saveButtonText: {
     color: '#fff',
-    fontSize: 16,
+    fontSize: 14,
     fontWeight: '600',
   },
 });
