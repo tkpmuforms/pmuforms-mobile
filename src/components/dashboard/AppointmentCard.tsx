@@ -47,12 +47,14 @@ const styles = StyleSheet.create({
   card: {
     backgroundColor: '#f8f8f8',
     borderRadius: 12,
-    padding: 14,
+    padding: 20,
+    borderBottomColor: '#e0e0e0',
+    borderBottomWidth: 1,
   },
   header: {
     flexDirection: 'row',
     alignItems: 'center',
-    gap: 8,
+    gap: 20,
     marginBottom: 8,
   },
   avatarContainer: {

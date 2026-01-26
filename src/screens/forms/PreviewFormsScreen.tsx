@@ -15,6 +15,11 @@ import { Section, SingleForm } from '../../types';
 import { deleteFormTemplate, getFormById } from '../../services/artistServices';
 import DeleteConfirmModal from '../../components/forms/DeleteConfirmModal';
 import { renderPreviewFormFields } from '../../components/forms/RenderPreviewFormFields';
+import {
+  DeleteIcon,
+  EditDiffBackground,
+  EditWhiteBackground,
+} from '../../../assets/svg';
 
 const PreviewFormsScreen = ({ route, navigation }: any) => {
   const { formId } = route.params;
@@ -113,21 +118,24 @@ const PreviewFormsScreen = ({ route, navigation }: any) => {
   }
 
   return (
-    <SafeAreaView style={styles.container} edges={['top']}>
+    <SafeAreaView style={styles.container} edges={[]}>
       {/* Header */}
       <View style={styles.header}>
         <TouchableOpacity onPress={() => navigation.goBack()}>
           <ArrowLeft size={24} color="#000000" />
         </TouchableOpacity>
+        <Text style={{ fontSize: 20, fontWeight: '600', color: '#000' }}>
+          Preview Form
+        </Text>
         <View style={styles.headerActions}>
           <TouchableOpacity
             onPress={() => setShowConfirmDeleteModal(true)}
             style={styles.iconButton}
           >
-            <Trash2 size={20} color="#ef4444" />
+            <DeleteIcon />
           </TouchableOpacity>
           <TouchableOpacity onPress={handleEdit} style={styles.iconButton}>
-            <Edit size={20} color="#8e2d8e" />
+            <EditDiffBackground />
           </TouchableOpacity>
         </View>
       </View>
@@ -136,7 +144,6 @@ const PreviewFormsScreen = ({ route, navigation }: any) => {
         style={styles.scrollView}
         contentContainerStyle={styles.scrollContent}
       >
-        {/* Title */}
         <Text style={styles.formTitle}>{form.title}</Text>
 
         {/* Preview Alert */}

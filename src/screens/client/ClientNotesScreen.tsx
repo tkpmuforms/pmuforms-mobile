@@ -241,10 +241,10 @@ const ClientNotesScreen: React.FC<ClientNotesScreenProps> = () => {
       {showDeleteModal && (
         <DeleteModal
           visible={showDeleteModal}
-          title="Delete Note"
-          message="Are you sure you want to delete this note? This action cannot be undone."
+          headerText="Delete Note"
+          shorterText="Are you sure you want to delete this note? This action cannot be undone."
           onClose={() => setShowDeleteModal(false)}
-          onConfirm={handleDeleteConfirm}
+          handleDelete={handleDeleteConfirm}
         />
       )}
     </SafeAreaView>

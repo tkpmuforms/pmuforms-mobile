@@ -141,7 +141,11 @@ const ClientScreen: React.FC<ClientScreenProps> = () => {
 
   return (
     <SafeAreaView style={styles.container} edges={['bottom']}>
-      <StatusBar barStyle="dark-content" backgroundColor="transparent" translucent />
+      <StatusBar
+        barStyle="dark-content"
+        backgroundColor="transparent"
+        translucent
+      />
       {renderHeader()}
       {renderSearchBar()}
       <TouchableOpacity

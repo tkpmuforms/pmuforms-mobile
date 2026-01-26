@@ -78,7 +78,6 @@ const FormsScreen = ({ navigation }: any) => {
 
       {/* Search */}
       <View style={styles.searchContainer}>
-        <Search size={20} color="#64748b" style={styles.searchIcon} />
         <TextInput
           style={styles.searchInput}
           placeholder="Search forms by title..."
@@ -223,6 +222,7 @@ const styles = StyleSheet.create({
   },
   searchContainer: {
     flexDirection: 'row',
+
     alignItems: 'center',
     marginBottom: 24,
     position: 'relative',
@@ -242,7 +242,7 @@ const styles = StyleSheet.create({
     borderColor: '#e2e8f0',
     borderRadius: 12,
     fontSize: 16,
-    backgroundColor: '#fff',
+    backgroundColor: '#BCBBC133',
   },
   tabs: {
     flexDirection: 'row',

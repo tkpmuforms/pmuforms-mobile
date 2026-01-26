@@ -128,13 +128,6 @@ const ClientAppointmentsScreen: React.FC<
           </Text>
         </View>
       </View>
-      <TouchableOpacity
-        style={styles.sendFormButton}
-        onPress={() => setShowSendConsentForm(true)}
-      >
-        <Send size={20} color="#fff" />
-        <Text style={styles.sendFormButtonText}>Send Form</Text>
-      </TouchableOpacity>
     </View>
   );
 
@@ -190,10 +183,10 @@ const ClientAppointmentsScreen: React.FC<
       {showDeleteAppointment && (
         <DeleteModal
           visible={showDeleteAppointment}
-          title="Delete Appointment"
-          message="Are you sure you want to delete this appointment? This action cannot be undone."
+          headerText="Delete Appointment"
+          shorterText="Are you sure you want to delete this appointment? This action cannot be undone."
           onClose={() => setShowDeleteAppointment(false)}
-          onConfirm={handleDeleteConfirm}
+          handleDelete={handleDeleteConfirm}
         />
       )}
     </SafeAreaView>
@@ -203,7 +196,6 @@ const ClientAppointmentsScreen: React.FC<
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#F8F9FA',
   },
   loadingContainer: {
     flex: 1,
@@ -220,7 +212,7 @@ const styles = StyleSheet.create({
   headerTop: {
     flexDirection: 'row',
     alignItems: 'center',
-    marginBottom: 16,
+
     gap: 12,
   },
   backButton: {
@@ -230,7 +222,7 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   headerTitle: {
-    fontSize: 24,
+    fontSize: 16,
     fontWeight: 'bold',
     color: '#000000',
     marginBottom: 4,
@@ -239,23 +231,9 @@ const styles = StyleSheet.create({
     fontSize: 14,
     color: '#666',
   },
-  sendFormButton: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'center',
-    backgroundColor: '#8e2d8e',
-    paddingVertical: 12,
-    paddingHorizontal: 16,
-    borderRadius: 8,
-    gap: 8,
-  },
-  sendFormButtonText: {
-    color: '#fff',
-    fontSize: 16,
-    fontWeight: '600',
-  },
+
   listContent: {
-    paddingVertical: 16,
+    paddingVertical: 5,
   },
   emptyListContent: {
     flexGrow: 1,

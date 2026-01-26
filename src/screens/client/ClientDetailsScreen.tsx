@@ -82,27 +82,35 @@ const ClientDetailsScreen: React.FC<ClientDetailsScreenProps> = () => {
           email: customer.email || 'No email provided',
           phone: customer?.info?.cell_phone,
         });
-        setLoading(false);
       } else {
         setError('Client not found');
-        setLoading(false);
-        return;
       }
-
-      const metricsResponse = await getCustomerMetrics(clientId);
-      setClientMetrics(metricsResponse?.data?.metrics || null);
-      setMetricsLoading(false);
     } catch (err) {
       console.error('Error fetching client details:', err);
       setError('Failed to load client details. Please try again.');
+    } finally {
       setLoading(false);
+    }
+  }, [clientId]);
+
+  const fetchClientMetrics = useCallback(async () => {
+    if (!clientId) return;
+
+    try {
+      setMetricsLoading(true);
+      const metricsResponse = await getCustomerMetrics(clientId);
+      setClientMetrics(metricsResponse?.data?.metrics || null);
+    } catch (err) {
+      console.error('Error fetching client metrics:', err);
+    } finally {
       setMetricsLoading(false);
     }
   }, [clientId]);
 
   useEffect(() => {
     fetchClientDetails();
-  }, [fetchClientDetails]);
+    fetchClientMetrics();
+  }, [fetchClientDetails, fetchClientMetrics]);
 
   const handleCopyToClipboard = async (text: string, label: string) => {
     Clipboard.setString(text);
@@ -230,26 +238,41 @@ const ClientDetailsScreen: React.FC<ClientDetailsScreenProps> = () => {
           </TouchableOpacity>
         </View>
 
-        {!metricsLoading && clientMetrics && (
-          <View style={styles.metricsContainer}>
-            <View style={styles.metricCardWrapper}>
-              <MetricsCard
-                title="Pending Forms"
-                value={clientMetrics.pendingForms.toString()}
-                icon="file-text"
-                color="#8e2d8e"
-              />
-            </View>
-            <View style={styles.metricCardWrapper}>
-              <MetricsCard
-                title="Total Appointments"
-                value={clientMetrics.totalAppointments.toString()}
-                icon="calendar"
-                color="#10b981"
-              />
-            </View>
-          </View>
-        )}
+        <View style={styles.metricsContainer}>
+          {metricsLoading ? (
+            <>
+              <View
+                style={[styles.metricCardWrapper, styles.metricPlaceholder]}
+              >
+                <ActivityIndicator size="small" color="#8e2d8e" />
+              </View>
+              <View
+                style={[styles.metricCardWrapper, styles.metricPlaceholder]}
+              >
+                <ActivityIndicator size="small" color="#10b981" />
+              </View>
+            </>
+          ) : clientMetrics ? (
+            <>
+              <View style={styles.metricCardWrapper}>
+                <MetricsCard
+                  title="Pending Forms"
+                  value={clientMetrics.pendingForms.toString()}
+                  icon="file-text"
+                  color="#8e2d8e"
+                />
+              </View>
+              <View style={styles.metricCardWrapper}>
+                <MetricsCard
+                  title="Total Appointments"
+                  value={clientMetrics.totalAppointments.toString()}
+                  icon="calendar"
+                  color="#10b981"
+                />
+              </View>
+            </>
+          ) : null}
+        </View>
 
         <View style={styles.infoCard}>
           <View style={styles.contactSection}>
@@ -433,7 +456,7 @@ const styles = StyleSheet.create({
   contactItem: {
     flexDirection: 'row',
     alignItems: 'center',
-    gap: 12,
+    gap: 22,
   },
   contactText: {
     flex: 1,
@@ -452,6 +475,13 @@ const styles = StyleSheet.create({
   metricCardWrapper: {
     flex: 1,
   },
+  metricPlaceholder: {
+    backgroundColor: '#fff',
+    borderRadius: 12,
+    padding: 24,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
   quickActionsContainer: {
     marginHorizontal: 16,
     marginTop: 24,
@@ -462,16 +492,15 @@ const styles = StyleSheet.create({
     color: '#000000',
     marginBottom: 16,
   },
-  actionsList: {
-    gap: 12,
-  },
+  actionsList: {},
   quickActionCard: {
     flexDirection: 'row',
     alignItems: 'center',
-    backgroundColor: '#fff',
+    backgroundColor: '#FBFBFB',
     borderRadius: 12,
     padding: 10,
-    gap: 10,
+    borderBottomColor: '#e0e0e0',
+    borderBottomWidth: 1,
   },
   quickActionCardDelete: {
     backgroundColor: '#FFF5F5',

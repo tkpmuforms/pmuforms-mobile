@@ -16,7 +16,7 @@ import ReminderCard from '../../components/clients/ReminderCard';
 import SetReminderModal from '../../components/clients/SetReminderModal';
 import DeleteModal from '../../components/clients/DeleteModal';
 import {
-  getCustomerReminders,
+  getRemindersByCustomer,
   createReminder,
   deleteReminder,
 } from '../../services/artistServices';
@@ -48,7 +48,7 @@ const ClientRemindersScreen: React.FC<ClientRemindersScreenProps> = () => {
   const loadReminders = async () => {
     try {
       setLoading(true);
-      const response = await getCustomerReminders(clientId);
+      const response = await getRemindersByCustomer(clientId);
       setReminders(response.data?.reminders || []);
     } catch (error) {
       console.error('Error loading reminders:', error);
@@ -139,7 +139,8 @@ const ClientRemindersScreen: React.FC<ClientRemindersScreenProps> = () => {
             {client?.name || 'Client'}'s Reminders
           </Text>
           <Text style={styles.headerSubtitle}>
-            {reminders.length} {reminders.length === 1 ? 'Reminder' : 'Reminders'}
+            {reminders.length}{' '}
+            {reminders.length === 1 ? 'Reminder' : 'Reminders'}
           </Text>
         </View>
       </View>
@@ -198,10 +199,10 @@ const ClientRemindersScreen: React.FC<ClientRemindersScreenProps> = () => {
       {showDeleteModal && (
         <DeleteModal
           visible={showDeleteModal}
-          title="Delete Reminder"
-          message="Are you sure you want to delete this reminder?"
+          headerText="Delete Reminder"
+          shorterText="Are you sure you want to delete this reminder?"
           onClose={() => setShowDeleteModal(false)}
-          onConfirm={handleDeleteConfirm}
+          handleDelete={handleDeleteConfirm}
         />
       )}
     </SafeAreaView>
@@ -211,7 +212,6 @@ const ClientRemindersScreen: React.FC<ClientRemindersScreenProps> = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#F8F9FA',
   },
   loadingContainer: {
     flex: 1,

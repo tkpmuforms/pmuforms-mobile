@@ -60,7 +60,6 @@ const AppointmentCard: React.FC<AppointmentCardProps> = ({
       onPress={() => onViewForms(appointment.id)}
       activeOpacity={0.7}
     >
-      {/* Header */}
       <View style={styles.header}>
         <View style={styles.serviceInfo}>
           <View style={styles.serviceIcon}>
@@ -113,7 +112,6 @@ const AppointmentCard: React.FC<AppointmentCardProps> = ({
         </View>
       </View>
 
-      {/* Dropdown Menu Modal */}
       <Modal
         visible={showMenu}
         transparent
