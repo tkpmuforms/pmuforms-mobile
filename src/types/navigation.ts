@@ -1,4 +1,4 @@
-import { ClientDetail } from './index';
+import { ClientDetail, Note } from './index';
 
 export type RootStackParamList = {
   Auth: undefined;
@@ -12,6 +12,23 @@ export type RootStackParamList = {
   ClientNotes: { clientId: string; client?: ClientDetail };
   ClientReminders: { clientId: string; client?: ClientDetail };
   FormPreview: { formId: string };
+  AddClient: undefined;
+  SendConsentForm: { clientId: string; clientName: string };
+  EditClient: { clientId: string; client: ClientDetail };
+  EditBusinessInformation: undefined;
+  AddNote: {
+    clientId: string;
+    note?: Note;
+    onSave?: (noteContent: string, imageUrl?: string) => Promise<void>;
+  };
+  AddReminder: {
+    clientId: string;
+    clientName?: string;
+    onSave?: (reminderData: { date: string; time: string; message: string }) => Promise<void>;
+  };
+  AddCard: {
+    onCardAdded?: () => void;
+  };
 };
 
 declare global {

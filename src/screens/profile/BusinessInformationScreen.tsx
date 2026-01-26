@@ -13,19 +13,17 @@ import { useNavigation } from '@react-navigation/native';
 import { colors } from '../../theme/colors';
 import useAuth from '../../hooks/useAuth';
 import { Service } from '../../types';
-import EditBusinessInformationModal from '../../components/profile/EditBusinessInformationModal';
 import UpdateServicesModal from '../../components/profile/UpdateServicesModal';
 
 const BusinessInformationScreen: React.FC = () => {
   const { user } = useAuth();
   const navigation = useNavigation();
-  const [showEditBusinessName, setShowEditBusinessName] = useState(false);
   const [showUpdateServices, setShowUpdateServices] = useState(false);
 
   const registeredServices = (user?.services || []) as Service[];
 
   const handleEditBusinessName = () => {
-    setShowEditBusinessName(true);
+    navigation.navigate('EditBusinessInformation');
   };
 
   const handleEditServices = () => {
@@ -135,12 +133,6 @@ const BusinessInformationScreen: React.FC = () => {
           </TouchableOpacity>
         </View>
       </ScrollView>
-
-      <EditBusinessInformationModal
-        visible={showEditBusinessName}
-        onClose={() => setShowEditBusinessName(false)}
-        onSave={() => setShowEditBusinessName(false)}
-      />
 
       <UpdateServicesModal
         visible={showUpdateServices}

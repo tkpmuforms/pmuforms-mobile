@@ -1,11 +1,18 @@
 import React from 'react';
 import AppointmentsScreen from '../screens/appointments/AppointmentsScreen';
 import AuthScreen from '../screens/auth/Auth';
+import AddClientScreen from '../screens/client/AddClientScreen';
 import ClientAppointmentsScreen from '../screens/client/ClientAppointmentsScreen';
 import ClientDetailsScreen from '../screens/client/ClientDetailsScreen';
 import ClientNotesScreen from '../screens/client/ClientNotesScreen';
 import ClientRemindersScreen from '../screens/client/ClientRemindersScreen';
 import ClientScreen from '../screens/client/ClientScreen';
+import EditClientScreen from '../screens/client/EditClientScreen';
+import SendConsentFormScreen from '../screens/client/SendConsentFormScreen';
+import AddNoteScreen from '../screens/client/AddNoteScreen';
+import AddReminderScreen from '../screens/client/AddReminderScreen';
+import AddCardScreen from '../screens/payment/AddCardScreen';
+import EditBusinessInformationScreen from '../screens/profile/EditBusinessInformationScreen';
 import FilledFormsPreviewScreen from '../screens/client/FilledFormsPreviewScreen';
 import SignatureScreen from '../screens/client/SignatureScreen';
 import DashboardScreen from '../screens/dashboard/DashboardScreen';
@@ -122,6 +129,41 @@ export const authorizedRoutes: RouteProps[] = [
     name: 'Payment',
     component: PaymentScreen,
     breadcrumbs: ['Profile', 'Payment'],
+  },
+  {
+    name: 'AddClient',
+    component: AddClientScreen,
+    breadcrumbs: ['Clients', 'Add Client'],
+  },
+  {
+    name: 'SendConsentForm',
+    component: SendConsentFormScreen,
+    breadcrumbs: ['Clients', 'Send Consent Form'],
+  },
+  {
+    name: 'EditClient',
+    component: EditClientScreen,
+    breadcrumbs: ['Clients', 'Client Details', 'Edit Client'],
+  },
+  {
+    name: 'EditBusinessInformation',
+    component: EditBusinessInformationScreen,
+    breadcrumbs: ['Profile', 'Business Information', 'Edit'],
+  },
+  {
+    name: 'AddNote',
+    component: AddNoteScreen,
+    breadcrumbs: ['Clients', 'Client Details', 'Notes', 'Add Note'],
+  },
+  {
+    name: 'AddReminder',
+    component: AddReminderScreen,
+    breadcrumbs: ['Clients', 'Client Details', 'Reminders', 'Add Reminder'],
+  },
+  {
+    name: 'AddCard',
+    component: AddCardScreen,
+    breadcrumbs: ['Profile', 'Payment', 'Add Card'],
   },
 ];
 

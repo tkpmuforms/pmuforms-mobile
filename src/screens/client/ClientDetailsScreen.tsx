@@ -1,5 +1,10 @@
 import Clipboard from '@react-native-clipboard/clipboard';
-import { RouteProp, useNavigation, useRoute } from '@react-navigation/native';
+import {
+  RouteProp,
+  useFocusEffect,
+  useNavigation,
+  useRoute,
+} from '@react-navigation/native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import {
   ArrowLeft,
@@ -27,8 +32,6 @@ import {
 import { SafeAreaView } from 'react-native-safe-area-context';
 import Toast from 'react-native-toast-message';
 import DeleteModal from '../../components/clients/DeleteModal';
-import EditClientModal from '../../components/clients/EditClientModal';
-import SendConsentFormModal from '../../components/clients/SendConsentFormModal';
 import MetricsCard from '../../components/dashboard/MetricsCard';
 import {
   deleteCustomer,
@@ -55,8 +58,6 @@ const ClientDetailsScreen: React.FC<ClientDetailsScreenProps> = () => {
   const [loading, setLoading] = useState(true);
   const [metricsLoading, setMetricsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
-  const [showEditClient, setShowEditClient] = useState(false);
-  const [showSendConsentForm, setShowSendConsentForm] = useState(false);
   const [showDeleteClient, setShowDeleteClient] = useState(false);
   const [clientMetrics, setClientMetrics] = useState<ClientMetrics | null>(
     null,
@@ -112,6 +113,13 @@ const ClientDetailsScreen: React.FC<ClientDetailsScreenProps> = () => {
     fetchClientMetrics();
   }, [fetchClientDetails, fetchClientMetrics]);
 
+  // Refresh client details when screen comes into focus (e.g., after editing)
+  useFocusEffect(
+    useCallback(() => {
+      fetchClientDetails();
+    }, [fetchClientDetails]),
+  );
+
   const handleCopyToClipboard = async (text: string, label: string) => {
     Clipboard.setString(text);
     Toast.show({
@@ -163,7 +171,11 @@ const ClientDetailsScreen: React.FC<ClientDetailsScreenProps> = () => {
     {
       icon: <Send size={20} color="#8e2d8e" />,
       title: 'Send Consent Form',
-      onPress: () => setShowSendConsentForm(true),
+      onPress: () =>
+        navigation.navigate('SendConsentForm', {
+          clientId,
+          clientName: client?.name || 'Client',
+        }),
       isDelete: false,
     },
     {
@@ -232,7 +244,9 @@ const ClientDetailsScreen: React.FC<ClientDetailsScreenProps> = () => {
 
           <TouchableOpacity
             style={styles.actionButton}
-            onPress={() => setShowEditClient(true)}
+            onPress={() =>
+              navigation.navigate('EditClient', { clientId, client })
+            }
           >
             <Edit size={20} color="#8e2d8e" />
           </TouchableOpacity>
@@ -338,28 +352,6 @@ const ClientDetailsScreen: React.FC<ClientDetailsScreenProps> = () => {
           </View>
         </View>
       </ScrollView>
-
-      {/* Modals */}
-      {showEditClient && (
-        <EditClientModal
-          client={client}
-          onClose={() => setShowEditClient(false)}
-          onSuccess={() => {
-            setShowEditClient(false);
-            fetchClientDetails();
-          }}
-        />
-      )}
-
-      {showSendConsentForm && (
-        <SendConsentFormModal
-          visible={showSendConsentForm}
-          clientId={clientId}
-          clientName={client?.name}
-          onClose={() => setShowSendConsentForm(false)}
-          onSuccess={() => setShowSendConsentForm(false)}
-        />
-      )}
 
       {showDeleteClient && (
         <DeleteModal

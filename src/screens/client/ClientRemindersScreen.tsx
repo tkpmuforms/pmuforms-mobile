@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import {
   View,
   Text,
@@ -8,12 +8,11 @@ import {
   TouchableOpacity,
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { useRoute, useNavigation } from '@react-navigation/native';
+import { useRoute, useNavigation, useFocusEffect } from '@react-navigation/native';
 import { Plus, ArrowLeft } from 'lucide-react-native';
 import Toast from 'react-native-toast-message';
 import { Reminder } from '../../types';
 import ReminderCard from '../../components/clients/ReminderCard';
-import SetReminderModal from '../../components/clients/SetReminderModal';
 import DeleteModal from '../../components/clients/DeleteModal';
 import {
   getRemindersByCustomer,
@@ -31,7 +30,6 @@ const ClientRemindersScreen: React.FC<ClientRemindersScreenProps> = () => {
     client?: any;
   };
 
-  const [showReminderModal, setShowReminderModal] = useState(false);
   const [showDeleteModal, setShowDeleteModal] = useState(false);
   const [selectedReminder, setSelectedReminder] = useState<Reminder | null>(
     null,
@@ -44,6 +42,15 @@ const ClientRemindersScreen: React.FC<ClientRemindersScreenProps> = () => {
       loadReminders();
     }
   }, [clientId]);
+
+  // Refresh reminders when returning from add screen
+  useFocusEffect(
+    useCallback(() => {
+      if (clientId) {
+        loadReminders();
+      }
+    }, [clientId]),
+  );
 
   const loadReminders = async () => {
     try {
@@ -62,8 +69,42 @@ const ClientRemindersScreen: React.FC<ClientRemindersScreenProps> = () => {
     }
   };
 
+  const handleSaveReminder = async (reminderData: {
+    date: string;
+    time: string;
+    message: string;
+  }) => {
+    try {
+      const response = await createReminder({
+        customerId: clientId,
+        reminderDate: reminderData.date,
+        reminderTime: reminderData.time,
+        message: reminderData.message,
+      });
+      const newReminder = response.data.reminder;
+      setReminders(prev => [newReminder, ...prev]);
+      Toast.show({
+        type: 'success',
+        text1: 'Success',
+        text2: 'Reminder set successfully',
+      });
+    } catch (error) {
+      console.error('Error saving reminder:', error);
+      Toast.show({
+        type: 'error',
+        text1: 'Error',
+        text2: 'Failed to set reminder',
+      });
+      throw error;
+    }
+  };
+
   const handleAddReminder = () => {
-    setShowReminderModal(true);
+    navigation.navigate('AddReminder', {
+      clientId,
+      clientName: client?.name,
+      onSave: handleSaveReminder,
+    });
   };
 
   const handleDeleteReminder = (reminder: Reminder) => {
@@ -91,37 +132,6 @@ const ClientRemindersScreen: React.FC<ClientRemindersScreenProps> = () => {
           text2: 'Failed to delete reminder',
         });
       }
-    }
-  };
-
-  const handleSaveReminder = async (reminderData: {
-    date: string;
-    time: string;
-    message: string;
-  }) => {
-    try {
-      const response = await createReminder({
-        customerId: clientId,
-        reminderDate: reminderData.date,
-        reminderTime: reminderData.time,
-        message: reminderData.message,
-      });
-      const newReminder = response.data.reminder;
-      setReminders(prev => [newReminder, ...prev]);
-
-      setShowReminderModal(false);
-      Toast.show({
-        type: 'success',
-        text1: 'Success',
-        text2: 'Reminder set successfully',
-      });
-    } catch (error) {
-      console.error('Error saving reminder:', error);
-      Toast.show({
-        type: 'error',
-        text1: 'Error',
-        text2: 'Failed to set reminder',
-      });
     }
   };
 
@@ -186,15 +196,6 @@ const ClientRemindersScreen: React.FC<ClientRemindersScreenProps> = () => {
         ]}
         ListEmptyComponent={renderEmptyState}
       />
-
-      {showReminderModal && (
-        <SetReminderModal
-          visible={showReminderModal}
-          onClose={() => setShowReminderModal(false)}
-          onSave={handleSaveReminder}
-          clientName={client?.name}
-        />
-      )}
 
       {showDeleteModal && (
         <DeleteModal

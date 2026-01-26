@@ -1,5 +1,5 @@
 import { useNavigation, useRoute } from '@react-navigation/native';
-import { ArrowLeft, Send } from 'lucide-react-native';
+import { ArrowLeft } from 'lucide-react-native';
 import React, { useEffect, useState } from 'react';
 import {
   ActivityIndicator,
@@ -13,7 +13,6 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import Toast from 'react-native-toast-message';
 import AppointmentCard from '../../components/clients/AppointmentCard';
 import DeleteModal from '../../components/clients/DeleteModal';
-import SendConsentFormModal from '../../components/clients/SendConsentFormModal';
 import {
   DeleteAppointment,
   getAppointmentsForCustomer,
@@ -36,7 +35,6 @@ const ClientAppointmentsScreen: React.FC<
   const [appointments, setAppointments] = useState<ClientAppointmentData[]>([]);
   const [loading, setLoading] = useState(false);
   const [clientName, setClientName] = useState<string>(client?.name || '');
-  const [showSendConsentForm, setShowSendConsentForm] = useState(false);
   const [showDeleteAppointment, setShowDeleteAppointment] = useState(false);
   const [appointmentToDelete, setAppointmentToDelete] = useState<string | null>(
     null,
@@ -170,15 +168,6 @@ const ClientAppointmentsScreen: React.FC<
         ]}
         ListEmptyComponent={renderEmptyState}
       />
-
-      {showSendConsentForm && (
-        <SendConsentFormModal
-          clientId={clientId}
-          clientEmail={client?.email || ''}
-          onClose={() => setShowSendConsentForm(false)}
-          onSuccess={() => setShowSendConsentForm(false)}
-        />
-      )}
 
       {showDeleteAppointment && (
         <DeleteModal

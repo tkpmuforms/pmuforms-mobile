@@ -10,7 +10,6 @@ import {
   View,
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import AddClientModal from '../../components/clients/AddClientModal';
 import AppointmentCard from '../../components/dashboard/AppointmentCard';
 import FeaturesModal from '../../components/dashboard/FeaturesModal';
 import FormLinkModal from '../../components/dashboard/FormLinkModal';
@@ -40,7 +39,6 @@ const DashboardScreen = ({ navigation }: any) => {
   const [showSubscriptionModal, setShowSubscriptionModal] = useState(false);
   const [showFeaturesModal, setShowFeaturesModal] = useState(false);
   const [showFormLinkModal, setShowFormLinkModal] = useState(false);
-  const [showAddClient, setShowAddClient] = useState(false);
   const [appointments, setAppointments] = useState<Appointment[]>([]);
   const [metrics, setMetrics] = useState<Metrics | null>(null);
   const [loading, setLoading] = useState(true);
@@ -58,7 +56,7 @@ const DashboardScreen = ({ navigation }: any) => {
     {
       title: 'Add New Client',
       icon: 'user-plus',
-      onPress: () => setShowAddClient(true),
+      onPress: () => navigation.navigate('AddClient'),
     },
     {
       title: 'Manage Forms',
@@ -89,15 +87,6 @@ const DashboardScreen = ({ navigation }: any) => {
     return `https://ui-avatars.com/api/?name=${encodeURIComponent(
       customerName,
     )}&background=A858F0&color=fff&size=40`;
-  };
-
-  const refreshMetrics = async () => {
-    try {
-      const metricsResponse = await getMyMetrics();
-      setMetrics(metricsResponse.data?.metrics);
-    } catch (error) {
-      console.error('Error refreshing metrics:', error);
-    }
   };
 
   const fetchData = async () => {
@@ -175,11 +164,6 @@ const DashboardScreen = ({ navigation }: any) => {
     },
     closeFeatures: () => setShowFeaturesModal(false),
     closeFormLink: () => setShowFormLinkModal(false),
-    closeAddClient: () => setShowAddClient(false),
-    closeAddClientAndRefresh: async () => {
-      setShowAddClient(false);
-      await refreshMetrics();
-    },
   };
 
   return (
@@ -354,14 +338,6 @@ const DashboardScreen = ({ navigation }: any) => {
           </View>
         </View>
       </ScrollView>
-
-      {showAddClient && (
-        <AddClientModal
-          visible={showAddClient}
-          onClose={handleModalFlow.closeAddClient}
-          onSuccess={handleModalFlow.closeAddClientAndRefresh}
-        />
-      )}
 
       {showFormLinkModal && (
         <FormLinkModal

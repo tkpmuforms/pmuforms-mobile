@@ -1,6 +1,6 @@
-import { useRoute, useNavigation } from '@react-navigation/native';
+import { useRoute, useNavigation, useFocusEffect } from '@react-navigation/native';
 import { Plus, ArrowLeft } from 'lucide-react-native';
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import {
   ActivityIndicator,
   FlatList,
@@ -13,7 +13,6 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import Toast from 'react-native-toast-message';
 import DeleteModal from '../../components/clients/DeleteModal';
 import NoteCard from '../../components/clients/NoteCard';
-import NotesModal from '../../components/clients/NotesModal';
 import { Note } from '../../types';
 import {
   getCustomerNotes,
@@ -43,7 +42,6 @@ const ClientNotesScreen: React.FC<ClientNotesScreenProps> = () => {
     client?: any;
   };
 
-  const [showNotesModal, setShowNotesModal] = useState(false);
   const [showDeleteModal, setShowDeleteModal] = useState(false);
   const [selectedNote, setSelectedNote] = useState<Note | null>(null);
   const [notes, setNotes] = useState<Note[]>([]);
@@ -54,6 +52,15 @@ const ClientNotesScreen: React.FC<ClientNotesScreenProps> = () => {
       loadNotes();
     }
   }, [clientId]);
+
+  // Refresh notes when returning from add/edit screen
+  useFocusEffect(
+    useCallback(() => {
+      if (clientId) {
+        loadNotes();
+      }
+    }, [clientId]),
+  );
 
   const loadNotes = async () => {
     try {
@@ -72,14 +79,79 @@ const ClientNotesScreen: React.FC<ClientNotesScreenProps> = () => {
     }
   };
 
+  const handleSaveNote = async (noteContent: string, imageUrl?: string) => {
+    try {
+      const response = await addCustomerNote(clientId, {
+        note: noteContent,
+        imageUrl,
+      });
+      const newNote = response.data.note;
+      setNotes(prev => [newNote, ...prev]);
+      Toast.show({
+        type: 'success',
+        text1: 'Success',
+        text2: 'Note added successfully',
+      });
+    } catch (error) {
+      console.error('Error saving note:', error);
+      Toast.show({
+        type: 'error',
+        text1: 'Error',
+        text2: 'Failed to save note',
+      });
+      throw error;
+    }
+  };
+
+  const handleUpdateNote = async (noteId: string, noteContent: string, imageUrl?: string) => {
+    try {
+      await updateCustomerNote(clientId, noteId, {
+        note: noteContent,
+        imageUrl,
+      });
+      setNotes(prev =>
+        prev.map(n =>
+          n.id === noteId
+            ? {
+                ...n,
+                note: noteContent,
+                imageUrl,
+                updatedAt: new Date().toISOString(),
+              }
+            : n,
+        ),
+      );
+      Toast.show({
+        type: 'success',
+        text1: 'Success',
+        text2: 'Note updated successfully',
+      });
+    } catch (error) {
+      console.error('Error updating note:', error);
+      Toast.show({
+        type: 'error',
+        text1: 'Error',
+        text2: 'Failed to update note',
+      });
+      throw error;
+    }
+  };
+
   const handleAddNote = () => {
-    setSelectedNote(null);
-    setShowNotesModal(true);
+    navigation.navigate('AddNote', {
+      clientId,
+      onSave: handleSaveNote,
+    });
   };
 
   const handleNoteClick = (note: Note) => {
-    setSelectedNote(note);
-    setShowNotesModal(true);
+    navigation.navigate('AddNote', {
+      clientId,
+      note,
+      onSave: async (noteContent: string, imageUrl?: string) => {
+        await handleUpdateNote(note.id, noteContent, imageUrl);
+      },
+    });
   };
 
   const handleDeleteNote = (note: Note) => {
@@ -107,55 +179,6 @@ const ClientNotesScreen: React.FC<ClientNotesScreenProps> = () => {
           text2: 'Failed to delete note',
         });
       }
-    }
-  };
-
-  const handleSaveNote = async (noteContent: string, imageUrl?: string) => {
-    try {
-      if (selectedNote) {
-        await updateCustomerNote(clientId, selectedNote.id, {
-          note: noteContent,
-          imageUrl,
-        });
-        setNotes(prev =>
-          prev.map(n =>
-            n.id === selectedNote.id
-              ? {
-                  ...n,
-                  note: noteContent,
-                  imageUrl,
-                  updatedAt: new Date().toISOString(),
-                }
-              : n,
-          ),
-        );
-        Toast.show({
-          type: 'success',
-          text1: 'Success',
-          text2: 'Note updated successfully',
-        });
-      } else {
-        const response = await addCustomerNote(clientId, {
-          note: noteContent,
-          imageUrl,
-        });
-        const newNote = response.data.note;
-        setNotes(prev => [newNote, ...prev]);
-        Toast.show({
-          type: 'success',
-          text1: 'Success',
-          text2: 'Note added successfully',
-        });
-      }
-      setShowNotesModal(false);
-      setSelectedNote(null);
-    } catch (error) {
-      console.error('Error saving note:', error);
-      Toast.show({
-        type: 'error',
-        text1: 'Error',
-        text2: 'Failed to save note',
-      });
     }
   };
 
@@ -225,18 +248,6 @@ const ClientNotesScreen: React.FC<ClientNotesScreenProps> = () => {
         ]}
         ListEmptyComponent={renderEmptyState}
       />
-
-      {showNotesModal && (
-        <NotesModal
-          visible={showNotesModal}
-          note={selectedNote}
-          onClose={() => {
-            setShowNotesModal(false);
-            setSelectedNote(null);
-          }}
-          onSave={handleSaveNote}
-        />
-      )}
 
       {showDeleteModal && (
         <DeleteModal

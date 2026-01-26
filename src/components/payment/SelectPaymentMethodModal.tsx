@@ -10,12 +10,12 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native';
+import { useNavigation } from '@react-navigation/native';
 import {
   changeSubscriptionPlan,
   createSubscription,
   listPaymentMethods,
 } from '../../services/artistServices';
-import AddCardModal from './AddCardModal';
 import Toast from 'react-native-toast-message';
 import { useDispatch } from 'react-redux';
 import { Card } from '../../types';
@@ -42,11 +42,11 @@ const SelectPaymentMethodModal: React.FC<SelectPaymentMethodModalProps> = ({
   onPaymentSuccess,
   hasActiveSubscription = false,
 }) => {
+  const navigation = useNavigation();
   const [cards, setCards] = useState<Card[]>(initialCards);
   const [selectedCard, setSelectedCard] = useState<string>('');
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
-  const [showAddCard, setShowAddCard] = useState(false);
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -163,18 +163,7 @@ const SelectPaymentMethodModal: React.FC<SelectPaymentMethodModalProps> = ({
 
   const handleCardAdded = () => {
     fetchPaymentMethods();
-    setShowAddCard(false);
   };
-
-  if (showAddCard) {
-    return (
-      <AddCardModal
-        visible={showAddCard}
-        onClose={() => setShowAddCard(false)}
-        onCardAdded={handleCardAdded}
-      />
-    );
-  }
 
   const subscriptionData = getSubscriptionFromStorage();
   const isChangingPlan =
@@ -215,7 +204,7 @@ const SelectPaymentMethodModal: React.FC<SelectPaymentMethodModalProps> = ({
             <View style={styles.paymentSection}>
               <View style={styles.paymentHeader}>
                 <Text style={styles.sectionTitle}>Select a Card</Text>
-                <TouchableOpacity onPress={() => setShowAddCard(true)}>
+                <TouchableOpacity onPress={() => navigation.navigate('AddCard', { onCardAdded: handleCardAdded })}>
                   <Text style={styles.addCardLink}>+ Add a Card</Text>
                 </TouchableOpacity>
               </View>
@@ -227,7 +216,7 @@ const SelectPaymentMethodModal: React.FC<SelectPaymentMethodModalProps> = ({
                   </Text>
                   <TouchableOpacity
                     style={styles.addCardButton}
-                    onPress={() => setShowAddCard(true)}
+                    onPress={() => navigation.navigate('AddCard', { onCardAdded: handleCardAdded })}
                   >
                     <Text style={styles.addCardButtonText}>Add a Card</Text>
                   </TouchableOpacity>

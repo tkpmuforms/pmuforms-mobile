@@ -1,6 +1,6 @@
-import { useNavigation } from '@react-navigation/native';
+import { useFocusEffect, useNavigation } from '@react-navigation/native';
 import { Plus, Search } from 'lucide-react-native';
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import {
   ActivityIndicator,
   FlatList,
@@ -13,7 +13,6 @@ import {
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import Toast from 'react-native-toast-message';
-import AddClientModal from '../../components/clients/AddClientModal';
 import ClientCard from '../../components/clients/ClientCard';
 import { searchCustomers } from '../../services/artistServices';
 import { Client, CustomerResponse } from '../../types';
@@ -25,7 +24,6 @@ interface ClientScreenProps {
 
 const ClientScreen: React.FC<ClientScreenProps> = () => {
   const navigation = useNavigation();
-  const [showAddClient, setShowAddClient] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
   const [clients, setClients] = useState<Client[]>([]);
   const [loading, setLoading] = useState(true);
@@ -90,10 +88,12 @@ const ClientScreen: React.FC<ClientScreenProps> = () => {
     navigation.navigate('ClientDetails', { clientId });
   };
 
-  const handleAddClientSuccess = () => {
-    setShowAddClient(false);
-    fetchCustomers();
-  };
+  // Refresh clients when screen comes into focus (e.g., after adding a client)
+  useFocusEffect(
+    useCallback(() => {
+      fetchCustomers();
+    }, []),
+  );
 
   const renderHeader = () => (
     <View style={styles.header}>
@@ -150,7 +150,7 @@ const ClientScreen: React.FC<ClientScreenProps> = () => {
       {renderSearchBar()}
       <TouchableOpacity
         style={styles.addButton}
-        onPress={() => setShowAddClient(true)}
+        onPress={() => navigation.navigate('AddClient')}
       >
         <Plus size={20} color="#8E2D8E" />
         <Text style={styles.addButtonText}>Tap Here to Add a New Client</Text>
@@ -175,12 +175,6 @@ const ClientScreen: React.FC<ClientScreenProps> = () => {
         ListEmptyComponent={renderEmptyState}
       />
 
-      {showAddClient && (
-        <AddClientModal
-          onClose={() => setShowAddClient(false)}
-          onSuccess={handleAddClientSuccess}
-        />
-      )}
     </SafeAreaView>
   );
 };
