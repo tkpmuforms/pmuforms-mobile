@@ -17,6 +17,7 @@ import {
   ActivityIndicator,
   Linking,
   ScrollView,
+  StatusBar,
   StyleSheet,
   Text,
   TouchableOpacity,
@@ -205,7 +206,12 @@ const ClientDetailsScreen: React.FC<ClientDetailsScreenProps> = () => {
   }
 
   return (
-    <SafeAreaView style={styles.container} edges={[]}>
+    <SafeAreaView style={styles.container} edges={['bottom']}>
+      <StatusBar
+        barStyle="dark-content"
+        backgroundColor="transparent"
+        translucent
+      />
       <ScrollView contentContainerStyle={styles.scrollContent}>
         <View style={styles.headerActions}>
           <TouchableOpacity
@@ -324,8 +330,9 @@ const ClientDetailsScreen: React.FC<ClientDetailsScreenProps> = () => {
 
       {showSendConsentForm && (
         <SendConsentFormModal
+          visible={showSendConsentForm}
           clientId={clientId}
-          clientEmail={client.email}
+          clientName={client?.name}
           onClose={() => setShowSendConsentForm(false)}
           onSuccess={() => setShowSendConsentForm(false)}
         />
@@ -334,10 +341,10 @@ const ClientDetailsScreen: React.FC<ClientDetailsScreenProps> = () => {
       {showDeleteClient && (
         <DeleteModal
           visible={showDeleteClient}
-          title="Delete Client"
-          message={`Are you sure you want to delete ${client.name}? This action cannot be undone.`}
+          headerText="Delete Client"
+          shorterText={`Are you sure you want to delete ${client.name}? This action cannot be undone.`}
           onClose={() => setShowDeleteClient(false)}
-          onConfirm={handleDeleteClient}
+          handleDelete={handleDeleteClient}
         />
       )}
     </SafeAreaView>
@@ -350,7 +357,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#F8F9FA',
   },
   scrollContent: {
-    paddingBottom: 24,
+    paddingBottom: 10,
   },
   loadingContainer: {
     flex: 1,
@@ -361,7 +368,7 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    paddingHorizontal: 32,
+    paddingHorizontal: 22,
   },
   errorText: {
     fontSize: 16,
@@ -417,7 +424,7 @@ const styles = StyleSheet.create({
     marginHorizontal: 16,
     marginTop: 16,
     borderRadius: 12,
-    padding: 24,
+    padding: 22,
   },
   contactSection: {
     width: '100%',
@@ -463,7 +470,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     backgroundColor: '#fff',
     borderRadius: 12,
-    padding: 16,
+    padding: 10,
     gap: 10,
   },
   quickActionCardDelete: {

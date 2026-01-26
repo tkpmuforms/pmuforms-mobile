@@ -4,6 +4,7 @@ import React, { useEffect, useState } from 'react';
 import {
   ActivityIndicator,
   FlatList,
+  StatusBar,
   StyleSheet,
   Text,
   TextInput,
@@ -139,7 +140,8 @@ const ClientScreen: React.FC<ClientScreenProps> = () => {
   }
 
   return (
-    <SafeAreaView style={styles.container} edges={[]}>
+    <SafeAreaView style={styles.container} edges={['bottom']}>
+      <StatusBar barStyle="dark-content" backgroundColor="transparent" translucent />
       {renderHeader()}
       {renderSearchBar()}
       <TouchableOpacity

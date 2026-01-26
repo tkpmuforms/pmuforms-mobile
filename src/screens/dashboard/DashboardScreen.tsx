@@ -3,6 +3,7 @@ import {
   Dimensions,
   RefreshControl,
   ScrollView,
+  StatusBar,
   StyleSheet,
   Text,
   TouchableOpacity,
@@ -190,7 +191,8 @@ const DashboardScreen = ({ navigation }: any) => {
   };
 
   return (
-    <SafeAreaView style={styles.container} edges={[]}>
+    <SafeAreaView style={styles.container} edges={['bottom']}>
+      <StatusBar barStyle="dark-content" backgroundColor="transparent" translucent />
       <ScrollView
         style={styles.scrollView}
         contentContainerStyle={styles.scrollContent}
