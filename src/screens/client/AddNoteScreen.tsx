@@ -141,7 +141,8 @@ const AddNoteScreen: React.FC = () => {
               <TouchableOpacity
                 style={[
                   styles.saveButton,
-                  (!noteContent.trim() || isSaving) && styles.saveButtonDisabled,
+                  (!noteContent.trim() || isSaving) &&
+                    styles.saveButtonDisabled,
                 ]}
                 onPress={handleSave}
                 disabled={!noteContent.trim() || isSaving}
@@ -165,7 +166,6 @@ const AddNoteScreen: React.FC = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#F8F9FA',
   },
   keyboardView: {
     flex: 1,

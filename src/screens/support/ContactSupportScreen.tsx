@@ -184,7 +184,6 @@ const ContactSupportScreen: React.FC = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#F8F9FA',
   },
   keyboardView: {
     flex: 1,

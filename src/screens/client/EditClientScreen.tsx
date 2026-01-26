@@ -17,7 +17,6 @@ import {
 import { SafeAreaView } from 'react-native-safe-area-context';
 import Toast from 'react-native-toast-message';
 import { updateCustomerPersonalDetails } from '../../services/artistServices';
-import { ClientDetail } from '../../types';
 import { RootStackParamList } from '../../types/navigation';
 
 type EditClientRouteProp = RouteProp<RootStackParamList, 'EditClient'>;
@@ -161,7 +160,10 @@ const EditClientScreen: React.FC = () => {
             {/* Footer */}
             <View style={styles.footer}>
               <TouchableOpacity
-                style={[styles.saveButton, loading && styles.saveButtonDisabled]}
+                style={[
+                  styles.saveButton,
+                  loading && styles.saveButtonDisabled,
+                ]}
                 onPress={handleSave}
                 disabled={loading}
               >
@@ -187,7 +189,6 @@ const EditClientScreen: React.FC = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#F8F9FA',
   },
   keyboardView: {
     flex: 1,
@@ -246,7 +247,7 @@ const styles = StyleSheet.create({
     borderRadius: 12,
     fontSize: 14,
     color: '#000000',
-    backgroundColor: '#fff',
+    backgroundColor: '#BCBBC133',
   },
   footer: {
     padding: 16,
@@ -261,7 +262,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   saveButtonDisabled: {
-    backgroundColor: '#CBD5E1',
+    backgroundColor: '#BCBBC133',
     opacity: 0.6,
   },
   saveButtonText: {

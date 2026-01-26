@@ -1,20 +1,21 @@
+import { Plus } from 'lucide-react-native';
 import React, { useEffect, useState } from 'react';
 import {
-  View,
-  Text,
-  StyleSheet,
-  ScrollView,
-  TouchableOpacity,
-  TextInput,
+  ActivityIndicator,
   RefreshControl,
+  ScrollView,
+  StyleSheet,
+  Text,
+  TextInput,
+  TouchableOpacity,
+  View,
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { Plus, Search } from 'lucide-react-native';
-import { getArtistForms } from '../../services/artistServices';
-import { transformFormData } from '../../utils/utils';
 import FormCard from '../../components/forms/FormCard';
 import UpdateServicesModal from '../../components/profile/UpdateServicesModal';
+import { getArtistForms } from '../../services/artistServices';
 import { Form } from '../../types';
+import { transformFormData } from '../../utils/utils';
 
 const FormsScreen = ({ navigation }: any) => {
   const [activeTab, setActiveTab] = useState<'consent' | 'care'>('consent');
@@ -126,7 +127,11 @@ const FormsScreen = ({ navigation }: any) => {
         }
       >
         <View style={styles.grid}>
-          {filteredForms.length > 0 ? (
+          {loading ? (
+            <View style={styles.loadingContainer}>
+              <ActivityIndicator size="large" color="#8e2d8e" />
+            </View>
+          ) : filteredForms.length > 0 ? (
             filteredForms.map(form => (
               <FormCard
                 key={form.id}
@@ -277,6 +282,11 @@ const styles = StyleSheet.create({
   },
   grid: {
     gap: 1,
+  },
+  loadingContainer: {
+    paddingVertical: 60,
+    alignItems: 'center',
+    justifyContent: 'center',
   },
   emptyContainer: {
     alignItems: 'center',

@@ -1,6 +1,6 @@
-import { useFocusEffect, useNavigation } from '@react-navigation/native';
+import { useNavigation, useFocusEffect } from '@react-navigation/native';
 import { Plus, Search } from 'lucide-react-native';
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
 import {
   ActivityIndicator,
   FlatList,
@@ -28,6 +28,7 @@ const ClientScreen: React.FC<ClientScreenProps> = () => {
   const [clients, setClients] = useState<Client[]>([]);
   const [loading, setLoading] = useState(true);
   const [totalClients, setTotalClients] = useState(0);
+  const isFirstMount = useRef(true);
 
   const convertToClient = (
     customer: CustomerResponse['customers'][0],
@@ -43,30 +44,33 @@ const ClientScreen: React.FC<ClientScreenProps> = () => {
     };
   };
 
-  const fetchCustomers = async (searchName?: string, isInitialLoad = false) => {
-    try {
-      if (isInitialLoad) {
-        setLoading(true);
-      }
+  const fetchCustomers = useCallback(
+    async (searchName?: string, isInitialLoad = false) => {
+      try {
+        if (isInitialLoad) {
+          setLoading(true);
+        }
 
-      const response = await searchCustomers(searchName, 1, 30);
-      const data: CustomerResponse = response?.data;
-      const convertedClients = data.customers?.map(convertToClient);
-      setClients(convertedClients);
-      setTotalClients(data.metadata.total);
-    } catch (err) {
-      console.error('Error fetching customers:', err);
-      Toast.show({
-        type: 'error',
-        text1: 'Error',
-        text2: 'Failed to load clients',
-      });
-    } finally {
-      if (isInitialLoad) {
-        setLoading(false);
+        const response = await searchCustomers(searchName, 1, 30);
+        const data: CustomerResponse = response?.data;
+        const convertedClients = data.customers?.map(convertToClient);
+        setClients(convertedClients);
+        setTotalClients(data.metadata.total);
+      } catch (err) {
+        console.error('Error fetching customers:', err);
+        Toast.show({
+          type: 'error',
+          text1: 'Error',
+          text2: 'Failed to load clients',
+        });
+      } finally {
+        if (isInitialLoad) {
+          setLoading(false);
+        }
       }
-    }
-  };
+    },
+    [],
+  );
 
   useEffect(() => {
     fetchCustomers(undefined, true);
@@ -84,16 +88,25 @@ const ClientScreen: React.FC<ClientScreenProps> = () => {
     return () => clearTimeout(timeoutId);
   }, [searchQuery]);
 
+  // Refresh client list when screen comes into focus (after add/edit)
+  useFocusEffect(
+    useCallback(() => {
+      // Skip the first mount since useEffect already handles initial load
+      if (isFirstMount.current) {
+        isFirstMount.current = false;
+        return;
+      }
+      fetchCustomers();
+    }, [fetchCustomers]),
+  );
+
   const handleClientClick = (clientId: string) => {
     navigation.navigate('ClientDetails', { clientId });
   };
 
-  // Refresh clients when screen comes into focus (e.g., after adding a client)
-  useFocusEffect(
-    useCallback(() => {
-      fetchCustomers();
-    }, []),
-  );
+  const handleAddClient = () => {
+    navigation.navigate('AddClient');
+  };
 
   const renderHeader = () => (
     <View style={styles.header}>
@@ -148,10 +161,7 @@ const ClientScreen: React.FC<ClientScreenProps> = () => {
       />
       {renderHeader()}
       {renderSearchBar()}
-      <TouchableOpacity
-        style={styles.addButton}
-        onPress={() => navigation.navigate('AddClient')}
-      >
+      <TouchableOpacity style={styles.addButton} onPress={handleAddClient}>
         <Plus size={20} color="#8E2D8E" />
         <Text style={styles.addButtonText}>Tap Here to Add a New Client</Text>
       </TouchableOpacity>
@@ -174,7 +184,6 @@ const ClientScreen: React.FC<ClientScreenProps> = () => {
         ]}
         ListEmptyComponent={renderEmptyState}
       />
-
     </SafeAreaView>
   );
 };
@@ -182,7 +191,6 @@ const ClientScreen: React.FC<ClientScreenProps> = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#F8F9FA',
   },
   header: {
     paddingHorizontal: 16,

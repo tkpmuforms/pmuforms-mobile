@@ -184,7 +184,6 @@ const SendConsentFormScreen: React.FC = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#F8F9FA',
   },
   header: {
     flexDirection: 'row',
@@ -240,7 +239,7 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: '#e2e8f0',
     borderRadius: 12,
-    backgroundColor: '#fff',
+    backgroundColor: '#BCBBC133',
   },
   dateText: {
     fontSize: 16,

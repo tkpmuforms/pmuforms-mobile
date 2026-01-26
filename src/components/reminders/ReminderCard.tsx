@@ -67,7 +67,6 @@ const ReminderCard: React.FC<ReminderCardProps> = ({
 
 const styles = StyleSheet.create({
   reminderCard: {
-    backgroundColor: '#f8f9fa',
     borderRadius: 12,
     padding: 16,
     marginBottom: 12,

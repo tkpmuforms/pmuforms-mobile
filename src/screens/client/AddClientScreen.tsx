@@ -170,7 +170,6 @@ const AddClientScreen: React.FC = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#F8F9FA',
   },
   keyboardView: {
     flex: 1,
@@ -228,7 +227,7 @@ const styles = StyleSheet.create({
     borderRadius: 12,
     fontSize: 16,
     color: '#000000',
-    backgroundColor: '#fff',
+    backgroundColor: '#BCBBC133',
   },
   footer: {
     padding: 16,
@@ -243,7 +242,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   submitButtonDisabled: {
-    backgroundColor: '#CBD5E1',
+    backgroundColor: '#BCBBC133',
     opacity: 0.6,
   },
   submitButtonText: {

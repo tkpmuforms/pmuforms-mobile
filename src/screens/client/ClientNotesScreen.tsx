@@ -1,4 +1,8 @@
-import { useRoute, useNavigation, useFocusEffect } from '@react-navigation/native';
+import {
+  useRoute,
+  useNavigation,
+  useFocusEffect,
+} from '@react-navigation/native';
 import { Plus, ArrowLeft } from 'lucide-react-native';
 import React, { useCallback, useEffect, useState } from 'react';
 import {
@@ -103,7 +107,11 @@ const ClientNotesScreen: React.FC<ClientNotesScreenProps> = () => {
     }
   };
 
-  const handleUpdateNote = async (noteId: string, noteContent: string, imageUrl?: string) => {
+  const handleUpdateNote = async (
+    noteId: string,
+    noteContent: string,
+    imageUrl?: string,
+  ) => {
     try {
       await updateCustomerNote(clientId, noteId, {
         note: noteContent,
@@ -265,7 +273,6 @@ const ClientNotesScreen: React.FC<ClientNotesScreenProps> = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#F8F9FA',
   },
   loadingContainer: {
     flex: 1,

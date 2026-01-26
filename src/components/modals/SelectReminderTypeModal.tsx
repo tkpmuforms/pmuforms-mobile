@@ -119,7 +119,7 @@ const styles = StyleSheet.create({
   reminderTypeCard: {
     flexDirection: 'row',
     alignItems: 'center',
-    backgroundColor: '#f8f9fa',
+
     borderWidth: 1,
     borderColor: '#e9ecef',
     borderRadius: 16,

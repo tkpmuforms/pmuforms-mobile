@@ -1,10 +1,5 @@
 import Clipboard from '@react-native-clipboard/clipboard';
-import {
-  RouteProp,
-  useFocusEffect,
-  useNavigation,
-  useRoute,
-} from '@react-navigation/native';
+import { RouteProp, useNavigation, useRoute } from '@react-navigation/native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import {
   ArrowLeft,
@@ -112,13 +107,6 @@ const ClientDetailsScreen: React.FC<ClientDetailsScreenProps> = () => {
     fetchClientDetails();
     fetchClientMetrics();
   }, [fetchClientDetails, fetchClientMetrics]);
-
-  // Refresh client details when screen comes into focus (e.g., after editing)
-  useFocusEffect(
-    useCallback(() => {
-      fetchClientDetails();
-    }, [fetchClientDetails]),
-  );
 
   const handleCopyToClipboard = async (text: string, label: string) => {
     Clipboard.setString(text);
@@ -245,7 +233,7 @@ const ClientDetailsScreen: React.FC<ClientDetailsScreenProps> = () => {
           <TouchableOpacity
             style={styles.actionButton}
             onPress={() =>
-              navigation.navigate('EditClient', { clientId, client })
+              navigation.navigate('EditClient', { clientId, client: client! })
             }
           >
             <Edit size={20} color="#8e2d8e" />
@@ -369,7 +357,6 @@ const ClientDetailsScreen: React.FC<ClientDetailsScreenProps> = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#F8F9FA',
   },
   scrollContent: {
     paddingBottom: 10,

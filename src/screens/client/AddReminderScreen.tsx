@@ -1,6 +1,10 @@
 import { RouteProp, useNavigation, useRoute } from '@react-navigation/native';
 import DateTimePicker from '@react-native-community/datetimepicker';
-import { ArrowLeft, Calendar as CalendarIcon, Clock as ClockIcon } from 'lucide-react-native';
+import {
+  ArrowLeft,
+  Calendar as CalendarIcon,
+  Clock as ClockIcon,
+} from 'lucide-react-native';
 import React, { useState } from 'react';
 import {
   ActivityIndicator,
@@ -123,7 +127,9 @@ const AddReminderScreen: React.FC = () => {
                     onPress={() => setShowDatePicker(true)}
                   >
                     <CalendarIcon size={16} color="#64748b" />
-                    <Text style={styles.pickerButtonText}>{formatDate(date)}</Text>
+                    <Text style={styles.pickerButtonText}>
+                      {formatDate(date)}
+                    </Text>
                   </TouchableOpacity>
                 </View>
 
@@ -134,7 +140,9 @@ const AddReminderScreen: React.FC = () => {
                     onPress={() => setShowTimePicker(true)}
                   >
                     <ClockIcon size={16} color="#64748b" />
-                    <Text style={styles.pickerButtonText}>{formatTime(time)}</Text>
+                    <Text style={styles.pickerButtonText}>
+                      {formatTime(time)}
+                    </Text>
                   </TouchableOpacity>
                 </View>
               </View>
@@ -196,7 +204,6 @@ const AddReminderScreen: React.FC = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#F8F9FA',
   },
   keyboardView: {
     flex: 1,
