@@ -3,7 +3,7 @@ import {
   useNavigation,
   useFocusEffect,
 } from '@react-navigation/native';
-import { Plus, ArrowLeft } from 'lucide-react-native';
+import { Plus } from 'lucide-react-native';
 import React, { useCallback, useEffect, useState } from 'react';
 import {
   ActivityIndicator,
@@ -24,6 +24,7 @@ import {
   updateCustomerNote,
   deleteCustomerNote,
 } from '../../services/artistServices';
+import ScreenHeader from '../../components/layout/ScreenHeader';
 
 interface ClientNotesScreenProps {}
 

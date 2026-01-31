@@ -1,6 +1,6 @@
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { ActivityIndicator, StyleSheet, View } from 'react-native';
 import {
   HomeIcon,
@@ -15,7 +15,13 @@ import {
 import AuthenticatedLayout from '../components/layout/AuthenticatedLayout';
 import useAuth from '../hooks/useAuth';
 import { colors } from '../theme/colors';
-import { authorizedRoutes, nonAuthRoutes } from './routeConfig';
+import {
+  authorizedRoutes,
+  nonAuthRoutes,
+  onboardingRoutes,
+} from './routeConfig';
+import { determineOnboardingStep } from '../utils/authUtils';
+import { OnboardingStep } from '../types';
 
 const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -124,16 +130,64 @@ const AuthenticatedStack = () => {
   );
 };
 
-const RouteGuard = () => {
-  const { isAuthenticated, loading } = useAuth();
+const OnboardingStack = () => {
+  return (
+    <Stack.Navigator
+      screenOptions={{
+        headerShown: false,
+      }}
+    >
+      {onboardingRoutes.map(route => (
+        <Stack.Screen
+          key={route.name}
+          name={route.name}
+          component={route.component}
+        />
+      ))}
+      <Stack.Screen name="Main" component={AuthenticatedStack} />
+      {authorizedRoutes
+        .filter(route => route.name === 'Payment')
+        .map(route => (
+          <Stack.Screen key={route.name} name={route.name}>
+            {props => (
+              <AuthenticatedLayout
+                breadcrumbs={route.breadcrumbs}
+                navigation={props.navigation}
+              >
+                <route.component {...props} />
+              </AuthenticatedLayout>
+            )}
+          </Stack.Screen>
+        ))}
+    </Stack.Navigator>
+  );
+};
 
-  if (loading) {
+const RouteGuard = () => {
+  const { isAuthenticated, loading, user } = useAuth();
+  const [onboardingStep, setOnboardingStep] =
+    useState<OnboardingStep>('completed');
+  const [checkingOnboarding, setCheckingOnboarding] = useState(true);
+
+  useEffect(() => {
+    if (isAuthenticated && user && Object.keys(user).length > 0) {
+      const step = determineOnboardingStep(user as any);
+      setOnboardingStep(step);
+      setCheckingOnboarding(false);
+    } else if (!isAuthenticated) {
+      setCheckingOnboarding(false);
+    }
+  }, [isAuthenticated, user]);
+
+  if (loading || checkingOnboarding) {
     return (
       <View style={styles.loadingContainer}>
         <ActivityIndicator size="large" color="#8e2d8e" />
       </View>
     );
   }
+
+  const needsOnboarding = isAuthenticated && onboardingStep !== 'completed';
 
   return (
     <Stack.Navigator screenOptions={{ headerShown: false }}>
@@ -147,6 +201,12 @@ const RouteGuard = () => {
             />
           ))}
         </>
+      ) : needsOnboarding ? (
+        <Stack.Screen
+          name="Onboarding"
+          component={OnboardingStack}
+          initialParams={{ step: onboardingStep }}
+        />
       ) : (
         <Stack.Screen name="Main" component={AuthenticatedStack} />
       )}

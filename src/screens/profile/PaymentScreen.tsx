@@ -10,10 +10,11 @@ import {
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useNavigation } from '@react-navigation/native';
-import { ArrowLeft, CreditCard, Plus } from 'lucide-react-native';
+import { CreditCard, Plus } from 'lucide-react-native';
 import Toast from 'react-native-toast-message';
 import { colors } from '../../theme/colors';
 import useAuth from '../../hooks/useAuth';
+import ScreenHeader from '../../components/layout/ScreenHeader';
 import {
   cancelSubscription,
   detachPaymentMethod,
@@ -264,23 +265,15 @@ const PaymentScreen: React.FC = () => {
 
   return (
     <SafeAreaView style={styles.container}>
-      <View style={styles.header}>
-        <View style={styles.headerActions}>
-          <TouchableOpacity
-            style={styles.backButton}
-            onPress={() => navigation.goBack()}
-          >
-            <ArrowLeft size={24} color="#000000" />
-          </TouchableOpacity>
-          <Text style={styles.title}>Payment & Billing</Text>
-        </View>
-      </View>
+      <ScreenHeader
+        title="Payment & Billing"
+        onBack={() => navigation.goBack()}
+      />
 
       <ScrollView
         style={styles.scrollView}
         contentContainerStyle={styles.scrollContent}
       >
-        {/* Subscription Section */}
         <View style={styles.section}>
           <Text style={styles.sectionTitle}>Your Subscription</Text>
 

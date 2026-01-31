@@ -93,6 +93,11 @@ const UpdateServicesModal: React.FC<UpdateServicesModalProps> = ({
   };
 
   const handleSave = async () => {
+    if (selectedServices.length === 0) {
+      Alert.alert('Error', 'Please select at least one service');
+      return;
+    }
+
     const serviceIds = selectedServices.map(s => s.id);
     try {
       await updateServices({ services: serviceIds });
@@ -176,6 +181,14 @@ const UpdateServicesModal: React.FC<UpdateServicesModalProps> = ({
               )}
             </ScrollView>
 
+            {selectedServices.length === 0 && (
+              <View style={styles.warningBox}>
+                <Text style={styles.warningText}>
+                  ⚠️ Please select at least one service
+                </Text>
+              </View>
+            )}
+
             <View style={styles.actions}>
               {!noGoBack && (
                 <TouchableOpacity
@@ -188,11 +201,12 @@ const UpdateServicesModal: React.FC<UpdateServicesModalProps> = ({
               <TouchableOpacity
                 style={[
                   styles.saveButton,
-                  loading && styles.buttonDisabled,
+                  (loading || selectedServices.length === 0) &&
+                    styles.buttonDisabled,
                   noGoBack && styles.saveButtonFull,
                 ]}
                 onPress={handleSave}
-                disabled={loading}
+                disabled={loading || selectedServices.length === 0}
               >
                 <Text style={styles.saveText}>Save Changes</Text>
               </TouchableOpacity>
@@ -284,6 +298,19 @@ const styles = StyleSheet.create({
   },
   serviceTextSelected: {
     color: '#fff',
+  },
+  warningBox: {
+    backgroundColor: '#fef2f2',
+    borderWidth: 1,
+    borderColor: '#fecaca',
+    borderRadius: 8,
+    padding: 12,
+    marginTop: 16,
+  },
+  warningText: {
+    color: '#dc2626',
+    fontSize: 13,
+    textAlign: 'center',
   },
   actions: {
     flexDirection: 'row',

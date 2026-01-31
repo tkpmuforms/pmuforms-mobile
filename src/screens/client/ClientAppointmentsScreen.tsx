@@ -1,5 +1,4 @@
 import { useNavigation, useRoute } from '@react-navigation/native';
-import { ArrowLeft } from 'lucide-react-native';
 import React, { useEffect, useState } from 'react';
 import {
   ActivityIndicator,
@@ -19,6 +18,7 @@ import {
   getCustomerById,
 } from '../../services/artistServices';
 import { ClientAppointmentData } from '../../types';
+import ScreenHeader from '../../components/layout/ScreenHeader';
 
 interface ClientAppointmentsScreenProps {}
 
@@ -110,23 +110,13 @@ const ClientAppointmentsScreen: React.FC<
   };
 
   const renderHeader = () => (
-    <View style={styles.header}>
-      <View style={styles.headerTop}>
-        <TouchableOpacity
-          style={styles.backButton}
-          onPress={() => navigation.goBack()}
-        >
-          <ArrowLeft size={24} color="#000000" />
-        </TouchableOpacity>
-        <View style={styles.headerContent}>
-          <Text style={styles.headerTitle}>{clientName}'s Appointments</Text>
-          <Text style={styles.headerSubtitle}>
-            {appointments.length}{' '}
-            {appointments.length === 1 ? 'Appointment' : 'Appointments'}
-          </Text>
-        </View>
-      </View>
-    </View>
+    <ScreenHeader
+      title={`${clientName}'s Appointments`}
+      subtitle={`${appointments.length} ${
+        appointments.length === 1 ? 'Appointment' : 'Appointments'
+      }`}
+      onBack={() => navigation.goBack()}
+    />
   );
 
   const renderEmptyState = () => (

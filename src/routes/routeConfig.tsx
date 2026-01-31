@@ -25,6 +25,9 @@ import PaymentScreen from '../screens/profile/PaymentScreen';
 import ProfileScreen from '../screens/profile/ProfileScreen';
 import ContactSupportScreen from '../screens/support/ContactSupportScreen';
 import PrivacyPolicyScreen from '../screens/support/PrivacyPolicyScreen';
+import BusinessNameScreen from '../screens/onboarding/BusinessNameScreen';
+import ServicesSelectionScreen from '../screens/onboarding/ServicesSelectionScreen';
+import PaymentSetupScreen from '../screens/onboarding/PaymentSetupScreen';
 
 interface RouteProps {
   name: string;
@@ -172,5 +175,23 @@ export const nonAuthRoutes: RouteProps[] = [
     name: 'Auth',
     component: AuthScreen,
     breadcrumbs: [],
+  },
+];
+
+export const onboardingRoutes: RouteProps[] = [
+  {
+    name: 'OnboardingBusinessName',
+    component: BusinessNameScreen,
+    breadcrumbs: ['Onboarding', 'Business Information'],
+  },
+  {
+    name: 'OnboardingServices',
+    component: ServicesSelectionScreen,
+    breadcrumbs: ['Onboarding', 'Services'],
+  },
+  {
+    name: 'OnboardingPayment',
+    component: PaymentSetupScreen,
+    breadcrumbs: ['Onboarding', 'Payment'],
   },
 ];

@@ -2,7 +2,6 @@ import Clipboard from '@react-native-clipboard/clipboard';
 import { RouteProp, useNavigation, useRoute } from '@react-navigation/native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import {
-  ArrowLeft,
   Calendar,
   Clock,
   Copy,
@@ -28,6 +27,7 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import Toast from 'react-native-toast-message';
 import DeleteModal from '../../components/clients/DeleteModal';
 import MetricsCard from '../../components/dashboard/MetricsCard';
+import ScreenHeader from '../../components/layout/ScreenHeader';
 import {
   deleteCustomer,
   getCustomerById,
@@ -220,16 +220,10 @@ const ClientDetailsScreen: React.FC<ClientDetailsScreenProps> = () => {
         backgroundColor="transparent"
         translucent
       />
-      <ScrollView contentContainerStyle={styles.scrollContent}>
-        <View style={styles.headerActions}>
-          <TouchableOpacity
-            style={styles.backButton}
-            onPress={() => navigation.goBack()}
-          >
-            <ArrowLeft size={24} color="#000000" />
-          </TouchableOpacity>
-          <Text style={styles.clientName}>{client.name}</Text>
-
+      <ScreenHeader
+        title={client.name}
+        onBack={() => navigation.goBack()}
+        rightComponent={
           <TouchableOpacity
             style={styles.actionButton}
             onPress={() =>
@@ -238,8 +232,9 @@ const ClientDetailsScreen: React.FC<ClientDetailsScreenProps> = () => {
           >
             <Edit size={20} color="#8e2d8e" />
           </TouchableOpacity>
-        </View>
-
+        }
+      />
+      <ScrollView contentContainerStyle={styles.scrollContent}>
         <View style={styles.metricsContainer}>
           {metricsLoading ? (
             <>

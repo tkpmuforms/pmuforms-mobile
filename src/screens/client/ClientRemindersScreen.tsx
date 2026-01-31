@@ -3,7 +3,7 @@ import {
   useNavigation,
   useRoute,
 } from '@react-navigation/native';
-import { ArrowLeft, Plus } from 'lucide-react-native';
+import { Plus } from 'lucide-react-native';
 import React, { useCallback, useEffect, useState } from 'react';
 import {
   ActivityIndicator,
@@ -22,6 +22,7 @@ import {
   getRemindersByCustomer,
 } from '../../services/artistServices';
 import { Reminder } from '../../types';
+import ScreenHeader from '../../components/layout/ScreenHeader';
 
 interface ClientRemindersScreenProps {}
 
@@ -109,25 +110,19 @@ const ClientRemindersScreen: React.FC<ClientRemindersScreenProps> = () => {
   };
 
   const renderHeader = () => (
-    <View style={styles.header}>
-      <View style={styles.headerTop}>
-        <TouchableOpacity
-          style={styles.backButton}
-          onPress={() => navigation.goBack()}
-        >
-          <ArrowLeft size={24} color="#000000" />
-        </TouchableOpacity>
-        <View style={styles.headerContent}>
-          <Text style={styles.headerTitle}>
-            {client?.name || 'Client'}'s Reminders
-          </Text>
-          <Text style={styles.headerSubtitle}>
-            {reminders.length}{' '}
-            {reminders.length === 1 ? 'Reminder' : 'Reminders'}
-          </Text>
-        </View>
-      </View>
-      <TouchableOpacity style={styles.addButton} onPress={handleAddReminder}>
+    <View>
+      <ScreenHeader
+        title={`${client?.name || 'Client'}'s Reminders`}
+        subtitle={`${reminders.length} ${reminders.length === 1 ? 'Reminder' : 'Reminders'}`}
+        onBack={() => navigation.goBack()}
+        rightComponent={
+          <TouchableOpacity style={styles.addButton} onPress={handleAddReminder}>
+            <Plus size={24} color="#8e2d8e" />
+          </TouchableOpacity>
+        }
+      />
+    </View>
+  );
         <Plus size={20} color="#fff" />
         <Text style={styles.addButtonText}>Tap Here to Add a New Reminder</Text>
       </TouchableOpacity>

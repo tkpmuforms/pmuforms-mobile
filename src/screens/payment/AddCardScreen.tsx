@@ -1,5 +1,4 @@
 import { RouteProp, useNavigation, useRoute } from '@react-navigation/native';
-import { ArrowLeft } from 'lucide-react-native';
 import React, { useState } from 'react';
 import {
   ActivityIndicator,
@@ -16,6 +15,8 @@ import {
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { RootStackParamList } from '../../types/navigation';
+import ScreenHeader from '../../components/layout/ScreenHeader';
+import { colors } from '../../theme/colors';
 
 type AddCardRouteProp = RouteProp<RootStackParamList, 'AddCard'>;
 
@@ -74,26 +75,17 @@ const AddCardScreen: React.FC = () => {
 
   return (
     <SafeAreaView style={styles.container} edges={['bottom']}>
+      <ScreenHeader
+        title="Add New Card"
+        subtitle="Enter your card details"
+        onBack={() => navigation.goBack()}
+      />
       <KeyboardAvoidingView
         behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
         style={styles.keyboardView}
       >
         <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
           <View style={styles.content}>
-            {/* Header */}
-            <View style={styles.header}>
-              <TouchableOpacity
-                style={styles.backButton}
-                onPress={() => navigation.goBack()}
-              >
-                <ArrowLeft size={24} color="#000000" />
-              </TouchableOpacity>
-              <View style={styles.headerText}>
-                <Text style={styles.title}>Add New Card</Text>
-                <Text style={styles.subtitle}>Enter your card details</Text>
-              </View>
-            </View>
-
             {/* Form */}
             <ScrollView
               style={styles.scrollView}
