@@ -4,8 +4,12 @@ import appleAuth from '@invertase/react-native-apple-authentication';
 import Toast from 'react-native-toast-message';
 import {
   createArtist,
+  getAuthMe,
   sendEmailVerification,
 } from '../services/artistServices';
+import { setUser } from '../redux/auth';
+import { Dispatch } from '@reduxjs/toolkit';
+import { Artist, OnboardingStep } from '../types';
 
 /**
  * Handles Google Sign-In authentication flow
@@ -227,4 +231,32 @@ export const validateEmail = (email: string): boolean => {
  */
 export const validatePassword = (password: string): boolean => {
   return password.length >= 6;
+};
+
+export const refreshAuthUser = async (dispatch: Dispatch): Promise<void> => {
+  try {
+    const response = await getAuthMe();
+    if (response?.data?.user) {
+      dispatch(setUser(response.data.user));
+    }
+  } catch (error) {
+    console.error('Error refreshing auth user:', error);
+    throw error;
+  }
+};
+
+export const determineOnboardingStep = (artist: Artist): OnboardingStep => {
+  if (artist.businessName === 'New Business') {
+    return 'businessName';
+  }
+
+  if (!artist.services || artist.services.length === 0) {
+    return 'services';
+  }
+
+  if (!artist.stripeSubscriptionActive && !artist.appStorePurchaseActive) {
+    return 'payment';
+  }
+
+  return 'completed';
 };

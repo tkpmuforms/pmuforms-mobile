@@ -30,6 +30,19 @@ export interface User {
   stripeSubscriptionId?: string;
 }
 
+export type OnboardingStep =
+  | 'businessName'
+  | 'services'
+  | 'payment'
+  | 'completed';
+
+export interface Artist {
+  businessName?: string;
+  services?: unknown[];
+  stripeSubscriptionActive?: boolean;
+  appStorePurchaseActive?: boolean;
+}
+
 export interface Service {
   _id: string;
   id: number;

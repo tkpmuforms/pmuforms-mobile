@@ -166,7 +166,6 @@ const DashboardScreen = ({ navigation }: any) => {
           <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
         }
       >
-        {/* Header */}
         <View style={styles.header}>
           <View style={styles.welcomeSection}>
             <Text style={styles.welcomeTitle}>

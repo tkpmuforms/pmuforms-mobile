@@ -21,9 +21,9 @@ import { useDispatch } from 'react-redux';
 import { Card } from '../../types';
 import {
   getSubscriptionFromStorage,
-  refreshAuthUser,
   saveSubscriptionToStorage,
 } from '../../utils/subscriptionStorage';
+import { refreshAuthUser } from '../../utils/authUtils';
 
 interface SelectPaymentMethodModalProps {
   visible: boolean;
@@ -204,7 +204,13 @@ const SelectPaymentMethodModal: React.FC<SelectPaymentMethodModalProps> = ({
             <View style={styles.paymentSection}>
               <View style={styles.paymentHeader}>
                 <Text style={styles.sectionTitle}>Select a Card</Text>
-                <TouchableOpacity onPress={() => navigation.navigate('AddCard', { onCardAdded: handleCardAdded })}>
+                <TouchableOpacity
+                  onPress={() =>
+                    navigation.navigate('AddCard', {
+                      onCardAdded: handleCardAdded,
+                    })
+                  }
+                >
                   <Text style={styles.addCardLink}>+ Add a Card</Text>
                 </TouchableOpacity>
               </View>
@@ -216,7 +222,11 @@ const SelectPaymentMethodModal: React.FC<SelectPaymentMethodModalProps> = ({
                   </Text>
                   <TouchableOpacity
                     style={styles.addCardButton}
-                    onPress={() => navigation.navigate('AddCard', { onCardAdded: handleCardAdded })}
+                    onPress={() =>
+                      navigation.navigate('AddCard', {
+                        onCardAdded: handleCardAdded,
+                      })
+                    }
                   >
                     <Text style={styles.addCardButtonText}>Add a Card</Text>
                   </TouchableOpacity>

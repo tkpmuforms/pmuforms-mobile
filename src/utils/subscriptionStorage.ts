@@ -90,15 +90,3 @@ export const getPlanName = (
 export const isSubscriptionActive = (status: string): boolean => {
   return ['active', 'trialing'].includes(status.toLowerCase());
 };
-
-export const refreshAuthUser = async (dispatch: Dispatch): Promise<void> => {
-  try {
-    const response = await getAuthMe();
-    if (response?.data?.user) {
-      dispatch(setUser(response.data.user));
-    }
-  } catch (error) {
-    console.error('Error refreshing auth user:', error);
-    throw error;
-  }
-};
