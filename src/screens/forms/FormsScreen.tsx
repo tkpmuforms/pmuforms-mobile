@@ -13,6 +13,7 @@ import {
 import { SafeAreaView } from 'react-native-safe-area-context';
 import FormCard from '../../components/forms/FormCard';
 import UpdateServicesModal from '../../components/profile/UpdateServicesModal';
+import FormCardSkeleton from '../../components/skeleton/FormCardSkeleton';
 import { getArtistForms } from '../../services/artistServices';
 import { Form } from '../../types';
 import { transformFormData } from '../../utils/utils';
@@ -128,8 +129,10 @@ const FormsScreen = ({ navigation }: any) => {
       >
         <View style={styles.grid}>
           {loading ? (
-            <View style={styles.loadingContainer}>
-              <ActivityIndicator size="large" color="#8e2d8e" />
+            <View style={styles.skeletonContainer}>
+              {[1, 2, 3, 4].map(index => (
+                <FormCardSkeleton key={index} />
+              ))}
             </View>
           ) : filteredForms.length > 0 ? (
             filteredForms.map(form => (
@@ -283,10 +286,8 @@ const styles = StyleSheet.create({
   grid: {
     gap: 1,
   },
-  loadingContainer: {
-    paddingVertical: 60,
-    alignItems: 'center',
-    justifyContent: 'center',
+  skeletonContainer: {
+    paddingHorizontal: 20,
   },
   emptyContainer: {
     alignItems: 'center',

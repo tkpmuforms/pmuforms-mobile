@@ -16,16 +16,21 @@ import FormLinkModal from '../../components/dashboard/FormLinkModal';
 import MetricsCard from '../../components/dashboard/MetricsCard';
 import QuickActionCard from '../../components/dashboard/QuickActionCard';
 import SubscriptionModal from '../../components/modals/SubscriptionModal';
+import AppointmentCardSkeleton from '../../components/skeleton/AppointmentCardSkeleton';
+import MetricsCardSkeleton from '../../components/skeleton/MetricsCardSkeleton';
 import useAuth from '../../hooks/useAuth';
 import {
   getArtistAppointmentsPaginated,
-  getArtistForms,
   getCustomerById,
   getMyMetrics,
 } from '../../services/artistServices';
 import { colors } from '../../theme/colors';
 import { Appointment } from '../../types';
-import { formatAppointmentTime, transformFormData } from '../../utils/utils';
+import {
+  formatAppointmentTime,
+  getCustomerAvatar,
+  getCustomerName,
+} from '../../utils/utils';
 
 interface Metrics {
   totalClients: number;
@@ -47,7 +52,6 @@ const DashboardScreen = ({ navigation }: any) => {
   const [customers, setCustomers] = useState<
     Record<string, { name: string; avatar?: string }>
   >({});
-  const [recentForms, setRecentForms] = useState<any[]>([]);
 
   const hasActiveSubscription = false;
   // user?.appStorePurchaseActive || user?.stripeSubscriptionActive;
@@ -76,26 +80,13 @@ const DashboardScreen = ({ navigation }: any) => {
     },
   ];
 
-  const getCustomerName = (customerId: string) =>
-    customers[customerId]?.name || 'Client 1';
-
-  const getCustomerAvatar = (customerId: string) => {
-    const customerAvatar = customers[customerId]?.avatar;
-    if (customerAvatar) return customerAvatar;
-
-    const customerName = customers[customerId]?.name || 'Unknown Client';
-    return `https://ui-avatars.com/api/?name=${encodeURIComponent(
-      customerName,
-    )}&background=A858F0&color=fff&size=40`;
-  };
-
   const fetchData = async () => {
     try {
       const appointmentsResponse = await getArtistAppointmentsPaginated();
       const returnedApp = appointmentsResponse.data?.appointments || [];
       setAppointments(returnedApp);
 
-      const displayedAppointments = appointments.slice(0, 4);
+      const displayedAppointments = returnedApp.slice(0, 4);
       const uniqueCustomerIds = [
         ...new Set(
           displayedAppointments.map((apt: any) => apt.customerId as string),
@@ -128,11 +119,6 @@ const DashboardScreen = ({ navigation }: any) => {
       const metricsResponse = await getMyMetrics();
       setMetrics(metricsResponse.data?.metrics);
       setMetricsLoading(false);
-      const response = await getArtistForms();
-      if (response && response.data && response.data.forms) {
-        const transformedForms = response.data.forms.map(transformFormData);
-        setRecentForms(transformedForms);
-      }
 
       setLoading(false);
     } catch (error) {
@@ -209,60 +195,59 @@ const DashboardScreen = ({ navigation }: any) => {
           </TouchableOpacity>
         </View> */}
 
-        {/* Metrics */}
         <View style={styles.section}>
           <View style={styles.metricsGrid}>
             <View style={styles.metricsRow}>
               <View style={styles.metricItem}>
-                <MetricsCard
-                  title="Total Clients"
-                  value={
-                    metricsLoading
-                      ? 'loading'
-                      : metrics?.totalClients?.toString() || '0'
-                  }
-                  icon="users"
-                  color={colors.primary}
-                  onPress={() => navigation.navigate('Clients')}
-                />
+                {metricsLoading ? (
+                  <MetricsCardSkeleton />
+                ) : (
+                  <MetricsCard
+                    title="Total Clients"
+                    value={metrics?.totalClients?.toString() || '0'}
+                    icon="users"
+                    color={colors.primary}
+                    onPress={() => navigation.navigate('Clients')}
+                  />
+                )}
               </View>
               <View style={styles.metricItem}>
-                <MetricsCard
-                  title="Forms Shared"
-                  value={
-                    metricsLoading
-                      ? 'loading'
-                      : metrics?.formsShared?.toString() || '0'
-                  }
-                  icon="file-text"
-                  color={colors.secondary}
-                />
+                {metricsLoading ? (
+                  <MetricsCardSkeleton />
+                ) : (
+                  <MetricsCard
+                    title="Forms Shared"
+                    value={metrics?.formsShared?.toString() || '0'}
+                    icon="file-text"
+                    color={colors.secondary}
+                  />
+                )}
               </View>
             </View>
             <View style={styles.metricsRow}>
               <View style={styles.metricItem}>
-                <MetricsCard
-                  title="Pending Submissions"
-                  value={
-                    metricsLoading
-                      ? 'loading'
-                      : metrics?.pendingSubmissions?.toString() || '0'
-                  }
-                  icon="clock"
-                  color={colors.warning}
-                />
+                {metricsLoading ? (
+                  <MetricsCardSkeleton />
+                ) : (
+                  <MetricsCard
+                    title="Pending Submissions"
+                    value={metrics?.pendingSubmissions?.toString() || '0'}
+                    icon="clock"
+                    color={colors.warning}
+                  />
+                )}
               </View>
               <View style={styles.metricItem}>
-                <MetricsCard
-                  title="Today's Schedule"
-                  value={
-                    metricsLoading
-                      ? 'loading'
-                      : metrics?.todaysSchedule?.toString() || '0'
-                  }
-                  icon="calendar"
-                  color={colors.error}
-                />
+                {metricsLoading ? (
+                  <MetricsCardSkeleton />
+                ) : (
+                  <MetricsCard
+                    title="Today's Schedule"
+                    value={metrics?.todaysSchedule?.toString() || '0'}
+                    icon="calendar"
+                    color={colors.error}
+                  />
+                )}
               </View>
             </View>
           </View>
@@ -277,7 +262,20 @@ const DashboardScreen = ({ navigation }: any) => {
               <Text style={styles.viewAllButton}>View all</Text>
             </TouchableOpacity>
           </View>
-          {appointments.length === 0 ? (
+          {loading ? (
+            <ScrollView
+              horizontal
+              showsHorizontalScrollIndicator={false}
+              contentContainerStyle={styles.appointmentsScrollContent}
+              style={styles.appointmentsScroll}
+            >
+              {[1, 2, 3].map(index => (
+                <View key={index} style={styles.appointmentItem}>
+                  <AppointmentCardSkeleton />
+                </View>
+              ))}
+            </ScrollView>
+          ) : appointments.length === 0 ? (
             <Text style={styles.emptyText}>No appointments found</Text>
           ) : (
             <ScrollView
@@ -291,10 +289,13 @@ const DashboardScreen = ({ navigation }: any) => {
                   <AppointmentCard
                     name={
                       appointment?.customerId
-                        ? getCustomerName(appointment.customerId)
+                        ? getCustomerName(appointment.customerId, customers)
                         : 'Unknown Client'
                     }
-                    avatar={getCustomerAvatar(appointment.customerId)}
+                    avatar={getCustomerAvatar(
+                      appointment.customerId,
+                      customers,
+                    )}
                     time={formatAppointmentTime(appointment.date)}
                     service={
                       appointment.serviceDetails[0]?.service ||

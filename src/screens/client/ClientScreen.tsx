@@ -14,6 +14,7 @@ import {
 import { SafeAreaView } from 'react-native-safe-area-context';
 import Toast from 'react-native-toast-message';
 import ClientCard from '../../components/clients/ClientCard';
+import ClientCardSkeleton from '../../components/skeleton/ClientCardSkeleton';
 import { searchCustomers } from '../../services/artistServices';
 import { Client, CustomerResponse } from '../../types';
 import { generateColor, generateInitials } from '../../utils/utils';
@@ -145,8 +146,17 @@ const ClientScreen: React.FC<ClientScreenProps> = () => {
   if (loading && clients.length === 0) {
     return (
       <SafeAreaView style={styles.container}>
-        <View style={styles.loadingContainer}>
-          <ActivityIndicator size="large" color="#8e2d8e" />
+        {renderHeader()}
+        {renderSearchBar()}
+        <View style={styles.addButton}>
+          <Plus size={20} color="#8E2D8E" />
+          <Text style={styles.addButtonText}>Tap Here to Add a New Client</Text>
+        </View>
+        <Text style={styles.clientCount}>Loading...</Text>
+        <View style={styles.skeletonContainer}>
+          {[1, 2, 3, 4, 5].map(index => (
+            <ClientCardSkeleton key={index} />
+          ))}
         </View>
       </SafeAreaView>
     );
@@ -264,6 +274,9 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
+  },
+  skeletonContainer: {
+    paddingVertical: 8,
   },
   emptyState: {
     flex: 1,

@@ -1,6 +1,24 @@
 import { colors } from '../theme/colors';
 import { Form, User } from '../types';
 
+export const getCustomerName = (
+  customerId: string,
+  customers: Record<string, { name: string; avatar?: string }>,
+) => customers[customerId]?.name || 'Client 1';
+
+export const getCustomerAvatar = (
+  customerId: string,
+  customers: Record<string, { name: string; avatar?: string }>,
+) => {
+  const customerAvatar = customers[customerId]?.avatar;
+  if (customerAvatar) return customerAvatar;
+
+  const customerName = customers[customerId]?.name || 'Unknown Client';
+  return `https://ui-avatars.com/api/?name=${encodeURIComponent(
+    customerName,
+  )}&background=A858F0&color=fff&size=40`;
+};
+
 export const generateColor = (name: string): string => {
   const colors = [
     '#e879f9',
