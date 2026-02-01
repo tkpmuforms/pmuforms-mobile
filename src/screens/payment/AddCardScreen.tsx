@@ -14,9 +14,8 @@ import {
   View,
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { RootStackParamList } from '../../types/navigation';
 import ScreenHeader from '../../components/layout/ScreenHeader';
-import { colors } from '../../theme/colors';
+import { RootStackParamList } from '../../types/navigation';
 
 type AddCardRouteProp = RouteProp<RootStackParamList, 'AddCard'>;
 

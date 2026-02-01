@@ -1,4 +1,4 @@
-import { ClientDetail, Note } from './index';
+import { ClientAppointmentData, ClientDetail, FilledForm, Note } from './index';
 
 export type RootStackParamList = {
   Auth: undefined;
@@ -9,6 +9,24 @@ export type RootStackParamList = {
   Profile: undefined;
   ClientDetails: { clientId: string };
   ClientAppointments: { clientId: string; client?: ClientDetail };
+  ClientAppointmentForms: {
+    clientId: string;
+    appointmentId: string;
+    clientName?: string;
+    appointments?: ClientAppointmentData[];
+  };
+  AppointmentSignature: {
+    appointmentId: string;
+    clientId: string;
+    clientName: string;
+    forms: FilledForm[];
+    appointments: any[];
+  };
+  FilledFormsPreview: {
+    appointmentId: string;
+    templateId: string;
+    clientId?: string;
+  };
   ClientNotes: { clientId: string; client?: ClientDetail };
   ClientReminders: { clientId: string; client?: ClientDetail };
   FormPreview: { formId: string };

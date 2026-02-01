@@ -1,7 +1,6 @@
 import { Plus } from 'lucide-react-native';
 import React, { useEffect, useState } from 'react';
 import {
-  ActivityIndicator,
   RefreshControl,
   ScrollView,
   StyleSheet,
@@ -17,6 +16,7 @@ import FormCardSkeleton from '../../components/skeleton/FormCardSkeleton';
 import { getArtistForms } from '../../services/artistServices';
 import { Form } from '../../types';
 import { transformFormData } from '../../utils/utils';
+import { AddNewServiceFloat } from '../../../assets/svg';
 
 const FormsScreen = ({ navigation }: any) => {
   const [activeTab, setActiveTab] = useState<'consent' | 'care'>('consent');
@@ -119,7 +119,6 @@ const FormsScreen = ({ navigation }: any) => {
         </TouchableOpacity>
       </View>
 
-      {/* Forms Grid - Only this scrolls */}
       <ScrollView
         style={styles.scrollView}
         contentContainerStyle={styles.scrollContent}
@@ -163,12 +162,11 @@ const FormsScreen = ({ navigation }: any) => {
         </View>
       </ScrollView>
 
-      {/* Floating Action Button */}
       <TouchableOpacity
         style={styles.fab}
         onPress={() => setShowAddMoreServicesModal(true)}
       >
-        <Plus size={24} color="#fff" />
+        <AddNewServiceFloat width={24} height={24} />
       </TouchableOpacity>
 
       {/* Modal */}
@@ -216,10 +214,10 @@ const styles = StyleSheet.create({
     width: 56,
     height: 56,
     borderRadius: 28,
-    backgroundColor: '#8E2D8E',
+    backgroundColor: '#D764D759',
     alignItems: 'center',
     justifyContent: 'center',
-    shadowColor: '#000',
+    shadowColor: '#fff',
     shadowOffset: {
       width: 0,
       height: 4,

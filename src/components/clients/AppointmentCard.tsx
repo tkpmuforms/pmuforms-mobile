@@ -1,4 +1,4 @@
-import { Calendar, FileText, MoreVertical, Trash2 } from 'lucide-react-native';
+import { FileText, MoreVertical, Trash2 } from 'lucide-react-native';
 import React, { useState } from 'react';
 import {
   Modal,
@@ -8,8 +8,7 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native';
-
-import { AppointmentIcon } from '../../../assets/svg';
+import { AppointmentDetailsIcon, AppointmentIcon } from '../../../assets/svg';
 import { ClientAppointmentData } from '../../types';
 import { formatAppointmentTime } from '../../utils/utils';
 
@@ -92,7 +91,7 @@ const AppointmentCard: React.FC<AppointmentCardProps> = ({
         <View style={styles.detailItem}>
           <Text style={styles.detailLabel}>Appointment Date</Text>
           <View style={styles.detailValueRow}>
-            <Calendar size={14} color="#64748b" />
+            <AppointmentDetailsIcon />
             <Text style={styles.detailValue} numberOfLines={1}>
               {appointmentDate}
             </Text>
@@ -102,7 +101,7 @@ const AppointmentCard: React.FC<AppointmentCardProps> = ({
         <View style={styles.detailItem}>
           <Text style={styles.detailLabel}>Form Filled</Text>
           <View style={styles.detailValueRow}>
-            <Calendar size={14} color="#64748b" />
+            <AppointmentDetailsIcon />
             <Text style={styles.detailValue} numberOfLines={1}>
               {formFilledDate}
             </Text>
@@ -152,7 +151,7 @@ const styles = StyleSheet.create({
   card: {
     backgroundColor: '#fff',
     borderRadius: 12,
-    padding: 16,
+    padding: 20,
     shadowColor: '#000',
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.08,
@@ -170,7 +169,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     flex: 1,
-    gap: 12,
+    gap: 16,
   },
   serviceIcon: {
     width: 40,
@@ -228,7 +227,7 @@ const styles = StyleSheet.create({
     fontSize: 12,
     color: '#64748b',
     fontWeight: '500',
-    marginBottom: 4,
+    marginBottom: 10,
   },
   detailValueRow: {
     flexDirection: 'row',
@@ -250,7 +249,7 @@ const styles = StyleSheet.create({
   menuContainer: {
     backgroundColor: '#fff',
     borderRadius: 12,
-    padding: 8,
+    padding: 10,
     minWidth: 200,
     shadowColor: '#000',
     shadowOffset: { width: 0, height: 4 },

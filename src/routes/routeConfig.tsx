@@ -7,6 +7,7 @@ import ClientDetailsScreen from '../screens/client/ClientDetailsScreen';
 import ClientNotesScreen from '../screens/client/ClientNotesScreen';
 import ClientRemindersScreen from '../screens/client/ClientRemindersScreen';
 import ClientScreen from '../screens/client/ClientScreen';
+import ClientAppointmentFormsScreen from '../screens/client/ClientAppointmentFormsScreen';
 import EditClientScreen from '../screens/client/EditClientScreen';
 import SendConsentFormScreen from '../screens/client/SendConsentFormScreen';
 import AddNoteScreen from '../screens/client/AddNoteScreen';
@@ -71,6 +72,11 @@ export const authorizedRoutes: RouteProps[] = [
     name: 'ClientNotes',
     component: ClientNotesScreen,
     breadcrumbs: ['Clients', 'Client Details', 'Notes'],
+  },
+  {
+    name: 'ClientAppointmentForms',
+    component: ClientAppointmentFormsScreen,
+    breadcrumbs: ['Clients', 'Client Details', 'Appointments', 'Forms'],
   },
   {
     name: 'AppointmentSignature',
