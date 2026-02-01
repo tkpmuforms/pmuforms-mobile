@@ -18,8 +18,11 @@ import {
 } from 'react-native';
 import { launchImageLibrary } from 'react-native-image-picker';
 import { SafeAreaView } from 'react-native-safe-area-context';
+import storage from '@react-native-firebase/storage';
+import Toast from 'react-native-toast-message';
 import { RootStackParamList } from '../../types/navigation';
 import { colors } from '../../theme/colors';
+import useAuth from '../../hooks/useAuth';
 
 type AddNoteRouteProp = RouteProp<RootStackParamList, 'AddNote'>;
 
@@ -27,20 +30,35 @@ const AddNoteScreen: React.FC = () => {
   const navigation = useNavigation();
   const route = useRoute<AddNoteRouteProp>();
   const { note, onSave } = route.params;
+  const { user } = useAuth();
 
   const [noteContent, setNoteContent] = useState(note?.note || '');
   const [imageUrl, setImageUrl] = useState(note?.imageUrl || '');
+  const [localImageUri, setLocalImageUri] = useState('');
   const [isUploading, setIsUploading] = useState(false);
   const [isSaving, setIsSaving] = useState(false);
+
+  const uploadImageToFirebase = async (uri: string): Promise<string> => {
+    const reference = storage().ref(
+      `images/${user?._id}/${Date.now()}.jpg`,
+    );
+    const response = await fetch(uri);
+    const blob = await response.blob();
+    await reference.put(blob);
+    return await reference.getDownloadURL();
+  };
 
   const handleImagePick = async () => {
     const result = await launchImageLibrary({
       mediaType: 'photo',
       quality: 0.8,
+      maxWidth: 500,
+      maxHeight: 500,
     });
 
     if (result.assets && result.assets[0]) {
       const asset = result.assets[0];
+      setLocalImageUri(asset.uri || '');
       setImageUrl(asset.uri || '');
     }
   };
@@ -49,10 +67,21 @@ const AddNoteScreen: React.FC = () => {
     if (noteContent.trim() && onSave) {
       setIsSaving(true);
       try {
-        await onSave(noteContent, imageUrl);
+        let finalImageUrl = imageUrl;
+
+        if (localImageUri) {
+          finalImageUrl = await uploadImageToFirebase(localImageUri);
+        }
+
+        await onSave(noteContent, finalImageUrl);
         navigation.goBack();
       } catch (error) {
         console.error('Error saving note:', error);
+        Toast.show({
+          type: 'error',
+          text1: 'Error',
+          text2: 'Failed to save note',
+        });
       } finally {
         setIsSaving(false);
       }

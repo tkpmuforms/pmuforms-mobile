@@ -72,6 +72,7 @@ const ClientNotesScreen: React.FC<ClientNotesScreenProps> = () => {
     try {
       setLoading(true);
       const response = await getCustomerNotes(clientId);
+      console.log('Notes response:', response?.data.notes);
       setNotes(response.data?.notes || []);
     } catch (error) {
       console.error('Error loading notes:', error);
