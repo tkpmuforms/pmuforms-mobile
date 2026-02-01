@@ -10,6 +10,7 @@ import {
   TouchableOpacity,
 } from 'react-native';
 import { ArrowRight } from 'lucide-react-native';
+import { colors } from '../theme/colors';
 
 const { width: SCREEN_WIDTH, height: SCREEN_HEIGHT } = Dimensions.get('window');
 

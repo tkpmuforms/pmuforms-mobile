@@ -26,6 +26,7 @@ import {
 } from '../../services/artistServices';
 import ScreenHeader from '../../components/layout/ScreenHeader';
 import { colors } from '../../theme/colors';
+import { NotesIcon } from '../../../assets/svg';
 
 interface ClientNotesScreenProps {}
 
@@ -59,7 +60,6 @@ const ClientNotesScreen: React.FC<ClientNotesScreenProps> = () => {
     }
   }, [clientId]);
 
-  // Refresh notes when returning from add/edit screen
   useFocusEffect(
     useCallback(() => {
       if (clientId) {
@@ -198,12 +198,6 @@ const ClientNotesScreen: React.FC<ClientNotesScreenProps> = () => {
         title={`${client?.name || 'Client'}'s Notes`}
         subtitle={`${notes.length} ${notes.length === 1 ? 'Note' : 'Notes'}`}
         onBack={() => navigation.goBack()}
-        rightComponent={
-          <TouchableOpacity style={styles.addButton} onPress={handleAddNote}>
-            <Plus size={20} color={colors.white} />
-            <Text style={styles.addButtonText}>Add Note</Text>
-          </TouchableOpacity>
-        }
       />
     </View>
   );
@@ -230,6 +224,10 @@ const ClientNotesScreen: React.FC<ClientNotesScreenProps> = () => {
   return (
     <SafeAreaView style={styles.container}>
       {renderHeader()}
+      <TouchableOpacity style={styles.addButton} onPress={handleAddNote}>
+        <NotesIcon />
+        <Text style={styles.addButtonText}>Tap Here to Add Note</Text>
+      </TouchableOpacity>
 
       <FlatList
         data={notes}

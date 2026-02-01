@@ -7,6 +7,7 @@ import {
   ActivityIndicator,
 } from 'react-native';
 import { Users, FileText, Clock, Calendar } from 'lucide-react-native';
+import { colors } from '../../theme/colors';
 
 export interface MetricsCardProps {
   title: string;

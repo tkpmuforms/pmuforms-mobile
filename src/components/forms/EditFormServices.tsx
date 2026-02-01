@@ -11,6 +11,7 @@ import {
 } from 'react-native';
 import { X } from 'lucide-react-native';
 import { Service } from '../../types';
+import { colors } from '../../theme/colors';
 
 interface EditFormServicesProps {
   visible: boolean;

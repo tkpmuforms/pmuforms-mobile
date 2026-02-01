@@ -16,6 +16,7 @@ import Toast from 'react-native-toast-message';
 import ScreenHeader from '../../components/layout/ScreenHeader';
 import useAuth from '../../hooks/useAuth';
 import { sendMessage } from '../../services/artistServices';
+import { colors } from '../../theme/colors';
 
 interface FormData {
   email: string;

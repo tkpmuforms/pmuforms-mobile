@@ -10,6 +10,7 @@ import {
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import Clipboard from '@react-native-clipboard/clipboard';
+import { colors } from '../../theme/colors';
 
 interface FormLinkModalProps {
   visible: boolean;

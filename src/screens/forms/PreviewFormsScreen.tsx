@@ -21,6 +21,7 @@ import {
   EditDiffBackground,
   EditWhiteBackground,
 } from '../../../assets/svg';
+import { colors } from '../../theme/colors';
 
 const PreviewFormsScreen = ({ route, navigation }: any) => {
   const { formId } = route.params;

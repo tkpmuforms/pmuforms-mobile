@@ -29,3 +29,4 @@ export { default as CheckInIcon } from './CheckInIcon.svg';
 export { default as FollowUpIcon } from './FollowUpIcon.svg';
 export { default as AddNewServiceFloat } from './AddNewServiceFloat.svg';
 export { default as Alarm } from './Alarm.svg';
+export { default as NotesIcon } from './NotesIcon.svg';

@@ -48,7 +48,6 @@ const ClientRemindersScreen: React.FC<ClientRemindersScreenProps> = () => {
     }
   }, [clientId]);
 
-  // Refresh reminders when returning from add screen
   useFocusEffect(
     useCallback(() => {
       if (clientId) {

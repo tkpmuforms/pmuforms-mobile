@@ -1,12 +1,6 @@
 import { ChevronLeft } from 'lucide-react-native';
 import React from 'react';
-import {
-  StatusBar,
-  StyleSheet,
-  Text,
-  TouchableOpacity,
-  View,
-} from 'react-native';
+import { StatusBar, StyleSheet, TouchableOpacity, View } from 'react-native';
 import { colors } from '../../theme/colors';
 
 interface AuthenticatedNavbarProps {

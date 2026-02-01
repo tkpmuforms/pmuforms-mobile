@@ -43,10 +43,11 @@ const ReminderCard: React.FC<ReminderCardProps> = ({
           {displayDate} - {displayTime}
         </Text>
       </View>
-
-      <Text style={styles.message} numberOfLines={3}>
-        {reminder.note}
-      </Text>
+      <View>
+        <Text style={styles.message} numberOfLines={3}>
+          {reminder.note}
+        </Text>
+      </View>
 
       {reminder.sent && (
         <View style={styles.sentBadge}>
@@ -124,7 +125,7 @@ const styles = StyleSheet.create({
   },
   editButton: {
     flex: 1,
-    backgroundColor: '#A654CD',
+    backgroundColor: colors.primary,
     paddingVertical: 12,
     borderRadius: 10,
     alignItems: 'center',
