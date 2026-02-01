@@ -1,5 +1,6 @@
 import { RouteProp, useNavigation, useRoute } from '@react-navigation/native';
-import { ArrowLeft, Check } from 'lucide-react-native';
+import { Check } from 'lucide-react-native';
+import ScreenHeader from '../../components/layout/ScreenHeader';
 import React, { useState } from 'react';
 import {
   ActivityIndicator,
@@ -81,21 +82,11 @@ const EditClientScreen: React.FC = () => {
       >
         <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
           <View style={styles.content}>
-            {/* Header */}
-            <View style={styles.header}>
-              <TouchableOpacity
-                style={styles.backButton}
-                onPress={() => navigation.goBack()}
-              >
-                <ArrowLeft size={24} color="#000000" />
-              </TouchableOpacity>
-              <View style={styles.headerText}>
-                <Text style={styles.title}>Edit Client Details</Text>
-                <Text style={styles.subtitle}>
-                  Please update the client's information.
-                </Text>
-              </View>
-            </View>
+            <ScreenHeader
+              title="Edit Client Details"
+              subtitle="Please update the client's information."
+              onBack={() => navigation.goBack()}
+            />
 
             {/* Form */}
             <ScrollView
@@ -195,33 +186,6 @@ const styles = StyleSheet.create({
   },
   content: {
     flex: 1,
-  },
-  header: {
-    flexDirection: 'row',
-    alignItems: 'flex-start',
-    paddingHorizontal: 16,
-    paddingTop: 16,
-    paddingBottom: 16,
-    backgroundColor: '#fff',
-    borderBottomWidth: 1,
-    borderBottomColor: '#E5E5E5',
-    gap: 12,
-  },
-  backButton: {
-    padding: 8,
-  },
-  headerText: {
-    flex: 1,
-  },
-  title: {
-    fontSize: 18,
-    fontWeight: '700',
-    color: '#000000',
-    marginBottom: 4,
-  },
-  subtitle: {
-    fontSize: 14,
-    color: '#64748b',
   },
   scrollView: {
     flex: 1,

@@ -12,8 +12,8 @@ import {
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useNavigation } from '@react-navigation/native';
-import { ArrowLeft } from 'lucide-react-native';
 import Toast from 'react-native-toast-message';
+import ScreenHeader from '../../components/layout/ScreenHeader';
 import useAuth from '../../hooks/useAuth';
 import { sendMessage } from '../../services/artistServices';
 
@@ -84,7 +84,7 @@ const ContactSupportScreen: React.FC = () => {
   };
 
   return (
-    <SafeAreaView style={styles.container}>
+    <SafeAreaView style={styles.container} edges={[]}>
       <KeyboardAvoidingView
         behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
         style={styles.keyboardView}
@@ -94,19 +94,11 @@ const ContactSupportScreen: React.FC = () => {
           showsVerticalScrollIndicator={false}
         >
           <View style={styles.header}>
-            <View style={styles.headerActions}>
-              <TouchableOpacity
-                style={styles.backButton}
-                onPress={() => navigation.goBack()}
-              >
-                <ArrowLeft size={24} color="#000000" />
-              </TouchableOpacity>
-              <Text style={styles.title}>Contact Support</Text>
-            </View>
-            <Text style={styles.subtitle}>
-              Have a question or need help? Send us a message and we'll get back
-              to you.
-            </Text>
+            <ScreenHeader
+              title="Contact Support"
+              subtitle="Have a question or need help? Send us a message and we'll get back to you."
+              onBack={() => navigation.goBack()}
+            />
           </View>
 
           <View style={styles.form}>
@@ -194,26 +186,6 @@ const styles = StyleSheet.create({
   },
   header: {
     marginBottom: 32,
-  },
-  headerActions: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    marginBottom: 8,
-    gap: 12,
-  },
-  backButton: {
-    padding: 8,
-  },
-  title: {
-    fontSize: 24,
-    fontWeight: 'bold',
-    color: '#000000',
-    flex: 1,
-  },
-  subtitle: {
-    fontSize: 16,
-    color: '#666',
-    lineHeight: 24,
   },
   form: {
     gap: 20,

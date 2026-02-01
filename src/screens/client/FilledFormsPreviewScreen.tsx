@@ -10,7 +10,8 @@ import {
 } from 'react-native';
 import { useRoute, useNavigation } from '@react-navigation/native';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { FileText, Download, ArrowLeft } from 'lucide-react-native';
+import { FileText, Download } from 'lucide-react-native';
+import ScreenHeader from '../../components/layout/ScreenHeader';
 import Toast from 'react-native-toast-message';
 import useAuth from '../../hooks/useAuth';
 import {
@@ -266,25 +267,19 @@ const FilledFormsPreviewScreen: React.FC = () => {
   return (
     <SafeAreaView style={styles.container}>
       <ScrollView style={styles.scrollView}>
-        {/* Header */}
-        <View style={styles.header}>
-          <View style={styles.headerActions}>
+        <ScreenHeader
+          title={form.title}
+          onBack={() => navigation.goBack()}
+          rightComponent={
             <TouchableOpacity
-              style={styles.backButton}
-              onPress={() => navigation.goBack()}
+              style={styles.pdfButton}
+              onPress={handleGeneratePDF}
             >
-              <ArrowLeft size={24} color="#000000" />
+              <Download size={20} color={colors.white} />
+              <Text style={styles.pdfButtonText}>Download PDF</Text>
             </TouchableOpacity>
-            <Text style={styles.title}>{form.title}</Text>
-          </View>
-          <TouchableOpacity
-            style={styles.pdfButton}
-            onPress={handleGeneratePDF}
-          >
-            <Download size={20} color={colors.white} />
-            <Text style={styles.pdfButtonText}>View as PDF</Text>
-          </TouchableOpacity>
-        </View>
+          }
+        />
 
         {/* Info Banner */}
         <View style={styles.infoBanner}>
@@ -372,27 +367,6 @@ const styles = StyleSheet.create({
     backgroundColor: colors.background,
   },
   scrollView: {
-    flex: 1,
-  },
-  header: {
-    backgroundColor: colors.white,
-    padding: 20,
-    borderBottomWidth: 1,
-    borderBottomColor: colors.border,
-  },
-  headerActions: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    marginBottom: 16,
-    gap: 12,
-  },
-  backButton: {
-    padding: 8,
-  },
-  title: {
-    fontSize: 24,
-    fontWeight: '700',
-    color: colors.text,
     flex: 1,
   },
   pdfButton: {

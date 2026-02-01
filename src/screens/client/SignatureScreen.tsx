@@ -13,8 +13,8 @@ import {
   CheckCircle,
   AlertTriangle,
   Edit3,
-  ArrowLeft,
 } from 'lucide-react-native';
+import ScreenHeader from '../../components/layout/ScreenHeader';
 import Toast from 'react-native-toast-message';
 import SignatureModal from '../../components/signature/SignatureModal';
 import { signAppointment } from '../../services/artistServices';
@@ -191,21 +191,11 @@ const SignatureScreen: React.FC = () => {
     <SafeAreaView style={styles.container}>
       <ScrollView style={styles.scrollView}>
         <View style={styles.card}>
-          {/* Header Section */}
-          <View style={styles.header}>
-            <View style={styles.titleSection}>
-              <View style={styles.headerActions}>
-                <TouchableOpacity
-                  style={styles.backButton}
-                  onPress={() => navigation.goBack()}
-                >
-                  <ArrowLeft size={24} color="#000000" />
-                </TouchableOpacity>
-                <Text style={styles.title}>Sign Appointment Forms</Text>
-              </View>
-              <Text style={styles.subtitle}>Sign Client Appointment Forms</Text>
-            </View>
-          </View>
+          <ScreenHeader
+            title="Sign Appointment Forms"
+            subtitle="Sign Client Appointment Forms"
+            onBack={() => navigation.goBack()}
+          />
 
           {/* Sign Button */}
           <TouchableOpacity
@@ -360,9 +350,6 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     marginBottom: 8,
     gap: 12,
-  },
-  backButton: {
-    padding: 8,
   },
   title: {
     fontSize: 24,

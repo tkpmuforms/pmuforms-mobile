@@ -27,7 +27,10 @@ const ScreenHeader: React.FC<ScreenHeaderProps> = ({
           {title}
         </Text>
         {subtitle && (
-          <Text style={styles.subtitle} numberOfLines={1}>
+          <Text
+            style={styles.subtitle}
+            // numberOfLines={1}
+          >
             {subtitle}
           </Text>
         )}

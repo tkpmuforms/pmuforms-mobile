@@ -8,8 +8,8 @@ import {
   Platform,
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { ArrowLeft } from 'lucide-react-native';
 import { useNavigation, useRoute, RouteProp } from '@react-navigation/native';
+import ScreenHeader from '../../components/layout/ScreenHeader';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import useAuth from '../../hooks/useAuth';
 import PreviewAppointmentModal from '../../components/clients/PreviewAppointmentModal';
@@ -76,20 +76,11 @@ const SendConsentFormScreen: React.FC = () => {
 
   return (
     <SafeAreaView style={styles.container} edges={['bottom']}>
-      <View style={styles.header}>
-        <TouchableOpacity
-          style={styles.backButton}
-          onPress={() => navigation.goBack()}
-        >
-          <ArrowLeft size={24} color="#000000" />
-        </TouchableOpacity>
-        <View style={styles.headerText}>
-          <Text style={styles.title}>Send Consent Form</Text>
-          <Text style={styles.subtitle}>
-            Select the date and service to send the consent form to {clientName}
-          </Text>
-        </View>
-      </View>
+      <ScreenHeader
+        title="Send Consent Form"
+        subtitle={`Select the date and service to send the consent form to ${clientName}`}
+        onBack={() => navigation.goBack()}
+      />
 
       <ScrollView
         style={styles.scrollView}
@@ -184,33 +175,6 @@ const SendConsentFormScreen: React.FC = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-  },
-  header: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    paddingHorizontal: 16,
-    paddingVertical: 16,
-    backgroundColor: '#fff',
-    borderBottomWidth: 1,
-    borderBottomColor: '#E5E5E5',
-    gap: 12,
-  },
-  backButton: {
-    padding: 8,
-  },
-  headerText: {
-    flex: 1,
-  },
-  title: {
-    fontSize: 24,
-    fontWeight: '700',
-    color: '#000000',
-    marginBottom: 4,
-  },
-  subtitle: {
-    fontSize: 14,
-    color: '#64748b',
-    lineHeight: 20,
   },
   scrollView: {
     flex: 1,

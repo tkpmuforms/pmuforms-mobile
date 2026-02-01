@@ -5,20 +5,19 @@ import {
   FlatList,
   StyleSheet,
   Text,
-  TouchableOpacity,
   View,
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import Toast from 'react-native-toast-message';
 import AppointmentCard from '../../components/clients/AppointmentCard';
 import DeleteModal from '../../components/clients/DeleteModal';
+import ScreenHeader from '../../components/layout/ScreenHeader';
 import {
   DeleteAppointment,
   getAppointmentsForCustomer,
   getCustomerById,
 } from '../../services/artistServices';
 import { ClientAppointmentData } from '../../types';
-import ScreenHeader from '../../components/layout/ScreenHeader';
 
 interface ClientAppointmentsScreenProps {}
 

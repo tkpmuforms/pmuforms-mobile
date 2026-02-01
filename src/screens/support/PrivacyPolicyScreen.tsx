@@ -9,7 +9,7 @@ import {
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useNavigation } from '@react-navigation/native';
-import { ArrowLeft } from 'lucide-react-native';
+import ScreenHeader from '../../components/layout/ScreenHeader';
 
 const PrivacyPolicyScreen: React.FC = () => {
   const navigation = useNavigation();
@@ -19,20 +19,15 @@ const PrivacyPolicyScreen: React.FC = () => {
   };
 
   return (
-    <SafeAreaView style={styles.container}>
+    <SafeAreaView style={styles.container} edges={[]}>
       <ScrollView
         contentContainerStyle={styles.scrollContent}
         showsVerticalScrollIndicator={false}
       >
-        <View style={styles.headerActions}>
-          <TouchableOpacity
-            style={styles.backButton}
-            onPress={() => navigation.goBack()}
-          >
-            <ArrowLeft size={24} color="#000000" />
-          </TouchableOpacity>
-          <Text style={styles.mainTitle}>PMU Forms Privacy Policy</Text>
-        </View>
+        <ScreenHeader
+          title="PMU Forms Privacy Policy"
+          onBack={() => navigation.goBack()}
+        />
 
         <Text style={styles.paragraph}>
           Dephyned built the PMU Forms app as a Freemium app. This SERVICE is
@@ -187,26 +182,10 @@ const PrivacyPolicyScreen: React.FC = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#fff',
   },
   scrollContent: {
-    paddingHorizontal: 20,
-    paddingVertical: 24,
-  },
-  headerActions: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    marginBottom: 24,
-    gap: 12,
-  },
-  backButton: {
-    padding: 8,
-  },
-  mainTitle: {
-    fontSize: 24,
-    fontWeight: 'bold',
-    color: '#000000',
-    flex: 1,
+    padding: 15,
+    paddingBottom: 20,
   },
   sectionTitle: {
     fontSize: 20,

@@ -9,7 +9,8 @@ import {
   Alert,
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { Trash2, Edit, AlertCircle, ArrowLeft } from 'lucide-react-native';
+import { Trash2, Edit, AlertCircle } from 'lucide-react-native';
+import ScreenHeader from '../../components/layout/ScreenHeader';
 import useAuth from '../../hooks/useAuth';
 import { Section, SingleForm } from '../../types';
 import { deleteFormTemplate, getFormById } from '../../services/artistServices';
@@ -119,26 +120,23 @@ const PreviewFormsScreen = ({ route, navigation }: any) => {
 
   return (
     <SafeAreaView style={styles.container} edges={[]}>
-      {/* Header */}
-      <View style={styles.header}>
-        <TouchableOpacity onPress={() => navigation.goBack()}>
-          <ArrowLeft size={24} color="#000000" />
-        </TouchableOpacity>
-        <Text style={{ fontSize: 20, fontWeight: '600', color: '#000' }}>
-          Preview Form
-        </Text>
-        <View style={styles.headerActions}>
-          <TouchableOpacity
-            onPress={() => setShowConfirmDeleteModal(true)}
-            style={styles.iconButton}
-          >
-            <DeleteIcon />
-          </TouchableOpacity>
-          <TouchableOpacity onPress={handleEdit} style={styles.iconButton}>
-            <EditDiffBackground />
-          </TouchableOpacity>
-        </View>
-      </View>
+      <ScreenHeader
+        title="Preview Form"
+        onBack={() => navigation.goBack()}
+        rightComponent={
+          <View style={styles.headerActions}>
+            <TouchableOpacity
+              onPress={() => setShowConfirmDeleteModal(true)}
+              style={styles.iconButton}
+            >
+              <DeleteIcon />
+            </TouchableOpacity>
+            <TouchableOpacity onPress={handleEdit} style={styles.iconButton}>
+              <EditDiffBackground />
+            </TouchableOpacity>
+          </View>
+        }
+      />
 
       <ScrollView
         style={styles.scrollView}
@@ -202,15 +200,6 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     backgroundColor: '#fff',
-  },
-  header: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    paddingHorizontal: 20,
-    paddingVertical: 16,
-    borderBottomWidth: 1,
-    borderBottomColor: '#f1f5f9',
   },
   headerActions: {
     flexDirection: 'row',

@@ -1,5 +1,4 @@
 import {
-  ArrowLeft,
   Calendar,
   ChevronLeft,
   ChevronRight,
@@ -19,6 +18,7 @@ import {
 import { SafeAreaView } from 'react-native-safe-area-context';
 import Toast from 'react-native-toast-message';
 import AppointmentCard from '../../components/dashboard/AppointmentCard';
+import ScreenHeader from '../../components/layout/ScreenHeader';
 import {
   getArtistAppointmentsPaginated,
   getCustomerById,
@@ -183,9 +183,10 @@ const AppointmentsScreen = ({ navigation }: any) => {
   if (loading && !refreshing) {
     return (
       <SafeAreaView style={styles.container} edges={['top']}>
-        <View style={styles.header}>
-          <Text style={styles.title}>All Appointments</Text>
-        </View>
+        <ScreenHeader
+          title="All Appointments"
+          onBack={() => navigation.goBack()}
+        />
         <View style={styles.loadingContainer}>
           <ActivityIndicator size="large" color={colors.primary} />
         </View>
@@ -196,20 +197,11 @@ const AppointmentsScreen = ({ navigation }: any) => {
   return (
     <SafeAreaView style={styles.container} edges={[]}>
       <View style={styles.header}>
-        <View style={styles.titleRow}>
-          <TouchableOpacity
-            style={styles.backButton}
-            onPress={() => navigation.goBack()}
-          >
-            <ArrowLeft size={24} color={colors.text} />
-          </TouchableOpacity>
-          <View style={styles.titleSection}>
-            <Text style={styles.title}>All Appointments</Text>
-            <Text style={styles.subtitle}>
-              Total: {metadata.total} appointments
-            </Text>
-          </View>
-        </View>
+        <ScreenHeader
+          title="All Appointments"
+          subtitle={`Total: ${metadata.total} appointments`}
+          onBack={() => navigation.goBack()}
+        />
 
         <View style={styles.searchContainer}>
           <Search
@@ -292,28 +284,6 @@ const styles = StyleSheet.create({
     borderBottomWidth: 1,
     borderBottomColor: colors.border,
     backgroundColor: colors.background,
-  },
-  titleRow: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    marginBottom: 16,
-  },
-  backButton: {
-    padding: 8,
-    marginRight: 8,
-  },
-  titleSection: {
-    flex: 1,
-  },
-  title: {
-    fontSize: 24,
-    fontWeight: '700',
-    color: colors.text,
-    marginBottom: 4,
-  },
-  subtitle: {
-    fontSize: 14,
-    color: colors.textLight,
   },
   searchContainer: {
     position: 'relative',

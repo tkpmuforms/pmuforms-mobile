@@ -12,8 +12,8 @@ import {
   TouchableWithoutFeedback,
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { ArrowLeft } from 'lucide-react-native';
 import { useNavigation } from '@react-navigation/native';
+import ScreenHeader from '../../components/layout/ScreenHeader';
 import Toast from 'react-native-toast-message';
 import { createClient } from '../../services/artistServices';
 
@@ -74,20 +74,11 @@ const AddClientScreen: React.FC = () => {
       >
         <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
           <View style={styles.content}>
-            <View style={styles.header}>
-              <TouchableOpacity
-                style={styles.backButton}
-                onPress={() => navigation.goBack()}
-              >
-                <ArrowLeft size={24} color="#000000" />
-              </TouchableOpacity>
-              <View style={styles.headerText}>
-                <Text style={styles.title}>Add New Client</Text>
-                <Text style={styles.subtitle}>
-                  Please fill out the form to add a new client
-                </Text>
-              </View>
-            </View>
+            <ScreenHeader
+              title="Add New Client"
+              subtitle="Please fill out the form to add a new client"
+              onBack={() => navigation.goBack()}
+            />
 
             <ScrollView
               style={styles.scrollView}
@@ -176,32 +167,6 @@ const styles = StyleSheet.create({
   },
   content: {
     flex: 1,
-  },
-  header: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    paddingHorizontal: 16,
-    paddingVertical: 16,
-    backgroundColor: '#fff',
-    borderBottomWidth: 1,
-    borderBottomColor: '#E5E5E5',
-    gap: 12,
-  },
-  backButton: {
-    padding: 8,
-  },
-  headerText: {
-    flex: 1,
-  },
-  title: {
-    fontSize: 24,
-    fontWeight: '700',
-    color: '#000000',
-    marginBottom: 4,
-  },
-  subtitle: {
-    fontSize: 14,
-    color: '#64748b',
   },
   scrollView: {
     flex: 1,

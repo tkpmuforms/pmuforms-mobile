@@ -109,26 +109,6 @@ const ClientRemindersScreen: React.FC<ClientRemindersScreenProps> = () => {
     }
   };
 
-  const renderHeader = () => (
-    <View>
-      <ScreenHeader
-        title={`${client?.name || 'Client'}'s Reminders`}
-        subtitle={`${reminders.length} ${reminders.length === 1 ? 'Reminder' : 'Reminders'}`}
-        onBack={() => navigation.goBack()}
-        rightComponent={
-          <TouchableOpacity style={styles.addButton} onPress={handleAddReminder}>
-            <Plus size={24} color="#8e2d8e" />
-          </TouchableOpacity>
-        }
-      />
-    </View>
-  );
-        <Plus size={20} color="#fff" />
-        <Text style={styles.addButtonText}>Tap Here to Add a New Reminder</Text>
-      </TouchableOpacity>
-    </View>
-  );
-
   const renderEmptyState = () => (
     <View style={styles.emptyState}>
       <Text style={styles.emptyStateTitle}>No reminders set</Text>
@@ -150,7 +130,22 @@ const ClientRemindersScreen: React.FC<ClientRemindersScreenProps> = () => {
 
   return (
     <SafeAreaView style={styles.container}>
-      {renderHeader()}
+      <ScreenHeader
+        title={`${client?.name || 'Client'}'s Reminders`}
+        subtitle={`${reminders.length} ${
+          reminders.length === 1 ? 'Reminder' : 'Reminders'
+        }`}
+        onBack={() => navigation.goBack()}
+        rightComponent={
+          <TouchableOpacity
+            style={styles.addButton}
+            onPress={handleAddReminder}
+          >
+            <Plus size={20} color="#8E2D8E" />
+            <Text style={styles.addButtonText}>Add Reminder</Text>
+          </TouchableOpacity>
+        }
+      />
 
       <FlatList
         data={reminders}
@@ -187,48 +182,19 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
   },
-  header: {
-    backgroundColor: '#fff',
-    paddingHorizontal: 16,
-    paddingVertical: 16,
-    borderBottomWidth: 1,
-    borderBottomColor: '#E5E5E5',
-  },
-  headerTop: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    marginBottom: 16,
-    gap: 12,
-  },
-  backButton: {
-    padding: 8,
-  },
-  headerContent: {
-    flex: 1,
-  },
-  headerTitle: {
-    fontSize: 24,
-    fontWeight: 'bold',
-    color: '#000000',
-    marginBottom: 4,
-  },
-  headerSubtitle: {
-    fontSize: 14,
-    color: '#666',
-  },
   addButton: {
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
     backgroundColor: '#F4EAF4',
-    paddingVertical: 12,
-    paddingHorizontal: 16,
+    paddingVertical: 8,
+    paddingHorizontal: 12,
     borderRadius: 8,
-    gap: 8,
+    gap: 6,
   },
   addButtonText: {
     color: '#8E2D8E',
-    fontSize: 16,
+    fontSize: 14,
     fontWeight: '600',
   },
   listContent: {

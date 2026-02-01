@@ -264,7 +264,7 @@ const PaymentScreen: React.FC = () => {
   );
 
   return (
-    <SafeAreaView style={styles.container}>
+    <SafeAreaView style={styles.container} edges={[]}>
       <ScreenHeader
         title="Payment & Billing"
         onBack={() => navigation.goBack()}
