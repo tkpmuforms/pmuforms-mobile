@@ -78,7 +78,6 @@ const SendConsentFormScreen: React.FC = () => {
     <SafeAreaView style={styles.container} edges={['bottom']}>
       <ScreenHeader
         title="Send Consent Form"
-        subtitle={`Select the date and service to send the consent form to ${clientName}`}
         onBack={() => navigation.goBack()}
       />
 
@@ -99,13 +98,24 @@ const SendConsentFormScreen: React.FC = () => {
           </TouchableOpacity>
 
           {showDatePicker && (
-            <DateTimePicker
-              value={appointmentDate}
-              mode="date"
-              display={Platform.OS === 'ios' ? 'spinner' : 'default'}
-              onChange={onDateChange}
-              minimumDate={new Date()}
-            />
+            <View>
+              <DateTimePicker
+                value={appointmentDate}
+                mode="date"
+                display={Platform.OS === 'ios' ? 'inline' : 'default'}
+                onChange={onDateChange}
+                minimumDate={new Date()}
+                themeVariant="light"
+              />
+              {Platform.OS === 'ios' && (
+                <TouchableOpacity
+                  style={styles.datePickerDone}
+                  onPress={() => setShowDatePicker(false)}
+                >
+                  <Text style={styles.datePickerDoneText}>Done</Text>
+                </TouchableOpacity>
+              )}
+            </View>
           )}
         </View>
 
@@ -166,6 +176,14 @@ const SendConsentFormScreen: React.FC = () => {
           selectedServiceIds={selectedServices}
           onClose={() => setShowPreviewAppointment(false)}
           onSuccess={handleSuccess}
+          onGoToDashboard={() => {
+            setShowPreviewAppointment(false);
+            navigation.navigate('Dashboard' as never);
+          }}
+          onViewAppointments={() => {
+            setShowPreviewAppointment(false);
+            (navigation as any).navigate('ClientAppointments', { clientId });
+          }}
         />
       )}
     </SafeAreaView>
@@ -187,7 +205,7 @@ const styles = StyleSheet.create({
     marginBottom: 24,
   },
   label: {
-    fontSize: 16,
+    fontSize: 15,
     fontWeight: '600',
     color: '#000000',
     marginBottom: 12,
@@ -209,6 +227,17 @@ const styles = StyleSheet.create({
     fontSize: 16,
     color: '#000000',
   },
+  datePickerDone: {
+    alignSelf: 'flex-end',
+    paddingVertical: 8,
+    paddingHorizontal: 16,
+    marginTop: 8,
+  },
+  datePickerDoneText: {
+    fontSize: 16,
+    fontWeight: '600',
+    color: '#8e2d8e',
+  },
   servicesGrid: {
     flexDirection: 'row',
     flexWrap: 'wrap',
@@ -220,7 +249,7 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: '#e2e8f0',
     borderRadius: 20,
-    backgroundColor: '#fff',
+    backgroundColor: '#BCBBC140',
   },
   serviceTagSelected: {
     backgroundColor: '#8e2d8e',

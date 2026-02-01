@@ -138,7 +138,7 @@ const ClientAppointmentsScreen: React.FC<
   }
 
   return (
-    <SafeAreaView style={styles.container}>
+    <SafeAreaView style={styles.container} edges={[]}>
       {renderHeader()}
 
       <FlatList
@@ -183,7 +183,7 @@ const styles = StyleSheet.create({
   header: {
     backgroundColor: '#fff',
     paddingHorizontal: 16,
-    paddingVertical: 16,
+    paddingVertical: 0,
     borderBottomWidth: 1,
     borderBottomColor: '#E5E5E5',
   },

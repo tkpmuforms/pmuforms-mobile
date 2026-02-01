@@ -17,3 +17,7 @@ export { default as HomeActiveIcon } from './HomeActiveIcon.svg';
 export { default as HomeIcon } from './HomeIcon.svg';
 export { default as ProfileActiveIcon } from './ProfileActiveIcon.svg';
 export { default as ProfileIcon } from './ProfileIcon.svg';
+export { default as GreenSuccessCircle } from './GreenSuccessCircle.svg';
+export { default as HorizIcon } from './HorizIcon.svg';
+export { default as InformationIcon } from './InformationIcon.svg';
+export { default as AppointmentIcon } from './appointmentIcon.svg';

@@ -7,6 +7,7 @@ import {
   ScrollView,
   TouchableOpacity,
 } from 'react-native';
+import LinearGradient from 'react-native-linear-gradient';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import {
   X,
@@ -121,11 +122,15 @@ const FeaturesModal: React.FC<FeaturesModalProps> = ({
                 ))}
               </View>
 
-              <TouchableOpacity
-                style={styles.subscribeButton}
-                onPress={onSubscribe}
-              >
-                <Text style={styles.subscribeButtonText}>Subscribe Now</Text>
+              <TouchableOpacity onPress={onSubscribe}>
+                <LinearGradient
+                  colors={['#8E2D8E', '#A654CD']}
+                  start={{ x: 0, y: 0 }}
+                  end={{ x: 1, y: 0 }}
+                  style={styles.subscribeButton}
+                >
+                  <Text style={styles.subscribeButtonText}>Subscribe Now</Text>
+                </LinearGradient>
               </TouchableOpacity>
             </ScrollView>
           </View>
@@ -215,12 +220,12 @@ const styles = StyleSheet.create({
     lineHeight: 20,
   },
   subscribeButton: {
-    backgroundColor: 'linear-gradient(90deg, #8E2D8E 0%, #A654CD 100%)',
     paddingVertical: 16,
     borderRadius: 12,
     alignItems: 'center',
   },
   subscribeButtonText: {
+    height: 44,
     color: '#fff',
     fontSize: 16,
     fontWeight: '600',

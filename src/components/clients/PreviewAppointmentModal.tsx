@@ -18,13 +18,17 @@ import {
 } from '../../services/artistServices';
 import { Config } from 'react-native-config';
 import { SafeAreaView } from 'react-native-safe-area-context';
+import FormSentSuccessModal from './FormSentSuccessModal';
 
 interface PreviewAppointmentModalProps {
   visible: boolean;
   onClose: () => void;
   onSuccess: (appointmentUrl?: string) => void;
+  onGoToDashboard?: () => void;
+  onViewAppointments?: () => void;
   clientName: string;
   clientId: string;
+  clientEmail?: string;
   appointmentDate: string;
   selectedServices: string[];
   selectedServiceIds: string[];
@@ -40,8 +44,11 @@ const PreviewAppointmentModal: React.FC<PreviewAppointmentModalProps> = ({
   visible,
   onClose,
   onSuccess,
+  onGoToDashboard,
+  onViewAppointments,
   clientId,
   clientName,
+  clientEmail,
   appointmentDate,
   selectedServices,
   selectedServiceIds,
@@ -49,6 +56,8 @@ const PreviewAppointmentModal: React.FC<PreviewAppointmentModalProps> = ({
   const [formsToSend, setFormsToSend] = useState<FormData[]>([]);
   const [isLoadingForms, setIsLoadingForms] = useState(false);
   const [isBooking, setIsBooking] = useState(false);
+  const [showSuccess, setShowSuccess] = useState(false);
+  const [appointmentUrl, setAppointmentUrl] = useState<string | undefined>();
 
   const fetchFormsForServices = async (serviceIds: string[]) => {
     if (!serviceIds || serviceIds.length === 0) return;
@@ -106,22 +115,18 @@ const PreviewAppointmentModal: React.FC<PreviewAppointmentModalProps> = ({
       if (appointmentId) {
         const baseUrl =
           Config.USER_WEBSITE_URL || 'https://business.pmuforms.com';
-        const appointmentUrl = `${baseUrl}/#/appointment/${appointmentId}`;
+        const url = `${baseUrl}/#/appointment/${appointmentId}`;
         try {
           await Share.share({
-            message: `Your appointment has been booked! View your forms here: ${appointmentUrl}`,
-            url: appointmentUrl,
+            message: `Your appointment has been booked! View your forms here: ${url}`,
+            url: url,
           });
         } catch (shareError) {
           console.error('Error sharing:', shareError);
         }
 
-        Alert.alert('Success', 'Appointment booked successfully', [
-          {
-            text: 'OK',
-            onPress: () => onSuccess(appointmentUrl),
-          },
-        ]);
+        setAppointmentUrl(url);
+        setShowSuccess(true);
       } else {
         console.error('No appointment ID returned from API');
         Alert.alert('Error', 'No appointment ID received');
@@ -256,6 +261,20 @@ const PreviewAppointmentModal: React.FC<PreviewAppointmentModalProps> = ({
           </View>
         </View>
       </SafeAreaView>
+
+      <FormSentSuccessModal
+        visible={showSuccess}
+        clientName={clientName}
+        clientEmail={clientEmail}
+        onGoToDashboard={() => {
+          setShowSuccess(false);
+          onGoToDashboard ? onGoToDashboard() : onSuccess(appointmentUrl);
+        }}
+        onViewAppointments={() => {
+          setShowSuccess(false);
+          onViewAppointments ? onViewAppointments() : onSuccess(appointmentUrl);
+        }}
+      />
     </Modal>
   );
 };
@@ -404,7 +423,7 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   continueButton: {
-    backgroundColor: 'linear-gradient(90deg, #8E2D8E 0%, #A654CD 100%)',
+    backgroundColor: '#8E2D8E',
     paddingVertical: 16,
     borderRadius: 12,
     alignItems: 'center',

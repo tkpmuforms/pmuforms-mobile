@@ -122,7 +122,6 @@ const DashboardScreen = ({ navigation }: any) => {
 
       setLoading(false);
     } catch (error) {
-      console.error('Error fetching data:', error);
       setLoading(false);
       setMetricsLoading(false);
     }

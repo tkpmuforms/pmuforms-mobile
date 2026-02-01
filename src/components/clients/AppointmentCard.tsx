@@ -1,24 +1,17 @@
+import { Calendar, FileText, MoreVertical, Trash2 } from 'lucide-react-native';
 import React, { useState } from 'react';
 import {
-  View,
-  Text,
-  StyleSheet,
-  TouchableOpacity,
   Modal,
   Pressable,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
 } from 'react-native';
-import {
-  Calendar,
-  Clock,
-  FileText,
-  MoreVertical,
-  Trash2,
-  CheckCircle,
-  XCircle,
-} from 'lucide-react-native';
 
-import { formatAppointmentTime } from '../../utils/utils';
+import { AppointmentIcon } from '../../../assets/svg';
 import { ClientAppointmentData } from '../../types';
+import { formatAppointmentTime } from '../../utils/utils';
 
 interface AppointmentCardProps {
   appointment: ClientAppointmentData;
@@ -31,8 +24,8 @@ const AppointmentCard: React.FC<AppointmentCardProps> = ({
   onViewForms,
   onDeleteAppointment,
 }) => {
+  console.log('Rendering AppointmentCard for appointment:', appointment);
   const [showMenu, setShowMenu] = useState(false);
-
   const primaryService = appointment.serviceDetails?.[0];
   const serviceName = primaryService?.service || 'Unknown Service';
   const appointmentDate = formatAppointmentTime(appointment.date);
@@ -63,19 +56,56 @@ const AppointmentCard: React.FC<AppointmentCardProps> = ({
       <View style={styles.header}>
         <View style={styles.serviceInfo}>
           <View style={styles.serviceIcon}>
-            <Calendar size={20} color="#8e2d8e" />
+            <AppointmentIcon />
           </View>
           <View style={styles.serviceContent}>
             <Text style={styles.serviceName} numberOfLines={1}>
               {serviceName}
             </Text>
           </View>
-          <View style={styles.formStatus}>
-            {appointment.allFormsCompleted ? (
-              <CheckCircle size={20} color="#10B981" />
-            ) : (
-              <XCircle size={20} color="#F59E0B" />
-            )}
+          <View
+            style={[
+              styles.formStatusBadge,
+              appointment.allFormsCompleted
+                ? styles.formStatusCompleted
+                : styles.formStatusNotCompleted,
+            ]}
+          >
+            <Text
+              style={[
+                styles.formStatusText,
+                appointment.allFormsCompleted
+                  ? styles.formStatusTextCompleted
+                  : styles.formStatusTextNotCompleted,
+              ]}
+            >
+              {appointment.allFormsCompleted
+                ? 'Forms Completed'
+                : 'Forms Not Completed'}
+            </Text>
+          </View>
+        </View>
+      </View>
+
+      {/* Details */}
+      <View style={styles.detailRow}>
+        <View style={styles.detailItem}>
+          <Text style={styles.detailLabel}>Appointment Date</Text>
+          <View style={styles.detailValueRow}>
+            <Calendar size={14} color="#64748b" />
+            <Text style={styles.detailValue} numberOfLines={1}>
+              {appointmentDate}
+            </Text>
+          </View>
+        </View>
+
+        <View style={styles.detailItem}>
+          <Text style={styles.detailLabel}>Form Filled</Text>
+          <View style={styles.detailValueRow}>
+            <Calendar size={14} color="#64748b" />
+            <Text style={styles.detailValue} numberOfLines={1}>
+              {formFilledDate}
+            </Text>
           </View>
         </View>
 
@@ -85,31 +115,6 @@ const AppointmentCard: React.FC<AppointmentCardProps> = ({
         >
           <MoreVertical size={16} color="#64748b" />
         </TouchableOpacity>
-      </View>
-
-      {/* Details */}
-      <View style={styles.details}>
-        <View style={styles.detailRow}>
-          <View style={styles.detailItem}>
-            <View style={styles.detailHeader}>
-              <Calendar size={14} color="#64748b" />
-              <Text style={styles.detailLabel}>Appointment Date</Text>
-            </View>
-            <Text style={styles.detailValue} numberOfLines={1}>
-              {appointmentDate}
-            </Text>
-          </View>
-
-          <View style={styles.detailItem}>
-            <View style={styles.detailHeader}>
-              <Clock size={14} color="#64748b" />
-              <Text style={styles.detailLabel}>Form Filled</Text>
-            </View>
-            <Text style={styles.detailValue} numberOfLines={1}>
-              {formFilledDate}
-            </Text>
-          </View>
-        </View>
       </View>
 
       <Modal
@@ -183,33 +188,52 @@ const styles = StyleSheet.create({
     fontWeight: '600',
     color: '#000000',
   },
-  formStatus: {
-    marginLeft: 8,
+  formStatusBadge: {
+    paddingHorizontal: 14,
+    paddingVertical: 6,
+    borderRadius: 48,
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  formStatusCompleted: {
+    backgroundColor: '#EBFAEF',
+  },
+  formStatusNotCompleted: {
+    backgroundColor: '#FFF6E9',
+  },
+  formStatusText: {
+    fontSize: 12,
+    fontWeight: '600',
+  },
+  formStatusTextCompleted: {
+    color: '#34C759',
+  },
+  formStatusTextNotCompleted: {
+    color: '#FF9500',
   },
   menuButton: {
     padding: 8,
     borderRadius: 8,
-  },
-  details: {
-    marginTop: 8,
+    alignSelf: 'center',
   },
   detailRow: {
     flexDirection: 'row',
+    alignItems: 'center',
     gap: 16,
   },
   detailItem: {
     flex: 1,
   },
-  detailHeader: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: 6,
-    marginBottom: 4,
-  },
   detailLabel: {
     fontSize: 12,
     color: '#64748b',
     fontWeight: '500',
+    marginBottom: 4,
+  },
+  detailValueRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 6,
   },
   detailValue: {
     fontSize: 14,
