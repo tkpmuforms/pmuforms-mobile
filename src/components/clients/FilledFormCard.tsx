@@ -3,6 +3,7 @@ import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { AppointmentDetailsIcon, AppointmentIcon } from '../../../assets/svg';
 import { FilledForm } from '../../types';
 import { formatAppointmentTime } from '../../utils/utils';
+import { colors } from '../../theme/colors';
 
 interface FilledFormCardProps {
   form: FilledForm;
@@ -86,7 +87,7 @@ const FilledFormCard: React.FC<FilledFormCardProps> = ({
 
 const styles = StyleSheet.create({
   card: {
-    backgroundColor: '#fff',
+    backgroundColor: colors.white,
     borderRadius: 12,
     padding: 20,
     shadowColor: '#000',
@@ -122,7 +123,7 @@ const styles = StyleSheet.create({
   formTitle: {
     fontSize: 16,
     fontWeight: '600',
-    color: '#000000',
+    color: colors.black,
   },
   statusSection: {
     flexDirection: 'row',
@@ -166,7 +167,7 @@ const styles = StyleSheet.create({
   },
   detailLabel: {
     fontSize: 12,
-    color: '#64748b',
+    color: colors.subtitleColor,
     fontWeight: '500',
     marginBottom: 10,
   },
@@ -177,7 +178,7 @@ const styles = StyleSheet.create({
   },
   detailValue: {
     fontSize: 14,
-    color: '#000000',
+    color: colors.black,
     fontWeight: '600',
   },
 });

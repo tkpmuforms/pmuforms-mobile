@@ -16,6 +16,7 @@ import {
 } from 'lucide-react-native';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import { SafeAreaView } from 'react-native-safe-area-context';
+import { colors } from '../../theme/colors';
 
 interface SetReminderModalProps {
   visible: boolean;
@@ -79,7 +80,7 @@ const SetReminderModal: React.FC<SetReminderModalProps> = ({
         <View style={styles.overlay}>
           <View style={styles.modal}>
             <TouchableOpacity style={styles.closeButton} onPress={onClose}>
-              <X size={20} color="#64748b" />
+              <X size={20} color={colors.subtitleColor} />
             </TouchableOpacity>
 
             <View style={styles.header}>
@@ -117,7 +118,7 @@ const SetReminderModal: React.FC<SetReminderModalProps> = ({
                     style={styles.pickerButton}
                     onPress={() => setShowDatePicker(true)}
                   >
-                    <CalendarIcon size={16} color="#64748b" />
+                    <CalendarIcon size={16} color={colors.subtitleColor} />
                     <Text style={styles.pickerButtonText}>
                       {formatDate(date)}
                     </Text>
@@ -130,7 +131,7 @@ const SetReminderModal: React.FC<SetReminderModalProps> = ({
                     style={styles.pickerButton}
                     onPress={() => setShowTimePicker(true)}
                   >
-                    <ClockIcon size={16} color="#64748b" />
+                    <ClockIcon size={16} color={colors.subtitleColor} />
                     <Text style={styles.pickerButtonText}>
                       {formatTime(time)}
                     </Text>
@@ -195,7 +196,7 @@ const styles = StyleSheet.create({
     justifyContent: 'flex-end',
   },
   modal: {
-    backgroundColor: '#fff',
+    backgroundColor: colors.white,
     borderTopLeftRadius: 20,
     borderTopRightRadius: 20,
     padding: 24,
@@ -216,13 +217,13 @@ const styles = StyleSheet.create({
   title: {
     fontSize: 24,
     fontWeight: '600',
-    color: '#000000',
+    color: colors.black,
     marginBottom: 8,
     textAlign: 'center',
   },
   subtitle: {
     fontSize: 14,
-    color: '#64748b',
+    color: colors.subtitleColor,
     textAlign: 'center',
   },
   scrollView: {
@@ -252,10 +253,10 @@ const styles = StyleSheet.create({
     paddingVertical: 12,
     paddingHorizontal: 16,
     borderWidth: 1,
-    borderColor: '#e2e8f0',
+    borderColor: colors.borderColor,
     borderRadius: 12,
     fontSize: 14,
-    color: '#000000',
+    color: colors.black,
     backgroundColor: '#BCBBC133',
     minHeight: 100,
   },
@@ -265,18 +266,18 @@ const styles = StyleSheet.create({
     paddingVertical: 12,
     paddingHorizontal: 16,
     borderWidth: 1,
-    borderColor: '#e2e8f0',
+    borderColor: colors.borderColor,
     borderRadius: 12,
     backgroundColor: '#BCBBC133',
     gap: 8,
   },
   pickerButtonText: {
     fontSize: 14,
-    color: '#000000',
+    color: colors.black,
     flex: 1,
   },
   submitButton: {
-    backgroundColor: '#8e2d8e',
+    backgroundColor: colors.primary,
     paddingVertical: 16,
     borderRadius: 12,
     alignItems: 'center',
@@ -286,7 +287,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#94a3b8',
   },
   submitButtonText: {
-    color: '#fff',
+    color: colors.white,
     fontSize: 16,
     fontWeight: '600',
   },

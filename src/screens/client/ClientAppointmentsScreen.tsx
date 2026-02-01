@@ -1,11 +1,6 @@
 import { useNavigation, useRoute } from '@react-navigation/native';
 import React, { useEffect, useState } from 'react';
-import {
-  FlatList,
-  StyleSheet,
-  Text,
-  View,
-} from 'react-native';
+import { FlatList, StyleSheet, Text, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import Toast from 'react-native-toast-message';
 import AppointmentCard from '../../components/clients/AppointmentCard';
@@ -18,6 +13,7 @@ import {
   getCustomerById,
 } from '../../services/artistServices';
 import { ClientAppointmentData } from '../../types';
+import { colors } from '../../theme/colors';
 
 interface ClientAppointmentsScreenProps {}
 
@@ -183,7 +179,7 @@ const styles = StyleSheet.create({
     gap: 12,
   },
   header: {
-    backgroundColor: '#fff',
+    backgroundColor: colors.white,
     paddingHorizontal: 16,
     paddingVertical: 0,
     borderBottomWidth: 1,
@@ -204,7 +200,7 @@ const styles = StyleSheet.create({
   headerTitle: {
     fontSize: 16,
     fontWeight: 'bold',
-    color: '#000000',
+    color: colors.black,
     marginBottom: 4,
   },
   headerSubtitle: {
@@ -227,7 +223,7 @@ const styles = StyleSheet.create({
   emptyStateTitle: {
     fontSize: 20,
     fontWeight: '600',
-    color: '#000000',
+    color: colors.black,
     marginBottom: 8,
   },
   emptyStateText: {

@@ -8,6 +8,7 @@ import {
   Pressable,
 } from 'react-native';
 import { X, Calendar, Bell, ChevronRight } from 'lucide-react-native';
+import { colors } from '../../theme/colors';
 
 interface SelectReminderTypeModalProps {
   visible: boolean;
@@ -31,7 +32,7 @@ const SelectReminderTypeModal: React.FC<SelectReminderTypeModalProps> = ({
         <Pressable style={styles.backdrop} onPress={onClose} />
         <View style={styles.modalContent}>
           <TouchableOpacity style={styles.closeButton} onPress={onClose}>
-            <X size={20} color="#64748b" />
+            <X size={20} color={colors.subtitleColor} />
           </TouchableOpacity>
 
           <Text style={styles.title}>Select Reminder Type</Text>
@@ -52,7 +53,7 @@ const SelectReminderTypeModal: React.FC<SelectReminderTypeModalProps> = ({
                   client will check in
                 </Text>
               </View>
-              <ChevronRight size={24} color="#64748b" />
+              <ChevronRight size={24} color={colors.subtitleColor} />
             </TouchableOpacity>
 
             <TouchableOpacity
@@ -70,7 +71,7 @@ const SelectReminderTypeModal: React.FC<SelectReminderTypeModalProps> = ({
                   up on this client
                 </Text>
               </View>
-              <ChevronRight size={24} color="#64748b" />
+              <ChevronRight size={24} color={colors.subtitleColor} />
             </TouchableOpacity>
           </View>
         </View>
@@ -110,7 +111,7 @@ const styles = StyleSheet.create({
   title: {
     fontSize: 24,
     fontWeight: '600',
-    color: '#000000',
+    color: colors.black,
     marginBottom: 24,
   },
   reminderTypes: {
@@ -146,12 +147,12 @@ const styles = StyleSheet.create({
   cardTitle: {
     fontSize: 16,
     fontWeight: '600',
-    color: '#000000',
+    color: colors.black,
     marginBottom: 4,
   },
   cardDescription: {
     fontSize: 14,
-    color: '#64748b',
+    color: colors.subtitleColor,
     lineHeight: 20,
   },
 });

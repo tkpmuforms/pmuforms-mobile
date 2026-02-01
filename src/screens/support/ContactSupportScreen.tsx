@@ -161,7 +161,7 @@ const ContactSupportScreen: React.FC = () => {
               disabled={isSubmitting}
             >
               {isSubmitting ? (
-                <ActivityIndicator color="#fff" />
+                <ActivityIndicator color={colors.white} />
               ) : (
                 <Text style={styles.submitButtonText}>Submit</Text>
               )}
@@ -202,7 +202,7 @@ const styles = StyleSheet.create({
     paddingVertical: 12,
     paddingHorizontal: 16,
     borderWidth: 1,
-    borderColor: '#e2e8f0',
+    borderColor: colors.borderColor,
     borderRadius: 12,
     fontSize: 16,
     color: '#1e293b',
@@ -210,14 +210,14 @@ const styles = StyleSheet.create({
   },
   inputDisabled: {
     backgroundColor: '#BCBBC133',
-    color: '#64748b',
+    color: colors.subtitleColor,
   },
   textArea: {
     minHeight: 120,
     paddingTop: 12,
   },
   submitButton: {
-    backgroundColor: '#8e2d8e',
+    backgroundColor: colors.primary,
     paddingVertical: 16,
     borderRadius: 12,
     alignItems: 'center',
@@ -227,7 +227,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#94a3b8',
   },
   submitButtonText: {
-    color: '#fff',
+    color: colors.white,
     fontSize: 16,
     fontWeight: '600',
   },

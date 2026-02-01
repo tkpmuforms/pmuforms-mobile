@@ -20,6 +20,7 @@ import {
 } from '../../services/artistServices';
 import { Service } from '../../types';
 import { Alert } from 'react-native';
+import { colors } from '../../theme/colors';
 
 interface UpdateServicesModalProps {
   visible: boolean;
@@ -130,7 +131,7 @@ const UpdateServicesModal: React.FC<UpdateServicesModalProps> = ({
         <View style={styles.overlay}>
           <View style={styles.modal}>
             <TouchableOpacity style={styles.closeButton} onPress={onClose}>
-              <X size={20} color="#64748b" />
+              <X size={20} color={colors.subtitleColor} />
             </TouchableOpacity>
 
             <View style={styles.header}>
@@ -148,7 +149,7 @@ const UpdateServicesModal: React.FC<UpdateServicesModalProps> = ({
               <Text style={styles.sectionTitle}>Select services</Text>
               {loading ? (
                 <View style={styles.loadingContainer}>
-                  <ActivityIndicator size="large" color="#8e2d8e" />
+                  <ActivityIndicator size="large" color={colors.primary} />
                 </View>
               ) : (
                 <View style={styles.servicesGrid}>
@@ -228,7 +229,7 @@ const styles = StyleSheet.create({
     justifyContent: 'flex-end',
   },
   modal: {
-    backgroundColor: '#fff',
+    backgroundColor: colors.white,
     borderTopLeftRadius: 20,
     borderTopRightRadius: 20,
     padding: 32,
@@ -249,13 +250,13 @@ const styles = StyleSheet.create({
   title: {
     fontSize: 24,
     fontWeight: '600',
-    color: '#000000',
+    color: colors.black,
     marginBottom: 8,
     textAlign: 'center',
   },
   subtitle: {
     fontSize: 14,
-    color: '#64748b',
+    color: colors.subtitleColor,
     textAlign: 'center',
   },
   body: {
@@ -268,7 +269,7 @@ const styles = StyleSheet.create({
   sectionTitle: {
     fontSize: 18,
     fontWeight: '600',
-    color: '#000000',
+    color: colors.black,
     marginBottom: 16,
   },
   loadingContainer: {
@@ -284,20 +285,20 @@ const styles = StyleSheet.create({
     paddingVertical: 8,
     paddingHorizontal: 16,
     borderWidth: 1,
-    borderColor: '#e2e8f0',
+    borderColor: colors.borderColor,
     borderRadius: 20,
-    backgroundColor: '#fff',
+    backgroundColor: colors.white,
   },
   serviceTagSelected: {
-    backgroundColor: '#8e2d8e',
-    borderColor: '#8e2d8e',
+    backgroundColor: colors.primary,
+    borderColor: colors.primary,
   },
   serviceText: {
     fontSize: 14,
-    color: '#64748b',
+    color: colors.subtitleColor,
   },
   serviceTextSelected: {
-    color: '#fff',
+    color: colors.white,
   },
   warningBox: {
     backgroundColor: '#fef2f2',
@@ -321,19 +322,19 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: 'transparent',
     borderWidth: 1,
-    borderColor: '#e2e8f0',
+    borderColor: colors.borderColor,
     paddingVertical: 14,
     borderRadius: 12,
     alignItems: 'center',
   },
   goBackText: {
-    color: '#64748b',
+    color: colors.subtitleColor,
     fontSize: 14,
     fontWeight: '500',
   },
   saveButton: {
     flex: 1,
-    backgroundColor: '#8e2d8e',
+    backgroundColor: colors.primary,
     paddingVertical: 16,
     borderRadius: 12,
     alignItems: 'center',
@@ -345,7 +346,7 @@ const styles = StyleSheet.create({
     opacity: 0.6,
   },
   saveText: {
-    color: '#fff',
+    color: colors.white,
     fontSize: 14,
     fontWeight: '600',
   },

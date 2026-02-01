@@ -175,7 +175,7 @@ const ServicesSelectionScreen: React.FC<ServicesSelectionScreenProps> = ({
                     </Text>
                     {isSelected && (
                       <View style={styles.checkIcon}>
-                        <Check size={18} color="#fff" />
+                        <Check size={18} color={colors.white} />
                       </View>
                     )}
                   </View>
@@ -212,7 +212,7 @@ const ServicesSelectionScreen: React.FC<ServicesSelectionScreenProps> = ({
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#fff',
+    backgroundColor: colors.white,
   },
   header: {
     paddingHorizontal: 24,
@@ -232,7 +232,7 @@ const styles = StyleSheet.create({
   },
   progressBar: {
     height: 4,
-    backgroundColor: '#e2e8f0',
+    backgroundColor: colors.borderColor,
     borderRadius: 2,
     marginBottom: 8,
   },
@@ -244,7 +244,7 @@ const styles = StyleSheet.create({
   },
   progressText: {
     fontSize: 12,
-    color: '#64748b',
+    color: colors.subtitleColor,
     textAlign: 'center',
   },
   headerContent: {
@@ -258,7 +258,7 @@ const styles = StyleSheet.create({
   },
   subtitle: {
     fontSize: 16,
-    color: '#64748b',
+    color: colors.subtitleColor,
     lineHeight: 24,
   },
   loadingContainer: {
@@ -270,10 +270,10 @@ const styles = StyleSheet.create({
   },
   serviceCard: {
     borderWidth: 1.5,
-    borderColor: '#e2e8f0',
+    borderColor: colors.borderColor,
     borderRadius: 12,
     padding: 16,
-    backgroundColor: '#fff',
+    backgroundColor: colors.white,
   },
   serviceCardSelected: {
     borderColor: colors.primary,
@@ -317,8 +317,8 @@ const styles = StyleSheet.create({
   footer: {
     padding: 24,
     borderTopWidth: 1,
-    borderTopColor: '#e2e8f0',
-    backgroundColor: '#fff',
+    borderTopColor: colors.borderColor,
+    backgroundColor: colors.white,
   },
   button: {
     backgroundColor: colors.primary,
@@ -330,7 +330,7 @@ const styles = StyleSheet.create({
     opacity: 0.6,
   },
   buttonText: {
-    color: '#fff',
+    color: colors.white,
     fontSize: 16,
     fontWeight: '600',
   },

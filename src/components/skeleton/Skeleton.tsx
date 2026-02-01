@@ -51,7 +51,7 @@ const Skeleton: React.FC<SkeletonProps> = ({
 
 const styles = StyleSheet.create({
   skeleton: {
-    backgroundColor: '#e2e8f0',
+    backgroundColor: colors.borderColor,
   },
 });
 

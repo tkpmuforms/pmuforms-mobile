@@ -22,6 +22,8 @@ import { useDispatch } from 'react-redux';
 import useAuth from '../../hooks/useAuth';
 import { setUser } from '../../redux/auth';
 import { getAuthMe, updateBusinessInfo } from '../../services/artistServices';
+import { colors } from '../../theme/colors';
+import ScreenHeader from '../../components/layout/ScreenHeader';
 
 const EditBusinessInformationScreen: React.FC = () => {
   const { user } = useAuth();
@@ -123,7 +125,7 @@ const EditBusinessInformationScreen: React.FC = () => {
                     </View>
                   )}
                   <View style={styles.editIconContainer}>
-                    <Camera size={16} color="#fff" />
+                    <Camera size={16} color={colors.white} />
                   </View>
                 </TouchableOpacity>
               </View>
@@ -204,7 +206,7 @@ const EditBusinessInformationScreen: React.FC = () => {
                 disabled={isSaving}
               >
                 {isSaving ? (
-                  <ActivityIndicator color="#fff" />
+                  <ActivityIndicator color={colors.white} />
                 ) : (
                   <Text style={styles.saveButtonText}>Save Changes</Text>
                 )}
@@ -233,7 +235,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 16,
     paddingTop: 16,
     paddingBottom: 16,
-    backgroundColor: '#fff',
+    backgroundColor: colors.white,
     borderBottomWidth: 1,
     borderBottomColor: '#E5E5E5',
     gap: 12,
@@ -247,12 +249,12 @@ const styles = StyleSheet.create({
   title: {
     fontSize: 18,
     fontWeight: '700',
-    color: '#000000',
+    color: colors.black,
     marginBottom: 4,
   },
   subtitle: {
     fontSize: 14,
-    color: '#64748b',
+    color: colors.subtitleColor,
   },
   scrollView: {
     flex: 1,
@@ -294,7 +296,7 @@ const styles = StyleSheet.create({
     width: 28,
     height: 28,
     borderRadius: 14,
-    backgroundColor: '#8e2d8e',
+    backgroundColor: colors.primary,
     justifyContent: 'center',
     alignItems: 'center',
   },
@@ -304,17 +306,17 @@ const styles = StyleSheet.create({
   label: {
     fontSize: 14,
     fontWeight: '500',
-    color: '#000000',
+    color: colors.black,
     marginBottom: 8,
   },
   input: {
     paddingVertical: 12,
     paddingHorizontal: 16,
     borderWidth: 1,
-    borderColor: '#e2e8f0',
+    borderColor: colors.borderColor,
     borderRadius: 12,
     fontSize: 14,
-    color: '#000000',
+    color: colors.black,
     backgroundColor: '#BCBBC133',
   },
   inputDisabled: {
@@ -323,12 +325,12 @@ const styles = StyleSheet.create({
   },
   footer: {
     padding: 16,
-    backgroundColor: '#fff',
+    backgroundColor: colors.white,
     borderTopWidth: 1,
     borderTopColor: '#E5E5E5',
   },
   saveButton: {
-    backgroundColor: '#8e2d8e',
+    backgroundColor: colors.primary,
     paddingVertical: 16,
     borderRadius: 12,
     alignItems: 'center',
@@ -338,7 +340,7 @@ const styles = StyleSheet.create({
     opacity: 0.6,
   },
   saveButtonText: {
-    color: '#fff',
+    color: colors.white,
     fontSize: 14,
     fontWeight: '600',
   },

@@ -11,6 +11,7 @@ import {
 import { AppointmentDetailsIcon, AppointmentIcon } from '../../../assets/svg';
 import { ClientAppointmentData } from '../../types';
 import { formatAppointmentTime } from '../../utils/utils';
+import { colors } from '../../theme/colors';
 
 interface AppointmentCardProps {
   appointment: ClientAppointmentData;
@@ -112,7 +113,7 @@ const AppointmentCard: React.FC<AppointmentCardProps> = ({
           style={styles.menuButton}
           onPress={() => setShowMenu(true)}
         >
-          <MoreVertical size={16} color="#64748b" />
+          <MoreVertical size={16} color={colors.subtitleColor} />
         </TouchableOpacity>
       </View>
 
@@ -125,7 +126,7 @@ const AppointmentCard: React.FC<AppointmentCardProps> = ({
         <Pressable style={styles.modalOverlay} onPress={handleMenuClose}>
           <View style={styles.menuContainer}>
             <TouchableOpacity style={styles.menuItem} onPress={handleViewForms}>
-              <FileText size={16} color="#000000" />
+              <FileText size={16} color={colors.black} />
               <Text style={styles.menuItemText}>View Forms</Text>
             </TouchableOpacity>
 
@@ -149,7 +150,7 @@ const AppointmentCard: React.FC<AppointmentCardProps> = ({
 
 const styles = StyleSheet.create({
   card: {
-    backgroundColor: '#fff',
+    backgroundColor: colors.white,
     borderRadius: 12,
     padding: 20,
     shadowColor: '#000',
@@ -185,7 +186,7 @@ const styles = StyleSheet.create({
   serviceName: {
     fontSize: 16,
     fontWeight: '600',
-    color: '#000000',
+    color: colors.black,
   },
   formStatusBadge: {
     paddingHorizontal: 14,
@@ -225,7 +226,7 @@ const styles = StyleSheet.create({
   },
   detailLabel: {
     fontSize: 12,
-    color: '#64748b',
+    color: colors.subtitleColor,
     fontWeight: '500',
     marginBottom: 10,
   },
@@ -236,7 +237,7 @@ const styles = StyleSheet.create({
   },
   detailValue: {
     fontSize: 14,
-    color: '#000000',
+    color: colors.black,
     fontWeight: '600',
   },
   modalOverlay: {
@@ -247,7 +248,7 @@ const styles = StyleSheet.create({
     padding: 20,
   },
   menuContainer: {
-    backgroundColor: '#fff',
+    backgroundColor: colors.white,
     borderRadius: 12,
     padding: 10,
     minWidth: 200,
@@ -271,7 +272,7 @@ const styles = StyleSheet.create({
   menuItemText: {
     fontSize: 14,
     fontWeight: '500',
-    color: '#000000',
+    color: colors.black,
   },
   menuItemDeleteText: {
     color: '#ef4444',

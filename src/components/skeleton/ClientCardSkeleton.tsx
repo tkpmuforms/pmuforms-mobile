@@ -19,7 +19,7 @@ const styles = StyleSheet.create({
   card: {
     flexDirection: 'row',
     alignItems: 'center',
-    backgroundColor: '#fff',
+    backgroundColor: colors.white,
     padding: 16,
     marginHorizontal: 16,
     marginVertical: 6,

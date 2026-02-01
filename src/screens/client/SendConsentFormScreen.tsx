@@ -14,6 +14,7 @@ import DateTimePicker from '@react-native-community/datetimepicker';
 import useAuth from '../../hooks/useAuth';
 import PreviewAppointmentModal from '../../components/clients/PreviewAppointmentModal';
 import { RootStackParamList } from '../../types/navigation';
+import { colors } from '../../theme/colors';
 
 type SendConsentFormRouteProp = RouteProp<
   RootStackParamList,
@@ -207,25 +208,25 @@ const styles = StyleSheet.create({
   label: {
     fontSize: 15,
     fontWeight: '600',
-    color: '#000000',
+    color: colors.black,
     marginBottom: 12,
   },
   helperText: {
     fontSize: 14,
-    color: '#64748b',
+    color: colors.subtitleColor,
     marginBottom: 12,
   },
   dateInput: {
     paddingVertical: 16,
     paddingHorizontal: 16,
     borderWidth: 1,
-    borderColor: '#e2e8f0',
+    borderColor: colors.borderColor,
     borderRadius: 12,
     backgroundColor: '#BCBBC133',
   },
   dateText: {
     fontSize: 16,
-    color: '#000000',
+    color: colors.black,
   },
   datePickerDone: {
     alignSelf: 'flex-end',
@@ -236,7 +237,7 @@ const styles = StyleSheet.create({
   datePickerDoneText: {
     fontSize: 16,
     fontWeight: '600',
-    color: '#8e2d8e',
+    color: colors.primary,
   },
   servicesGrid: {
     flexDirection: 'row',
@@ -247,29 +248,29 @@ const styles = StyleSheet.create({
     paddingVertical: 10,
     paddingHorizontal: 18,
     borderWidth: 1,
-    borderColor: '#e2e8f0',
+    borderColor: colors.borderColor,
     borderRadius: 20,
     backgroundColor: '#BCBBC140',
   },
   serviceTagSelected: {
-    backgroundColor: '#8e2d8e',
-    borderColor: '#8e2d8e',
+    backgroundColor: colors.primary,
+    borderColor: colors.primary,
   },
   serviceText: {
     fontSize: 14,
-    color: '#64748b',
+    color: colors.subtitleColor,
   },
   serviceTextSelected: {
-    color: '#fff',
+    color: colors.white,
   },
   footer: {
     padding: 16,
-    backgroundColor: '#fff',
+    backgroundColor: colors.white,
     borderTopWidth: 1,
     borderTopColor: '#E5E5E5',
   },
   continueButton: {
-    backgroundColor: '#8e2d8e',
+    backgroundColor: colors.primary,
     paddingVertical: 16,
     borderRadius: 12,
     alignItems: 'center',
@@ -278,7 +279,7 @@ const styles = StyleSheet.create({
     opacity: 0.5,
   },
   continueButtonText: {
-    color: '#fff',
+    color: colors.white,
     fontSize: 16,
     fontWeight: '600',
   },

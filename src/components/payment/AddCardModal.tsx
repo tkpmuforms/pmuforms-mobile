@@ -11,6 +11,7 @@ import {
   ActivityIndicator,
 } from 'react-native';
 import { X } from 'lucide-react-native';
+import { colors } from '../../theme/colors';
 
 interface AddCardModalProps {
   visible: boolean;
@@ -82,7 +83,7 @@ const AddCardModal: React.FC<AddCardModalProps> = ({
           <View style={styles.header}>
             <Text style={styles.title}>Add New Card</Text>
             <TouchableOpacity style={styles.closeButton} onPress={onClose}>
-              <X size={24} color="#000000" />
+              <X size={24} color={colors.black} />
             </TouchableOpacity>
           </View>
 
@@ -222,7 +223,7 @@ const styles = StyleSheet.create({
   title: {
     fontSize: 20,
     fontWeight: '600',
-    color: '#000000',
+    color: colors.black,
     flex: 1,
   },
   closeButton: {
@@ -230,7 +231,7 @@ const styles = StyleSheet.create({
   },
   subtitle: {
     fontSize: 14,
-    color: '#64748b',
+    color: colors.subtitleColor,
     marginBottom: 16,
   },
   errorContainer: {
@@ -259,7 +260,7 @@ const styles = StyleSheet.create({
     borderColor: '#e5e7eb',
     borderRadius: 12,
     fontSize: 16,
-    color: '#000000',
+    color: colors.black,
   },
   row: {
     flexDirection: 'row',
@@ -277,19 +278,19 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: 'transparent',
     borderWidth: 1,
-    borderColor: '#e2e8f0',
+    borderColor: colors.borderColor,
     padding: 14,
     borderRadius: 12,
     alignItems: 'center',
   },
   cancelButtonText: {
-    color: '#64748b',
+    color: colors.subtitleColor,
     fontWeight: '500',
     fontSize: 16,
   },
   confirmButton: {
     flex: 1,
-    backgroundColor: '#8e2d8e',
+    backgroundColor: colors.primary,
     padding: 14,
     borderRadius: 12,
     alignItems: 'center',

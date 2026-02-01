@@ -1,6 +1,7 @@
 import React from 'react';
 import { View, Text, StyleSheet, TouchableOpacity, Image } from 'react-native';
 import { Clock, Briefcase } from 'lucide-react-native';
+import { colors } from '../../theme/colors';
 
 interface AppointmentCardProps {
   name?: string;
@@ -70,7 +71,7 @@ const styles = StyleSheet.create({
   name: {
     fontSize: 16,
     fontWeight: '600',
-    color: '#000000',
+    color: colors.black,
     flex: 1,
   },
   infoContainer: {

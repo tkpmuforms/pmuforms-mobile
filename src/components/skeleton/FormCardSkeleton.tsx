@@ -23,7 +23,7 @@ const FormCardSkeleton: React.FC = () => {
 
 const styles = StyleSheet.create({
   card: {
-    backgroundColor: '#fff',
+    backgroundColor: colors.white,
     borderRadius: 12,
     padding: 16,
     marginBottom: 12,

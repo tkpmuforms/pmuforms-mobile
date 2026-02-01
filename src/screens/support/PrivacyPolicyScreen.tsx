@@ -10,6 +10,7 @@ import {
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useNavigation } from '@react-navigation/native';
 import ScreenHeader from '../../components/layout/ScreenHeader';
+import { colors } from '../../theme/colors';
 
 const PrivacyPolicyScreen: React.FC = () => {
   const navigation = useNavigation();
@@ -190,7 +191,7 @@ const styles = StyleSheet.create({
   sectionTitle: {
     fontSize: 20,
     fontWeight: 'bold',
-    color: '#000000',
+    color: colors.black,
     marginTop: 24,
     marginBottom: 12,
   },
@@ -211,7 +212,7 @@ const styles = StyleSheet.create({
     marginBottom: 8,
   },
   link: {
-    color: '#8e2d8e',
+    color: colors.primary,
     textDecorationLine: 'underline',
   },
 });

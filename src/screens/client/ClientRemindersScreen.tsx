@@ -23,6 +23,7 @@ import {
   getRemindersByCustomer,
 } from '../../services/artistServices';
 import { Reminder } from '../../types';
+import { colors } from '../../theme/colors';
 
 interface ClientRemindersScreenProps {}
 
@@ -130,7 +131,7 @@ const ClientRemindersScreen: React.FC<ClientRemindersScreenProps> = () => {
     return (
       <SafeAreaView style={styles.container}>
         <View style={styles.loadingContainer}>
-          <ActivityIndicator size="large" color="#8e2d8e" />
+          <ActivityIndicator size="large" color={colors.primary} />
         </View>
       </SafeAreaView>
     );
@@ -154,7 +155,11 @@ const ClientRemindersScreen: React.FC<ClientRemindersScreenProps> = () => {
         data={reminders}
         keyExtractor={item => item.id}
         renderItem={({ item }) => (
-          <ReminderCard reminder={item} onDelete={handleDeleteReminder} onEdit={handleEditReminder} />
+          <ReminderCard
+            reminder={item}
+            onDelete={handleDeleteReminder}
+            onEdit={handleEditReminder}
+          />
         )}
         contentContainerStyle={[
           styles.listContent,
@@ -196,7 +201,7 @@ const styles = StyleSheet.create({
     gap: 6,
   },
   addButtonText: {
-    color: '#8E2D8E',
+    color: colors.primary,
     fontSize: 14,
     fontWeight: '600',
   },
@@ -216,7 +221,7 @@ const styles = StyleSheet.create({
   emptyStateTitle: {
     fontSize: 20,
     fontWeight: '600',
-    color: '#000000',
+    color: colors.black,
     marginBottom: 8,
   },
   emptyStateText: {

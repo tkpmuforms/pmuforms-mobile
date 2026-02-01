@@ -17,6 +17,7 @@ import { getArtistForms } from '../../services/artistServices';
 import { Form } from '../../types';
 import { transformFormData } from '../../utils/utils';
 import { AddNewServiceFloat } from '../../../assets/svg';
+import { colors } from '../../theme/colors';
 
 const FormsScreen = ({ navigation }: any) => {
   const [activeTab, setActiveTab] = useState<'consent' | 'care'>('consent');
@@ -151,7 +152,7 @@ const FormsScreen = ({ navigation }: any) => {
                 style={styles.emptyButton}
                 onPress={() => setShowAddMoreServicesModal(true)}
               >
-                <Plus size={16} color="#fff" />
+                <Plus size={16} color={colors.white} />
                 <Text style={styles.emptyButtonText}>
                   Unlock Your{' '}
                   {activeTab.charAt(0).toUpperCase() + activeTab.slice(1)} Forms
@@ -184,7 +185,7 @@ const FormsScreen = ({ navigation }: any) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#fff',
+    backgroundColor: colors.white,
   },
   scrollView: {
     flex: 1,
@@ -200,12 +201,12 @@ const styles = StyleSheet.create({
   title: {
     fontSize: 28,
     fontWeight: '600',
-    color: '#000000',
+    color: colors.black,
     marginBottom: 4,
   },
   subtitle: {
     fontSize: 14,
-    color: '#64748b',
+    color: colors.subtitleColor,
   },
   fab: {
     position: 'absolute',
@@ -217,7 +218,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#D764D759',
     alignItems: 'center',
     justifyContent: 'center',
-    shadowColor: '#fff',
+    shadowColor: colors.white,
     shadowOffset: {
       width: 0,
       height: 4,
@@ -245,7 +246,7 @@ const styles = StyleSheet.create({
     paddingLeft: 44,
     paddingRight: 12,
     borderWidth: 1,
-    borderColor: '#e2e8f0',
+    borderColor: colors.borderColor,
     borderRadius: 12,
     fontSize: 16,
     backgroundColor: '#BCBBC133',
@@ -262,18 +263,18 @@ const styles = StyleSheet.create({
     paddingVertical: 12,
     paddingHorizontal: 10,
     borderWidth: 1,
-    borderColor: '#e2e8f0',
-    backgroundColor: '#fff',
+    borderColor: colors.borderColor,
+    backgroundColor: colors.white,
     borderRadius: 6,
     alignItems: 'center',
     justifyContent: 'center',
   },
   tabActive: {
     backgroundColor: '#F8F5F8',
-    borderColor: '#e2e8f0',
+    borderColor: colors.borderColor,
   },
   tabText: {
-    color: '#64748b',
+    color: colors.subtitleColor,
     fontSize: 14,
     fontWeight: '500',
   },
@@ -292,7 +293,7 @@ const styles = StyleSheet.create({
     paddingVertical: 20,
   },
   emptyText: {
-    color: '#64748b',
+    color: colors.subtitleColor,
     fontSize: 14,
     marginBottom: 16,
     textAlign: 'center',
@@ -300,14 +301,14 @@ const styles = StyleSheet.create({
   emptyButton: {
     flexDirection: 'row',
     alignItems: 'center',
-    backgroundColor: '#8e2d8e',
+    backgroundColor: colors.primary,
     paddingVertical: 12,
     paddingHorizontal: 20,
     borderRadius: 12,
     gap: 8,
   },
   emptyButtonText: {
-    color: '#fff',
+    color: colors.white,
     fontSize: 14,
     fontWeight: '500',
   },

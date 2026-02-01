@@ -235,7 +235,9 @@ const FilledFormsPreviewScreen: React.FC = () => {
     switch (field.type) {
       case 'paragraph':
       case 'heading':
-        return `<p style="font-size:14px;color:#1f2937;line-height:1.5;">${field.content || ''}</p>`;
+        return `<p style="font-size:14px;color:#1f2937;line-height:1.5;">${
+          field.content || ''
+        }</p>`;
 
       case 'checkbox':
         if (Array.isArray(value)) {
@@ -243,7 +245,13 @@ const FilledFormsPreviewScreen: React.FC = () => {
             .map(option => {
               const checked = value.includes(option);
               return `<div style="display:flex;align-items:center;margin-bottom:6px;">
-                <span style="display:inline-block;width:18px;height:18px;border:2px solid ${checked ? '#8e2d8e' : '#e5e7eb'};border-radius:3px;background:${checked ? '#8e2d8e' : '#fff'};color:#fff;text-align:center;font-size:12px;line-height:18px;margin-right:8px;">${checked ? '✓' : ''}</span>
+                <span style="display:inline-block;width:18px;height:18px;border:2px solid ${
+                  checked ? colors.primary : '#e5e7eb'
+                };border-radius:3px;background:${
+                checked ? colors.primary : colors.white
+              };color:#fff;text-align:center;font-size:12px;line-height:18px;margin-right:8px;">${
+                checked ? '✓' : ''
+              }</span>
                 <span style="font-size:14px;color:#1f2937;">${option}</span>
               </div>`;
             })
@@ -259,7 +267,13 @@ const FilledFormsPreviewScreen: React.FC = () => {
           .map(option => {
             const selected = value === option;
             return `<div style="display:flex;align-items:center;margin-bottom:6px;">
-              <span style="display:inline-block;width:18px;height:18px;border:2px solid ${selected ? '#8e2d8e' : '#e5e7eb'};border-radius:50%;margin-right:8px;text-align:center;line-height:14px;">${selected ? '<span style="display:inline-block;width:10px;height:10px;border-radius:50%;background:#8e2d8e;"></span>' : ''}</span>
+              <span style="display:inline-block;width:18px;height:18px;border:2px solid ${
+                selected ? colors.primary : '#e5e7eb'
+              };border-radius:50%;margin-right:8px;text-align:center;line-height:14px;">${
+              selected
+                ? '<span style="display:inline-block;width:10px;height:10px;border-radius:50%;background:#8e2d8e;"></span>'
+                : ''
+            }</span>
               <span style="font-size:14px;color:#1f2937;">${option}</span>
             </div>`;
           })
@@ -274,13 +288,19 @@ const FilledFormsPreviewScreen: React.FC = () => {
           : '<p style="color:#707070;font-style:italic;">No signature provided</p>';
 
       case 'date':
-        return `<p style="font-size:14px;color:#1f2937;background:#f4eaf4;padding:10px;border-radius:6px;border:1px solid #e5e7eb;">${value ? new Date(value).toLocaleDateString() : 'No date selected'}</p>`;
+        return `<p style="font-size:14px;color:#1f2937;background:#f4eaf4;padding:10px;border-radius:6px;border:1px solid #e5e7eb;">${
+          value ? new Date(value).toLocaleDateString() : 'No date selected'
+        }</p>`;
 
       case 'textarea':
-        return `<p style="font-size:14px;color:#1f2937;background:#f4eaf4;padding:10px;border-radius:6px;border:1px solid #e5e7eb;min-height:60px;white-space:pre-wrap;">${value || 'No response provided'}</p>`;
+        return `<p style="font-size:14px;color:#1f2937;background:#f4eaf4;padding:10px;border-radius:6px;border:1px solid #e5e7eb;min-height:60px;white-space:pre-wrap;">${
+          value || 'No response provided'
+        }</p>`;
 
       default:
-        return `<p style="font-size:14px;color:#1f2937;background:#f4eaf4;padding:10px;border-radius:6px;border:1px solid #e5e7eb;">${value || 'No response provided'}</p>`;
+        return `<p style="font-size:14px;color:#1f2937;background:#f4eaf4;padding:10px;border-radius:6px;border:1px solid #e5e7eb;">${
+          value || 'No response provided'
+        }</p>`;
     }
   };
 
@@ -292,9 +312,15 @@ const FilledFormsPreviewScreen: React.FC = () => {
             const isParagraph =
               field.type === 'paragraph' || field.type === 'heading';
             const labelHTML = !isParagraph
-              ? `<label style="display:block;font-size:15px;font-weight:500;color:#1f2937;margin-bottom:6px;">${field.title}${field.required ? '<span style="color:#ef4444;"> *</span>' : ''}</label>`
+              ? `<label style="display:block;font-size:15px;font-weight:500;color:#1f2937;margin-bottom:6px;">${
+                  field.title
+                }${
+                  field.required ? '<span style="color:#ef4444;"> *</span>' : ''
+                }</label>`
               : '';
-            return `<div style="margin-bottom:18px;">${labelHTML}${buildFieldHTML(field)}</div>`;
+            return `<div style="margin-bottom:18px;">${labelHTML}${buildFieldHTML(
+              field,
+            )}</div>`;
           })
           .join('');
 
@@ -307,7 +333,8 @@ const FilledFormsPreviewScreen: React.FC = () => {
 
     let signaturesHTML = '';
     if (signatureUrl || user?.signature_url) {
-      signaturesHTML = '<div style="margin-top:32px;border-top:1px solid #e5e7eb;padding-top:20px;">';
+      signaturesHTML =
+        '<div style="margin-top:32px;border-top:1px solid #e5e7eb;padding-top:20px;">';
       if (signatureUrl) {
         signaturesHTML += `
           <div style="margin-bottom:24px;">
@@ -356,7 +383,9 @@ const FilledFormsPreviewScreen: React.FC = () => {
       const html = buildHTML();
       const pdf = await generatePDF({
         html,
-        fileName: `${form.title?.replace(/[^a-zA-Z0-9]/g, '_') || 'form'}_${Date.now()}`,
+        fileName: `${
+          form.title?.replace(/[^a-zA-Z0-9]/g, '_') || 'form'
+        }_${Date.now()}`,
         directory: 'Documents',
       });
 

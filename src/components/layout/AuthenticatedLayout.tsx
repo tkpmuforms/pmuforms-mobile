@@ -21,7 +21,7 @@ const AuthenticatedLayout: React.FC<AuthenticatedLayoutProps> = ({
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#fff',
+    backgroundColor: colors.white,
   },
   content: {
     flex: 1,

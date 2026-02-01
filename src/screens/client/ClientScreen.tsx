@@ -1,8 +1,7 @@
-import { useNavigation, useFocusEffect } from '@react-navigation/native';
+import { useFocusEffect, useNavigation } from '@react-navigation/native';
 import { Plus, Search } from 'lucide-react-native';
 import React, { useCallback, useEffect, useRef, useState } from 'react';
 import {
-  ActivityIndicator,
   FlatList,
   StatusBar,
   StyleSheet,
@@ -16,6 +15,7 @@ import Toast from 'react-native-toast-message';
 import ClientCard from '../../components/clients/ClientCard';
 import ClientCardSkeleton from '../../components/skeleton/ClientCardSkeleton';
 import { searchCustomers } from '../../services/artistServices';
+import { colors } from '../../theme/colors';
 import { Client, CustomerResponse } from '../../types';
 import { generateColor, generateInitials } from '../../utils/utils';
 
@@ -149,7 +149,7 @@ const ClientScreen: React.FC<ClientScreenProps> = () => {
         {renderHeader()}
         {renderSearchBar()}
         <View style={styles.addButton}>
-          <Plus size={20} color="#8E2D8E" />
+          <Plus size={20} color={colors.primary} />
           <Text style={styles.addButtonText}>Tap Here to Add a New Client</Text>
         </View>
         <Text style={styles.clientCount}>Loading...</Text>
@@ -172,7 +172,7 @@ const ClientScreen: React.FC<ClientScreenProps> = () => {
       {renderHeader()}
       {renderSearchBar()}
       <TouchableOpacity style={styles.addButton} onPress={handleAddClient}>
-        <Plus size={20} color="#8E2D8E" />
+        <Plus size={20} color={colors.primary} />
         <Text style={styles.addButtonText}>Tap Here to Add a New Client</Text>
       </TouchableOpacity>
       <Text style={styles.clientCount}>
@@ -206,13 +206,13 @@ const styles = StyleSheet.create({
     paddingHorizontal: 16,
     paddingTop: 16,
     paddingBottom: 12,
-    backgroundColor: '#fff',
+    backgroundColor: colors.white,
   },
 
   title: {
     fontSize: 28,
     fontWeight: 'bold',
-    color: '#000000',
+    color: colors.black,
     marginBottom: 8,
   },
   subtitle: {
@@ -233,7 +233,7 @@ const styles = StyleSheet.create({
     gap: 8,
   },
   addButtonText: {
-    color: '#8E2D8E',
+    color: colors.primary,
     fontSize: 14,
     fontWeight: '700',
   },
@@ -256,12 +256,12 @@ const styles = StyleSheet.create({
     flex: 1,
     paddingVertical: 12,
     fontSize: 16,
-    color: '#000000',
+    color: colors.black,
   },
   clientCount: {
     fontSize: 14,
     paddingLeft: 16,
-    color: '#000000',
+    color: colors.black,
     fontWeight: '500',
   },
   listContent: {
@@ -287,7 +287,7 @@ const styles = StyleSheet.create({
   emptyStateTitle: {
     fontSize: 20,
     fontWeight: '600',
-    color: '#000000',
+    color: colors.black,
     marginBottom: 8,
   },
   emptyStateText: {

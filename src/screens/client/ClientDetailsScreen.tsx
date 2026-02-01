@@ -35,6 +35,7 @@ import {
 } from '../../services/artistServices';
 import { ClientDetail, ClientMetrics } from '../../types';
 import { RootStackParamList } from '../../types/navigation';
+import { colors } from '../../theme/colors';
 
 type ClientDetailsNavigationProp = NativeStackNavigationProp<
   RootStackParamList,
@@ -48,8 +49,7 @@ const ClientDetailsScreen: React.FC<ClientDetailsScreenProps> = () => {
   const navigation = useNavigation<ClientDetailsNavigationProp>();
   const route = useRoute<ClientDetailsRouteProp>();
   const { clientId } = route.params;
-
-  const [client, setClient] = useState<ClientDetail | null>(null);
+  const [client, setClient] = useState<ClientDetail | undefined>(undefined);
   const [loading, setLoading] = useState(true);
   const [metricsLoading, setMetricsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -150,14 +150,14 @@ const ClientDetailsScreen: React.FC<ClientDetailsScreenProps> = () => {
 
   const quickActions = [
     {
-      icon: <Calendar size={20} color="#8e2d8e" />,
+      icon: <Calendar size={20} color={colors.primary} />,
       title: 'View Appointment',
       onPress: () =>
         navigation.navigate('ClientAppointments', { clientId, client }),
       isDelete: false,
     },
     {
-      icon: <Send size={20} color="#8e2d8e" />,
+      icon: <Send size={20} color={colors.primary} />,
       title: 'Send Consent Form',
       onPress: () =>
         navigation.navigate('SendConsentForm', {
@@ -167,14 +167,14 @@ const ClientDetailsScreen: React.FC<ClientDetailsScreenProps> = () => {
       isDelete: false,
     },
     {
-      icon: <Clock size={20} color="#8e2d8e" />,
+      icon: <Clock size={20} color={colors.primary} />,
       title: 'Set Reminders',
       onPress: () =>
         navigation.navigate('ClientReminders', { clientId, client }),
       isDelete: false,
     },
     {
-      icon: <User size={20} color="#8e2d8e" />,
+      icon: <User size={20} color={colors.primary} />,
       title: 'View Notes',
       onPress: () => navigation.navigate('ClientNotes', { clientId, client }),
       isDelete: false,
@@ -191,7 +191,7 @@ const ClientDetailsScreen: React.FC<ClientDetailsScreenProps> = () => {
     return (
       <SafeAreaView style={styles.container}>
         <View style={styles.loadingContainer}>
-          <ActivityIndicator size="large" color="#8e2d8e" />
+          <ActivityIndicator size="large" color={colors.primary} />
         </View>
       </SafeAreaView>
     );
@@ -230,7 +230,7 @@ const ClientDetailsScreen: React.FC<ClientDetailsScreenProps> = () => {
               navigation.navigate('EditClient', { clientId, client: client! })
             }
           >
-            <Edit size={20} color="#8e2d8e" />
+            <Edit size={20} color={colors.primary} />
           </TouchableOpacity>
         }
       />
@@ -241,7 +241,7 @@ const ClientDetailsScreen: React.FC<ClientDetailsScreenProps> = () => {
               <View
                 style={[styles.metricCardWrapper, styles.metricPlaceholder]}
               >
-                <ActivityIndicator size="small" color="#8e2d8e" />
+                <ActivityIndicator size="small" color={colors.primary} />
               </View>
               <View
                 style={[styles.metricCardWrapper, styles.metricPlaceholder]}
@@ -256,7 +256,7 @@ const ClientDetailsScreen: React.FC<ClientDetailsScreenProps> = () => {
                   title="Pending Forms"
                   value={clientMetrics.pendingForms.toString()}
                   icon="file-text"
-                  color="#8e2d8e"
+                  color={colors.primary}
                 />
               </View>
               <View style={styles.metricCardWrapper}>
@@ -280,12 +280,12 @@ const ClientDetailsScreen: React.FC<ClientDetailsScreenProps> = () => {
                 style={styles.contactActionButton}
                 onPress={handleEmailPress}
               >
-                <Send size={16} color="#8e2d8e" />
+                <Send size={16} color={colors.primary} />
               </TouchableOpacity>
               <TouchableOpacity
                 onPress={() => handleCopyToClipboard(client.email, 'Email')}
               >
-                <Copy size={16} color="#8e2d8e" />
+                <Copy size={16} color={colors.primary} />
               </TouchableOpacity>
             </View>
 
@@ -302,7 +302,7 @@ const ClientDetailsScreen: React.FC<ClientDetailsScreenProps> = () => {
                 <TouchableOpacity
                   onPress={() => handleCopyToClipboard(client.phone!, 'Phone')}
                 >
-                  <Copy size={16} color="#8e2d8e" />
+                  <Copy size={16} color={colors.primary} />
                 </TouchableOpacity>
               </View>
             )}
@@ -374,13 +374,13 @@ const styles = StyleSheet.create({
     marginBottom: 16,
   },
   retryButton: {
-    backgroundColor: '#8e2d8e',
+    backgroundColor: colors.primary,
     paddingHorizontal: 24,
     paddingVertical: 12,
     borderRadius: 8,
   },
   retryButtonText: {
-    color: '#fff',
+    color: colors.white,
     fontSize: 16,
     fontWeight: '600',
   },
@@ -406,18 +406,18 @@ const styles = StyleSheet.create({
     gap: 8,
   },
   actionButtonText: {
-    color: '#8e2d8e',
+    color: colors.primary,
     fontSize: 14,
     fontWeight: '600',
   },
   clientName: {
     fontSize: 24,
     fontWeight: 'bold',
-    color: '#000000',
+    color: colors.black,
     flex: 1,
   },
   infoCard: {
-    backgroundColor: '#fff',
+    backgroundColor: colors.white,
     marginHorizontal: 16,
     marginTop: 16,
     borderRadius: 12,
@@ -435,7 +435,7 @@ const styles = StyleSheet.create({
   contactText: {
     flex: 1,
     fontSize: 16,
-    color: '#000000',
+    color: colors.black,
   },
   contactActionButton: {
     padding: 4,
@@ -450,7 +450,7 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   metricPlaceholder: {
-    backgroundColor: '#fff',
+    backgroundColor: colors.white,
     borderRadius: 12,
     padding: 24,
     justifyContent: 'center',
@@ -463,7 +463,7 @@ const styles = StyleSheet.create({
   sectionTitle: {
     fontSize: 20,
     fontWeight: 'bold',
-    color: '#000000',
+    color: colors.black,
     marginBottom: 16,
   },
   actionsList: {},
@@ -488,7 +488,7 @@ const styles = StyleSheet.create({
   quickActionText: {
     fontSize: 16,
     fontWeight: '600',
-    color: '#000000',
+    color: colors.black,
     flex: 1,
   },
   quickActionTextDelete: {

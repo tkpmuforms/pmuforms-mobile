@@ -28,7 +28,7 @@ const QuickActionCard: React.FC<QuickActionCardProps> = ({
 
   const renderIcon = () => {
     const iconSize = 18;
-    const iconColor = '#fff';
+    const iconColor = colors.white;
 
     switch (icon) {
       case 'user-plus':
@@ -71,7 +71,7 @@ const styles = StyleSheet.create({
     fontSize: 14,
     fontWeight: '500',
     lineHeight: 14,
-    color: '#000000',
+    color: colors.black,
     flex: 1,
   },
   iconContainer: {

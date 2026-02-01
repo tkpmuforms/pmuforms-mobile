@@ -2,6 +2,7 @@ import React from 'react';
 import { View, Text, StyleSheet, Modal, TouchableOpacity } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { CircleCheckBig } from 'lucide-react-native';
+import { colors } from '../../theme/colors';
 
 interface FormSentSuccessModalProps {
   visible: boolean;
@@ -25,7 +26,7 @@ const FormSentSuccessModal: React.FC<FormSentSuccessModalProps> = ({
           <View style={styles.modal}>
             <View style={styles.iconContainer}>
               <View style={styles.iconCircle}>
-                <CircleCheckBig size={48} color="#fff" />
+                <CircleCheckBig size={48} color={colors.white} />
               </View>
             </View>
 
@@ -76,7 +77,7 @@ const styles = StyleSheet.create({
     justifyContent: 'flex-end',
   },
   modal: {
-    backgroundColor: '#fff',
+    backgroundColor: colors.white,
     borderTopLeftRadius: 24,
     borderTopRightRadius: 24,
     paddingTop: 48,
@@ -99,17 +100,17 @@ const styles = StyleSheet.create({
   title: {
     fontSize: 22,
     fontWeight: '700',
-    color: '#000000',
+    color: colors.black,
     textAlign: 'center',
   },
   description: {
     fontSize: 14,
-    color: '#64748b',
+    color: colors.subtitleColor,
     textAlign: 'center',
     lineHeight: 22,
   },
   highlight: {
-    color: '#8e2d8e',
+    color: colors.primary,
     fontWeight: '600',
   },
   dashboardButton: {
@@ -120,7 +121,7 @@ const styles = StyleSheet.create({
     width: '100%',
   },
   dashboardButtonText: {
-    color: '#fff',
+    color: colors.white,
     fontSize: 16,
     fontWeight: '600',
   },
@@ -128,7 +129,7 @@ const styles = StyleSheet.create({
     paddingVertical: 8,
   },
   viewAppointmentsText: {
-    color: '#8e2d8e',
+    color: colors.primary,
     fontSize: 16,
     fontWeight: '600',
   },

@@ -19,6 +19,7 @@ import {
 import { Config } from 'react-native-config';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import FormSentSuccessModal from './FormSentSuccessModal';
+import { colors } from '../../theme/colors';
 
 interface PreviewAppointmentModalProps {
   visible: boolean;
@@ -143,7 +144,7 @@ const PreviewAppointmentModal: React.FC<PreviewAppointmentModalProps> = ({
     if (isLoadingForms) {
       return (
         <View style={styles.loadingContainer}>
-          <ActivityIndicator size="small" color="#8e2d8e" />
+          <ActivityIndicator size="small" color={colors.primary} />
         </View>
       );
     }
@@ -182,11 +183,11 @@ const PreviewAppointmentModal: React.FC<PreviewAppointmentModalProps> = ({
           <View style={styles.modal}>
             <View style={styles.header}>
               <TouchableOpacity style={styles.backButton} onPress={onClose}>
-                <ChevronLeft size={20} color="#000000" />
+                <ChevronLeft size={20} color={colors.black} />
               </TouchableOpacity>
               <Text style={styles.title}>Preview Appointment</Text>
               <TouchableOpacity style={styles.closeButton} onPress={onClose}>
-                <X size={20} color="#64748b" />
+                <X size={20} color={colors.subtitleColor} />
               </TouchableOpacity>
             </View>
 
@@ -211,7 +212,7 @@ const PreviewAppointmentModal: React.FC<PreviewAppointmentModalProps> = ({
                 <View style={styles.detailSection}>
                   <Text style={styles.detailLabel}>Appointment Date</Text>
                   <View style={styles.dateContent}>
-                    <Calendar size={16} color="#8e2d8e" />
+                    <Calendar size={16} color={colors.primary} />
                     <Text style={styles.detailValue}>
                       {formatAppointmentTime(appointmentDate)}
                     </Text>
@@ -253,7 +254,7 @@ const PreviewAppointmentModal: React.FC<PreviewAppointmentModalProps> = ({
               disabled={formsToSend.length === 0 || isBooking}
             >
               {isBooking ? (
-                <ActivityIndicator color="#fff" />
+                <ActivityIndicator color={colors.white} />
               ) : (
                 <Text style={styles.continueButtonText}>Continue</Text>
               )}
@@ -289,7 +290,7 @@ const styles = StyleSheet.create({
     justifyContent: 'flex-end',
   },
   modal: {
-    backgroundColor: '#fff',
+    backgroundColor: colors.white,
     borderTopLeftRadius: 20,
     borderTopRightRadius: 20,
     padding: 24,
@@ -307,7 +308,7 @@ const styles = StyleSheet.create({
   title: {
     fontSize: 20,
     fontWeight: '600',
-    color: '#000000',
+    color: colors.black,
     flex: 1,
     textAlign: 'center',
   },
@@ -329,7 +330,7 @@ const styles = StyleSheet.create({
   },
   detailLabel: {
     fontSize: 12,
-    color: '#64748b',
+    color: colors.subtitleColor,
     marginBottom: 8,
     fontWeight: '500',
   },
@@ -349,7 +350,7 @@ const styles = StyleSheet.create({
   avatarText: {
     fontSize: 14,
     fontWeight: '600',
-    color: '#8e2d8e',
+    color: colors.primary,
   },
   dateContent: {
     flexDirection: 'row',
@@ -358,7 +359,7 @@ const styles = StyleSheet.create({
   },
   detailValue: {
     fontSize: 14,
-    color: '#000000',
+    color: colors.black,
     fontWeight: '600',
   },
   divider: {
@@ -372,7 +373,7 @@ const styles = StyleSheet.create({
   sectionLabel: {
     fontSize: 14,
     fontWeight: '600',
-    color: '#000000',
+    color: colors.black,
     marginBottom: 12,
   },
   servicesList: {
@@ -385,7 +386,7 @@ const styles = StyleSheet.create({
   },
   bullet: {
     fontSize: 16,
-    color: '#8e2d8e',
+    color: colors.primary,
   },
   serviceText: {
     fontSize: 14,
@@ -401,7 +402,7 @@ const styles = StyleSheet.create({
   },
   noFormsText: {
     fontSize: 14,
-    color: '#64748b',
+    color: colors.subtitleColor,
   },
   formsList: {
     gap: 12,
@@ -419,11 +420,11 @@ const styles = StyleSheet.create({
   },
   formText: {
     fontSize: 14,
-    color: '#000000',
+    color: colors.black,
     flex: 1,
   },
   continueButton: {
-    backgroundColor: '#8E2D8E',
+    backgroundColor: colors.primary,
     paddingVertical: 16,
     borderRadius: 12,
     alignItems: 'center',
@@ -433,7 +434,7 @@ const styles = StyleSheet.create({
     opacity: 0.5,
   },
   continueButtonText: {
-    color: '#fff',
+    color: colors.white,
     fontSize: 14,
     fontWeight: '600',
   },

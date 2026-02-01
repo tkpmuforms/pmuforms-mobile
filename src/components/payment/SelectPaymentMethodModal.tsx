@@ -24,6 +24,7 @@ import {
   saveSubscriptionToStorage,
 } from '../../utils/subscriptionStorage';
 import { refreshAuthUser } from '../../utils/authUtils';
+import { colors } from '../../theme/colors';
 
 interface SelectPaymentMethodModalProps {
   visible: boolean;
@@ -184,7 +185,7 @@ const SelectPaymentMethodModal: React.FC<SelectPaymentMethodModalProps> = ({
           <View style={styles.header}>
             <Text style={styles.title}>Select a Payment Method</Text>
             <TouchableOpacity style={styles.closeButton} onPress={onClose}>
-              <X size={24} color="#000000" />
+              <X size={24} color={colors.black} />
             </TouchableOpacity>
           </View>
 
@@ -328,7 +329,7 @@ const styles = StyleSheet.create({
   title: {
     fontSize: 20,
     fontWeight: '600',
-    color: '#000000',
+    color: colors.black,
     flex: 1,
   },
   closeButton: {
@@ -336,7 +337,7 @@ const styles = StyleSheet.create({
   },
   subtitle: {
     fontSize: 14,
-    color: '#64748b',
+    color: colors.subtitleColor,
     marginBottom: 16,
   },
   errorContainer: {
@@ -361,10 +362,10 @@ const styles = StyleSheet.create({
   sectionTitle: {
     fontSize: 16,
     fontWeight: '600',
-    color: '#000000',
+    color: colors.black,
   },
   addCardLink: {
-    color: '#8e2d8e',
+    color: colors.primary,
     fontSize: 14,
     fontWeight: '500',
   },
@@ -374,12 +375,12 @@ const styles = StyleSheet.create({
   },
   noCardsText: {
     fontSize: 14,
-    color: '#64748b',
+    color: colors.subtitleColor,
     marginBottom: 16,
     textAlign: 'center',
   },
   addCardButton: {
-    backgroundColor: '#8e2d8e',
+    backgroundColor: colors.primary,
     paddingVertical: 12,
     paddingHorizontal: 24,
     borderRadius: 12,
@@ -443,19 +444,19 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: 'transparent',
     borderWidth: 1,
-    borderColor: '#e2e8f0',
+    borderColor: colors.borderColor,
     padding: 14,
     borderRadius: 12,
     alignItems: 'center',
   },
   cancelButtonText: {
-    color: '#64748b',
+    color: colors.subtitleColor,
     fontWeight: '500',
     fontSize: 16,
   },
   confirmButton: {
     flex: 1,
-    backgroundColor: '#8e2d8e',
+    backgroundColor: colors.primary,
     padding: 14,
     borderRadius: 12,
     alignItems: 'center',

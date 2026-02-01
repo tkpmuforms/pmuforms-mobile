@@ -1,4 +1,5 @@
 import { useNavigation, useRoute } from '@react-navigation/native';
+import { FileText } from 'lucide-react-native';
 import React, { useEffect, useState } from 'react';
 import {
   ActivityIndicator,
@@ -9,8 +10,8 @@ import {
   View,
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { Edit3, FileText } from 'lucide-react-native';
 import Toast from 'react-native-toast-message';
+import { SignatureIcon } from '../../../assets/svg';
 import FilledFormCard from '../../components/clients/FilledFormCard';
 import ScreenHeader from '../../components/layout/ScreenHeader';
 import {
@@ -18,9 +19,8 @@ import {
   getCustomerById,
   getFilledFormsByAppointment,
 } from '../../services/artistServices';
-import { FilledForm } from '../../types';
 import { colors } from '../../theme/colors';
-import { SignatureIcon } from '../../../assets/svg';
+import { FilledForm } from '../../types';
 
 interface RouteParams {
   clientId: string;
@@ -234,7 +234,7 @@ const styles = StyleSheet.create({
   emptyStateTitle: {
     fontSize: 20,
     fontWeight: '600',
-    color: '#000000',
+    color: colors.black,
     marginTop: 16,
     marginBottom: 8,
   },

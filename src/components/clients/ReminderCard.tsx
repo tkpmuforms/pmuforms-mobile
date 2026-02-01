@@ -2,6 +2,7 @@ import React from 'react';
 import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { Reminder } from '../../types';
 import { CheckInIcon, FollowUpIcon } from '../../../assets/svg';
+import { colors } from '../../theme/colors';
 
 interface ReminderCardProps {
   reminder: Reminder;
@@ -75,7 +76,7 @@ const ReminderCard: React.FC<ReminderCardProps> = ({
 
 const styles = StyleSheet.create({
   card: {
-    backgroundColor: '#fff',
+    backgroundColor: colors.white,
     borderRadius: 16,
     borderWidth: 1,
     borderColor: '#E5E7EB',
@@ -129,13 +130,13 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   editButtonText: {
-    color: '#fff',
+    color: colors.white,
     fontSize: 15,
     fontWeight: '600',
   },
   deleteButton: {
     flex: 1,
-    backgroundColor: '#0000000D',
+    backgroundColor: 'colors.black0D',
     paddingVertical: 12,
     borderRadius: 10,
     alignItems: 'center',
@@ -143,7 +144,7 @@ const styles = StyleSheet.create({
     borderColor: '#E5E7EB',
   },
   deleteButtonText: {
-    color: '#00000080',
+    color: colors.black,
     fontSize: 15,
     fontWeight: '600',
   },

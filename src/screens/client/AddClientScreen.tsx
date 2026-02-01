@@ -16,6 +16,7 @@ import { useNavigation } from '@react-navigation/native';
 import ScreenHeader from '../../components/layout/ScreenHeader';
 import Toast from 'react-native-toast-message';
 import { createClient } from '../../services/artistServices';
+import { colors } from '../../theme/colors';
 
 const AddClientScreen: React.FC = () => {
   const navigation = useNavigation();
@@ -181,27 +182,27 @@ const styles = StyleSheet.create({
   label: {
     fontSize: 14,
     fontWeight: '500',
-    color: '#000000',
+    color: colors.black,
     marginBottom: 8,
   },
   input: {
     paddingVertical: 14,
     paddingHorizontal: 16,
     borderWidth: 1,
-    borderColor: '#e2e8f0',
+    borderColor: colors.borderColor,
     borderRadius: 12,
     fontSize: 16,
-    color: '#000000',
+    color: colors.black,
     backgroundColor: '#BCBBC133',
   },
   footer: {
     padding: 16,
-    backgroundColor: '#fff',
+    backgroundColor: colors.white,
     borderTopWidth: 1,
     borderTopColor: '#E5E5E5',
   },
   submitButton: {
-    backgroundColor: '#8e2d8e',
+    backgroundColor: colors.primary,
     paddingVertical: 16,
     borderRadius: 12,
     alignItems: 'center',
@@ -211,7 +212,7 @@ const styles = StyleSheet.create({
     opacity: 0.6,
   },
   submitButtonText: {
-    color: '#fff',
+    color: colors.white,
     fontSize: 16,
     fontWeight: '600',
   },

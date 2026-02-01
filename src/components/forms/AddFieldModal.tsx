@@ -16,6 +16,7 @@ import {
   Calendar,
 } from 'lucide-react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
+import { colors } from '../../theme/colors';
 
 interface FieldType {
   type: string;
@@ -38,31 +39,31 @@ const AddFieldModal: React.FC<AddFieldModalProps> = ({
   const fieldTypes: FieldType[] = [
     {
       type: 'paragraph',
-      icon: <FileText size={28} color="#8e2d8e" />,
+      icon: <FileText size={28} color={colors.primary} />,
       title: 'Paragraph Only',
       description: 'For texts sections without input',
     },
     {
       type: 'text',
-      icon: <Type size={28} color="#8e2d8e" />,
+      icon: <Type size={28} color={colors.primary} />,
       title: 'Text Field',
       description: 'For inputs like name, occupation e.t.c',
     },
     {
       type: 'checkbox',
-      icon: <CheckSquare size={28} color="#8e2d8e" />,
+      icon: <CheckSquare size={28} color={colors.primary} />,
       title: 'Checkbox',
       description: 'For Yes/No questions',
     },
     {
       type: 'numberOfField',
-      icon: <Hash size={28} color="#8e2d8e" />,
+      icon: <Hash size={28} color={colors.primary} />,
       title: 'Number',
       description: 'For Numeric input like age',
     },
     {
       type: 'date',
-      icon: <Calendar size={28} color="#8e2d8e" />,
+      icon: <Calendar size={28} color={colors.primary} />,
       title: 'Date',
       description: 'For Date input like birth date',
     },
@@ -84,7 +85,7 @@ const AddFieldModal: React.FC<AddFieldModalProps> = ({
         <View style={styles.overlay}>
           <View style={styles.modal}>
             <TouchableOpacity style={styles.closeButton} onPress={onClose}>
-              <X size={24} color="#64748b" />
+              <X size={24} color={colors.subtitleColor} />
             </TouchableOpacity>
 
             <ScrollView
@@ -126,7 +127,7 @@ const styles = StyleSheet.create({
     justifyContent: 'flex-end',
   },
   modal: {
-    backgroundColor: '#fff',
+    backgroundColor: colors.white,
     borderTopLeftRadius: 24,
     borderTopRightRadius: 24,
     maxHeight: '80%',
@@ -146,7 +147,7 @@ const styles = StyleSheet.create({
   title: {
     fontSize: 24,
     fontWeight: '600',
-    color: '#000000',
+    color: colors.black,
     marginBottom: 24,
     textAlign: 'center',
   },
@@ -154,12 +155,12 @@ const styles = StyleSheet.create({
     gap: 16,
   },
   fieldCard: {
-    backgroundColor: '#fff',
+    backgroundColor: colors.white,
     borderRadius: 16,
     padding: 24,
     alignItems: 'center',
     borderWidth: 1,
-    borderColor: '#e2e8f0',
+    borderColor: colors.borderColor,
     shadowColor: '#000',
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.05,

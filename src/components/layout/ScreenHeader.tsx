@@ -19,7 +19,7 @@ const ScreenHeader: React.FC<ScreenHeaderProps> = ({
   return (
     <View style={styles.header}>
       <TouchableOpacity style={styles.backButton} onPress={onBack}>
-        <ArrowLeft size={24} color="#000000" />
+        <ArrowLeft size={24} color=colors.black />
       </TouchableOpacity>
 
       <View style={styles.headerCenter}>
@@ -72,7 +72,7 @@ const styles = StyleSheet.create({
   },
   subtitle: {
     fontSize: 13,
-    color: '#64748b',
+    color: colors.subtitleColor,
     marginTop: 2,
     textAlign: 'center',
   },

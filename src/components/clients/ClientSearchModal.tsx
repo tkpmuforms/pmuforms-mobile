@@ -15,6 +15,7 @@ import { searchCustomers } from '../../services/artistServices';
 import { CustomerResponse } from '../../types';
 import { generateInitials } from '../../utils/utils';
 import { SafeAreaView } from 'react-native-safe-area-context';
+import { colors } from '../../theme/colors';
 
 interface ClientSearchModalProps {
   visible: boolean;
@@ -134,7 +135,11 @@ const ClientSearchModal: React.FC<ClientSearchModalProps> = ({
         <View style={styles.overlay} onTouchEnd={onClose}>
           <View style={styles.modal}>
             <View style={styles.searchContainer}>
-              <Search size={20} color="#64748b" style={styles.searchIcon} />
+              <Search
+                size={20}
+                color={colors.subtitleColor}
+                style={styles.searchIcon}
+              />
               <TextInput
                 style={styles.searchInput}
                 placeholder="search name, email, phone number"
@@ -150,7 +155,7 @@ const ClientSearchModal: React.FC<ClientSearchModalProps> = ({
 
               {isSearching ? (
                 <View style={styles.loadingState}>
-                  <ActivityIndicator size="small" color="#8e2d8e" />
+                  <ActivityIndicator size="small" color={colors.primary} />
                   <Text style={styles.loadingText}>Searching...</Text>
                 </View>
               ) : displayItems.length > 0 ? (
@@ -211,7 +216,7 @@ const styles = StyleSheet.create({
     justifyContent: 'flex-end',
   },
   modal: {
-    backgroundColor: '#fff',
+    backgroundColor: colors.white,
     borderTopLeftRadius: 20,
     borderTopRightRadius: 20,
     padding: 24,
@@ -238,10 +243,10 @@ const styles = StyleSheet.create({
     paddingLeft: 48,
     paddingRight: 16,
     borderWidth: 1,
-    borderColor: '#e2e8f0',
+    borderColor: colors.borderColor,
     borderRadius: 12,
     fontSize: 14,
-    color: '#000000',
+    color: colors.black,
     backgroundColor: '#BCBBC133',
   },
   resultsContainer: {
@@ -250,7 +255,7 @@ const styles = StyleSheet.create({
   sectionTitle: {
     fontSize: 14,
     fontWeight: '500',
-    color: '#64748b',
+    color: colors.subtitleColor,
     marginBottom: 16,
     textTransform: 'uppercase',
     letterSpacing: 0.5,
@@ -270,14 +275,14 @@ const styles = StyleSheet.create({
     width: 40,
     height: 40,
     borderRadius: 20,
-    backgroundColor: '#8e2d8e',
+    backgroundColor: colors.primary,
     justifyContent: 'center',
     alignItems: 'center',
   },
   resultInitials: {
     fontSize: 14,
     fontWeight: '600',
-    color: '#fff',
+    color: colors.white,
   },
   resultInfo: {
     flex: 1,
@@ -286,12 +291,12 @@ const styles = StyleSheet.create({
   resultName: {
     fontSize: 14,
     fontWeight: '500',
-    color: '#000000',
+    color: colors.black,
     marginBottom: 2,
   },
   resultEmail: {
     fontSize: 12,
-    color: '#64748b',
+    color: colors.subtitleColor,
   },
   loadingState: {
     paddingVertical: 40,
@@ -300,7 +305,7 @@ const styles = StyleSheet.create({
   },
   loadingText: {
     fontSize: 14,
-    color: '#64748b',
+    color: colors.subtitleColor,
   },
   emptyState: {
     paddingVertical: 40,
@@ -308,7 +313,7 @@ const styles = StyleSheet.create({
   },
   emptyText: {
     fontSize: 14,
-    color: '#64748b',
+    color: colors.subtitleColor,
     fontStyle: 'italic',
     textAlign: 'center',
   },

@@ -124,6 +124,7 @@ const DashboardScreen = ({ navigation }: any) => {
     } catch (error) {
       setLoading(false);
       setMetricsLoading(false);
+      console.error('Error fetching dashboard data:', error);
     }
   };
 
@@ -369,7 +370,7 @@ const DashboardScreen = ({ navigation }: any) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#fff',
+    backgroundColor: colors.white,
   },
   scrollView: {
     flex: 1,
@@ -388,12 +389,12 @@ const styles = StyleSheet.create({
   welcomeTitle: {
     fontSize: 22,
     fontWeight: '700',
-    color: '#000000',
+    color: colors.black,
     marginBottom: 2,
   },
   welcomeSubtitle: {
     fontSize: 12,
-    color: '#64748b',
+    color: colors.subtitleColor,
   },
   setupBanner: {
     backgroundColor: '#f3e8ff',
@@ -411,11 +412,11 @@ const styles = StyleSheet.create({
   setupTitle: {
     fontSize: 14,
     fontWeight: '600',
-    color: '#000000',
+    color: colors.black,
   },
   setupSubtitle: {
     fontSize: 12,
-    color: '#64748b',
+    color: colors.subtitleColor,
     lineHeight: 16,
   },
   setupButton: {
@@ -426,7 +427,7 @@ const styles = StyleSheet.create({
     alignSelf: 'flex-start',
   },
   setupButtonText: {
-    color: '#fff',
+    color: colors.white,
     fontSize: 12,
     fontWeight: '600',
   },
@@ -444,7 +445,7 @@ const styles = StyleSheet.create({
     fontSize: 12,
     fontFamily: 'RedditSans-Regular',
     fontWeight: '400',
-    color: '#000000',
+    color: colors.black,
     letterSpacing: -0.12,
     lineHeight: 12,
     marginBottom: 4,
@@ -490,7 +491,7 @@ const styles = StyleSheet.create({
   },
   emptyText: {
     fontSize: 14,
-    color: '#64748b',
+    color: colors.subtitleColor,
     textAlign: 'center',
     paddingVertical: 20,
   },

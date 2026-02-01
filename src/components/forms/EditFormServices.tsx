@@ -148,7 +148,7 @@ const styles = StyleSheet.create({
     justifyContent: 'flex-end',
   },
   modal: {
-    backgroundColor: '#fff',
+    backgroundColor: colors.white,
     borderTopLeftRadius: 16,
     borderTopRightRadius: 16,
     maxHeight: '85%',
@@ -256,7 +256,7 @@ const styles = StyleSheet.create({
     opacity: 0.6,
   },
   continueButtonText: {
-    color: '#fff',
+    color: colors.white,
     fontSize: 16,
     fontWeight: '600',
   },

@@ -24,6 +24,7 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import Toast from 'react-native-toast-message';
 import { RootStackParamList } from '../../types/navigation';
 import { createReminder, updateReminder } from '../../services/artistServices';
+import { colors } from '../../theme/colors';
 
 type AddReminderRouteProp = RouteProp<RootStackParamList, 'AddReminder'>;
 
@@ -38,10 +39,14 @@ const AddReminderScreen: React.FC = () => {
     reminder?.type || 'check-in',
   );
   const [date, setDate] = useState(
-    reminder ? new Date(reminder.sendAt) : new Date(Date.now() + 24 * 60 * 60 * 1000),
+    reminder
+      ? new Date(reminder.sendAt)
+      : new Date(Date.now() + 24 * 60 * 60 * 1000),
   );
   const [time, setTime] = useState(
-    reminder ? new Date(reminder.sendAt) : new Date(Date.now() + 24 * 60 * 60 * 1000),
+    reminder
+      ? new Date(reminder.sendAt)
+      : new Date(Date.now() + 24 * 60 * 60 * 1000),
   );
   const [showDatePicker, setShowDatePicker] = useState(false);
   const [showTimePicker, setShowTimePicker] = useState(false);
@@ -86,7 +91,9 @@ const AddReminderScreen: React.FC = () => {
         Toast.show({
           type: 'success',
           text1: 'Success',
-          text2: isEditing ? 'Reminder updated successfully' : 'Reminder set successfully',
+          text2: isEditing
+            ? 'Reminder updated successfully'
+            : 'Reminder set successfully',
         });
         navigation.goBack();
       } catch (error) {
@@ -94,7 +101,9 @@ const AddReminderScreen: React.FC = () => {
         Toast.show({
           type: 'error',
           text1: 'Error',
-          text2: isEditing ? 'Failed to update reminder' : 'Failed to set reminder',
+          text2: isEditing
+            ? 'Failed to update reminder'
+            : 'Failed to set reminder',
         });
       } finally {
         setIsSaving(false);
@@ -151,7 +160,7 @@ const AddReminderScreen: React.FC = () => {
                   <Text style={styles.pickerButtonText}>
                     {reminderType === 'check-in' ? 'Check-in' : 'Follow-up'}
                   </Text>
-                  <ChevronDown size={16} color="#64748b" />
+                  <ChevronDown size={16} color={colors.subtitleColor} />
                 </TouchableOpacity>
                 {showTypePicker && (
                   <View style={styles.typeOptions}>
@@ -222,7 +231,7 @@ const AddReminderScreen: React.FC = () => {
                     style={styles.pickerButton}
                     onPress={() => setShowDatePicker(true)}
                   >
-                    <CalendarIcon size={16} color="#64748b" />
+                    <CalendarIcon size={16} color={colors.subtitleColor} />
                     <Text style={styles.pickerButtonText}>
                       {formatDate(date)}
                     </Text>
@@ -235,7 +244,7 @@ const AddReminderScreen: React.FC = () => {
                     style={styles.pickerButton}
                     onPress={() => setShowTimePicker(true)}
                   >
-                    <ClockIcon size={16} color="#64748b" />
+                    <ClockIcon size={16} color={colors.subtitleColor} />
                     <Text style={styles.pickerButtonText}>
                       {formatTime(time)}
                     </Text>
@@ -286,9 +295,11 @@ const AddReminderScreen: React.FC = () => {
                 disabled={!note.trim() || isSaving}
               >
                 {isSaving ? (
-                  <ActivityIndicator color="#fff" />
+                  <ActivityIndicator color={colors.white} />
                 ) : (
-                  <Text style={styles.saveButtonText}>{isEditing ? 'Update Reminder' : 'Set Reminder'}</Text>
+                  <Text style={styles.saveButtonText}>
+                    {isEditing ? 'Update Reminder' : 'Set Reminder'}
+                  </Text>
                 )}
               </TouchableOpacity>
             </View>
@@ -337,10 +348,10 @@ const styles = StyleSheet.create({
     paddingVertical: 12,
     paddingHorizontal: 16,
     borderWidth: 1,
-    borderColor: '#e2e8f0',
+    borderColor: colors.borderColor,
     borderRadius: 12,
     fontSize: 14,
-    color: '#000000',
+    color: colors.black,
     backgroundColor: '#BCBBC133',
     minHeight: 100,
   },
@@ -350,49 +361,49 @@ const styles = StyleSheet.create({
     paddingVertical: 12,
     paddingHorizontal: 16,
     borderWidth: 1,
-    borderColor: '#e2e8f0',
+    borderColor: colors.borderColor,
     borderRadius: 12,
     backgroundColor: '#BCBBC133',
     gap: 8,
   },
   pickerButtonText: {
     fontSize: 14,
-    color: '#000000',
+    color: colors.black,
     flex: 1,
   },
   typeOptions: {
     marginTop: 8,
     borderWidth: 1,
-    borderColor: '#e2e8f0',
+    borderColor: colors.borderColor,
     borderRadius: 12,
     overflow: 'hidden',
-    backgroundColor: '#fff',
+    backgroundColor: colors.white,
   },
   typeOption: {
     paddingVertical: 12,
     paddingHorizontal: 16,
     borderBottomWidth: 1,
-    borderBottomColor: '#e2e8f0',
+    borderBottomColor: colors.borderColor,
   },
   typeOptionSelected: {
     backgroundColor: '#F8F5F8',
   },
   typeOptionText: {
     fontSize: 14,
-    color: '#64748b',
+    color: colors.subtitleColor,
   },
   typeOptionTextSelected: {
-    color: '#8e2d8e',
+    color: colors.primary,
     fontWeight: '600',
   },
   footer: {
     padding: 16,
-    backgroundColor: '#fff',
+    backgroundColor: colors.white,
     borderTopWidth: 1,
     borderTopColor: '#E5E5E5',
   },
   saveButton: {
-    backgroundColor: '#8e2d8e',
+    backgroundColor: colors.primary,
     paddingVertical: 16,
     borderRadius: 12,
     alignItems: 'center',
@@ -401,7 +412,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#94a3b8',
   },
   saveButtonText: {
-    color: '#fff',
+    color: colors.white,
     fontSize: 16,
     fontWeight: '600',
   },

@@ -76,7 +76,7 @@ const AuthenticatedTabs = () => {
         tabBarActiveTintColor: colors.primary,
         tabBarInactiveTintColor: colors.textLight,
         tabBarStyle: {
-          backgroundColor: '#fff',
+          backgroundColor: colors.white,
           borderTopWidth: 1,
           borderTopColor: colors.border,
           paddingBottom: 25,
@@ -182,7 +182,7 @@ const RouteGuard = () => {
   if (loading || checkingOnboarding) {
     return (
       <View style={styles.loadingContainer}>
-        <ActivityIndicator size="large" color="#8e2d8e" />
+        <ActivityIndicator size="large" color={colors.primary} />
       </View>
     );
   }
@@ -219,7 +219,7 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: '#fff',
+    backgroundColor: colors.white,
   },
 });
 

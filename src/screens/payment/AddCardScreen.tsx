@@ -16,6 +16,7 @@ import {
 import { SafeAreaView } from 'react-native-safe-area-context';
 import ScreenHeader from '../../components/layout/ScreenHeader';
 import { RootStackParamList } from '../../types/navigation';
+import { colors } from '../../theme/colors';
 
 type AddCardRouteProp = RouteProp<RootStackParamList, 'AddCard'>;
 
@@ -216,7 +217,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 16,
     paddingTop: 16,
     paddingBottom: 16,
-    backgroundColor: '#fff',
+    backgroundColor: colors.white,
     borderBottomWidth: 1,
     borderBottomColor: '#E5E5E5',
     gap: 12,
@@ -230,12 +231,12 @@ const styles = StyleSheet.create({
   title: {
     fontSize: 18,
     fontWeight: '700',
-    color: '#000000',
+    color: colors.black,
     marginBottom: 4,
   },
   subtitle: {
     fontSize: 14,
-    color: '#64748b',
+    color: colors.subtitleColor,
   },
   scrollView: {
     flex: 1,
@@ -270,7 +271,7 @@ const styles = StyleSheet.create({
     borderColor: '#e5e7eb',
     borderRadius: 12,
     fontSize: 16,
-    color: '#000000',
+    color: colors.black,
     backgroundColor: '#BCBBC133',
   },
   row: {
@@ -282,7 +283,7 @@ const styles = StyleSheet.create({
   },
   footer: {
     padding: 16,
-    backgroundColor: '#fff',
+    backgroundColor: colors.white,
     borderTopWidth: 1,
     borderTopColor: '#E5E5E5',
   },
@@ -294,19 +295,19 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: 'transparent',
     borderWidth: 1,
-    borderColor: '#e2e8f0',
+    borderColor: colors.borderColor,
     padding: 14,
     borderRadius: 12,
     alignItems: 'center',
   },
   cancelButtonText: {
-    color: '#64748b',
+    color: colors.subtitleColor,
     fontWeight: '500',
     fontSize: 16,
   },
   confirmButton: {
     flex: 1,
-    backgroundColor: '#8e2d8e',
+    backgroundColor: colors.primary,
     padding: 14,
     borderRadius: 12,
     alignItems: 'center',

@@ -11,6 +11,7 @@ import {
 import { X } from 'lucide-react-native';
 import SelectPaymentMethodModal from '../payment/SelectPaymentMethodModal';
 import { Config } from 'react-native-config';
+import { colors } from '../../theme/colors';
 
 interface SubscriptionModalProps {
   visible: boolean;
@@ -107,7 +108,7 @@ const SubscriptionModal: React.FC<SubscriptionModalProps> = ({
           <Pressable style={styles.backdrop} onPress={onClose} />
           <View style={styles.modalContent}>
             <TouchableOpacity style={styles.closeButton} onPress={onClose}>
-              <X size={20} color="#64748b" />
+              <X size={20} color={colors.subtitleColor} />
             </TouchableOpacity>
 
             <ScrollView showsVerticalScrollIndicator={false}>
@@ -256,7 +257,7 @@ const styles = StyleSheet.create({
     marginBottom: 6,
   },
   logo: {
-    backgroundColor: '#8e2d8e',
+    backgroundColor: colors.primary,
     paddingVertical: 6,
     paddingHorizontal: 10,
     borderRadius: 5,
@@ -271,12 +272,12 @@ const styles = StyleSheet.create({
   title: {
     fontSize: 16,
     fontWeight: '600',
-    color: '#000000',
+    color: colors.black,
     marginVertical: 6,
     textAlign: 'center',
   },
   subtitle: {
-    color: '#64748b',
+    color: colors.subtitleColor,
     fontSize: 12,
     textAlign: 'center',
     lineHeight: 16,
@@ -287,7 +288,7 @@ const styles = StyleSheet.create({
   sectionTitle: {
     fontSize: 10,
     fontWeight: '600',
-    color: '#64748b',
+    color: colors.subtitleColor,
     textAlign: 'center',
     marginBottom: 10,
     letterSpacing: 0.5,
@@ -295,20 +296,20 @@ const styles = StyleSheet.create({
   pricingPlan: {
     position: 'relative',
     borderWidth: 2,
-    borderColor: '#e2e8f0',
+    borderColor: colors.borderColor,
     borderRadius: 10,
     padding: 10,
     marginBottom: 8,
   },
   pricingPlanPopular: {
-    borderColor: '#8e2d8e',
+    borderColor: colors.primary,
     backgroundColor: '#faf5ff',
   },
   badge: {
     position: 'absolute',
     top: 8,
     left: 8,
-    backgroundColor: '#8e2d8e',
+    backgroundColor: colors.primary,
     paddingVertical: 2,
     paddingHorizontal: 6,
     borderRadius: 4,
@@ -322,7 +323,7 @@ const styles = StyleSheet.create({
     position: 'absolute',
     top: 8,
     right: 8,
-    backgroundColor: '#8e2d8e',
+    backgroundColor: colors.primary,
     paddingVertical: 2,
     paddingHorizontal: 6,
     borderRadius: 4,
@@ -336,7 +337,7 @@ const styles = StyleSheet.create({
     position: 'absolute',
     top: -8,
     left: 16,
-    backgroundColor: '#8e2d8e',
+    backgroundColor: colors.primary,
     paddingVertical: 4,
     paddingHorizontal: 12,
     borderRadius: 12,
@@ -350,7 +351,7 @@ const styles = StyleSheet.create({
     position: 'absolute',
     top: 8,
     right: 8,
-    backgroundColor: '#8e2d8e',
+    backgroundColor: colors.primary,
     paddingVertical: 2,
     paddingHorizontal: 6,
     borderRadius: 4,
@@ -363,7 +364,7 @@ const styles = StyleSheet.create({
   planName: {
     fontSize: 13,
     fontWeight: '700',
-    color: '#000000',
+    color: colors.black,
     marginBottom: 4,
     marginTop: 18,
   },
@@ -379,20 +380,20 @@ const styles = StyleSheet.create({
   priceAmount: {
     fontSize: 20,
     fontWeight: '700',
-    color: '#000000',
+    color: colors.black,
   },
   pricePeriod: {
     fontSize: 11,
-    color: '#64748b',
+    color: colors.subtitleColor,
     marginLeft: 2,
   },
   planSubtitle: {
     fontSize: 11,
-    color: '#64748b',
+    color: colors.subtitleColor,
   },
   specialOfferBadge: {
     alignSelf: 'flex-start',
-    backgroundColor: '#8e2d8e',
+    backgroundColor: colors.primary,
     paddingVertical: 2,
     paddingHorizontal: 8,
     borderRadius: 4,
@@ -410,13 +411,13 @@ const styles = StyleSheet.create({
     width: '100%',
     backgroundColor: 'transparent',
     borderWidth: 1,
-    borderColor: '#e2e8f0',
+    borderColor: colors.borderColor,
     padding: 10,
     borderRadius: 8,
     alignItems: 'center',
   },
   restoreButtonText: {
-    color: '#64748b',
+    color: colors.subtitleColor,
     fontWeight: '500',
     fontSize: 13,
   },

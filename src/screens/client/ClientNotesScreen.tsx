@@ -25,6 +25,7 @@ import {
   deleteCustomerNote,
 } from '../../services/artistServices';
 import ScreenHeader from '../../components/layout/ScreenHeader';
+import { colors } from '../../theme/colors';
 
 interface ClientNotesScreenProps {}
 
@@ -199,7 +200,7 @@ const ClientNotesScreen: React.FC<ClientNotesScreenProps> = () => {
         onBack={() => navigation.goBack()}
         rightComponent={
           <TouchableOpacity style={styles.addButton} onPress={handleAddNote}>
-            <Plus size={20} color="#fff" />
+            <Plus size={20} color={colors.white} />
             <Text style={styles.addButtonText}>Add Note</Text>
           </TouchableOpacity>
         }
@@ -220,7 +221,7 @@ const ClientNotesScreen: React.FC<ClientNotesScreenProps> = () => {
     return (
       <SafeAreaView style={styles.container}>
         <View style={styles.loadingContainer}>
-          <ActivityIndicator size="large" color="#8e2d8e" />
+          <ActivityIndicator size="large" color={colors.primary} />
         </View>
       </SafeAreaView>
     );
@@ -272,7 +273,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   header: {
-    backgroundColor: '#fff',
+    backgroundColor: colors.white,
     paddingHorizontal: 16,
     paddingVertical: 16,
     borderBottomWidth: 1,
@@ -293,7 +294,7 @@ const styles = StyleSheet.create({
   headerTitle: {
     fontSize: 24,
     fontWeight: 'bold',
-    color: '#000000',
+    color: colors.black,
     marginBottom: 4,
   },
   headerSubtitle: {
@@ -311,7 +312,7 @@ const styles = StyleSheet.create({
     gap: 8,
   },
   addButtonText: {
-    color: '#8E2D8E',
+    color: colors.primary,
     fontSize: 16,
     fontWeight: '600',
   },
@@ -331,7 +332,7 @@ const styles = StyleSheet.create({
   emptyStateTitle: {
     fontSize: 20,
     fontWeight: '600',
-    color: '#000000',
+    color: colors.black,
     marginBottom: 8,
   },
   emptyStateText: {

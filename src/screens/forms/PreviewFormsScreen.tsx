@@ -97,7 +97,7 @@ const PreviewFormsScreen = ({ route, navigation }: any) => {
   if (loading) {
     return (
       <View style={styles.loadingContainer}>
-        <ActivityIndicator size="large" color="#8e2d8e" />
+        <ActivityIndicator size="large" color={colors.primary} />
       </View>
     );
   }
@@ -193,13 +193,13 @@ const PreviewFormsScreen = ({ route, navigation }: any) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#fff',
+    backgroundColor: colors.white,
   },
   loadingContainer: {
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: '#fff',
+    backgroundColor: colors.white,
   },
   headerActions: {
     flexDirection: 'row',
@@ -277,13 +277,13 @@ const styles = StyleSheet.create({
     marginBottom: 20,
   },
   backButton: {
-    backgroundColor: '#8e2d8e',
+    backgroundColor: colors.primary,
     paddingVertical: 12,
     paddingHorizontal: 24,
     borderRadius: 12,
   },
   backButtonText: {
-    color: '#fff',
+    color: colors.white,
     fontSize: 16,
     fontWeight: '600',
   },

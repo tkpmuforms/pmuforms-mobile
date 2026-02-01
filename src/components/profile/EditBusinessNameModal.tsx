@@ -14,6 +14,7 @@ import { useDispatch } from 'react-redux';
 import useAuth from '../../hooks/useAuth';
 import { setUser } from '../../redux/auth';
 import { getAuthMe, updateBusinessName } from '../../services/artistServices';
+import { colors } from '../../theme/colors';
 
 interface EditBusinessNameModalProps {
   visible: boolean;
@@ -68,7 +69,7 @@ const EditBusinessNameModal: React.FC<EditBusinessNameModalProps> = ({
         <View style={styles.overlay}>
           <View style={styles.modal}>
             <TouchableOpacity style={styles.closeButton} onPress={onClose}>
-              <X size={20} color="#64748b" />
+              <X size={20} color={colors.subtitleColor} />
             </TouchableOpacity>
 
             <Text style={styles.title}>Edit Business Name</Text>
@@ -90,9 +91,9 @@ const EditBusinessNameModal: React.FC<EditBusinessNameModalProps> = ({
                     onPress={() => setShowPassword(!showPassword)}
                   >
                     {showPassword ? (
-                      <EyeOff size={16} color="#64748b" />
+                      <EyeOff size={16} color={colors.subtitleColor} />
                     ) : (
-                      <Eye size={16} color="#64748b" />
+                      <Eye size={16} color={colors.subtitleColor} />
                     )}
                   </TouchableOpacity>
                 </View>
@@ -119,7 +120,7 @@ const styles = StyleSheet.create({
     justifyContent: 'flex-end',
   },
   modal: {
-    backgroundColor: '#fff',
+    backgroundColor: colors.white,
     borderTopLeftRadius: 20,
     borderTopRightRadius: 20,
     padding: 32,
@@ -137,7 +138,7 @@ const styles = StyleSheet.create({
   title: {
     fontSize: 24,
     fontWeight: '600',
-    color: '#000000',
+    color: colors.black,
     marginBottom: 24,
     textAlign: 'center',
   },
@@ -162,10 +163,10 @@ const styles = StyleSheet.create({
     paddingHorizontal: 16,
     paddingRight: 48,
     borderWidth: 1,
-    borderColor: '#e2e8f0',
+    borderColor: colors.borderColor,
     borderRadius: 12,
     fontSize: 14,
-    color: '#000000',
+    color: colors.black,
     backgroundColor: '#f8fafc',
   },
   iconButton: {
@@ -177,13 +178,13 @@ const styles = StyleSheet.create({
     borderRadius: 4,
   },
   saveButton: {
-    backgroundColor: '#8e2d8e',
+    backgroundColor: colors.primary,
     paddingVertical: 16,
     borderRadius: 12,
     alignItems: 'center',
   },
   saveButtonText: {
-    color: '#fff',
+    color: colors.white,
     fontSize: 14,
     fontWeight: '600',
   },

@@ -124,7 +124,7 @@ const SignatureModal: React.FC<SignatureModalProps> = ({
         <Path
           key={pathIndex}
           d={pathData}
-          stroke="#000000"
+          stroke={colors.text}
           strokeWidth={2}
           fill="none"
           strokeLinecap="round"

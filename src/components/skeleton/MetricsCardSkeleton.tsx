@@ -18,7 +18,7 @@ const MetricsCardSkeleton: React.FC = () => {
 
 const styles = StyleSheet.create({
   card: {
-    backgroundColor: '#fff',
+    backgroundColor: colors.white,
     borderRadius: 16,
     padding: 16,
     shadowColor: '#000',

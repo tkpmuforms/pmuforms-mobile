@@ -19,6 +19,7 @@ import {
 import { launchImageLibrary } from 'react-native-image-picker';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { RootStackParamList } from '../../types/navigation';
+import { colors } from '../../theme/colors';
 
 type AddNoteRouteProp = RouteProp<RootStackParamList, 'AddNote'>;
 
@@ -103,7 +104,7 @@ const AddNoteScreen: React.FC = () => {
                   disabled={isUploading}
                 >
                   {isUploading ? (
-                    <ActivityIndicator size="small" color="#8e2d8e" />
+                    <ActivityIndicator size="small" color={colors.primary} />
                   ) : imageUrl ? (
                     <>
                       <Image
@@ -111,7 +112,7 @@ const AddNoteScreen: React.FC = () => {
                         style={styles.imagePreview}
                       />
                       <View style={styles.changeImageOverlay}>
-                        <Camera size={20} color="#fff" />
+                        <Camera size={20} color={colors.white} />
                         <Text style={styles.changeImageText}>Change Image</Text>
                       </View>
                     </>
@@ -137,7 +138,7 @@ const AddNoteScreen: React.FC = () => {
                 disabled={!noteContent.trim() || isSaving}
               >
                 {isSaving ? (
-                  <ActivityIndicator color="#fff" />
+                  <ActivityIndicator color={colors.white} />
                 ) : (
                   <Text style={styles.saveButtonText}>
                     {note ? 'Update Note' : 'Add Note'}
@@ -182,17 +183,17 @@ const styles = StyleSheet.create({
     paddingVertical: 12,
     paddingHorizontal: 16,
     borderWidth: 1,
-    borderColor: '#e2e8f0',
+    borderColor: colors.borderColor,
     borderRadius: 12,
     fontSize: 14,
-    color: '#000000',
+    color: colors.black,
     backgroundColor: '#BCBBC133',
     minHeight: 120,
   },
   imageButton: {
     height: 200,
     borderWidth: 2,
-    borderColor: '#e2e8f0',
+    borderColor: colors.borderColor,
     borderRadius: 12,
     borderStyle: 'dashed',
     justifyContent: 'center',
@@ -203,7 +204,7 @@ const styles = StyleSheet.create({
   },
   imageButtonText: {
     fontSize: 14,
-    color: '#64748b',
+    color: colors.subtitleColor,
     marginTop: 8,
   },
   imagePreview: {
@@ -224,18 +225,18 @@ const styles = StyleSheet.create({
     gap: 8,
   },
   changeImageText: {
-    color: '#fff',
+    color: colors.white,
     fontSize: 14,
     fontWeight: '500',
   },
   footer: {
     padding: 16,
-    backgroundColor: '#fff',
+    backgroundColor: colors.white,
     borderTopWidth: 1,
     borderTopColor: '#E5E5E5',
   },
   saveButton: {
-    backgroundColor: '#8e2d8e',
+    backgroundColor: colors.primary,
     paddingVertical: 16,
     borderRadius: 12,
     alignItems: 'center',
@@ -244,7 +245,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#94a3b8',
   },
   saveButtonText: {
-    color: '#fff',
+    color: colors.white,
     fontSize: 16,
     fontWeight: '600',
   },

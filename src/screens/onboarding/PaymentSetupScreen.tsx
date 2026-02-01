@@ -148,7 +148,7 @@ const PaymentSetupScreen: React.FC<PaymentSetupScreenProps> = ({
                       </View>
                       {isSelected && (
                         <View style={styles.selectedIcon}>
-                          <Check size={20} color="#fff" />
+                          <Check size={20} color={colors.white} />
                         </View>
                       )}
                     </View>
@@ -204,7 +204,7 @@ const PaymentSetupScreen: React.FC<PaymentSetupScreenProps> = ({
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#fff',
+    backgroundColor: colors.white,
   },
   header: {
     paddingHorizontal: 24,
@@ -224,7 +224,7 @@ const styles = StyleSheet.create({
   },
   progressBar: {
     height: 4,
-    backgroundColor: '#e2e8f0',
+    backgroundColor: colors.borderColor,
     borderRadius: 2,
     marginBottom: 8,
   },
@@ -236,7 +236,7 @@ const styles = StyleSheet.create({
   },
   progressText: {
     fontSize: 12,
-    color: '#64748b',
+    color: colors.subtitleColor,
     textAlign: 'center',
   },
   headerContent: {
@@ -250,7 +250,7 @@ const styles = StyleSheet.create({
   },
   subtitle: {
     fontSize: 16,
-    color: '#64748b',
+    color: colors.subtitleColor,
     lineHeight: 24,
   },
   plansContainer: {
@@ -258,10 +258,10 @@ const styles = StyleSheet.create({
   },
   planCard: {
     borderWidth: 2,
-    borderColor: '#e2e8f0',
+    borderColor: colors.borderColor,
     borderRadius: 16,
     padding: 20,
-    backgroundColor: '#fff',
+    backgroundColor: colors.white,
     position: 'relative',
   },
   planCardSelected: {
@@ -278,7 +278,7 @@ const styles = StyleSheet.create({
     borderRadius: 12,
   },
   savingsText: {
-    color: '#fff',
+    color: colors.white,
     fontSize: 12,
     fontWeight: '600',
   },
@@ -308,7 +308,7 @@ const styles = StyleSheet.create({
   },
   planPeriod: {
     fontSize: 16,
-    color: '#64748b',
+    color: colors.subtitleColor,
     marginLeft: 4,
   },
   selectedIcon: {
@@ -348,8 +348,8 @@ const styles = StyleSheet.create({
   footer: {
     padding: 24,
     borderTopWidth: 1,
-    borderTopColor: '#e2e8f0',
-    backgroundColor: '#fff',
+    borderTopColor: colors.borderColor,
+    backgroundColor: colors.white,
     gap: 12,
   },
   button: {
@@ -359,7 +359,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   buttonText: {
-    color: '#fff',
+    color: colors.white,
     fontSize: 16,
     fontWeight: '600',
   },
@@ -368,7 +368,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   skipButtonText: {
-    color: '#64748b',
+    color: colors.subtitleColor,
     fontSize: 14,
     fontWeight: '500',
   },
