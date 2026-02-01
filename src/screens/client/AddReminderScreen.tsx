@@ -23,21 +23,26 @@ import {
 import { SafeAreaView } from 'react-native-safe-area-context';
 import Toast from 'react-native-toast-message';
 import { RootStackParamList } from '../../types/navigation';
-import { createReminder } from '../../services/artistServices';
+import { createReminder, updateReminder } from '../../services/artistServices';
 
 type AddReminderRouteProp = RouteProp<RootStackParamList, 'AddReminder'>;
 
 const AddReminderScreen: React.FC = () => {
   const navigation = useNavigation();
   const route = useRoute<AddReminderRouteProp>();
-  const { clientName, clientId } = route.params;
+  const { clientName, clientId, reminder } = route.params;
+  const isEditing = !!reminder;
 
-  const [note, setNote] = useState('');
+  const [note, setNote] = useState(reminder?.note || '');
   const [reminderType, setReminderType] = useState<'check-in' | 'follow-up'>(
-    'check-in',
+    reminder?.type || 'check-in',
   );
-  const [date, setDate] = useState(new Date(Date.now() + 24 * 60 * 60 * 1000));
-  const [time, setTime] = useState(new Date(Date.now() + 24 * 60 * 60 * 1000));
+  const [date, setDate] = useState(
+    reminder ? new Date(reminder.sendAt) : new Date(Date.now() + 24 * 60 * 60 * 1000),
+  );
+  const [time, setTime] = useState(
+    reminder ? new Date(reminder.sendAt) : new Date(Date.now() + 24 * 60 * 60 * 1000),
+  );
   const [showDatePicker, setShowDatePicker] = useState(false);
   const [showTimePicker, setShowTimePicker] = useState(false);
   const [showTypePicker, setShowTypePicker] = useState(false);
@@ -63,17 +68,25 @@ const AddReminderScreen: React.FC = () => {
       }
 
       try {
-        await createReminder({
-          customerId: clientId,
-          sendAt: combinedDate.toISOString(),
-          type: reminderType,
-          note: note.trim(),
-        });
+        if (isEditing) {
+          await updateReminder(reminder.id, {
+            sendAt: combinedDate.toISOString(),
+            type: reminderType,
+            note: note.trim(),
+          });
+        } else {
+          await createReminder({
+            customerId: clientId,
+            sendAt: combinedDate.toISOString(),
+            type: reminderType,
+            note: note.trim(),
+          });
+        }
 
         Toast.show({
           type: 'success',
           text1: 'Success',
-          text2: 'Reminder set successfully',
+          text2: isEditing ? 'Reminder updated successfully' : 'Reminder set successfully',
         });
         navigation.goBack();
       } catch (error) {
@@ -81,7 +94,7 @@ const AddReminderScreen: React.FC = () => {
         Toast.show({
           type: 'error',
           text1: 'Error',
-          text2: 'Failed to set reminder',
+          text2: isEditing ? 'Failed to update reminder' : 'Failed to set reminder',
         });
       } finally {
         setIsSaving(false);
@@ -113,11 +126,11 @@ const AddReminderScreen: React.FC = () => {
         <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
           <View style={styles.content}>
             <ScreenHeader
-              title="Set Reminder"
+              title={isEditing ? 'Edit Reminder' : 'Set Reminder'}
               subtitle={
                 clientName
-                  ? `Set a reminder for ${clientName}`
-                  : 'Set a reminder for this client'
+                  ? `${isEditing ? 'Edit' : 'Set a'} reminder for ${clientName}`
+                  : `${isEditing ? 'Edit' : 'Set a'} reminder for this client`
               }
               onBack={() => navigation.goBack()}
             />
@@ -235,6 +248,7 @@ const AddReminderScreen: React.FC = () => {
                   value={date}
                   mode="date"
                   display={Platform.OS === 'ios' ? 'spinner' : 'default'}
+                  themeVariant="light"
                   onChange={(event, selectedDate) => {
                     setShowDatePicker(Platform.OS === 'ios');
                     if (selectedDate) {
@@ -250,6 +264,7 @@ const AddReminderScreen: React.FC = () => {
                   value={time}
                   mode="time"
                   display={Platform.OS === 'ios' ? 'spinner' : 'default'}
+                  themeVariant="light"
                   onChange={(event, selectedTime) => {
                     setShowTimePicker(Platform.OS === 'ios');
                     if (selectedTime) {
@@ -273,7 +288,7 @@ const AddReminderScreen: React.FC = () => {
                 {isSaving ? (
                   <ActivityIndicator color="#fff" />
                 ) : (
-                  <Text style={styles.saveButtonText}>Set Reminder</Text>
+                  <Text style={styles.saveButtonText}>{isEditing ? 'Update Reminder' : 'Set Reminder'}</Text>
                 )}
               </TouchableOpacity>
             </View>

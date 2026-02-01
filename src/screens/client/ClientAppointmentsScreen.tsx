@@ -1,7 +1,6 @@
 import { useNavigation, useRoute } from '@react-navigation/native';
 import React, { useEffect, useState } from 'react';
 import {
-  ActivityIndicator,
   FlatList,
   StyleSheet,
   Text,
@@ -10,6 +9,7 @@ import {
 import { SafeAreaView } from 'react-native-safe-area-context';
 import Toast from 'react-native-toast-message';
 import AppointmentCard from '../../components/clients/AppointmentCard';
+import AppointmentCardSkeleton from '../../components/skeleton/AppointmentCardSkeleton';
 import DeleteModal from '../../components/clients/DeleteModal';
 import ScreenHeader from '../../components/layout/ScreenHeader';
 import {
@@ -129,9 +129,12 @@ const ClientAppointmentsScreen: React.FC<
 
   if (loading) {
     return (
-      <SafeAreaView style={styles.container}>
-        <View style={styles.loadingContainer}>
-          <ActivityIndicator size="large" color="#8e2d8e" />
+      <SafeAreaView style={styles.container} edges={[]}>
+        {renderHeader()}
+        <View style={styles.skeletonContainer}>
+          {[1, 2, 3, 4].map(key => (
+            <AppointmentCardSkeleton key={key} />
+          ))}
         </View>
       </SafeAreaView>
     );
@@ -175,10 +178,9 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
   },
-  loadingContainer: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
+  skeletonContainer: {
+    padding: 16,
+    gap: 12,
   },
   header: {
     backgroundColor: '#fff',

@@ -3,7 +3,6 @@ import {
   useNavigation,
   useRoute,
 } from '@react-navigation/native';
-import { Plus } from 'lucide-react-native';
 import React, { useCallback, useEffect, useState } from 'react';
 import {
   ActivityIndicator,
@@ -15,14 +14,15 @@ import {
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import Toast from 'react-native-toast-message';
+import { Alarm } from '../../../assets/svg';
 import DeleteModal from '../../components/clients/DeleteModal';
 import ReminderCard from '../../components/clients/ReminderCard';
+import ScreenHeader from '../../components/layout/ScreenHeader';
 import {
   deleteReminder,
   getRemindersByCustomer,
 } from '../../services/artistServices';
 import { Reminder } from '../../types';
-import ScreenHeader from '../../components/layout/ScreenHeader';
 
 interface ClientRemindersScreenProps {}
 
@@ -81,6 +81,14 @@ const ClientRemindersScreen: React.FC<ClientRemindersScreenProps> = () => {
     });
   };
 
+  const handleEditReminder = (reminder: Reminder) => {
+    navigation.navigate('AddReminder', {
+      clientId,
+      clientName: client?.name,
+      reminder,
+    });
+  };
+
   const handleDeleteReminder = (reminder: Reminder) => {
     setSelectedReminder(reminder);
     setShowDeleteModal(true);
@@ -129,29 +137,24 @@ const ClientRemindersScreen: React.FC<ClientRemindersScreenProps> = () => {
   }
 
   return (
-    <SafeAreaView style={styles.container}>
+    <SafeAreaView style={styles.container} edges={[]}>
       <ScreenHeader
         title={`${client?.name || 'Client'}'s Reminders`}
         subtitle={`${reminders.length} ${
           reminders.length === 1 ? 'Reminder' : 'Reminders'
         }`}
         onBack={() => navigation.goBack()}
-        rightComponent={
-          <TouchableOpacity
-            style={styles.addButton}
-            onPress={handleAddReminder}
-          >
-            <Plus size={20} color="#8E2D8E" />
-            <Text style={styles.addButtonText}>Add Reminder</Text>
-          </TouchableOpacity>
-        }
       />
+      <TouchableOpacity style={styles.addButton} onPress={handleAddReminder}>
+        <Alarm />
+        <Text style={styles.addButtonText}>Tap Here to Add a New Reminder</Text>
+      </TouchableOpacity>
 
       <FlatList
         data={reminders}
         keyExtractor={item => item.id}
         renderItem={({ item }) => (
-          <ReminderCard reminder={item} onDelete={handleDeleteReminder} />
+          <ReminderCard reminder={item} onDelete={handleDeleteReminder} onEdit={handleEditReminder} />
         )}
         contentContainerStyle={[
           styles.listContent,

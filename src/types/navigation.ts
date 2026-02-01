@@ -42,6 +42,7 @@ export type RootStackParamList = {
   AddReminder: {
     clientId: string;
     clientName?: string;
+    reminder?: import('./index').Reminder;
   };
   AddCard: {
     onCardAdded?: () => void;

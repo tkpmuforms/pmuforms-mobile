@@ -1,13 +1,7 @@
 import React from 'react';
-import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
-import {
-  Calendar,
-  Clock,
-  Trash2,
-  UserCheck,
-  UserPlus,
-} from 'lucide-react-native';
+import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { Reminder } from '../../types';
+import { CheckInIcon, FollowUpIcon } from '../../../assets/svg';
 
 interface ReminderCardProps {
   reminder: Reminder;
@@ -22,7 +16,6 @@ const ReminderCard: React.FC<ReminderCardProps> = ({
 }) => {
   const reminderDate = new Date(reminder.sendAt);
 
-  // Format as DD/MM/YYYY - HH:MM to match Figma design
   const displayDate = reminderDate.toLocaleDateString('en-GB', {
     day: '2-digit',
     month: '2-digit',
@@ -36,40 +29,31 @@ const ReminderCard: React.FC<ReminderCardProps> = ({
 
   const getIconForType = () => {
     if (reminder.type === 'check-in') {
-      return <UserCheck size={24} color={reminder.sent ? '#666' : '#8e2d8e'} />;
+      return <FollowUpIcon />;
     }
-    return <UserPlus size={24} color={reminder.sent ? '#666' : '#8e2d8e'} />;
-  };
-
-  const getTypeLabel = () => {
-    return reminder.type === 'check-in' ? 'Check-in' : 'Follow-up';
+    return <CheckInIcon />;
   };
 
   return (
     <View style={styles.card}>
-      <View style={styles.iconContainer}>{getIconForType()}</View>
-
-      <View style={styles.content}>
-        <Text style={styles.message} numberOfLines={2}>
-          {reminder.note}
+      <View style={styles.header}>
+        <View style={styles.iconContainer}>{getIconForType()}</View>
+        <Text style={styles.dateTimeText}>
+          {displayDate} - {displayTime}
         </Text>
-
-        <View style={styles.detailsRow}>
-          <Text style={styles.dateTimeText}>
-            {displayDate} - {displayTime}
-          </Text>
-        </View>
-
-        <Text style={styles.typeText}>{getTypeLabel()}</Text>
-
-        {reminder.sent && (
-          <View style={styles.sentBadge}>
-            <Text style={styles.sentText}>Sent</Text>
-          </View>
-        )}
       </View>
 
-      <View style={styles.actionButtons}>
+      <Text style={styles.message} numberOfLines={3}>
+        {reminder.note}
+      </Text>
+
+      {reminder.sent && (
+        <View style={styles.sentBadge}>
+          <Text style={styles.sentText}>Sent</Text>
+        </View>
+      )}
+
+      <View style={styles.buttonRow}>
         {onEdit && (
           <TouchableOpacity
             style={styles.editButton}
@@ -91,31 +75,34 @@ const ReminderCard: React.FC<ReminderCardProps> = ({
 
 const styles = StyleSheet.create({
   card: {
+    backgroundColor: '#fff',
+    borderRadius: 16,
+    borderWidth: 1,
+    borderColor: '#E5E7EB',
+    padding: 16,
+    marginBottom: 8,
+    gap: 8,
+  },
+  header: {
     flexDirection: 'row',
     alignItems: 'center',
-    backgroundColor: '#fff',
-    borderRadius: 12,
-    padding: 16,
-    marginBottom: 12,
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 1 },
-    shadowOpacity: 0.1,
-    shadowRadius: 3,
-    elevation: 2,
     gap: 12,
   },
   iconContainer: {
-    marginBottom: 4,
+    width: 40,
+    height: 40,
+    alignItems: 'center',
+    justifyContent: 'center',
   },
   dateTimeText: {
-    fontSize: 13,
-    color: '#666',
+    fontSize: 16,
+    fontWeight: '700',
+    color: '#1f2937',
   },
-  typeText: {
-    fontSize: 12,
-    color: '#8e2d8e',
-    fontWeight: '500',
-    marginTop: 4,
+  message: {
+    fontSize: 14,
+    color: '#666',
+    lineHeight: 20,
   },
   sentBadge: {
     alignSelf: 'flex-start',
@@ -123,40 +110,41 @@ const styles = StyleSheet.create({
     paddingHorizontal: 8,
     paddingVertical: 2,
     borderRadius: 4,
-    marginTop: 8,
   },
   sentText: {
     fontSize: 11,
     fontWeight: '600',
     color: '#666',
   },
-  actionButtons: {
-    gap: 8,
+  buttonRow: {
+    flexDirection: 'row',
+    gap: 12,
+    marginTop: 4,
   },
   editButton: {
-    backgroundColor: '#8e2d8e',
-    paddingVertical: 8,
-    paddingHorizontal: 16,
-    borderRadius: 8,
+    flex: 1,
+    backgroundColor: '#A654CD',
+    paddingVertical: 12,
+    borderRadius: 10,
     alignItems: 'center',
   },
   editButtonText: {
     color: '#fff',
-    fontSize: 14,
+    fontSize: 15,
     fontWeight: '600',
   },
   deleteButton: {
-    backgroundColor: '#fff',
-    paddingVertical: 8,
-    paddingHorizontal: 16,
-    borderRadius: 8,
+    flex: 1,
+    backgroundColor: '#0000000D',
+    paddingVertical: 12,
+    borderRadius: 10,
     alignItems: 'center',
     borderWidth: 1,
-    borderColor: '#FF3B30',
+    borderColor: '#E5E7EB',
   },
   deleteButtonText: {
-    color: '#FF3B30',
-    fontSize: 14,
+    color: '#00000080',
+    fontSize: 15,
     fontWeight: '600',
   },
 });
