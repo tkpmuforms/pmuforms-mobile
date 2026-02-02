@@ -86,7 +86,7 @@ const FilledFormsPreviewScreen: React.FC = () => {
 
         if (appointmentResponse?.data?.appointment) {
           const appointment = appointmentResponse.data.appointment;
-          if (appointment.signed === true && appointment.signature_url) {
+          if (appointment?.signed === true && appointment?.signature_url) {
             setSignatureUrl(appointment.signature_url);
           }
         }
@@ -94,13 +94,13 @@ const FilledFormsPreviewScreen: React.FC = () => {
         if (formResponse?.data?.form) {
           const formData = formResponse.data.form;
           const transformedForm = {
-            id: formData.id || formData._id,
-            title: formData.title,
-            sections: formData.sections
-              .filter((section: FormSection) => !section.skip)
+            id: formData?.id || formData?._id || '',
+            title: formData?.title || 'Untitled Form',
+            sections: (formData?.sections || [])
+              .filter((section: FormSection) => !section?.skip)
               .map((section: FormSection) => ({
                 ...section,
-                _id: section._id || section.id,
+                _id: section?._id || section?.id,
               })),
           };
 
@@ -115,7 +115,7 @@ const FilledFormsPreviewScreen: React.FC = () => {
         }
 
         if (filledResponse?.data?.filledForm?.data) {
-          setFilledData(filledResponse.data.filledForm.data);
+          setFilledData(filledResponse.data.filledForm.data || {});
         }
       } catch (error) {
         console.error('Error fetching data:', error);
@@ -471,22 +471,28 @@ const FilledFormsPreviewScreen: React.FC = () => {
 
         {/* Form Sections */}
         <View style={styles.formContent}>
-          {form.sections && form.sections.length > 0 ? (
-            form.sections.map(section => (
-              <View key={section._id || section.id} style={styles.section}>
-                <Text style={styles.sectionTitle}>{section.title}</Text>
-                {section.data && section.data.length > 0 ? (
-                  section.data.map(field => {
-                    const fieldId = field.id || field._id;
+          {(form?.sections || []).length > 0 ? (
+            (form.sections || []).map(section => (
+              <View
+                key={section?._id || section?.id || Math.random().toString()}
+                style={styles.section}
+              >
+                <Text style={styles.sectionTitle}>
+                  {section?.title || 'Untitled Section'}
+                </Text>
+                {(section?.data || []).length > 0 ? (
+                  (section.data || []).map(field => {
+                    const fieldId =
+                      field?.id || field?._id || Math.random().toString();
                     const isParagraph =
-                      field.type === 'paragraph' || field.type === 'heading';
+                      field?.type === 'paragraph' || field?.type === 'heading';
 
                     return (
                       <View key={fieldId} style={styles.field}>
                         {!isParagraph && (
                           <Text style={styles.fieldLabel}>
-                            {field.title}
-                            {field.required && (
+                            {field?.title || 'Untitled Field'}
+                            {field?.required && (
                               <Text style={styles.required}> *</Text>
                             )}
                           </Text>

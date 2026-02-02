@@ -84,8 +84,8 @@ const ClientAppointmentFormsScreen: React.FC = () => {
     fetchData();
   }, [appointmentId, clientId]);
 
-  const isAllFormsCompleted = forms.every(
-    form => form.status === 'complete' || form.status === 'completed',
+  const isAllFormsCompleted = (forms || []).every(
+    form => form?.status === 'complete' || form?.status === 'completed',
   );
 
   const onViewForm = (formTemplateId: string) => {

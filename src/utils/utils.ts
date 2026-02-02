@@ -4,16 +4,16 @@ import { Form, User } from '../types';
 export const getCustomerName = (
   customerId: string,
   customers: Record<string, { name: string; avatar?: string }>,
-) => customers[customerId]?.name || 'Client 1';
+) => customers?.[customerId]?.name || 'Client 1';
 
 export const getCustomerAvatar = (
   customerId: string,
   customers: Record<string, { name: string; avatar?: string }>,
 ) => {
-  const customerAvatar = customers[customerId]?.avatar;
+  const customerAvatar = customers?.[customerId]?.avatar;
   if (customerAvatar) return customerAvatar;
 
-  const customerName = customers[customerId]?.name || 'Unknown Client';
+  const customerName = customers?.[customerId]?.name || 'Unknown Client';
   return `https://ui-avatars.com/api/?name=${encodeURIComponent(
     customerName,
   )}&background=A858F0&color=fff&size=40`;
@@ -40,14 +40,14 @@ export const generateColor = (name: string): string => {
 };
 
 export const generateInitials = (name: string): string => {
-  if (!name || name.trim().length === 0) {
+  if (!name || (name || '').trim().length === 0) {
     return 'N/A';
   }
 
-  return name
+  return (name || '')
     .split(' ')
-    .filter(word => word.length > 0)
-    .map(word => word.charAt(0).toUpperCase())
+    .filter(word => (word || '').length > 0)
+    .map(word => (word || '').charAt(0).toUpperCase())
     .slice(0, 2)
     .join('');
 };
@@ -86,18 +86,20 @@ export const formatLastUpdated = (dateString: string): string => {
 };
 
 export const formatUsedFor = (services: number[]): string => {
-  const count = services.length;
+  const count = (services || []).length;
   return count === 1 ? 'Used for 1 Service' : `Used for ${count} Services`;
 };
 
 export const transformFormData = (apiForm: any): Form => {
   return {
-    id: apiForm.id || apiForm._id,
-    title: apiForm.title,
-    lastUpdated: formatLastUpdated(apiForm.updatedAt),
-    usedFor: formatUsedFor(apiForm.services || []),
-    type: apiForm.type as 'consent' | 'care',
-    services: apiForm.services || [],
+    id: apiForm?.id || apiForm?._id || '',
+    title: apiForm?.title || 'Untitled',
+    lastUpdated: formatLastUpdated(
+      apiForm?.updatedAt || new Date().toISOString(),
+    ),
+    usedFor: formatUsedFor(apiForm?.services || []),
+    type: (apiForm?.type as 'consent' | 'care') || 'consent',
+    services: apiForm?.services || [],
     createdAt: apiForm.createdAt,
     updatedAt: apiForm.updatedAt,
   };

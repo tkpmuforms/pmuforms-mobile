@@ -28,12 +28,12 @@ const EditClientScreen: React.FC = () => {
   const route = useRoute<EditClientRouteProp>();
   const { clientId, client } = route.params;
 
-  const nameParts = client.name.split(' ');
+  const nameParts = (client?.name || '').split(' ');
   const [formData, setFormData] = useState({
-    firstName: nameParts[0] || '',
-    lastName: nameParts.slice(1).join(' ') || '',
-    email: client.email || '',
-    phone: client.phone || '',
+    firstName: nameParts?.[0] || '',
+    lastName: (nameParts || []).slice(1).join(' ') || '',
+    email: client?.email || '',
+    phone: client?.phone || '',
   });
   const [loading, setLoading] = useState(false);
   const [success, setSuccess] = useState(false);

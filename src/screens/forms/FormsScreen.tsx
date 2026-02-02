@@ -28,11 +28,11 @@ const FormsScreen = ({ navigation }: any) => {
   const [refreshing, setRefreshing] = useState(false);
   const [searchTerm, setSearchTerm] = useState('');
 
-  const filteredForms = forms.filter(form => {
-    const matchesTab = form.type === activeTab;
+  const filteredForms = (forms || []).filter(form => {
+    const matchesTab = form?.type === activeTab;
     const matchesSearch =
       searchTerm === '' ||
-      form.title?.toLowerCase().includes(searchTerm.toLowerCase());
+      (form?.title || '').toLowerCase().includes(searchTerm.toLowerCase());
     return matchesTab && matchesSearch;
   });
 
@@ -40,8 +40,10 @@ const FormsScreen = ({ navigation }: any) => {
     try {
       setLoading(true);
       const response = await getArtistForms();
-      if (response && response.data && response.data.forms) {
-        const transformedForms = response.data.forms.map(transformFormData);
+      if (response?.data?.forms) {
+        const transformedForms = (response.data.forms || []).map(
+          transformFormData,
+        );
         setForms(transformedForms);
       }
     } catch (err) {
@@ -69,8 +71,8 @@ const FormsScreen = ({ navigation }: any) => {
     navigation.navigate('FormEdit', { formId });
   };
 
-  const consentCount = forms.filter(f => f.type === 'consent').length;
-  const careCount = forms.filter(f => f.type === 'care').length;
+  const consentCount = (forms || []).filter(f => f?.type === 'consent').length;
+  const careCount = (forms || []).filter(f => f?.type === 'care').length;
 
   return (
     <SafeAreaView style={styles.container} edges={[]}>

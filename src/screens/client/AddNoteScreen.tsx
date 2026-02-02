@@ -39,9 +39,7 @@ const AddNoteScreen: React.FC = () => {
   const [isSaving, setIsSaving] = useState(false);
 
   const uploadImageToFirebase = async (uri: string): Promise<string> => {
-    const reference = storage().ref(
-      `images/${user?._id}/${Date.now()}.jpg`,
-    );
+    const reference = storage().ref(`images/${user?._id}/${Date.now()}.jpg`);
     const response = await fetch(uri);
     const blob = await response.blob();
     await reference.put(blob);
@@ -56,10 +54,10 @@ const AddNoteScreen: React.FC = () => {
       maxHeight: 500,
     });
 
-    if (result.assets && result.assets[0]) {
+    if (result?.assets?.[0]) {
       const asset = result.assets[0];
-      setLocalImageUri(asset.uri || '');
-      setImageUrl(asset.uri || '');
+      setLocalImageUri(asset?.uri || '');
+      setImageUrl(asset?.uri || '');
     }
   };
 

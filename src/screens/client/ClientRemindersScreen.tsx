@@ -98,7 +98,9 @@ const ClientRemindersScreen: React.FC<ClientRemindersScreenProps> = () => {
     if (selectedReminder) {
       try {
         await deleteReminder(selectedReminder.id);
-        setReminders(prev => prev.filter(r => r.id !== selectedReminder.id));
+        setReminders(prev =>
+          (prev || []).filter(r => r?.id !== selectedReminder?.id),
+        );
         setShowDeleteModal(false);
         setSelectedReminder(null);
         Toast.show({
@@ -140,8 +142,8 @@ const ClientRemindersScreen: React.FC<ClientRemindersScreenProps> = () => {
     <SafeAreaView style={styles.container} edges={[]}>
       <ScreenHeader
         title={`${client?.name || 'Client'}'s Reminders`}
-        subtitle={`${reminders.length} ${
-          reminders.length === 1 ? 'Reminder' : 'Reminders'
+        subtitle={`${(reminders || []).length} ${
+          (reminders || []).length === 1 ? 'Reminder' : 'Reminders'
         }`}
         onBack={() => navigation.goBack()}
       />

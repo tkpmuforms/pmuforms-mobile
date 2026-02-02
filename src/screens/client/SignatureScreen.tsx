@@ -64,18 +64,18 @@ const SignatureScreen: React.FC = () => {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [_signatureUrl, setSignatureUrl] = useState<string | null>(null);
 
-  const currentAppointment: Appointment | undefined = appointments?.find(
-    (appointment: Appointment) => appointment.id === appointmentId,
+  const currentAppointment: Appointment | undefined = (appointments || []).find(
+    (appointment: Appointment) => appointment?.id === appointmentId,
   );
 
   const appointmentForms =
-    forms?.filter(
-      (form: FormTemplate) => form.appointmentId === appointmentId,
+    (forms || []).filter(
+      (form: FormTemplate) => form?.appointmentId === appointmentId,
     ) || [];
 
-  const completedForms = appointmentForms.filter(
+  const completedForms = (appointmentForms || []).filter(
     (form: FormTemplate) =>
-      form.status === 'complete' || form.status === 'completed',
+      form?.status === 'complete' || form?.status === 'completed',
   );
 
   const services = currentAppointment?.serviceDetails || [];

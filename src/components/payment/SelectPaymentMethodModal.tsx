@@ -63,19 +63,19 @@ const SelectPaymentMethodModal: React.FC<SelectPaymentMethodModalProps> = ({
   const fetchPaymentMethods = async () => {
     try {
       const response = await listPaymentMethods();
-      const paymentMethods = response.data.data;
+      const paymentMethods = response?.data?.data || [];
 
-      const formattedCards: Card[] = paymentMethods.map((pm: any) => ({
-        id: pm.id,
-        name: pm.billing_details?.name || 'Card Holder',
-        lastFour: pm.card?.last4 || '0000',
-        brand: pm.card?.brand || 'visa',
-        isDefault: pm.metadata?.isDefault === 'true',
-        color: getCardColor(pm.card?.brand),
+      const formattedCards: Card[] = (paymentMethods || []).map((pm: any) => ({
+        id: pm?.id || '',
+        name: pm?.billing_details?.name || 'Card Holder',
+        lastFour: pm?.card?.last4 || '0000',
+        brand: pm?.card?.brand || 'visa',
+        isDefault: pm?.metadata?.isDefault === 'true',
+        color: getCardColor(pm?.card?.brand),
       }));
 
       setCards(formattedCards);
-      const defaultCard = formattedCards.find(c => c.isDefault);
+      const defaultCard = formattedCards.find(c => c?.isDefault);
       setSelectedCard(defaultCard?.id || formattedCards[0]?.id || '');
     } catch (error) {
       console.error('Error fetching payment methods:', error);
@@ -89,7 +89,7 @@ const SelectPaymentMethodModal: React.FC<SelectPaymentMethodModalProps> = ({
       mastercard: '#EB001B',
       amex: '#006FCF',
     };
-    return colors[brand?.toLowerCase()] || '#6B2A6B';
+    return colors[(brand || '').toLowerCase()] || '#6B2A6B';
   };
 
   const handleMakePayment = async () => {

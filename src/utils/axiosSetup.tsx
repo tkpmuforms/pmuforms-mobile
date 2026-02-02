@@ -66,7 +66,6 @@ axiosInstance.interceptors.response.use(
         message: isNetworkError
           ? 'No internet connection'
           : 'Something went wrong!',
-        error,
       },
     );
   },

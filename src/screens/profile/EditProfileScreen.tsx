@@ -67,15 +67,15 @@ const EditProfileScreen: React.FC = () => {
       const response = await getMyProfile();
 
       const newProfileData = {
-        firstName: response.data?.profile.firstName || user?.firstName || '',
-        lastName: response.data?.profile.lastName || user?.lastName || '',
-        phoneNumber: response.data?.profile.phone || user?.phoneNumber || '',
-        email: response.data?.profile.email || user?.email || '',
+        firstName: response?.data?.profile?.firstName || user?.firstName || '',
+        lastName: response?.data?.profile?.lastName || user?.lastName || '',
+        phoneNumber: response?.data?.profile?.phone || user?.phoneNumber || '',
+        email: response?.data?.profile?.email || user?.email || '',
       };
 
       setProfileData(newProfileData);
 
-      if (response.data?.avatarUrl) {
+      if (response?.data?.avatarUrl) {
         setAvatarUrl(response.data.avatarUrl);
       }
     } catch (err) {
@@ -304,8 +304,8 @@ const EditProfileScreen: React.FC = () => {
   const isFormValid = () => {
     return (
       Object.keys(validationErrors).length === 0 &&
-      profileData.firstName.trim().length >= 2 &&
-      profileData.lastName.trim().length >= 2
+      (profileData?.firstName || '').trim().length >= 2 &&
+      (profileData?.lastName || '').trim().length >= 2
     );
   };
 
@@ -349,7 +349,7 @@ const EditProfileScreen: React.FC = () => {
             ) : (
               <View style={styles.avatarPlaceholder}>
                 <Text style={styles.avatarPlaceholderText}>
-                  {user?.firstName && user?.lastName
+                  {(user?.firstName?.[0] || '') && (user?.lastName?.[0] || '')
                     ? `${user.firstName[0]}${user.lastName[0]}`.toUpperCase()
                     : 'U'}
                 </Text>

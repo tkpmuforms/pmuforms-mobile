@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import {
+  Keyboard,
   KeyboardAvoidingView,
   Platform,
   ScrollView,
@@ -29,6 +30,8 @@ const BusinessNameScreen: React.FC<BusinessNameScreenProps> = ({
   const [loading, setLoading] = useState(false);
 
   const handleContinue = async () => {
+    Keyboard.dismiss();
+
     if (!businessName.trim()) {
       Toast.show({
         type: 'error',
@@ -56,7 +59,7 @@ const BusinessNameScreen: React.FC<BusinessNameScreenProps> = ({
       // race condition where RouteGuard unmounts OnboardingStack
       refreshAuthUser(dispatch).catch(() => {});
     } catch (error) {
-      console.error('Error updating business info:', error);
+      console.warn('Error updating business info:', (error as any)?.message || 'Unknown error');
       Toast.show({
         type: 'error',
         text1: 'Error',

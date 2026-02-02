@@ -11,23 +11,26 @@ const FormInputTypes = {
 };
 
 export const renderPreviewFormFields = (fields: any[]) =>
-  fields.map((field: any) => {
-    if (!field || !field.id) return null;
+  (fields || []).map((field: any) => {
+    if (!field || !field?.id) return null;
     const isRequired = field?.required;
 
-    if (!field.type) {
+    if (!field?.type) {
       return (
-        <View key={field.id} style={styles.readOnlyField}>
-          <Text style={styles.readOnlyLabel}>{field.title}</Text>
+        <View
+          key={field?.id || Math.random().toString()}
+          style={styles.readOnlyField}
+        >
+          <Text style={styles.readOnlyLabel}>{field?.title || 'Untitled'}</Text>
         </View>
       );
     }
 
-    if (field.id === 'signature') {
+    if (field?.id === 'signature') {
       return (
         <View key={field.id} style={styles.fieldContainer}>
           <Text style={styles.label}>
-            {field.title}
+            {field?.title || 'Signature'}
             {isRequired && <Text style={styles.required}>*</Text>}
           </Text>
           <TextInput

@@ -32,7 +32,7 @@ const BusinessInformationScreen: React.FC = () => {
   };
 
   const getInitials = () => {
-    if (user?.firstName && user?.lastName) {
+    if (user?.firstName?.[0] && user?.lastName?.[0]) {
       return `${user.firstName[0]}${user.lastName[0]}`.toUpperCase();
     }
     return 'Logo';

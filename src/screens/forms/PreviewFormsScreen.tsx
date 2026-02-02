@@ -37,17 +37,17 @@ const PreviewFormsScreen = ({ route, navigation }: any) => {
         const response = await getFormById(formId || '');
 
         if (response?.data?.form) {
-          const formData = response?.data?.form;
+          const formData = response.data.form;
 
           const transformedForm: SingleForm = {
-            id: formData.id || formData._id,
-            title: formData.title,
-            type: formData.type || 'consent',
-            sections: formData.sections
-              .filter((section: Section) => !section.skip)
+            id: formData?.id || formData?._id || '',
+            title: formData?.title || 'Untitled Form',
+            type: formData?.type || 'consent',
+            sections: (formData?.sections || [])
+              .filter((section: Section) => !section?.skip)
               .map((section: Section) => ({
                 ...section,
-                _id: section._id || section.id,
+                _id: section?._id || section?.id,
               })),
           };
 

@@ -84,7 +84,7 @@ const ClientAppointmentsScreen: React.FC<
       try {
         await DeleteAppointment(appointmentToDelete);
         setAppointments(prev =>
-          prev.filter(apt => apt.id !== appointmentToDelete),
+          (prev || []).filter(apt => apt?.id !== appointmentToDelete),
         );
         setShowDeleteAppointment(false);
         setAppointmentToDelete(null);

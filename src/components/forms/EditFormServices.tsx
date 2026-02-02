@@ -35,10 +35,10 @@ const EditFormServices: React.FC<EditFormServicesProps> = ({
 
   const handleServiceToggle = (serviceId: number) => {
     setTempSelectedServices(prev => {
-      if (prev.includes(serviceId)) {
-        return prev.filter(id => id !== serviceId);
+      if ((prev || []).includes(serviceId)) {
+        return (prev || []).filter(id => id !== serviceId);
       } else {
-        return [...prev, serviceId];
+        return [...(prev || []), serviceId];
       }
     });
   };
@@ -91,9 +91,11 @@ const EditFormServices: React.FC<EditFormServicesProps> = ({
                 </View>
               ) : (
                 <View style={styles.servicesGrid}>
-                  {allServices.map(service => {
-                    const serviceId = Number(service.id || service._id);
-                    const isSelected = tempSelectedServices.includes(serviceId);
+                  {(allServices || []).map(service => {
+                    const serviceId = Number(service?.id || service?._id);
+                    const isSelected = (tempSelectedServices || []).includes(
+                      serviceId,
+                    );
 
                     return (
                       <TouchableOpacity

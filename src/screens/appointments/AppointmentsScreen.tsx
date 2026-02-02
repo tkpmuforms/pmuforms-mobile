@@ -47,15 +47,15 @@ const AppointmentsScreen = ({ navigation }: any) => {
     try {
       setLoading(true);
       const response = await getArtistAppointmentsPaginated(page, perPage);
-      const data: AppointmentsResponse = response.data;
+      const data: AppointmentsResponse = response?.data;
 
-      if (data && data.appointments) {
-        setAppointments(data.appointments);
+      if (data?.appointments) {
+        setAppointments(data.appointments || []);
         setMetadata({
-          total: data.metadata.total,
-          lastPage: data.metadata.lastPage,
+          total: data?.metadata?.total || 0,
+          lastPage: data?.metadata?.lastPage || 1,
         });
-        await fetchCustomersData(data.appointments);
+        await fetchCustomersData(data.appointments || []);
       }
     } catch (error) {
       console.error('Error fetching appointments:', error);
@@ -71,7 +71,9 @@ const AppointmentsScreen = ({ navigation }: any) => {
 
   const fetchCustomersData = async (appointmentsList: Appointment[]) => {
     const uniqueCustomerIds = [
-      ...new Set(appointmentsList.map(apt => apt.customerId)),
+      ...new Set(
+        (appointmentsList || []).map(apt => apt?.customerId).filter(Boolean),
+      ),
     ].filter(Boolean) as string[];
 
     if (uniqueCustomerIds.length === 0) return;
@@ -86,12 +88,12 @@ const AppointmentsScreen = ({ navigation }: any) => {
 
       const customerResponses = await Promise.all(customerPromises);
       const customerMap = customerResponses.reduce((acc, response, index) => {
-        if (response && response.data) {
+        if (response?.data?.customer) {
           const customerId = uniqueCustomerIds[index];
-          const customer = response.data?.customer;
+          const customer = response.data.customer;
           acc[customerId] = {
-            name: customer.info?.client_name || 'Unknown Client',
-            avatar: customer.info?.avatar_url,
+            name: customer?.info?.client_name || 'Unknown Client',
+            avatar: customer?.info?.avatar_url,
           };
         }
         return acc;

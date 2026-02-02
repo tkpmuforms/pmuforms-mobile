@@ -72,7 +72,7 @@ const EditBusinessInformationScreen: React.FC = () => {
     try {
       await updateBusinessInfo(businessData);
       const response = await getAuthMe();
-      dispatch(setUser(response?.data?.user));
+      dispatch(setUser(response?.data?.user || null));
       Alert.alert('Success', 'Business information updated successfully!', [
         { text: 'OK', onPress: () => navigation.goBack() },
       ]);

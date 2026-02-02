@@ -69,14 +69,14 @@ const ClientDetailsScreen: React.FC<ClientDetailsScreenProps> = () => {
       setLoading(true);
       setError(null);
       const response = await getCustomerById(clientId);
-      const customer = response?.data.customer;
+      const customer = response?.data?.customer;
 
       if (customer) {
         setClient({
-          id: customer.id,
-          name: customer.name,
-          email: customer.email || 'No email provided',
-          phone: customer?.info?.cell_phone,
+          id: customer?.id || '',
+          name: customer?.name || 'No name provided',
+          email: customer?.email || 'No email provided',
+          phone: customer?.info?.cell_phone || undefined,
         });
       } else {
         setError('Client not found');

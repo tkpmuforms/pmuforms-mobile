@@ -34,23 +34,25 @@ const SendConsentFormScreen: React.FC = () => {
 
   const toggleService = (serviceId: string) => {
     setSelectedServices(prev =>
-      prev.includes(serviceId)
-        ? prev.filter(s => s !== serviceId)
-        : [...prev, serviceId],
+      (prev || []).includes(serviceId)
+        ? (prev || []).filter(s => s !== serviceId)
+        : [...(prev || []), serviceId],
     );
   };
 
   const handleContinue = () => {
-    if (appointmentDate && selectedServices.length > 0) {
+    if (appointmentDate && (selectedServices || []).length > 0) {
       setShowPreviewAppointment(true);
     }
   };
 
   const getSelectedServiceNames = () => {
     return (
-      user?.services
-        ?.filter((service: any) => selectedServices.includes(service?.id))
-        ?.map((service: any) => service?.service) || []
+      (user?.services || [])
+        .filter((service: any) =>
+          (selectedServices || []).includes(service?.id),
+        )
+        .map((service: any) => service?.service || 'Unknown') || []
     );
   };
 

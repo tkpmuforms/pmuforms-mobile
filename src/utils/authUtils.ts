@@ -240,7 +240,7 @@ export const refreshAuthUser = async (dispatch: Dispatch): Promise<void> => {
       dispatch(setUser(response.data.user));
     }
   } catch (error) {
-    console.error('Error refreshing auth user:', error);
+    console.warn('Error refreshing auth user:', (error as any)?.message || 'Unknown error');
     throw error;
   }
 };

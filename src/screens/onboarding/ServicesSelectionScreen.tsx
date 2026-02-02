@@ -40,7 +40,9 @@ const ServicesSelectionScreen: React.FC<ServicesSelectionScreenProps> = ({
     fetchServices();
 
     if (user?.services && Array.isArray(user.services)) {
-      const userServiceIds = user.services.map((s: any) => s._id);
+      const userServiceIds = (user.services || [])
+        .map((s: any) => s?._id)
+        .filter(Boolean);
       setSelectedServices(userServiceIds);
     }
   }, [user]);
@@ -49,10 +51,13 @@ const ServicesSelectionScreen: React.FC<ServicesSelectionScreenProps> = ({
     try {
       const response = await getServices();
       if (response?.data?.services) {
-        setAvailableServices(response.data.services);
+        setAvailableServices(response.data.services || []);
       }
     } catch (error) {
-      console.error('Error fetching services:', error);
+      console.warn(
+        'Error fetching services:',
+        (error as any)?.message || 'Unknown error',
+      );
       Toast.show({
         type: 'error',
         text1: 'Error',
@@ -64,18 +69,20 @@ const ServicesSelectionScreen: React.FC<ServicesSelectionScreenProps> = ({
   };
 
   const toggleService = (serviceId: string) => {
-    setSelectedServices(prev =>
-      prev.some(service => service._id === serviceId)
-        ? prev.filter(service => service._id !== serviceId)
-        : [
-            ...prev,
-            availableServices.find(service => service._id === serviceId)!,
-          ],
-    );
+    setSelectedServices(prev => {
+      const isSelected = prev.some(service => service?._id === serviceId);
+      if (isSelected) {
+        return prev.filter(service => service?._id !== serviceId);
+      }
+      const foundService = (availableServices || []).find(
+        service => service?._id === serviceId,
+      );
+      return foundService ? [...prev, foundService] : prev;
+    });
   };
 
   const handleContinue = async () => {
-    if (selectedServices.length === 0) {
+    if ((selectedServices || []).length === 0) {
       Toast.show({
         type: 'error',
         text1: 'Required',
@@ -86,7 +93,9 @@ const ServicesSelectionScreen: React.FC<ServicesSelectionScreenProps> = ({
 
     setSaving(true);
     try {
-      const serviceIds = selectedServices.map(s => s?.id);
+      const serviceIds = (selectedServices || [])
+        .map(s => s?.id)
+        .filter(Boolean);
       await updateServices({ services: serviceIds });
 
       Toast.show({
@@ -101,7 +110,10 @@ const ServicesSelectionScreen: React.FC<ServicesSelectionScreenProps> = ({
       // race condition where RouteGuard unmounts OnboardingStack
       refreshAuthUser(dispatch).catch(() => {});
     } catch (error) {
-      console.error('Error updating services:', error);
+      console.warn(
+        'Error updating services:',
+        (error as any)?.message || 'Unknown error',
+      );
       Toast.show({
         type: 'error',
         text1: 'Error',
@@ -153,18 +165,18 @@ const ServicesSelectionScreen: React.FC<ServicesSelectionScreenProps> = ({
             </View>
           ) : (
             <View style={styles.servicesGrid}>
-              {availableServices.map(service => {
-                const isSelected = selectedServices.some(
-                  s => s._id === service._id,
+              {(availableServices || []).map(service => {
+                const isSelected = (selectedServices || []).some(
+                  s => s?._id === service?._id,
                 );
                 return (
                   <TouchableOpacity
-                    key={service._id}
+                    key={service?._id || Math.random().toString()}
                     style={[
                       styles.serviceTag,
                       isSelected && styles.serviceTagSelected,
                     ]}
-                    onPress={() => toggleService(service._id)}
+                    onPress={() => toggleService(service?._id)}
                     activeOpacity={0.7}
                   >
                     <Text
@@ -173,7 +185,7 @@ const ServicesSelectionScreen: React.FC<ServicesSelectionScreenProps> = ({
                         isSelected && styles.serviceTextSelected,
                       ]}
                     >
-                      {service.service}
+                      {service?.service || 'Unknown Service'}
                     </Text>
                   </TouchableOpacity>
                 );
@@ -181,7 +193,7 @@ const ServicesSelectionScreen: React.FC<ServicesSelectionScreenProps> = ({
             </View>
           )}
 
-          {selectedServices.length === 0 && !loading && (
+          {(selectedServices || []).length === 0 && !loading && (
             <View style={styles.warningBox}>
               <Text style={styles.warningText}>
                 Please select at least one service

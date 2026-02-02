@@ -83,13 +83,15 @@ const DashboardScreen = ({ navigation }: any) => {
   const fetchData = async () => {
     try {
       const appointmentsResponse = await getArtistAppointmentsPaginated();
-      const returnedApp = appointmentsResponse.data?.appointments || [];
+      const returnedApp = appointmentsResponse?.data?.appointments || [];
       setAppointments(returnedApp);
 
-      const displayedAppointments = returnedApp.slice(0, 4);
+      const displayedAppointments = (returnedApp || []).slice(0, 4);
       const uniqueCustomerIds = [
         ...new Set(
-          displayedAppointments.map((apt: any) => apt.customerId as string),
+          (displayedAppointments || [])
+            .map((apt: any) => apt?.customerId)
+            .filter(Boolean) as string[],
         ),
       ] as string[];
 
@@ -103,12 +105,12 @@ const DashboardScreen = ({ navigation }: any) => {
 
         const customerResponses = await Promise.all(customerPromises);
         const customerMap = customerResponses.reduce((acc, response, index) => {
-          if (response && response.data) {
+          if (response?.data?.customer) {
             const customerId = uniqueCustomerIds[index];
-            const customer = response.data?.customer;
+            const customer = response.data.customer;
             acc[customerId] = {
-              name: customer.info?.client_name,
-              avatar: customer.info?.avatar_url,
+              name: customer?.info?.client_name || 'Unknown Client',
+              avatar: customer?.info?.avatar_url,
             };
           }
           return acc;
@@ -117,7 +119,7 @@ const DashboardScreen = ({ navigation }: any) => {
         setCustomers(customerMap);
       }
       const metricsResponse = await getMyMetrics();
-      setMetrics(metricsResponse.data?.metrics);
+      setMetrics(metricsResponse?.data?.metrics || null);
       setMetricsLoading(false);
 
       setLoading(false);
@@ -274,7 +276,7 @@ const DashboardScreen = ({ navigation }: any) => {
                 </View>
               ))}
             </ScrollView>
-          ) : appointments.length === 0 ? (
+          ) : (appointments || []).length === 0 ? (
             <Text style={styles.emptyText}>No appointments found</Text>
           ) : (
             <ScrollView
@@ -283,7 +285,7 @@ const DashboardScreen = ({ navigation }: any) => {
               contentContainerStyle={styles.appointmentsScrollContent}
               style={styles.appointmentsScroll}
             >
-              {appointments.slice(0, 6).map(appointment => (
+              {(appointments || []).slice(0, 6).map(appointment => (
                 <View key={appointment.id} style={styles.appointmentItem}>
                   <AppointmentCard
                     name={
@@ -295,14 +297,14 @@ const DashboardScreen = ({ navigation }: any) => {
                       appointment.customerId,
                       customers,
                     )}
-                    time={formatAppointmentTime(appointment.date)}
+                    time={formatAppointmentTime(appointment?.date)}
                     service={
-                      appointment.serviceDetails[0]?.service ||
+                      (appointment?.serviceDetails || [])[0]?.service ||
                       'Service not specified'
                     }
                     onPress={() =>
                       navigation.navigate('ClientAppointments', {
-                        clientId: appointment.customerId,
+                        clientId: appointment?.customerId || '',
                       })
                     }
                   />

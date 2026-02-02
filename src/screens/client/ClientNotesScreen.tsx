@@ -72,8 +72,8 @@ const ClientNotesScreen: React.FC<ClientNotesScreenProps> = () => {
     try {
       setLoading(true);
       const response = await getCustomerNotes(clientId);
-      console.log('Notes response:', response?.data.notes);
-      setNotes(response.data?.notes || []);
+      console.log('Notes response:', response?.data?.notes);
+      setNotes(response?.data?.notes || []);
     } catch (error) {
       console.error('Error loading notes:', error);
       Toast.show({
@@ -92,8 +92,10 @@ const ClientNotesScreen: React.FC<ClientNotesScreenProps> = () => {
         note: noteContent,
         imageUrl,
       });
-      const newNote = response.data.note;
-      setNotes(prev => [newNote, ...prev]);
+      const newNote = response?.data?.note;
+      if (newNote) {
+        setNotes(prev => [newNote, ...(prev || [])]);
+      }
       Toast.show({
         type: 'success',
         text1: 'Success',
@@ -121,8 +123,8 @@ const ClientNotesScreen: React.FC<ClientNotesScreenProps> = () => {
         imageUrl,
       });
       setNotes(prev =>
-        prev.map(n =>
-          n.id === noteId
+        (prev || []).map(n =>
+          n?.id === noteId
             ? {
                 ...n,
                 note: noteContent,

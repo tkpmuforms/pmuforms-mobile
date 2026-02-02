@@ -72,7 +72,7 @@ const PaymentScreen: React.FC = () => {
   const fetchSubscriptionData = async () => {
     try {
       const response = await getSubscription();
-      setSubscriptionData(response.data);
+      setSubscriptionData(response?.data || null);
     } catch (error) {
       console.error('Error fetching subscription:', error);
     }
@@ -81,15 +81,15 @@ const PaymentScreen: React.FC = () => {
   const fetchPaymentMethods = async () => {
     try {
       const response = await listPaymentMethods();
-      const paymentMethods = response.data.data || response.data;
+      const paymentMethods = response?.data?.data || response?.data || [];
 
-      const formattedCards: Card[] = paymentMethods.map((pm: any) => ({
-        id: pm.id,
-        name: pm.billing_details?.name || 'Card Holder',
-        lastFour: pm.card?.last4 || '0000',
-        brand: pm.card?.brand || 'visa',
-        isDefault: pm.id === defaultCardId,
-        color: getCardColor(pm.card?.brand || 'visa'),
+      const formattedCards: Card[] = (paymentMethods || []).map((pm: any) => ({
+        id: pm?.id || '',
+        name: pm?.billing_details?.name || 'Card Holder',
+        lastFour: pm?.card?.last4 || '0000',
+        brand: pm?.card?.brand || 'visa',
+        isDefault: pm?.id === defaultCardId,
+        color: getCardColor(pm?.card?.brand || 'visa'),
       }));
 
       setCards(formattedCards);
@@ -103,17 +103,17 @@ const PaymentScreen: React.FC = () => {
       setLoading(true);
 
       const response = await listTransactions();
-      const invoices = response.data?.invoices || response.data;
+      const invoices = response?.data?.invoices || response?.data || [];
 
-      const formattedHistory: SubscriptionHistory[] = invoices.map(
+      const formattedHistory: SubscriptionHistory[] = (invoices || []).map(
         (invoice: any) => ({
-          date: new Date(invoice.created).toLocaleDateString(),
-          description: invoice.description || 'Subscription Payment',
+          date: new Date(invoice?.created).toLocaleDateString(),
+          description: invoice?.description || 'Subscription Payment',
           cardUsed: `•••• •••• •••• ${
-            invoice.payment_method_details?.card?.last4 || '0000'
+            invoice?.payment_method_details?.card?.last4 || '0000'
           }`,
-          amount: invoice.amount,
-          status: getTransactionStatus(invoice.status),
+          amount: invoice?.amount,
+          status: getTransactionStatus(invoice?.status),
         }),
       );
 

@@ -54,9 +54,9 @@ const ClientScreen: React.FC<ClientScreenProps> = () => {
 
         const response = await searchCustomers(searchName, 1, 30);
         const data: CustomerResponse = response?.data;
-        const convertedClients = data.customers?.map(convertToClient);
+        const convertedClients = (data?.customers || []).map(convertToClient);
         setClients(convertedClients);
-        setTotalClients(data.metadata.total);
+        setTotalClients(data?.metadata?.total || 0);
       } catch (err) {
         console.error('Error fetching customers:', err);
         Toast.show({

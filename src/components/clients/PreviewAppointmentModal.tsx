@@ -61,12 +61,12 @@ const PreviewAppointmentModal: React.FC<PreviewAppointmentModalProps> = ({
   const [appointmentUrl, setAppointmentUrl] = useState<string | undefined>();
 
   const fetchFormsForServices = async (serviceIds: string[]) => {
-    if (!serviceIds || serviceIds.length === 0) return;
+    if (!serviceIds || (serviceIds || []).length === 0) return;
 
     setIsLoadingForms(true);
 
     try {
-      const numericServiceIds = serviceIds
+      const numericServiceIds = (serviceIds || [])
         .map(id => parseInt(id, 10))
         .filter(id => !isNaN(id));
 
@@ -75,7 +75,7 @@ const PreviewAppointmentModal: React.FC<PreviewAppointmentModalProps> = ({
       }
 
       const response = await getMyServiceForms(numericServiceIds);
-      setFormsToSend(response.data?.forms || []);
+      setFormsToSend(response?.data?.forms || []);
     } catch (error) {
       console.error('Error fetching forms:', error);
       setFormsToSend([]);
@@ -91,9 +91,10 @@ const PreviewAppointmentModal: React.FC<PreviewAppointmentModalProps> = ({
   }, [visible, selectedServiceIds]);
 
   const getClientInitials = (name: string) => {
-    return name
-      ?.split(' ')
-      .map(word => word.charAt(0).toUpperCase())
+    return (name || '')
+      .split(' ')
+      .filter(word => (word || '').length > 0)
+      .map(word => (word || '').charAt(0).toUpperCase())
       .join('')
       .substring(0, 2);
   };
@@ -105,13 +106,13 @@ const PreviewAppointmentModal: React.FC<PreviewAppointmentModalProps> = ({
       const bookingData = {
         appointmentDate,
         customerId: clientId,
-        services: selectedServiceIds
+        services: (selectedServiceIds || [])
           .map(id => parseInt(id, 10))
           .filter(id => !isNaN(id)),
       };
 
       const response = await bookAppointment(bookingData);
-      const appointmentId = response.data?.appointment?.id;
+      const appointmentId = response?.data?.appointment?.id;
 
       if (appointmentId) {
         const baseUrl =

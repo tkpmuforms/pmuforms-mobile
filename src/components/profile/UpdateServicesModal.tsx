@@ -54,19 +54,19 @@ const UpdateServicesModal: React.FC<UpdateServicesModalProps> = ({
     try {
       const response = await getServices();
 
-      const services: Service[] = response?.data.services.map(
+      const services: Service[] = (response?.data?.services || []).map(
         (service: Service) => ({
-          _id: service._id,
-          id: service.id,
-          service: service.service,
+          _id: service?._id || '',
+          id: service?.id || 0,
+          service: service?.service || '',
         }),
       );
 
       setSelectedServices(prev => {
         const filtered = services.filter(service =>
-          prev.some(
+          (prev || []).some(
             selected =>
-              selected._id === service._id || selected.id === service.id,
+              selected?._id === service?._id || selected?.id === service?.id,
           ),
         );
 
@@ -84,22 +84,22 @@ const UpdateServicesModal: React.FC<UpdateServicesModalProps> = ({
 
   const toggleService = (service: Service) => {
     setSelectedServices(prev => {
-      const isSelected = prev.some(s => s._id === service._id);
+      const isSelected = (prev || []).some(s => s?._id === service?._id);
       if (isSelected) {
-        return prev.filter(s => s._id !== service._id);
+        return (prev || []).filter(s => s?._id !== service?._id);
       } else {
-        return [...prev, service];
+        return [...(prev || []), service];
       }
     });
   };
 
   const handleSave = async () => {
-    if (selectedServices.length === 0) {
+    if ((selectedServices || []).length === 0) {
       Alert.alert('Error', 'Please select at least one service');
       return;
     }
 
-    const serviceIds = selectedServices.map(s => s.id);
+    const serviceIds = (selectedServices || []).map(s => s?.id).filter(Boolean);
     try {
       await updateServices({ services: serviceIds });
       await getAuthUser();
@@ -114,7 +114,7 @@ const UpdateServicesModal: React.FC<UpdateServicesModalProps> = ({
   const getAuthUser = async () => {
     try {
       const response = await getAuthMe();
-      dispatch(setUser(response?.data?.user));
+      dispatch(setUser(response?.data?.user || null));
     } catch (error) {
       console.error('Error fetching auth user:', error);
     }

@@ -59,11 +59,11 @@ const EditFormsScreen: React.FC = () => {
   const fetchServices = async () => {
     try {
       const response = await getServices();
-      const services: Service[] = response.data.services.map(
+      const services: Service[] = (response?.data?.services || []).map(
         (service: Service) => ({
-          _id: service._id,
-          id: service.id,
-          service: service.service,
+          _id: service?._id || '',
+          id: service?.id || 0,
+          service: service?.service || '',
         }),
       );
       setAllServices(services);
@@ -86,17 +86,17 @@ const EditFormsScreen: React.FC = () => {
       const response = await getFormById(formId);
 
       if (response?.data?.form) {
-        const formData = response?.data?.form;
+        const formData = response.data.form;
 
         const transformedForm: SingleForm = {
-          id: formData.id || formData._id,
-          type: formData.type,
-          title: formData.title,
-          sections: formData.sections.map((section: Section) => ({
+          id: formData?.id || formData?._id || '',
+          type: formData?.type || 'consent',
+          title: formData?.title || '',
+          sections: (formData?.sections || []).map((section: Section) => ({
             ...section,
-            _id: section._id || section.id,
+            _id: section?._id || section?.id,
           })),
-          services: formData.services || [],
+          services: formData?.services || [],
         };
 
         const updatedForm = JSON.parse(
