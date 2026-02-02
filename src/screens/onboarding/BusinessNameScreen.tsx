@@ -44,8 +44,6 @@ const BusinessNameScreen: React.FC<BusinessNameScreenProps> = ({
         businessName: businessName.trim(),
       });
 
-      await refreshAuthUser(dispatch);
-
       Toast.show({
         type: 'success',
         text1: 'Success',
@@ -53,6 +51,10 @@ const BusinessNameScreen: React.FC<BusinessNameScreenProps> = ({
       });
 
       navigation.navigate('OnboardingServices');
+
+      // Refresh user data in background after navigation to avoid
+      // race condition where RouteGuard unmounts OnboardingStack
+      refreshAuthUser(dispatch).catch(() => {});
     } catch (error) {
       console.error('Error updating business info:', error);
       Toast.show({

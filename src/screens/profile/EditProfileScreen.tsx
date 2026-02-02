@@ -21,7 +21,7 @@ import {
   updateMyProfile,
   updateMySignature,
 } from '../../services/artistServices';
-import { ref, uploadBytes, getDownloadURL } from 'firebase/storage';
+import storage from '@react-native-firebase/storage';
 
 interface ProfileData {
   firstName: string;
@@ -180,11 +180,9 @@ const EditProfileScreen: React.FC = () => {
       setAvatarUrl(result.assets[0].uri);
 
       try {
-        const response = await fetch(result.assets[0].uri);
-        const blob = await response.blob();
-        const storageRef = ref(storage, `avatars/artists/${user?._id}`);
-        const snapshot = await uploadBytes(storageRef, blob);
-        const downloadUrl = await getDownloadURL(snapshot.ref);
+        const reference = storage().ref(`avatars/artists/${user?._id}`);
+        await reference.putFile(result.assets[0].uri);
+        const downloadUrl = await reference.getDownloadURL();
         setAvatarUrl(downloadUrl);
       } catch (uploadError) {
         console.error('Error uploading avatar:', uploadError);
@@ -278,15 +276,12 @@ const EditProfileScreen: React.FC = () => {
 
   const handleSignatureSubmit = async (_signatureDataUrl: string) => {
     try {
-      const response = await fetch(_signatureDataUrl);
-      const blob = await response.blob();
-
       const timestamp = Date.now();
       const fileName = `signature_${user?._id}_${timestamp}.png`;
 
-      const storageRef = ref(storage, `signatures/artists/${user?._id}`);
-      const snapshot = await uploadBytes(storageRef, blob);
-      const downloadUrl = await getDownloadURL(snapshot.ref);
+      const reference = storage().ref(`signatures/artists/${fileName}`);
+      await reference.putString(_signatureDataUrl, 'data_url');
+      const downloadUrl = await reference.getDownloadURL();
 
       await updateMySignature({ signature_url: downloadUrl });
 

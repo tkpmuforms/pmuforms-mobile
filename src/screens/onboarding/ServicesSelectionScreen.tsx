@@ -9,7 +9,7 @@ import {
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import Toast from 'react-native-toast-message';
-import { Check, ChevronLeft } from 'lucide-react-native';
+import { ChevronLeft } from 'lucide-react-native';
 import { getServices, updateServices } from '../../services/artistServices';
 import { colors } from '../../theme/colors';
 import { refreshAuthUser } from '../../utils/authUtils';
@@ -89,9 +89,6 @@ const ServicesSelectionScreen: React.FC<ServicesSelectionScreenProps> = ({
       const serviceIds = selectedServices.map(s => s?.id);
       await updateServices({ services: serviceIds });
 
-      // Refresh user data
-      await refreshAuthUser(dispatch);
-
       Toast.show({
         type: 'success',
         text1: 'Success',
@@ -99,6 +96,10 @@ const ServicesSelectionScreen: React.FC<ServicesSelectionScreenProps> = ({
       });
 
       navigation.navigate('OnboardingPayment');
+
+      // Refresh user data in background after navigation to avoid
+      // race condition where RouteGuard unmounts OnboardingStack
+      refreshAuthUser(dispatch).catch(() => {});
     } catch (error) {
       console.error('Error updating services:', error);
       Toast.show({
@@ -143,52 +144,56 @@ const ServicesSelectionScreen: React.FC<ServicesSelectionScreenProps> = ({
           </Text>
         </View>
 
-        {/* Services Grid */}
-        {loading ? (
-          <View style={styles.loadingContainer}>
-            <ActivityIndicator size="large" color={colors.primary} />
-          </View>
-        ) : (
-          <View style={styles.servicesGrid}>
-            {availableServices.map(service => {
-              const isSelected = selectedServices.some(
-                s => s._id === service._id,
-              );
-              return (
-                <TouchableOpacity
-                  key={service._id}
-                  style={[
-                    styles.serviceCard,
-                    isSelected && styles.serviceCardSelected,
-                  ]}
-                  onPress={() => toggleService(service._id)}
-                  activeOpacity={0.7}
-                >
-                  <View style={styles.serviceContent}>
+        {/* Services Card */}
+        <View style={styles.servicesCard}>
+          <Text style={styles.sectionTitle}>Select services</Text>
+          {loading ? (
+            <View style={styles.loadingContainer}>
+              <ActivityIndicator size="large" color={colors.primary} />
+            </View>
+          ) : (
+            <View style={styles.servicesGrid}>
+              {availableServices.map(service => {
+                const isSelected = selectedServices.some(
+                  s => s._id === service._id,
+                );
+                return (
+                  <TouchableOpacity
+                    key={service._id}
+                    style={[
+                      styles.serviceTag,
+                      isSelected && styles.serviceTagSelected,
+                    ]}
+                    onPress={() => toggleService(service._id)}
+                    activeOpacity={0.7}
+                  >
                     <Text
                       style={[
-                        styles.serviceName,
-                        isSelected && styles.serviceNameSelected,
+                        styles.serviceText,
+                        isSelected && styles.serviceTextSelected,
                       ]}
                     >
                       {service.service}
                     </Text>
-                    {isSelected && (
-                      <View style={styles.checkIcon}>
-                        <Check size={18} color={colors.white} />
-                      </View>
-                    )}
-                  </View>
-                </TouchableOpacity>
-              );
-            })}
-          </View>
-        )}
+                  </TouchableOpacity>
+                );
+              })}
+            </View>
+          )}
+
+          {selectedServices.length === 0 && !loading && (
+            <View style={styles.warningBox}>
+              <Text style={styles.warningText}>
+                Please select at least one service
+              </Text>
+            </View>
+          )}
+        </View>
 
         <View style={styles.infoBox}>
           <Text style={styles.infoText}>
-            💡 Selected services will determine which forms are available to
-            share with your clients
+            Selected services will determine which forms are available to share
+            with your clients
           </Text>
         </View>
       </ScrollView>
@@ -265,42 +270,56 @@ const styles = StyleSheet.create({
     paddingVertical: 60,
     alignItems: 'center',
   },
-  servicesGrid: {
-    gap: 12,
-  },
-  serviceCard: {
-    borderWidth: 1.5,
+  servicesCard: {
+    backgroundColor: colors.white,
+    borderRadius: 16,
+    padding: 20,
+    borderWidth: 1,
     borderColor: colors.borderColor,
-    borderRadius: 12,
-    padding: 16,
+  },
+  sectionTitle: {
+    fontSize: 16,
+    fontWeight: '600',
+    color: '#000',
+    marginBottom: 16,
+  },
+  servicesGrid: {
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    gap: 10,
+  },
+  serviceTag: {
+    paddingVertical: 10,
+    paddingHorizontal: 18,
+    borderWidth: 1,
+    borderColor: colors.borderColor,
+    borderRadius: 20,
     backgroundColor: colors.white,
   },
-  serviceCardSelected: {
+  serviceTagSelected: {
+    backgroundColor: colors.primary,
     borderColor: colors.primary,
-    backgroundColor: '#f3e8ff',
   },
-  serviceContent: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between',
+  serviceText: {
+    fontSize: 14,
+    color: colors.subtitleColor,
   },
-  serviceName: {
-    fontSize: 16,
-    fontWeight: '500',
-    color: '#000',
-    flex: 1,
-  },
-  serviceNameSelected: {
-    color: colors.primary,
+  serviceTextSelected: {
+    color: colors.white,
     fontWeight: '600',
   },
-  checkIcon: {
-    width: 24,
-    height: 24,
-    borderRadius: 12,
-    backgroundColor: colors.primary,
-    alignItems: 'center',
-    justifyContent: 'center',
+  warningBox: {
+    backgroundColor: '#fef2f2',
+    borderWidth: 1,
+    borderColor: '#fecaca',
+    borderRadius: 8,
+    padding: 12,
+    marginTop: 16,
+  },
+  warningText: {
+    color: '#dc2626',
+    fontSize: 13,
+    textAlign: 'center',
   },
   infoBox: {
     backgroundColor: '#f0f9ff',

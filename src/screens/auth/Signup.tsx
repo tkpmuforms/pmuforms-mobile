@@ -9,6 +9,7 @@ import {
   View,
 } from 'react-native';
 import Toast from 'react-native-toast-message';
+import { ChevronLeft } from 'lucide-react-native';
 import useAuth from '../../hooks/useAuth';
 import { colors } from '../../theme/colors';
 import {
@@ -155,7 +156,7 @@ const Signup: React.FC<SignupProps> = ({ onToggleToLogin }) => {
     <View style={styles.formContainer}>
       <View style={styles.header}>
         <TouchableOpacity style={styles.backButton} onPress={handleBack}>
-          {/* <Ionicons name="arrow-back" size={24} color={colors.primary} /> */}
+          <ChevronLeft size={24} color={colors.primary} />
         </TouchableOpacity>
         <View style={styles.progressBar}>
           <View style={styles.progressLine}>
@@ -216,7 +217,7 @@ const Signup: React.FC<SignupProps> = ({ onToggleToLogin }) => {
     <View style={styles.formContainer}>
       <View style={styles.header}>
         <TouchableOpacity style={styles.backButton} onPress={handleBack}>
-          {/* <Ionicons name="arrow-back" size={24} color={colors.primary} /> */}
+          <ChevronLeft size={24} color={colors.primary} />
         </TouchableOpacity>
         <View style={styles.progressBar}>
           <View style={styles.progressLine}>
