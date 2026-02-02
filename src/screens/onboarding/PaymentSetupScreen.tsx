@@ -12,6 +12,13 @@ import { colors } from '../../theme/colors';
 import { useSelector } from 'react-redux';
 import { RootState } from '../../redux/store';
 
+// Pricing constants
+const weeklyPrice = 19.99;
+const monthlyPrice = 99.99;
+const yearlyPrice = 199.99;
+const monthlyPricePerWeek = monthlyPrice / 4.33;
+const yearlyPricePerWeek = yearlyPrice / 52;
+
 interface PaymentSetupScreenProps {
   navigation: any;
 }
@@ -52,33 +59,39 @@ const PaymentSetupScreen: React.FC<PaymentSetupScreenProps> = ({
     });
   };
 
-  const plans = [
+  const pricingPlans = [
     {
-      id: 'monthly',
-      name: 'Monthly',
-      price: '$19.99',
-      period: '/month',
-      features: [
-        'Unlimited forms',
-        'Unlimited clients',
-        'Email notifications',
-        'Cloud storage',
-        'Priority support',
-      ],
+      id: '1-month',
+      name: '1 MONTH',
+      price: `$${weeklyPrice}`,
+      period: 'month',
+      subtitle: '(7days free trial)',
+      badge: '',
+      popular: false,
+      freeTrialLabel: '7-day free trial',
+      specialOffer: false,
     },
     {
-      id: 'yearly',
-      name: 'Yearly',
-      price: '$199.99',
-      period: '/year',
-      savings: 'Save 17%',
-      features: [
-        'Everything in Monthly',
-        'Advanced analytics',
-        'Custom branding',
-        'API access',
-        'Dedicated support',
-      ],
+      id: '6-months',
+      name: '6 MONTHS',
+      price: `$${monthlyPrice}`,
+      period: 'month',
+      subtitle: `(only $${monthlyPricePerWeek.toFixed(2)} / month)`,
+      badge: '-5%',
+      popular: false,
+      freeTrialLabel: '7-day free trial',
+      specialOffer: false,
+    },
+    {
+      id: '12-months',
+      name: '12 MONTHS',
+      price: `$${yearlyPrice}`,
+      period: 'year',
+      subtitle: `(only $${yearlyPricePerWeek.toFixed(2)} / month)`,
+      badge: '-5%',
+      popular: false,
+      freeTrialLabel: '7-day free trial',
+      specialOffer: true,
     },
   ];
 
@@ -88,20 +101,18 @@ const PaymentSetupScreen: React.FC<PaymentSetupScreenProps> = ({
         <TouchableOpacity onPress={handleBack} style={styles.backButton}>
           <ChevronLeft size={24} color="#000" />
         </TouchableOpacity>
-      </View>
-
-      <ScrollView
-        contentContainerStyle={styles.scrollContent}
-        showsVerticalScrollIndicator={false}
-      >
-        {/* Progress Indicator */}
         <View style={styles.progressContainer}>
           <View style={styles.progressBar}>
             <View style={styles.progressFill} />
           </View>
           <Text style={styles.progressText}>Step 3 of 3</Text>
         </View>
+      </View>
 
+      <ScrollView
+        contentContainerStyle={styles.scrollContent}
+        showsVerticalScrollIndicator={false}
+      >
         {/* Header */}
         <View style={styles.headerContent}>
           <Text style={styles.title}>
@@ -118,7 +129,7 @@ const PaymentSetupScreen: React.FC<PaymentSetupScreenProps> = ({
           <>
             {/* Plans */}
             <View style={styles.plansContainer}>
-              {plans.map(plan => {
+              {pricingPlans.map(plan => {
                 const isSelected = selectedPlan === plan.id;
                 return (
                   <TouchableOpacity
@@ -126,15 +137,16 @@ const PaymentSetupScreen: React.FC<PaymentSetupScreenProps> = ({
                     style={[
                       styles.planCard,
                       isSelected && styles.planCardSelected,
+                      plan.specialOffer && styles.planCardSpecialOffer,
                     ]}
                     onPress={() =>
                       setSelectedPlan(plan.id as 'monthly' | 'yearly')
                     }
                     activeOpacity={0.7}
                   >
-                    {plan.savings && (
+                    {plan.badge && (
                       <View style={styles.savingsBadge}>
-                        <Text style={styles.savingsText}>{plan.savings}</Text>
+                        <Text style={styles.savingsText}>{plan.badge}</Text>
                       </View>
                     )}
 
@@ -143,23 +155,19 @@ const PaymentSetupScreen: React.FC<PaymentSetupScreenProps> = ({
                         <Text style={styles.planName}>{plan.name}</Text>
                         <View style={styles.priceContainer}>
                           <Text style={styles.planPrice}>{plan.price}</Text>
-                          <Text style={styles.planPeriod}>{plan.period}</Text>
+                          <Text style={styles.planPeriod}>/{plan.period}</Text>
                         </View>
+                        {plan.subtitle && (
+                          <Text style={styles.planSubtitle}>
+                            {plan.subtitle}
+                          </Text>
+                        )}
                       </View>
                       {isSelected && (
                         <View style={styles.selectedIcon}>
                           <Check size={20} color={colors.white} />
                         </View>
                       )}
-                    </View>
-
-                    <View style={styles.featuresContainer}>
-                      {plan.features.map((feature, index) => (
-                        <View key={index} style={styles.featureRow}>
-                          <Check size={16} color={colors.primary} />
-                          <Text style={styles.featureText}>{feature}</Text>
-                        </View>
-                      ))}
                     </View>
                   </TouchableOpacity>
                 );
@@ -207,8 +215,11 @@ const styles = StyleSheet.create({
     backgroundColor: colors.white,
   },
   header: {
+    flexDirection: 'row',
+    alignItems: 'center',
     paddingHorizontal: 24,
     paddingVertical: 8,
+    gap: 12,
   },
   backButton: {
     width: 40,
@@ -220,13 +231,13 @@ const styles = StyleSheet.create({
     paddingHorizontal: 24,
   },
   progressContainer: {
-    marginBottom: 32,
+    flex: 1,
   },
   progressBar: {
     height: 4,
     backgroundColor: colors.borderColor,
     borderRadius: 2,
-    marginBottom: 8,
+    marginBottom: 4,
   },
   progressFill: {
     height: '100%',
@@ -267,6 +278,9 @@ const styles = StyleSheet.create({
   planCardSelected: {
     borderColor: colors.primary,
     backgroundColor: '#f9fafb',
+  },
+  planCardSpecialOffer: {
+    borderColor: colors.primary,
   },
   savingsBadge: {
     position: 'absolute',
@@ -311,6 +325,11 @@ const styles = StyleSheet.create({
     color: colors.subtitleColor,
     marginLeft: 4,
   },
+  planSubtitle: {
+    fontSize: 12,
+    color: colors.subtitleColor,
+    marginTop: 4,
+  },
   selectedIcon: {
     width: 28,
     height: 28,
@@ -318,19 +337,6 @@ const styles = StyleSheet.create({
     backgroundColor: colors.primary,
     alignItems: 'center',
     justifyContent: 'center',
-  },
-  featuresContainer: {
-    gap: 12,
-  },
-  featureRow: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: 8,
-  },
-  featureText: {
-    fontSize: 14,
-    color: '#000',
-    flex: 1,
   },
   infoBox: {
     backgroundColor: '#f0f9ff',

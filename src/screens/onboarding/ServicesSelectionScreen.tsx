@@ -129,25 +129,23 @@ const ServicesSelectionScreen: React.FC<ServicesSelectionScreenProps> = ({
   };
 
   return (
-    <SafeAreaView style={styles.container} edges={['top', 'bottom']}>
+    <SafeAreaView style={styles.container} edges={['top']}>
       <View style={styles.header}>
         <TouchableOpacity onPress={handleBack} style={styles.backButton}>
           <ChevronLeft size={24} color="#000" />
         </TouchableOpacity>
+        <View style={styles.progressContainer}>
+          <View style={styles.progressBar}>
+            <View style={styles.progressFill} />
+          </View>
+          <Text style={styles.progressText}>Step 3 of 3</Text>
+        </View>
       </View>
 
       <ScrollView
         contentContainerStyle={styles.scrollContent}
         showsVerticalScrollIndicator={false}
       >
-        {/* Progress Indicator */}
-        <View style={styles.progressContainer}>
-          <View style={styles.progressBar}>
-            <View style={styles.progressFill} />
-          </View>
-          <Text style={styles.progressText}>Step 2 of 3</Text>
-        </View>
-
         {/* Header */}
         <View style={styles.headerContent}>
           <Text style={styles.title}>Select Your Services</Text>
@@ -156,9 +154,7 @@ const ServicesSelectionScreen: React.FC<ServicesSelectionScreenProps> = ({
           </Text>
         </View>
 
-        {/* Services Card */}
         <View style={styles.servicesCard}>
-          <Text style={styles.sectionTitle}>Select services</Text>
           {loading ? (
             <View style={styles.loadingContainer}>
               <ActivityIndicator size="large" color={colors.primary} />
@@ -232,8 +228,11 @@ const styles = StyleSheet.create({
     backgroundColor: colors.white,
   },
   header: {
+    flexDirection: 'row',
+    alignItems: 'center',
     paddingHorizontal: 24,
     paddingVertical: 8,
+    gap: 12,
   },
   backButton: {
     width: 40,
@@ -242,16 +241,16 @@ const styles = StyleSheet.create({
   },
   scrollContent: {
     flexGrow: 1,
-    paddingHorizontal: 24,
+    paddingHorizontal: 14,
   },
   progressContainer: {
-    marginBottom: 32,
+    flex: 1,
   },
   progressBar: {
     height: 4,
     backgroundColor: colors.borderColor,
     borderRadius: 2,
-    marginBottom: 8,
+    marginBottom: 4,
   },
   progressFill: {
     height: '100%',
@@ -265,16 +264,16 @@ const styles = StyleSheet.create({
     textAlign: 'center',
   },
   headerContent: {
-    marginBottom: 32,
+    marginBottom: 10,
   },
   title: {
-    fontSize: 32,
+    fontSize: 22,
     fontWeight: '700',
     color: '#000',
     marginBottom: 8,
   },
   subtitle: {
-    fontSize: 16,
+    fontSize: 14,
     color: colors.subtitleColor,
     lineHeight: 24,
   },
@@ -285,12 +284,12 @@ const styles = StyleSheet.create({
   servicesCard: {
     backgroundColor: colors.white,
     borderRadius: 16,
-    padding: 20,
-    borderWidth: 1,
+    padding: 5,
+    borderWidth: 0.5,
     borderColor: colors.borderColor,
   },
   sectionTitle: {
-    fontSize: 16,
+    fontSize: 14,
     fontWeight: '600',
     color: '#000',
     marginBottom: 16,
@@ -313,7 +312,7 @@ const styles = StyleSheet.create({
     borderColor: colors.primary,
   },
   serviceText: {
-    fontSize: 14,
+    fontSize: 13,
     color: colors.subtitleColor,
   },
   serviceTextSelected: {
@@ -341,8 +340,8 @@ const styles = StyleSheet.create({
     marginBottom: 16,
   },
   infoText: {
-    fontSize: 14,
-    color: '#0369a1',
+    fontSize: 13,
+    color: colors.primary,
     lineHeight: 20,
   },
   footer: {
