@@ -240,7 +240,10 @@ export const refreshAuthUser = async (dispatch: Dispatch): Promise<void> => {
       dispatch(setUser(response.data.user));
     }
   } catch (error) {
-    console.warn('Error refreshing auth user:', (error as any)?.message || 'Unknown error');
+    console.warn(
+      'Error refreshing auth user:',
+      (error as any)?.message || 'Unknown error',
+    );
     throw error;
   }
 };
@@ -254,9 +257,9 @@ export const determineOnboardingStep = (artist: Artist): OnboardingStep => {
     return 'services';
   }
 
-  if (!artist.stripeSubscriptionActive && !artist.appStorePurchaseActive) {
-    return 'payment';
-  }
+  // if (!artist.stripeSubscriptionActive && !artist.appStorePurchaseActive) {
+  //   return 'payment';
+  // }
 
   return 'completed';
 };

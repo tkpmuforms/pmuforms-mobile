@@ -39,9 +39,9 @@ const AddClientModal: React.FC<AddClientModalProps> = ({
 
   const isFormValid = () => {
     return (
-      formData.firstName.trim() !== '' &&
-      formData.lastName.trim() !== '' &&
-      formData.email.trim() !== ''
+      formData?.firstName.trim() !== '' &&
+      formData?.lastName.trim() !== '' &&
+      formData?.email.trim() !== ''
     );
   };
 
@@ -51,9 +51,9 @@ const AddClientModal: React.FC<AddClientModalProps> = ({
     }
     try {
       await createClient({
-        name: `${formData.firstName} ${formData.lastName}`,
-        primaryPhone: formData.phone,
-        email: formData.email,
+        name: `${formData?.firstName} ${formData?.lastName}`,
+        primaryPhone: formData?.phone,
+        email: formData?.email,
       });
 
       Toast.show({
