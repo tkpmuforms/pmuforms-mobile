@@ -198,7 +198,11 @@ const EditFormsScreen: React.FC = () => {
           after: currentAfterFieldId,
         };
 
-        const response = await addFormSectionData(form.id, currentSectionId, newField);
+        const response = await addFormSectionData(
+          form.id,
+          currentSectionId,
+          newField,
+        );
 
         if (!handleFormResponse(response)) {
           await fetchForm();
@@ -225,7 +229,10 @@ const EditFormsScreen: React.FC = () => {
 
     try {
       if (selectedField) {
-        const updateData = { title: content, line: selectedField.line || 'full' };
+        const updateData = {
+          title: content,
+          line: selectedField.line || 'full',
+        };
         const response = await updateFormSectionData(
           form.id,
           selectedField.sectionId || '',
@@ -243,7 +250,9 @@ const EditFormsScreen: React.FC = () => {
               return {
                 ...section,
                 data: section.data.map(f =>
-                  f.id === selectedField.id ? { ...f, content, title: content } : f,
+                  f.id === selectedField.id
+                    ? { ...f, content, title: content }
+                    : f,
                 ),
               };
             }
@@ -265,7 +274,11 @@ const EditFormsScreen: React.FC = () => {
           after: currentAfterFieldId,
         };
 
-        const response = await addFormSectionData(form.id, currentSectionId, newParagraph);
+        const response = await addFormSectionData(
+          form.id,
+          currentSectionId,
+          newParagraph,
+        );
 
         if (!handleFormResponse(response)) {
           await fetchForm();
@@ -389,7 +402,9 @@ const EditFormsScreen: React.FC = () => {
     if (!form) return;
 
     try {
-      const response = await updateFormServices(form.id, { services: selectedServiceIds });
+      const response = await updateFormServices(form.id, {
+        services: selectedServiceIds,
+      });
 
       if (!handleFormResponse(response)) {
         const updatedForm = { ...form };
@@ -510,7 +525,7 @@ const EditFormsScreen: React.FC = () => {
   }
 
   return (
-    <SafeAreaView style={styles.container}>
+    <SafeAreaView style={styles.container} edges={[]}>
       <View style={styles.header}>
         <Text style={styles.title} numberOfLines={1}>
           {form.title}

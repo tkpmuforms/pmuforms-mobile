@@ -47,8 +47,16 @@ const EditParagraphModal: React.FC<EditParagraphModalProps> = ({
   };
 
   return (
-    <Modal visible={visible} animationType="slide" onRequestClose={handleClose}>
-      <SafeAreaView style={styles.container} edges={['top', 'bottom', 'left', 'right']}>
+    <Modal
+      style={styles.modal}
+      visible={visible}
+      animationType="slide"
+      onRequestClose={handleClose}
+    >
+      <SafeAreaView
+        style={styles.container}
+        edges={['top', 'bottom', 'left', 'right']}
+      >
         <View style={styles.header}>
           <TouchableOpacity onPress={handleClose} style={styles.backButton}>
             <ArrowLeft size={24} color={colors.text} />
@@ -83,6 +91,7 @@ const EditParagraphModal: React.FC<EditParagraphModalProps> = ({
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    padding: 10,
     backgroundColor: colors.background,
   },
   header: {

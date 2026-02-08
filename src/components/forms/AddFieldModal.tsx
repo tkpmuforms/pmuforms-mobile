@@ -76,7 +76,10 @@ const AddFieldModal: React.FC<AddFieldModalProps> = ({
 
   return (
     <Modal visible={visible} animationType="slide" onRequestClose={onClose}>
-      <SafeAreaView style={styles.container} edges={['top', 'bottom', 'left', 'right']}>
+      <SafeAreaView
+        style={styles.container}
+        edges={['top', 'bottom', 'left', 'right']}
+      >
         <View style={styles.header}>
           <TouchableOpacity onPress={onClose} style={styles.backButton}>
             <ArrowLeft size={24} color={colors.text} />
@@ -112,6 +115,7 @@ const AddFieldModal: React.FC<AddFieldModalProps> = ({
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    padding: 10,
     backgroundColor: colors.background,
   },
   header: {

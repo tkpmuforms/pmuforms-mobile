@@ -58,7 +58,10 @@ const FieldInputModal: React.FC<FieldInputModalProps> = ({
 
   return (
     <Modal visible={visible} animationType="slide" onRequestClose={handleClose}>
-      <SafeAreaView style={styles.container} edges={['top', 'bottom', 'left', 'right']}>
+      <SafeAreaView
+        style={styles.container}
+        edges={['top', 'bottom', 'left', 'right']}
+      >
         <View style={styles.header}>
           <TouchableOpacity onPress={handleClose} style={styles.backButton}>
             <ArrowLeft size={24} color={colors.text} />
@@ -127,6 +130,7 @@ const FieldInputModal: React.FC<FieldInputModalProps> = ({
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    padding: 10,
     backgroundColor: colors.background,
   },
   header: {
