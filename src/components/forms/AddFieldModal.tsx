@@ -115,7 +115,7 @@ const AddFieldModal: React.FC<AddFieldModalProps> = ({
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    padding: 10,
+    paddingVertical: 20,
     backgroundColor: colors.background,
   },
   header: {

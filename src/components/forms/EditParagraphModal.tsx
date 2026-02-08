@@ -48,7 +48,6 @@ const EditParagraphModal: React.FC<EditParagraphModalProps> = ({
 
   return (
     <Modal
-      style={styles.modal}
       visible={visible}
       animationType="slide"
       onRequestClose={handleClose}
@@ -91,7 +90,7 @@ const EditParagraphModal: React.FC<EditParagraphModalProps> = ({
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    padding: 10,
+    paddingVertical: 20,
     backgroundColor: colors.background,
   },
   header: {

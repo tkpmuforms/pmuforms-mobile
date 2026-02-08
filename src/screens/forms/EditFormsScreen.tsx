@@ -427,39 +427,53 @@ const EditFormsScreen: React.FC = () => {
     }
   };
 
-  const renderField = (field: FieldData, index: number) => {
+  const renderAddFieldButton = (sectionId: string, afterFieldId: string) => (
+    <TouchableOpacity
+      style={styles.addFieldButton}
+      onPress={() => handleAddField(sectionId, afterFieldId)}
+    >
+      <Plus size={14} color={colors.primary} />
+      <Text style={styles.addFieldText}>Add Field</Text>
+    </TouchableOpacity>
+  );
+
+  const renderField = (field: FieldData, sectionId: string, index: number) => {
     return (
-      <View key={field.id || index} style={styles.fieldItem}>
-        <View style={styles.fieldHeader}>
-          <View style={styles.fieldInfo}>
-            <Text style={styles.fieldTitle}>
-              {field.title}
-              {field.required && <Text style={styles.required}> *</Text>}
-            </Text>
-            <Text style={styles.fieldType}>{field.type}</Text>
-          </View>
-          <View style={styles.fieldActions}>
-            <TouchableOpacity
-              style={styles.iconButton}
-              onPress={() => handleEditField(field)}
-            >
-              <Edit size={16} color={colors.primary} />
-            </TouchableOpacity>
-            <TouchableOpacity
-              style={styles.iconButton}
-              onPress={() => handleDeleteField(field)}
-            >
-              <Trash2 size={16} color={colors.error} />
-            </TouchableOpacity>
+      <View key={field.id || index}>
+        <View style={styles.fieldItem}>
+          <View style={styles.fieldHeader}>
+            <View style={styles.fieldInfo}>
+              <Text style={styles.fieldTitle}>
+                {field.title}
+                {field.required && <Text style={styles.required}> *</Text>}
+              </Text>
+              <Text style={styles.fieldType}>{field.type}</Text>
+            </View>
+            <View style={styles.fieldActions}>
+              <TouchableOpacity
+                style={styles.iconButton}
+                onPress={() => handleEditField(field)}
+              >
+                <Edit size={16} color={colors.primary} />
+              </TouchableOpacity>
+              <TouchableOpacity
+                style={styles.iconButton}
+                onPress={() => handleDeleteField(field)}
+              >
+                <Trash2 size={16} color={colors.error} />
+              </TouchableOpacity>
+            </View>
           </View>
         </View>
+        {renderAddFieldButton(sectionId, field.id)}
       </View>
     );
   };
 
   const renderSection = (section: Section) => {
+    const sectionId = section._id || section.id;
     return (
-      <View key={section._id || section.id} style={styles.section}>
+      <View key={sectionId} style={styles.section}>
         <Text style={styles.sectionTitle}>{section.title}</Text>
 
         {section.data && section.data.length > 0 ? (
@@ -468,28 +482,14 @@ const EditFormsScreen: React.FC = () => {
               const fieldWithSection: FieldData = {
                 ...field,
                 type: field.type || 'paragraph',
-                sectionId: section._id || section.id,
+                sectionId,
               };
-              return renderField(fieldWithSection, index);
+              return renderField(fieldWithSection, sectionId, index);
             })}
           </View>
         ) : (
-          <Text style={styles.noFieldsText}>No fields in this section</Text>
+          renderAddFieldButton(sectionId, '')
         )}
-
-        <TouchableOpacity
-          style={styles.addFieldButton}
-          onPress={() => {
-            const lastFieldId =
-              section.data && section.data.length > 0
-                ? section.data[section.data.length - 1].id
-                : '';
-            handleAddField(section._id || section.id, lastFieldId);
-          }}
-        >
-          <Plus size={16} color={colors.primary} />
-          <Text style={styles.addFieldText}>Add Field</Text>
-        </TouchableOpacity>
       </View>
     );
   };

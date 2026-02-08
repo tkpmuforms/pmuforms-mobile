@@ -130,7 +130,7 @@ const FieldInputModal: React.FC<FieldInputModalProps> = ({
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    padding: 10,
+    paddingVertical: 20,
     backgroundColor: colors.background,
   },
   header: {
