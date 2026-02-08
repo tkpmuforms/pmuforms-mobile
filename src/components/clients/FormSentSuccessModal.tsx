@@ -33,16 +33,10 @@ const FormSentSuccessModal: React.FC<FormSentSuccessModalProps> = ({
             <Text style={styles.title}>Form Sent Successfully!</Text>
 
             <Text style={styles.description}>
-              Your form has been submitted to{' '}
-              <Text style={styles.highlight}>{clientName}</Text>
-              {clientEmail ? (
-                <>
-                  {' '}
-                  at <Text style={styles.highlight}>{clientEmail}</Text>
-                </>
-              ) : null}
-              . Check the Client Appointments tab for status updates. You'll be
-              notified once the client completes it.
+              We have sent <Text style={styles.highlight}>{clientName}</Text>{' '}
+              the appointment forms to their email address. Check the Client
+              Appointments tab for status updates. You'll be notified once the
+              client completes it.
             </Text>
 
             <TouchableOpacity

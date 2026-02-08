@@ -350,7 +350,7 @@ const EditProfileScreen: React.FC = () => {
               <View style={styles.avatarPlaceholder}>
                 <Text style={styles.avatarPlaceholderText}>
                   {(user?.firstName?.[0] || '') && (user?.lastName?.[0] || '')
-                    ? `${user.firstName[0]}${user.lastName[0]}`.toUpperCase()
+                    ? `${user?.firstName?.[0] ?? ''}${user?.lastName?.[0] ?? ''}`.toUpperCase()
                     : 'U'}
                 </Text>
               </View>

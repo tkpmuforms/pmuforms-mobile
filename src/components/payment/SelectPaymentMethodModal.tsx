@@ -107,7 +107,7 @@ const SelectPaymentMethodModal: React.FC<SelectPaymentMethodModalProps> = ({
     setError('');
 
     try {
-      const subscriptionData = getSubscriptionFromStorage();
+      const subscriptionData = await getSubscriptionFromStorage();
       const isSubscriptionActive =
         subscriptionData &&
         ['active', 'trialing'].includes(
@@ -166,11 +166,16 @@ const SelectPaymentMethodModal: React.FC<SelectPaymentMethodModalProps> = ({
     fetchPaymentMethods();
   };
 
-  const subscriptionData = getSubscriptionFromStorage();
+  const [subscriptionDataForRender, setSubscriptionDataForRender] = useState<any>(null);
+
+  useEffect(() => {
+    getSubscriptionFromStorage().then(data => setSubscriptionDataForRender(data));
+  }, [visible]);
+
   const isChangingPlan =
     hasActiveSubscription ||
-    (subscriptionData &&
-      ['active', 'trialing'].includes(subscriptionData?.status?.toLowerCase()));
+    (subscriptionDataForRender &&
+      ['active', 'trialing'].includes(subscriptionDataForRender?.status?.toLowerCase()));
 
   return (
     <Modal

@@ -8,7 +8,7 @@ import {
   ScrollView,
 } from 'react-native';
 import {
-  X,
+  ArrowLeft,
   FileText,
   Type,
   CheckSquare,
@@ -75,43 +75,35 @@ const AddFieldModal: React.FC<AddFieldModalProps> = ({
   };
 
   return (
-    <Modal
-      visible={visible}
-      transparent
-      animationType="slide"
-      onRequestClose={onClose}
-    >
-      <SafeAreaView style={styles.container}>
-        <View style={styles.overlay}>
-          <View style={styles.modal}>
-            <TouchableOpacity style={styles.closeButton} onPress={onClose}>
-              <X size={24} color={colors.subtitleColor} />
-            </TouchableOpacity>
-
-            <ScrollView
-              contentContainerStyle={styles.scrollContent}
-              showsVerticalScrollIndicator={false}
-            >
-              <Text style={styles.title}>Add Field</Text>
-              <View style={styles.grid}>
-                {fieldTypes.map((field, index) => (
-                  <TouchableOpacity
-                    key={index}
-                    style={styles.fieldCard}
-                    onPress={() => handleFieldTypeSelect(field)}
-                    activeOpacity={0.7}
-                  >
-                    <View style={styles.fieldIcon}>{field.icon}</View>
-                    <Text style={styles.fieldTitle}>{field.title}</Text>
-                    <Text style={styles.fieldDescription}>
-                      {field.description}
-                    </Text>
-                  </TouchableOpacity>
-                ))}
-              </View>
-            </ScrollView>
-          </View>
+    <Modal visible={visible} animationType="slide" onRequestClose={onClose}>
+      <SafeAreaView style={styles.container} edges={['top', 'bottom', 'left', 'right']}>
+        <View style={styles.header}>
+          <TouchableOpacity onPress={onClose} style={styles.backButton}>
+            <ArrowLeft size={24} color={colors.text} />
+          </TouchableOpacity>
+          <Text style={styles.headerTitle}>Add Field</Text>
+          <View style={styles.placeholder} />
         </View>
+
+        <ScrollView
+          contentContainerStyle={styles.scrollContent}
+          showsVerticalScrollIndicator={false}
+        >
+          <View style={styles.grid}>
+            {fieldTypes.map((field, index) => (
+              <TouchableOpacity
+                key={index}
+                style={styles.fieldCard}
+                onPress={() => handleFieldTypeSelect(field)}
+                activeOpacity={0.7}
+              >
+                <View style={styles.fieldIcon}>{field.icon}</View>
+                <Text style={styles.fieldTitle}>{field.title}</Text>
+                <Text style={styles.fieldDescription}>{field.description}</Text>
+              </TouchableOpacity>
+            ))}
+          </View>
+        </ScrollView>
       </SafeAreaView>
     </Modal>
   );
@@ -120,36 +112,32 @@ const AddFieldModal: React.FC<AddFieldModalProps> = ({
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    backgroundColor: colors.background,
   },
-  overlay: {
-    flex: 1,
-    backgroundColor: 'rgba(0, 0, 0, 0.4)',
-    justifyContent: 'flex-end',
-  },
-  modal: {
+  header: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    paddingHorizontal: 16,
+    paddingBottom: 16,
+    paddingTop: 10,
     backgroundColor: colors.white,
-    borderTopLeftRadius: 24,
-    borderTopRightRadius: 24,
-    maxHeight: '80%',
-    paddingTop: 20,
+    borderBottomWidth: 1,
+    borderBottomColor: colors.border,
   },
-  closeButton: {
-    position: 'absolute',
-    top: 16,
-    right: 16,
-    zIndex: 10,
-    padding: 8,
-    borderRadius: 8,
+  backButton: {
+    padding: 4,
+  },
+  headerTitle: {
+    fontSize: 18,
+    fontWeight: '600',
+    color: colors.text,
+  },
+  placeholder: {
+    width: 32,
   },
   scrollContent: {
     padding: 24,
-  },
-  title: {
-    fontSize: 24,
-    fontWeight: '600',
-    color: colors.black,
-    marginBottom: 24,
-    textAlign: 'center',
   },
   grid: {
     gap: 16,
@@ -160,7 +148,7 @@ const styles = StyleSheet.create({
     padding: 24,
     alignItems: 'center',
     borderWidth: 1,
-    borderColor: colors.borderColor,
+    borderColor: colors.border,
     shadowColor: '#000',
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.05,
@@ -173,13 +161,13 @@ const styles = StyleSheet.create({
   fieldTitle: {
     fontSize: 16,
     fontWeight: '600',
-    color: '#0f0f0f',
+    color: colors.text,
     marginBottom: 8,
     textAlign: 'center',
   },
   fieldDescription: {
     fontSize: 14,
-    color: '#707070',
+    color: colors.textLight,
     textAlign: 'center',
     lineHeight: 20,
   },

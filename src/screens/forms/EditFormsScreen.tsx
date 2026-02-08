@@ -14,10 +14,10 @@ import { Edit, Trash2, Plus } from 'lucide-react-native';
 import Toast from 'react-native-toast-message';
 import { colors } from '../../theme/colors';
 import useAuth from '../../hooks/useAuth';
+import EditFormServices from '../../components/forms/EditFormServices';
 import AddFieldModal from '../../components/forms/AddFieldModal';
 import FieldInputModal from '../../components/forms/FieldInputModal';
 import EditParagraphModal from '../../components/forms/EditParagraphModal';
-import EditFormServices from '../../components/forms/EditFormServices';
 
 import {
   deleteFormSectionData,
@@ -31,30 +31,45 @@ import { FieldData, Section, Service, SingleForm } from '../../types';
 
 const EditFormsScreen: React.FC = () => {
   const route = useRoute();
-  const navigation = useNavigation();
+  const navigation = useNavigation<any>();
   const { user } = useAuth();
   const { formId } = (route.params as { formId?: string }) || {};
 
   const [form, setForm] = useState<SingleForm | null>(null);
   const [loading, setLoading] = useState(true);
   const [allServices, setAllServices] = useState<Service[]>([]);
+  const [showServicesModal, setShowServicesModal] = useState(false);
+  const [currentSectionId, setCurrentSectionId] = useState<string>('');
+  const [currentAfterFieldId, setCurrentAfterFieldId] = useState<string>('');
+  const [formTemplateId, setFormTemplateId] = useState<string>(formId || '');
+
+  // Modal states
   const [showAddFieldModal, setShowAddFieldModal] = useState(false);
   const [showFieldInputModal, setShowFieldInputModal] = useState(false);
   const [showEditParagraphModal, setShowEditParagraphModal] = useState(false);
-  const [showServicesModal, setShowServicesModal] = useState(false);
-  const [selectedFieldType, setSelectedFieldType] = useState<any>(null);
+
+  // Selected field/type for editing
   const [selectedField, setSelectedField] = useState<FieldData | null>(null);
-  const [currentSectionId, setCurrentSectionId] = useState<string>('');
+  const [selectedFieldType, setSelectedFieldType] = useState<any>({
+    type: 'text',
+    title: 'Text Field',
+  });
 
   useEffect(() => {
     fetchServices();
   }, []);
 
   useEffect(() => {
-    if (formId) {
+    if (!formTemplateId) {
+      navigation.goBack();
+    }
+  }, [formTemplateId, navigation]);
+
+  useEffect(() => {
+    if (formTemplateId) {
       fetchForm();
     }
-  }, [formId]);
+  }, [formTemplateId]);
 
   const fetchServices = async () => {
     try {
@@ -77,35 +92,48 @@ const EditFormsScreen: React.FC = () => {
     }
   };
 
+  const processFormResponse = (formData: any): SingleForm => {
+    const transformedForm: SingleForm = {
+      id: formData?.id || formData?._id || '',
+      type: formData?.type || 'consent',
+      title: formData?.title || '',
+      sections: (formData?.sections || []).map((section: Section) => ({
+        ...section,
+        _id: section?._id || section?.id,
+      })),
+      services: formData?.services || [],
+    };
+
+    return JSON.parse(
+      JSON.stringify(transformedForm).replace(
+        /\(?\{\{user\.businessName\}\}\)?/g,
+        user?.businessName || 'Your Business Name',
+      ),
+    );
+  };
+
+  const handleFormResponse = (response: any) => {
+    if (response?.data?.form) {
+      const newFormId = response.data.form.id || response.data.form._id;
+      if (newFormId && newFormId !== formTemplateId) {
+        setFormTemplateId(newFormId);
+      }
+      const updatedForm = processFormResponse(response.data.form);
+      setForm(updatedForm);
+      return updatedForm;
+    }
+    return null;
+  };
+
   const fetchForm = async () => {
-    if (!formId) return;
+    if (!formTemplateId) return;
 
     try {
       setLoading(true);
-
-      const response = await getFormById(formId);
+      const response = await getFormById(formTemplateId);
 
       if (response?.data?.form) {
-        const formData = response.data.form;
-
-        const transformedForm: SingleForm = {
-          id: formData?.id || formData?._id || '',
-          type: formData?.type || 'consent',
-          title: formData?.title || '',
-          sections: (formData?.sections || []).map((section: Section) => ({
-            ...section,
-            _id: section?._id || section?.id,
-          })),
-          services: formData?.services || [],
-        };
-
-        const updatedForm = JSON.parse(
-          JSON.stringify(transformedForm).replace(
-            /\(?\{\{user\.businessName\}\}\)?/g,
-            user?.businessName || 'Your Business Name',
-          ),
-        );
-
+        const updatedForm = processFormResponse(response.data.form);
         setForm(updatedForm);
       } else {
         Toast.show({
@@ -123,10 +151,146 @@ const EditFormsScreen: React.FC = () => {
     }
   };
 
+  const handleSaveFieldInput = async (title: string, isRequired: boolean) => {
+    if (!form) return;
+
+    try {
+      if (selectedField) {
+        const response = await updateFormSectionData(
+          form.id,
+          selectedField.sectionId || '',
+          selectedField.id,
+          { title, line: selectedField.line || 'full', required: isRequired },
+        );
+
+        if (!handleFormResponse(response)) {
+          const updatedForm = { ...form };
+          updatedForm.sections = updatedForm.sections.map(section => {
+            if (
+              section.id === selectedField.sectionId ||
+              section._id === selectedField.sectionId
+            ) {
+              return {
+                ...section,
+                data: section.data.map(f =>
+                  f.id === selectedField.id
+                    ? { ...f, title, required: isRequired }
+                    : f,
+                ),
+              };
+            }
+            return section;
+          });
+          setForm(updatedForm);
+        }
+
+        Toast.show({
+          type: 'success',
+          text1: 'Success',
+          text2: 'Field updated successfully',
+        });
+      } else {
+        const newField = {
+          type: selectedFieldType?.type || 'text',
+          title,
+          line: 'full',
+          required: isRequired,
+          after: currentAfterFieldId,
+        };
+
+        const response = await addFormSectionData(form.id, currentSectionId, newField);
+
+        if (!handleFormResponse(response)) {
+          await fetchForm();
+        }
+
+        Toast.show({
+          type: 'success',
+          text1: 'Success',
+          text2: 'Field added successfully',
+        });
+      }
+    } catch (error) {
+      console.error('Error saving field:', error);
+      Toast.show({
+        type: 'error',
+        text1: 'Error',
+        text2: 'Failed to save field',
+      });
+    }
+  };
+
+  const handleSaveParagraph = async (content: string) => {
+    if (!form) return;
+
+    try {
+      if (selectedField) {
+        const updateData = { title: content, line: selectedField.line || 'full' };
+        const response = await updateFormSectionData(
+          form.id,
+          selectedField.sectionId || '',
+          selectedField.id,
+          updateData,
+        );
+
+        if (!handleFormResponse(response)) {
+          const updatedForm = { ...form };
+          updatedForm.sections = updatedForm.sections.map(section => {
+            if (
+              section.id === selectedField.sectionId ||
+              section._id === selectedField.sectionId
+            ) {
+              return {
+                ...section,
+                data: section.data.map(f =>
+                  f.id === selectedField.id ? { ...f, content, title: content } : f,
+                ),
+              };
+            }
+            return section;
+          });
+          setForm(updatedForm);
+        }
+
+        Toast.show({
+          type: 'success',
+          text1: 'Success',
+          text2: 'Paragraph updated successfully',
+        });
+      } else {
+        const newParagraph = {
+          type: 'paragraph',
+          title: content,
+          line: 'full',
+          after: currentAfterFieldId,
+        };
+
+        const response = await addFormSectionData(form.id, currentSectionId, newParagraph);
+
+        if (!handleFormResponse(response)) {
+          await fetchForm();
+        }
+
+        Toast.show({
+          type: 'success',
+          text1: 'Success',
+          text2: 'Paragraph added successfully',
+        });
+      }
+    } catch (error) {
+      console.error('Error saving paragraph:', error);
+      Toast.show({
+        type: 'error',
+        text1: 'Error',
+        text2: 'Failed to save paragraph',
+      });
+    }
+  };
+
   const handleEditField = (field: FieldData) => {
     setSelectedField(field);
 
-    if (field.type === 'paragraph' || field.type === 'heading') {
+    if (!field.type || field.type === 'paragraph' || field.type === 'heading') {
       setShowEditParagraphModal(true);
     } else {
       setSelectedFieldType({
@@ -150,26 +314,28 @@ const EditFormsScreen: React.FC = () => {
             if (!form || !field) return;
 
             try {
-              await deleteFormSectionData(
+              const response = await deleteFormSectionData(
                 form.id,
                 field.sectionId || '',
                 field.id,
               );
 
-              const updatedForm = { ...form };
-              updatedForm.sections = updatedForm.sections.map(section => {
-                if (
-                  section.id === field.sectionId ||
-                  section._id === field.sectionId
-                ) {
-                  return {
-                    ...section,
-                    data: section.data.filter(f => f.id !== field.id),
-                  };
-                }
-                return section;
-              });
-              setForm(updatedForm);
+              if (!handleFormResponse(response)) {
+                const updatedForm = { ...form };
+                updatedForm.sections = updatedForm.sections.map(section => {
+                  if (
+                    section.id === field.sectionId ||
+                    section._id === field.sectionId
+                  ) {
+                    return {
+                      ...section,
+                      data: section.data.filter(f => f.id !== field.id),
+                    };
+                  }
+                  return section;
+                });
+                setForm(updatedForm);
+              }
 
               Toast.show({
                 type: 'success',
@@ -190,14 +356,15 @@ const EditFormsScreen: React.FC = () => {
     );
   };
 
-  const handleAddField = (sectionId: string) => {
+  const handleAddField = (sectionId: string, afterFieldId: string) => {
     setCurrentSectionId(sectionId);
+    setCurrentAfterFieldId(afterFieldId);
+    setSelectedField(null);
     setShowAddFieldModal(true);
   };
 
-  const handleFieldTypeSelect = (fieldType: any) => {
+  const handleFieldTypeSelected = (fieldType: any) => {
     setSelectedFieldType(fieldType);
-    setShowAddFieldModal(false);
 
     if (fieldType.type === 'paragraph') {
       setShowEditParagraphModal(true);
@@ -222,11 +389,13 @@ const EditFormsScreen: React.FC = () => {
     if (!form) return;
 
     try {
-      await updateFormServices(form.id, selectedServiceIds);
+      const response = await updateFormServices(form.id, { services: selectedServiceIds });
 
-      const updatedForm = { ...form };
-      updatedForm.services = selectedServiceIds;
-      setForm(updatedForm);
+      if (!handleFormResponse(response)) {
+        const updatedForm = { ...form };
+        updatedForm.services = selectedServiceIds;
+        setForm(updatedForm);
+      }
 
       Toast.show({
         type: 'success',
@@ -239,136 +408,6 @@ const EditFormsScreen: React.FC = () => {
         type: 'error',
         text1: 'Error',
         text2: 'Failed to update services',
-      });
-    }
-  };
-
-  const handleSaveFieldInput = async (title: string, isRequired: boolean) => {
-    if (!form) return;
-
-    try {
-      if (selectedField) {
-        await updateFormSectionData(
-          form.id,
-          selectedField.sectionId || '',
-          selectedField.id,
-          { title, required: isRequired },
-        );
-
-        const updatedForm = { ...form };
-        updatedForm.sections = updatedForm.sections.map(section => {
-          if (
-            section.id === selectedField.sectionId ||
-            section._id === selectedField.sectionId
-          ) {
-            return {
-              ...section,
-              data: section.data.map(f =>
-                f.id === selectedField.id
-                  ? { ...f, title, required: isRequired }
-                  : f,
-              ),
-            };
-          }
-          return section;
-        });
-        setForm(updatedForm);
-
-        Toast.show({
-          type: 'success',
-          text1: 'Success',
-          text2: 'Field updated successfully',
-        });
-      } else {
-        const newField = {
-          type: selectedFieldType.type,
-          title,
-          required: isRequired,
-        };
-
-        await addFormSectionData(form.id, currentSectionId, newField);
-
-        await fetchForm();
-
-        Toast.show({
-          type: 'success',
-          text1: 'Success',
-          text2: 'Field added successfully',
-        });
-      }
-
-      setShowFieldInputModal(false);
-      setSelectedField(null);
-      setSelectedFieldType(null);
-    } catch (error) {
-      console.error('Error saving field:', error);
-      Toast.show({
-        type: 'error',
-        text1: 'Error',
-        text2: 'Failed to save field',
-      });
-    }
-  };
-
-  const handleSaveParagraph = async (content: string) => {
-    if (!form) return;
-
-    try {
-      if (selectedField) {
-        await updateFormSectionData(
-          form.id,
-          selectedField.sectionId || '',
-          selectedField.id,
-          { content },
-        );
-
-        const updatedForm = { ...form };
-        updatedForm.sections = updatedForm.sections.map(section => {
-          if (
-            section.id === selectedField.sectionId ||
-            section._id === selectedField.sectionId
-          ) {
-            return {
-              ...section,
-              data: section.data.map(f =>
-                f.id === selectedField.id ? { ...f, content } : f,
-              ),
-            };
-          }
-          return section;
-        });
-        setForm(updatedForm);
-
-        Toast.show({
-          type: 'success',
-          text1: 'Success',
-          text2: 'Paragraph updated successfully',
-        });
-      } else {
-        const newParagraph = {
-          type: 'paragraph',
-          content,
-        };
-
-        await addFormSectionData(form.id, currentSectionId, newParagraph);
-
-        await fetchForm();
-
-        Toast.show({
-          type: 'success',
-          text1: 'Success',
-          text2: 'Paragraph added successfully',
-        });
-      }
-
-      setShowEditParagraphModal(false);
-      setSelectedField(null);
-    } catch (error) {
-      console.error('Error saving paragraph:', error);
-      Toast.show({
-        type: 'error',
-        text1: 'Error',
-        text2: 'Failed to save paragraph',
       });
     }
   };
@@ -411,8 +450,9 @@ const EditFormsScreen: React.FC = () => {
         {section.data && section.data.length > 0 ? (
           <View style={styles.fieldsList}>
             {section.data.map((field, index) => {
-              const fieldWithSection = {
+              const fieldWithSection: FieldData = {
                 ...field,
+                type: field.type || 'paragraph',
                 sectionId: section._id || section.id,
               };
               return renderField(fieldWithSection, index);
@@ -424,7 +464,13 @@ const EditFormsScreen: React.FC = () => {
 
         <TouchableOpacity
           style={styles.addFieldButton}
-          onPress={() => handleAddField(section._id || section.id)}
+          onPress={() => {
+            const lastFieldId =
+              section.data && section.data.length > 0
+                ? section.data[section.data.length - 1].id
+                : '';
+            handleAddField(section._id || section.id, lastFieldId);
+          }}
         >
           <Plus size={16} color={colors.primary} />
           <Text style={styles.addFieldText}>Add Field</Text>
@@ -433,8 +479,7 @@ const EditFormsScreen: React.FC = () => {
     );
   };
 
-  if (!formId) {
-    navigation.goBack();
+  if (!formTemplateId) {
     return null;
   }
 
@@ -515,42 +560,35 @@ const EditFormsScreen: React.FC = () => {
         )}
       </ScrollView>
 
-      {/* Modals */}
-      <AddFieldModal
-        visible={showAddFieldModal}
-        onClose={() => setShowAddFieldModal(false)}
-        onSelectFieldType={handleFieldTypeSelect}
-      />
-
-      <FieldInputModal
-        visible={showFieldInputModal}
-        onClose={() => {
-          setShowFieldInputModal(false);
-          setSelectedField(null);
-          setSelectedFieldType(null);
-        }}
-        onSave={handleSaveFieldInput}
-        fieldType={selectedFieldType || { type: 'text', title: 'Field' }}
-        initialTitle={selectedField?.title}
-        initialRequired={selectedField?.required}
-      />
-
-      <EditParagraphModal
-        visible={showEditParagraphModal}
-        onClose={() => {
-          setShowEditParagraphModal(false);
-          setSelectedField(null);
-        }}
-        onSave={handleSaveParagraph}
-        initialContent={selectedField?.content}
-      />
-
       <EditFormServices
         visible={showServicesModal}
         onClose={() => setShowServicesModal(false)}
         allServices={allServices}
         selectedServices={form?.services || []}
         onUpdateServices={handleUpdateServices}
+      />
+
+      <AddFieldModal
+        visible={showAddFieldModal}
+        onClose={() => setShowAddFieldModal(false)}
+        onSelectFieldType={handleFieldTypeSelected}
+      />
+
+      <FieldInputModal
+        visible={showFieldInputModal}
+        onClose={() => setShowFieldInputModal(false)}
+        onSave={handleSaveFieldInput}
+        fieldType={selectedFieldType}
+        initialTitle={selectedField?.title || ''}
+        initialRequired={selectedField?.required || false}
+      />
+
+      <EditParagraphModal
+        visible={showEditParagraphModal}
+        onClose={() => setShowEditParagraphModal(false)}
+        onSave={handleSaveParagraph}
+        initialContent={selectedField?.content || selectedField?.title || ''}
+        initialRequired={selectedField?.required || false}
       />
     </SafeAreaView>
   );

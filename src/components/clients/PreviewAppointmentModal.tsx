@@ -8,7 +8,6 @@ import {
   ScrollView,
   ActivityIndicator,
   Alert,
-  Share,
 } from 'react-native';
 import { X, ChevronLeft, Calendar } from 'lucide-react-native';
 import { formatAppointmentTime } from '../../utils/utils';
@@ -118,14 +117,6 @@ const PreviewAppointmentModal: React.FC<PreviewAppointmentModalProps> = ({
         const baseUrl =
           Config.USER_WEBSITE_URL || 'https://business.pmuforms.com';
         const url = `${baseUrl}/#/appointment/${appointmentId}`;
-        try {
-          await Share.share({
-            message: `Your appointment has been booked! View your forms here: ${url}`,
-            url: url,
-          });
-        } catch (shareError) {
-          console.error('Error sharing:', shareError);
-        }
 
         setAppointmentUrl(url);
         setShowSuccess(true);

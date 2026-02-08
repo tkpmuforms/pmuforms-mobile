@@ -1,27 +1,23 @@
+import { AlertCircle } from 'lucide-react-native';
 import React, { useEffect, useState } from 'react';
 import {
-  View,
-  Text,
-  StyleSheet,
-  ScrollView,
-  TouchableOpacity,
   ActivityIndicator,
   Alert,
+  ScrollView,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { Trash2, Edit, AlertCircle } from 'lucide-react-native';
-import ScreenHeader from '../../components/layout/ScreenHeader';
-import useAuth from '../../hooks/useAuth';
-import { Section, SingleForm } from '../../types';
-import { deleteFormTemplate, getFormById } from '../../services/artistServices';
+import { DeleteIcon, EditDiffBackground } from '../../../assets/svg';
 import DeleteConfirmModal from '../../components/forms/DeleteConfirmModal';
 import { renderPreviewFormFields } from '../../components/forms/RenderPreviewFormFields';
-import {
-  DeleteIcon,
-  EditDiffBackground,
-  EditWhiteBackground,
-} from '../../../assets/svg';
+import ScreenHeader from '../../components/layout/ScreenHeader';
+import useAuth from '../../hooks/useAuth';
+import { deleteFormTemplate, getFormById } from '../../services/artistServices';
 import { colors } from '../../theme/colors';
+import { Section, SingleForm } from '../../types';
 
 const PreviewFormsScreen = ({ route, navigation }: any) => {
   const { formId } = route.params;

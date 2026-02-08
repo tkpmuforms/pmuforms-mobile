@@ -43,7 +43,7 @@ const AddCardScreen: React.FC = () => {
 
     try {
       // TODO: Implement card addition logic here
-      await new Promise(resolve => setTimeout(resolve, 1000));
+      await new Promise<void>(resolve => setTimeout(() => resolve(), 1000));
 
       if (onCardAdded) {
         onCardAdded();

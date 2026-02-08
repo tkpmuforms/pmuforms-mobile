@@ -67,10 +67,6 @@ const FormsScreen = ({ navigation }: any) => {
     navigation.navigate('FormPreview', { formId });
   };
 
-  const handleEdit = (formId: string) => {
-    navigation.navigate('FormEdit', { formId });
-  };
-
   const consentCount = (forms || []).filter(f => f?.type === 'consent').length;
   const careCount = (forms || []).filter(f => f?.type === 'care').length;
 

@@ -88,7 +88,7 @@ const AddClientScreen: React.FC = () => {
               keyboardShouldPersistTaps="handled"
             >
               <View style={styles.formGroup}>
-                <Text style={styles.label}>First Name</Text>
+                <Text style={styles.label}>First Name *</Text>
                 <TextInput
                   style={styles.input}
                   placeholder="First Name"
@@ -100,7 +100,7 @@ const AddClientScreen: React.FC = () => {
               </View>
 
               <View style={styles.formGroup}>
-                <Text style={styles.label}>Last Name</Text>
+                <Text style={styles.label}>Last Name *</Text>
                 <TextInput
                   style={styles.input}
                   placeholder="Last Name"
@@ -112,7 +112,7 @@ const AddClientScreen: React.FC = () => {
               </View>
 
               <View style={styles.formGroup}>
-                <Text style={styles.label}>Email Address</Text>
+                <Text style={styles.label}>Email Address *</Text>
                 <TextInput
                   style={styles.input}
                   placeholder="Email Address"

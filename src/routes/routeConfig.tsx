@@ -17,7 +17,10 @@ import EditBusinessInformationScreen from '../screens/profile/EditBusinessInform
 import FilledFormsPreviewScreen from '../screens/client/FilledFormsPreviewScreen';
 import SignatureScreen from '../screens/client/SignatureScreen';
 import DashboardScreen from '../screens/dashboard/DashboardScreen';
+import AddFieldScreen from '../screens/forms/AddFieldScreen';
 import EditFormsScreen from '../screens/forms/EditFormsScreen';
+import EditParagraphScreen from '../screens/forms/EditParagraphScreen';
+import FieldInputScreen from '../screens/forms/FieldInputScreen';
 import FormsScreen from '../screens/forms/FormsScreen';
 import PreviewFormsScreen from '../screens/forms/PreviewFormsScreen';
 import BusinessInformationScreen from '../screens/profile/BusinessInformationScreen';
@@ -108,6 +111,21 @@ export const authorizedRoutes: RouteProps[] = [
     name: 'FormEdit',
     component: EditFormsScreen,
     breadcrumbs: ['Forms', 'Edit Form'],
+  },
+  {
+    name: 'AddField',
+    component: AddFieldScreen,
+    breadcrumbs: ['Forms', 'Edit Form', 'Add Field'],
+  },
+  {
+    name: 'FieldInput',
+    component: FieldInputScreen,
+    breadcrumbs: ['Forms', 'Edit Form', 'Field Input'],
+  },
+  {
+    name: 'EditParagraph',
+    component: EditParagraphScreen,
+    breadcrumbs: ['Forms', 'Edit Form', 'Edit Paragraph'],
   },
   {
     name: 'Profile',
