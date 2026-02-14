@@ -30,6 +30,31 @@ export type RootStackParamList = {
   ClientNotes: { clientId: string; client?: ClientDetail };
   ClientReminders: { clientId: string; client?: ClientDetail };
   FormPreview: { formId: string };
+  FormEdit: { formId: string };
+  AddField: {
+    formId: string;
+    sectionId: string;
+    afterFieldId: string;
+  };
+  FieldInput: {
+    formId: string;
+    sectionId: string;
+    afterFieldId: string;
+    fieldType: { type: string; title: string };
+    fieldId?: string;
+    initialTitle?: string;
+    initialRequired?: boolean;
+    fieldLine?: string;
+  };
+  EditParagraph: {
+    formId: string;
+    sectionId: string;
+    afterFieldId: string;
+    fieldId?: string;
+    initialContent?: string;
+    initialRequired?: boolean;
+    fieldLine?: string;
+  };
   AddClient: undefined;
   SendConsentForm: { clientId: string; clientName: string };
   EditClient: { clientId: string; client: ClientDetail };
