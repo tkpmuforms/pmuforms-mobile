@@ -1,4 +1,11 @@
-import auth from '@react-native-firebase/auth';
+import {
+  getAuth,
+  signInWithCredential,
+  signInWithEmailAndPassword,
+  createUserWithEmailAndPassword,
+  GoogleAuthProvider,
+  AppleAuthProvider,
+} from '@react-native-firebase/auth';
 import { GoogleSignin } from '@react-native-google-signin/google-signin';
 import appleAuth from '@invertase/react-native-apple-authentication';
 import Toast from 'react-native-toast-message';
@@ -29,10 +36,11 @@ export const handleGoogleSignIn = async (
     const userInfo = await GoogleSignin.signIn();
 
     if (userInfo.data?.idToken) {
-      const googleCredential = auth.GoogleAuthProvider.credential(
+      const googleCredential = GoogleAuthProvider.credential(
         userInfo.data.idToken,
       );
-      const userCredential = await auth().signInWithCredential(
+      const userCredential = await signInWithCredential(
+        getAuth(),
         googleCredential,
       );
       const userToken = await userCredential.user.getIdToken();
@@ -75,11 +83,11 @@ export const handleAppleSignIn = async (
     }
 
     const { identityToken, nonce } = appleAuthRequestResponse;
-    const appleCredential = auth.AppleAuthProvider.credential(
+    const appleCredential = AppleAuthProvider.credential(
       identityToken,
       nonce,
     );
-    const userCredential = await auth().signInWithCredential(appleCredential);
+    const userCredential = await signInWithCredential(getAuth(), appleCredential);
     const userToken = await userCredential.user.getIdToken();
 
     const res = await createArtist(userToken);
@@ -130,7 +138,8 @@ export const handleEmailPasswordLogin = async (
   if (setLoading) setLoading(true);
 
   try {
-    const userCredential = await auth().signInWithEmailAndPassword(
+    const userCredential = await signInWithEmailAndPassword(
+      getAuth(),
       email,
       password,
     );
@@ -189,7 +198,8 @@ export const handleEmailPasswordSignup = async (
   if (setLoading) setLoading(true);
 
   try {
-    const userCredential = await auth().createUserWithEmailAndPassword(
+    const userCredential = await createUserWithEmailAndPassword(
+      getAuth(),
       email,
       password,
     );
@@ -257,9 +267,9 @@ export const determineOnboardingStep = (artist: Artist): OnboardingStep => {
     return 'services';
   }
 
-  // if (!artist.stripeSubscriptionActive && !artist.appStorePurchaseActive) {
-  //   return 'payment';
-  // }
+  if (!artist.stripeSubscriptionActive && !artist.appStorePurchaseActive) {
+    return 'payment';
+  }
 
   return 'completed';
 };

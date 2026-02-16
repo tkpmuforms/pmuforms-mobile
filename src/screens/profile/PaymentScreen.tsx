@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import {
   View,
   Text,
@@ -7,9 +7,10 @@ import {
   TouchableOpacity,
   ActivityIndicator,
   Alert,
+  Linking,
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { useNavigation } from '@react-navigation/native';
+import { useNavigation, useFocusEffect } from '@react-navigation/native';
 import { CreditCard, Plus } from 'lucide-react-native';
 import Toast from 'react-native-toast-message';
 import { colors } from '../../theme/colors';
@@ -23,6 +24,8 @@ import {
   listTransactions,
 } from '../../services/artistServices';
 import { getCardColor, getTransactionStatus } from '../../utils/utils';
+
+const WEB_URL = 'https://artist.pmuforms.com';
 
 interface Card {
   id: string;
@@ -51,7 +54,7 @@ interface SubscriptionData {
 }
 
 const PaymentScreen: React.FC = () => {
-  const navigation = useNavigation();
+  const navigation = useNavigation<any>();
   const { user } = useAuth();
   const defaultCardId = user?.defaultStripePaymentMethod || '';
 
@@ -64,7 +67,6 @@ const PaymentScreen: React.FC = () => {
     useState<SubscriptionData | null>(null);
 
   useEffect(() => {
-    fetchPaymentMethods();
     fetchTransactionHistory();
     fetchSubscriptionData();
   }, []);
@@ -72,13 +74,14 @@ const PaymentScreen: React.FC = () => {
   const fetchSubscriptionData = async () => {
     try {
       const response = await getSubscription();
+      console.log(response);
       setSubscriptionData(response?.data || null);
     } catch (error) {
       console.error('Error fetching subscription:', error);
     }
   };
 
-  const fetchPaymentMethods = async () => {
+  const fetchPaymentMethods = useCallback(async () => {
     try {
       const response = await listPaymentMethods();
       const paymentMethods = response?.data?.data || response?.data || [];
@@ -96,7 +99,13 @@ const PaymentScreen: React.FC = () => {
     } catch (error) {
       console.error('Error fetching payment methods:', error);
     }
-  };
+  }, [defaultCardId]);
+
+  useFocusEffect(
+    useCallback(() => {
+      fetchPaymentMethods();
+    }, [fetchPaymentMethods]),
+  );
 
   const fetchTransactionHistory = async () => {
     try {
@@ -279,68 +288,58 @@ const PaymentScreen: React.FC = () => {
 
           {isMobileSub ? (
             <View style={styles.mobileSubContainer}>
-              <Text style={styles.mobileSubTitle}>
-                You already have an active mobile subscription.
+              <Text style={styles.mobileSubTitle}>Active Subscription</Text>
+              <Text style={styles.mobileSubText}>
+                You currently have an active mobile subscription.
               </Text>
               <Text style={styles.mobileSubText}>
-                Your current plan is still valid and managed through the mobile
-                app.
+                Your access will continue until the end of your current billing
+                period.
               </Text>
               <Text style={styles.mobileSubText}>
-                When it expires, you'll be able to switch to a web subscription
-                directly from this site.
+                After that, you can manage your account at
               </Text>
+              <TouchableOpacity onPress={() => Linking.openURL(WEB_URL)}>
+                <Text style={styles.webLinkText}>artist.pmuforms.com</Text>
+              </TouchableOpacity>
+            </View>
+          ) : user?.stripeSubscriptionActive ? (
+            <View style={styles.mobileSubContainer}>
+              <Text style={styles.mobileSubText}>
+                Your subscription is currently active.
+              </Text>
+              <Text style={styles.mobileSubText}>
+                Billing and account management are handled through your PMUForms
+                account.
+              </Text>
+              <Text style={styles.mobileSubText}>
+                To view or update your subscription, please visit
+              </Text>
+              <TouchableOpacity onPress={() => Linking.openURL(WEB_URL)}>
+                <Text style={styles.webLinkText}>artist.pmuforms.com</Text>
+              </TouchableOpacity>
             </View>
           ) : (
-            <View style={styles.subscriptionInfo}>
-              <View style={styles.subscriptionRow}>
-                <Text style={styles.label}>Current Plan</Text>
-                <Text style={styles.value}>{currentPlan}</Text>
-              </View>
-              <View style={styles.subscriptionRow}>
-                <Text style={styles.label}>{billingDateLabel}</Text>
-                <Text style={styles.value}>{billingDateValue}</Text>
-              </View>
-              <View style={styles.subscriptionRow}>
-                <Text style={styles.label}>Status</Text>
-                <View
-                  style={[
-                    styles.statusBadge,
-                    isActive ? styles.statusActive : styles.statusInactive,
-                  ]}
-                >
-                  <Text style={styles.statusText}>
-                    {isActive ? 'Active' : 'Inactive'}
-                  </Text>
-                </View>
-              </View>
-
-              <View style={styles.subscriptionActions}>
-                {isActive && !isCancelled && (
-                  <TouchableOpacity
-                    style={styles.secondaryButton}
-                    onPress={handleCancelSubscription}
-                  >
-                    <Text style={styles.secondaryButtonText}>
-                      Cancel Subscription
-                    </Text>
-                  </TouchableOpacity>
-                )}
-                <TouchableOpacity style={styles.primaryButton}>
-                  <Text style={styles.primaryButtonText}>
-                    {isActive ? 'Change Plan' : 'Upgrade Subscription'}
-                  </Text>
-                </TouchableOpacity>
-              </View>
+            <View style={styles.mobileSubContainer}>
+              <Text style={styles.mobileSubTitle}>Subscription Required</Text>
+              <Text style={styles.mobileSubText}>
+                To access all features, please sign in at
+              </Text>
+              <TouchableOpacity onPress={() => Linking.openURL(WEB_URL)}>
+                <Text style={styles.webLinkText}>artist.pmuforms.com</Text>
+              </TouchableOpacity>
+              <Text style={styles.mobileSubText}>
+                to manage your account and subscription.
+              </Text>
             </View>
           )}
         </View>
 
         {/* Cards Section */}
-        <View style={styles.section}>
+        {/* <View style={styles.section}>
           <View style={styles.sectionHeader}>
             <Text style={styles.sectionTitle}>Cards</Text>
-            <TouchableOpacity>
+            <TouchableOpacity onPress={() => navigation.navigate('AddCard')}>
               <Text style={styles.addCardLink}>+ Add a Card</Text>
             </TouchableOpacity>
           </View>
@@ -348,12 +347,15 @@ const PaymentScreen: React.FC = () => {
           <View style={styles.cardsGrid}>
             {cards.map(renderCard)}
 
-            <TouchableOpacity style={styles.addCardButton}>
+            <TouchableOpacity
+              style={styles.addCardButton}
+              onPress={() => navigation.navigate('AddCard')}
+            >
               <Plus size={32} color={colors.textLight} />
               <Text style={styles.addCardText}>Add a Card</Text>
             </TouchableOpacity>
           </View>
-        </View>
+        </View> */}
 
         {/* Transaction History */}
         {!isMobileSub && (
@@ -473,6 +475,13 @@ const styles = StyleSheet.create({
     fontSize: 14,
     color: colors.textLight,
     lineHeight: 20,
+  },
+  webLinkText: {
+    fontSize: 14,
+    fontWeight: '600',
+    color: colors.primary,
+    lineHeight: 20,
+    textDecorationLine: 'underline',
   },
   subscriptionInfo: {
     gap: 16,

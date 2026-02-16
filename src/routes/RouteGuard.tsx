@@ -130,31 +130,42 @@ const AuthenticatedStack = () => {
   );
 };
 
-const OnboardingStack = () => {
+const stepToRoute: Record<OnboardingStep, string> = {
+  businessName: 'OnboardingBusinessName',
+  services: 'OnboardingServices',
+  payment: 'OnboardingPayment',
+  completed: 'OnboardingBusinessName',
+};
+
+const OnboardingStack = ({ route }: any) => {
+  const step: OnboardingStep = route?.params?.step || 'businessName';
+  const initialRoute = stepToRoute[step];
+
   return (
     <Stack.Navigator
+      initialRouteName={initialRoute}
       screenOptions={{
         headerShown: false,
       }}
     >
-      {onboardingRoutes.map(route => (
+      {onboardingRoutes.map(r => (
         <Stack.Screen
-          key={route.name}
-          name={route.name}
-          component={route.component}
+          key={r.name}
+          name={r.name}
+          component={r.component}
         />
       ))}
       <Stack.Screen name="Main" component={AuthenticatedStack} />
       {authorizedRoutes
-        .filter(route => route.name === 'Payment')
-        .map(route => (
-          <Stack.Screen key={route.name} name={route.name}>
+        .filter(r => r.name === 'Payment')
+        .map(r => (
+          <Stack.Screen key={r.name} name={r.name}>
             {props => (
               <AuthenticatedLayout
-                breadcrumbs={route.breadcrumbs}
+                breadcrumbs={r.breadcrumbs}
                 navigation={props.navigation}
               >
-                <route.component {...props} />
+                <r.component {...props} />
               </AuthenticatedLayout>
             )}
           </Stack.Screen>

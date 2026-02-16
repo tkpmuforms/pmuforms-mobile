@@ -6,6 +6,7 @@ import {
   Modal,
   ScrollView,
   TouchableOpacity,
+  Linking,
 } from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
 import { SafeAreaView } from 'react-native-safe-area-context';
@@ -26,14 +27,9 @@ import { colors } from '../../theme/colors';
 interface FeaturesModalProps {
   visible: boolean;
   onClose: () => void;
-  onSubscribe: () => void;
 }
 
-const FeaturesModal: React.FC<FeaturesModalProps> = ({
-  visible,
-  onClose,
-  onSubscribe,
-}) => {
+const FeaturesModal: React.FC<FeaturesModalProps> = ({ visible, onClose }) => {
   const features = [
     {
       icon: Edit,
@@ -62,22 +58,11 @@ const FeaturesModal: React.FC<FeaturesModalProps> = ({
       title: 'Make Notes',
       description: 'Make notes about client appointments for future references',
     },
-    {
-      icon: BookTemplate,
-      title: 'Templates Access',
-      description: 'Access to dozens of free PMU form templates',
-    },
-    {
-      icon: Mail,
-      title: 'Service Request',
-      description:
-        'Request for new PMU forms and services to be added to the app',
-    },
-    {
-      icon: Users,
-      title: 'Facebook Group',
-      description: 'Access to the PMU Forms Facebook Group',
-    },
+    // {
+    //   icon: BookTemplate,
+    //   title: 'Templates Access',
+    //   description: 'Access to dozens of free PMU form templates',
+    // },
   ];
 
   return (
@@ -123,14 +108,18 @@ const FeaturesModal: React.FC<FeaturesModalProps> = ({
                 ))}
               </View>
 
-              <TouchableOpacity onPress={onSubscribe}>
+              <TouchableOpacity
+                onPress={() => Linking.openURL('https://artist.pmuforms.com')}
+              >
                 <LinearGradient
                   colors={[colors.primary, '#A654CD']}
                   start={{ x: 0, y: 0 }}
                   end={{ x: 1, y: 0 }}
                   style={styles.subscribeButton}
                 >
-                  <Text style={styles.subscribeButtonText}>Subscribe Now</Text>
+                  <Text style={styles.subscribeButtonText}>
+                    Subscribe on Website
+                  </Text>
                 </LinearGradient>
               </TouchableOpacity>
             </ScrollView>
@@ -155,7 +144,7 @@ const styles = StyleSheet.create({
     borderTopLeftRadius: 20,
     borderTopRightRadius: 20,
     maxHeight: '90%',
-    paddingTop: 20,
+    paddingTop: 10,
   },
   closeButton: {
     position: 'absolute',
@@ -166,7 +155,7 @@ const styles = StyleSheet.create({
     borderRadius: 8,
   },
   scrollContent: {
-    padding: 24,
+    padding: 14,
   },
   header: {
     alignItems: 'center',

@@ -5,7 +5,6 @@ import {
   StyleSheet,
   ScrollView,
   TouchableOpacity,
-  ActivityIndicator,
   Alert,
 } from 'react-native';
 import {
@@ -19,6 +18,7 @@ import Toast from 'react-native-toast-message';
 import { colors } from '../../theme/colors';
 import useAuth from '../../hooks/useAuth';
 import EditFormServices from '../../components/forms/EditFormServices';
+import EditFormSkeleton from '../../components/skeleton/EditFormSkeleton';
 
 import {
   deleteFormSectionData,
@@ -346,10 +346,8 @@ const EditFormsScreen: React.FC = () => {
 
   if (loading) {
     return (
-      <SafeAreaView style={styles.container}>
-        <View style={styles.loadingContainer}>
-          <ActivityIndicator size="large" color={colors.primary} />
-        </View>
+      <SafeAreaView style={styles.container} edges={[]}>
+        <EditFormSkeleton />
       </SafeAreaView>
     );
   }
@@ -436,11 +434,6 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: colors.background,
-  },
-  loadingContainer: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
   },
   emptyContainer: {
     flex: 1,
@@ -600,12 +593,6 @@ const styles = StyleSheet.create({
     backgroundColor: colors.white,
     justifyContent: 'center',
     alignItems: 'center',
-  },
-  noFieldsText: {
-    fontSize: 14,
-    color: colors.textLight,
-    fontStyle: 'italic',
-    marginBottom: 12,
   },
   addFieldButton: {
     flexDirection: 'row',

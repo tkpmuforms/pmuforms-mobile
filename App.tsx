@@ -18,7 +18,9 @@ import RouteGuard from './src/routes/RouteGuard';
 import { setupGlobalFonts } from './src/config/setupGlobalFonts';
 import { toastConfig } from './src/config/toastConfig';
 import { colors } from './src/theme/colors';
+import { StripeProvider } from '@stripe/stripe-react-native';
 import { GoogleSignin } from '@react-native-google-signin/google-signin';
+import { Config } from 'react-native-config';
 
 function AppContent() {
   const { colors: themeColors, isDark } = useTheme();
@@ -47,19 +49,23 @@ function AppContent() {
       }
       persistor={persistor}
     >
-      <SafeAreaProvider>
-        <StatusBar
-          barStyle={isDark ? 'light-content' : 'dark-content'}
-          backgroundColor="transparent"
-          translucent={true}
-        />
-        <NavigationContainer>
-          <AuthProvider>
-            <RouteGuard />
-          </AuthProvider>
-        </NavigationContainer>
-        <Toast config={toastConfig} />
-      </SafeAreaProvider>
+      <StripeProvider
+        publishableKey={Config.STRIPE_PUBLISHABLE_KEY || ''}
+      >
+        <SafeAreaProvider>
+          <StatusBar
+            barStyle={isDark ? 'light-content' : 'dark-content'}
+            backgroundColor="transparent"
+            translucent={true}
+          />
+          <NavigationContainer>
+            <AuthProvider>
+              <RouteGuard />
+            </AuthProvider>
+          </NavigationContainer>
+          <Toast config={toastConfig} />
+        </SafeAreaProvider>
+      </StripeProvider>
     </PersistGate>
   );
 }

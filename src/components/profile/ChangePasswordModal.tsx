@@ -13,7 +13,7 @@ import {
   TouchableWithoutFeedback,
 } from 'react-native';
 import { X } from 'lucide-react-native';
-import auth from '@react-native-firebase/auth';
+import { getAuth, sendPasswordResetEmail } from '@react-native-firebase/auth';
 import { colors } from '../../theme/colors';
 
 interface ChangePasswordModalProps {
@@ -34,7 +34,7 @@ const ChangePasswordModal: React.FC<ChangePasswordModalProps> = ({
     }
 
     try {
-      await auth().sendPasswordResetEmail(email.trim());
+      await sendPasswordResetEmail(getAuth(), email.trim());
       Alert.alert('Success', `Reset link sent to: ${email}`, [
         {
           text: 'OK',

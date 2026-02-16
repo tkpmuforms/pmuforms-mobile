@@ -15,7 +15,6 @@ import FeaturesModal from '../../components/dashboard/FeaturesModal';
 import FormLinkModal from '../../components/dashboard/FormLinkModal';
 import MetricsCard from '../../components/dashboard/MetricsCard';
 import QuickActionCard from '../../components/dashboard/QuickActionCard';
-import SubscriptionModal from '../../components/modals/SubscriptionModal';
 import AppointmentCardSkeleton from '../../components/skeleton/AppointmentCardSkeleton';
 import MetricsCardSkeleton from '../../components/skeleton/MetricsCardSkeleton';
 import useAuth from '../../hooks/useAuth';
@@ -41,9 +40,8 @@ interface Metrics {
 
 const DashboardScreen = ({ navigation }: any) => {
   const { user } = useAuth();
-  const [showSubscriptionModal, setShowSubscriptionModal] = useState(false);
-  const [showFeaturesModal, setShowFeaturesModal] = useState(false);
   const [showFormLinkModal, setShowFormLinkModal] = useState(false);
+  const [showFeaturesModal, setShowFeaturesModal] = useState(false);
   const [appointments, setAppointments] = useState<Appointment[]>([]);
   const [metrics, setMetrics] = useState<Metrics | null>(null);
   const [loading, setLoading] = useState(true);
@@ -72,7 +70,7 @@ const DashboardScreen = ({ navigation }: any) => {
       icon: 'send',
       onPress: () => {
         if (!hasActiveSubscription) {
-          setShowSubscriptionModal(true);
+          setShowFeaturesModal(true);
         } else {
           setShowFormLinkModal(true);
         }
@@ -140,19 +138,7 @@ const DashboardScreen = ({ navigation }: any) => {
     setRefreshing(false);
   };
 
-  const handleModalFlow = {
-    closeSubscription: () => setShowSubscriptionModal(false),
-    showFeatures: () => {
-      setShowSubscriptionModal(false);
-      setShowFeaturesModal(true);
-    },
-    showSubscription: () => {
-      setShowFeaturesModal(false);
-      setShowSubscriptionModal(true);
-    },
-    closeFeatures: () => setShowFeaturesModal(false),
-    closeFormLink: () => setShowFormLinkModal(false),
-  };
+  const handleCloseFormLink = () => setShowFormLinkModal(false);
 
   return (
     <SafeAreaView style={styles.container} edges={['bottom']}>
@@ -344,25 +330,15 @@ const DashboardScreen = ({ navigation }: any) => {
       {showFormLinkModal && (
         <FormLinkModal
           visible={showFormLinkModal}
-          onClose={handleModalFlow.closeFormLink}
+          onClose={handleCloseFormLink}
           businessUri={user?.businessUri || ''}
-        />
-      )}
-
-      {showSubscriptionModal && (
-        <SubscriptionModal
-          visible={showSubscriptionModal}
-          onClose={handleModalFlow.closeSubscription}
-          onShowFeatures={handleModalFlow.showFeatures}
-          onSubscribe={handleModalFlow.closeSubscription}
         />
       )}
 
       {showFeaturesModal && (
         <FeaturesModal
           visible={showFeaturesModal}
-          onClose={handleModalFlow.closeFeatures}
-          onSubscribe={handleModalFlow.showSubscription}
+          onClose={() => setShowFeaturesModal(false)}
         />
       )}
     </SafeAreaView>

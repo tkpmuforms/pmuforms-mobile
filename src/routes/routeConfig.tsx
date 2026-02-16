@@ -187,11 +187,11 @@ export const authorizedRoutes: RouteProps[] = [
     component: AddReminderScreen,
     breadcrumbs: ['Clients', 'Client Details', 'Reminders', 'Add Reminder'],
   },
-  {
-    name: 'AddCard',
-    component: AddCardScreen,
-    breadcrumbs: ['Profile', 'Payment', 'Add Card'],
-  },
+  // {
+  //   name: 'AddCard',
+  //   component: AddCardScreen,
+  //   breadcrumbs: ['Profile', 'Payment', 'Add Card'],
+  // },
 ];
 
 export const nonAuthRoutes: RouteProps[] = [

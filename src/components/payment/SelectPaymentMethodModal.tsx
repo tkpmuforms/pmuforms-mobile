@@ -1,479 +1,479 @@
-import { X } from 'lucide-react-native';
-import React, { useEffect, useState } from 'react';
-import {
-  ActivityIndicator,
-  Modal,
-  Pressable,
-  ScrollView,
-  StyleSheet,
-  Text,
-  TouchableOpacity,
-  View,
-} from 'react-native';
-import { useNavigation } from '@react-navigation/native';
-import {
-  changeSubscriptionPlan,
-  createSubscription,
-  listPaymentMethods,
-} from '../../services/artistServices';
-import Toast from 'react-native-toast-message';
-import { useDispatch } from 'react-redux';
-import { Card } from '../../types';
-import {
-  getSubscriptionFromStorage,
-  saveSubscriptionToStorage,
-} from '../../utils/subscriptionStorage';
-import { refreshAuthUser } from '../../utils/authUtils';
-import { colors } from '../../theme/colors';
+// import { X } from 'lucide-react-native';
+// import React, { useEffect, useState } from 'react';
+// import {
+//   ActivityIndicator,
+//   Modal,
+//   Pressable,
+//   ScrollView,
+//   StyleSheet,
+//   Text,
+//   TouchableOpacity,
+//   View,
+// } from 'react-native';
+// import { useNavigation } from '@react-navigation/native';
+// import {
+//   changeSubscriptionPlan,
+//   createSubscription,
+//   listPaymentMethods,
+// } from '../../services/artistServices';
+// import Toast from 'react-native-toast-message';
+// import { useDispatch } from 'react-redux';
+// import { Card } from '../../types';
+// import {
+//   getSubscriptionFromStorage,
+//   saveSubscriptionToStorage,
+// } from '../../utils/subscriptionStorage';
+// import { refreshAuthUser } from '../../utils/authUtils';
+// import { colors } from '../../theme/colors';
 
-interface SelectPaymentMethodModalProps {
-  visible: boolean;
-  cards?: Card[];
-  onClose: () => void;
-  priceId?: string;
-  onPaymentSuccess?: () => void;
-  hasActiveSubscription?: boolean;
-}
+// interface SelectPaymentMethodModalProps {
+//   visible: boolean;
+//   cards?: Card[];
+//   onClose: () => void;
+//   priceId?: string;
+//   onPaymentSuccess?: () => void;
+//   hasActiveSubscription?: boolean;
+// }
 
-const SelectPaymentMethodModal: React.FC<SelectPaymentMethodModalProps> = ({
-  visible,
-  cards: initialCards = [],
-  onClose,
-  priceId,
-  onPaymentSuccess,
-  hasActiveSubscription = false,
-}) => {
-  const navigation = useNavigation();
-  const [cards, setCards] = useState<Card[]>(initialCards);
-  const [selectedCard, setSelectedCard] = useState<string>('');
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState('');
-  const dispatch = useDispatch();
+// const SelectPaymentMethodModal: React.FC<SelectPaymentMethodModalProps> = ({
+//   visible,
+//   cards: initialCards = [],
+//   onClose,
+//   priceId,
+//   onPaymentSuccess,
+//   hasActiveSubscription = false,
+// }) => {
+//   const navigation = useNavigation();
+//   const [cards, setCards] = useState<Card[]>(initialCards);
+//   const [selectedCard, setSelectedCard] = useState<string>('');
+//   const [loading, setLoading] = useState(false);
+//   const [error, setError] = useState('');
+//   const dispatch = useDispatch();
 
-  useEffect(() => {
-    if (initialCards.length === 0) {
-      fetchPaymentMethods();
-    } else {
-      setCards(initialCards);
-      const defaultCard = initialCards.find(c => c.isDefault);
-      setSelectedCard(defaultCard?.id || initialCards[0]?.id || '');
-    }
-  }, [initialCards]);
+//   useEffect(() => {
+//     if (initialCards.length === 0) {
+//       fetchPaymentMethods();
+//     } else {
+//       setCards(initialCards);
+//       const defaultCard = initialCards.find(c => c.isDefault);
+//       setSelectedCard(defaultCard?.id || initialCards[0]?.id || '');
+//     }
+//   }, [initialCards]);
 
-  const fetchPaymentMethods = async () => {
-    try {
-      const response = await listPaymentMethods();
-      const paymentMethods = response?.data?.data || [];
+//   const fetchPaymentMethods = async () => {
+//     try {
+//       const response = await listPaymentMethods();
+//       const paymentMethods = response?.data?.data || [];
 
-      const formattedCards: Card[] = (paymentMethods || []).map((pm: any) => ({
-        id: pm?.id || '',
-        name: pm?.billing_details?.name || 'Card Holder',
-        lastFour: pm?.card?.last4 || '0000',
-        brand: pm?.card?.brand || 'visa',
-        isDefault: pm?.metadata?.isDefault === 'true',
-        color: getCardColor(pm?.card?.brand),
-      }));
+//       const formattedCards: Card[] = (paymentMethods || []).map((pm: any) => ({
+//         id: pm?.id || '',
+//         name: pm?.billing_details?.name || 'Card Holder',
+//         lastFour: pm?.card?.last4 || '0000',
+//         brand: pm?.card?.brand || 'visa',
+//         isDefault: pm?.metadata?.isDefault === 'true',
+//         color: getCardColor(pm?.card?.brand),
+//       }));
 
-      setCards(formattedCards);
-      const defaultCard = formattedCards.find(c => c?.isDefault);
-      setSelectedCard(defaultCard?.id || formattedCards[0]?.id || '');
-    } catch (error) {
-      console.error('Error fetching payment methods:', error);
-      setError('Failed to load payment methods');
-    }
-  };
+//       setCards(formattedCards);
+//       const defaultCard = formattedCards.find(c => c?.isDefault);
+//       setSelectedCard(defaultCard?.id || formattedCards[0]?.id || '');
+//     } catch (error) {
+//       console.error('Error fetching payment methods:', error);
+//       setError('Failed to load payment methods');
+//     }
+//   };
 
-  const getCardColor = (brand: string) => {
-    const colors: { [key: string]: string } = {
-      visa: '#1A1F71',
-      mastercard: '#EB001B',
-      amex: '#006FCF',
-    };
-    return colors[(brand || '').toLowerCase()] || '#6B2A6B';
-  };
+//   const getCardColor = (brand: string) => {
+//     const colors: { [key: string]: string } = {
+//       visa: '#1A1F71',
+//       mastercard: '#EB001B',
+//       amex: '#006FCF',
+//     };
+//     return colors[(brand || '').toLowerCase()] || '#6B2A6B';
+//   };
 
-  const handleMakePayment = async () => {
-    if (!selectedCard) {
-      setError('Please select a payment method');
-      return;
-    }
+//   const handleMakePayment = async () => {
+//     if (!selectedCard) {
+//       setError('Please select a payment method');
+//       return;
+//     }
 
-    if (!priceId) {
-      setError('Price ID is required');
-      return;
-    }
+//     if (!priceId) {
+//       setError('Price ID is required');
+//       return;
+//     }
 
-    setLoading(true);
-    setError('');
+//     setLoading(true);
+//     setError('');
 
-    try {
-      const subscriptionData = await getSubscriptionFromStorage();
-      const isSubscriptionActive =
-        subscriptionData &&
-        ['active', 'trialing'].includes(
-          subscriptionData?.status?.toLowerCase(),
-        );
+//     try {
+//       const subscriptionData = await getSubscriptionFromStorage();
+//       const isSubscriptionActive =
+//         subscriptionData &&
+//         ['active', 'trialing'].includes(
+//           subscriptionData?.status?.toLowerCase(),
+//         );
 
-      const shouldChangeSubscription =
-        hasActiveSubscription || isSubscriptionActive;
+//       const shouldChangeSubscription =
+//         hasActiveSubscription || isSubscriptionActive;
 
-      if (shouldChangeSubscription) {
-        const response = await changeSubscriptionPlan(priceId, selectedCard);
-        Toast.show({
-          type: 'success',
-          text1: 'Subscription plan updated successfully!',
-        });
+//       if (shouldChangeSubscription) {
+//         const response = await changeSubscriptionPlan(priceId, selectedCard);
+//         Toast.show({
+//           type: 'success',
+//           text1: 'Subscription plan updated successfully!',
+//         });
 
-        if (response.data) {
-          saveSubscriptionToStorage(response.data);
-        }
-      } else {
-        const response = await createSubscription(priceId, selectedCard);
-        Toast.show({
-          type: 'success',
-          text1: 'Payment successful! Subscription activated.',
-        });
+//         if (response.data) {
+//           saveSubscriptionToStorage(response.data);
+//         }
+//       } else {
+//         const response = await createSubscription(priceId, selectedCard);
+//         Toast.show({
+//           type: 'success',
+//           text1: 'Payment successful! Subscription activated.',
+//         });
 
-        if (response.data) {
-          saveSubscriptionToStorage(response.data);
-        }
-      }
+//         if (response.data) {
+//           saveSubscriptionToStorage(response.data);
+//         }
+//       }
 
-      await refreshAuthUser(dispatch);
+//       await refreshAuthUser(dispatch);
 
-      if (onPaymentSuccess) {
-        onPaymentSuccess();
-      }
+//       if (onPaymentSuccess) {
+//         onPaymentSuccess();
+//       }
 
-      onClose();
-    } catch (err: any) {
-      const errorMessage =
-        err.response?.data?.message ||
-        err.response?.data?.error ||
-        'Payment failed. Please try again.';
-      setError(errorMessage);
-      Toast.show({
-        type: 'error',
-        text1: errorMessage,
-      });
-      console.error('Error making payment:', err);
-    } finally {
-      setLoading(false);
-    }
-  };
+//       onClose();
+//     } catch (err: any) {
+//       const errorMessage =
+//         err.response?.data?.message ||
+//         err.response?.data?.error ||
+//         'Payment failed. Please try again.';
+//       setError(errorMessage);
+//       Toast.show({
+//         type: 'error',
+//         text1: errorMessage,
+//       });
+//       console.error('Error making payment:', err);
+//     } finally {
+//       setLoading(false);
+//     }
+//   };
 
-  const handleCardAdded = () => {
-    fetchPaymentMethods();
-  };
+//   const handleCardAdded = () => {
+//     fetchPaymentMethods();
+//   };
 
-  const [subscriptionDataForRender, setSubscriptionDataForRender] = useState<any>(null);
+//   const [subscriptionDataForRender, setSubscriptionDataForRender] = useState<any>(null);
 
-  useEffect(() => {
-    getSubscriptionFromStorage().then(data => setSubscriptionDataForRender(data));
-  }, [visible]);
+//   useEffect(() => {
+//     getSubscriptionFromStorage().then(data => setSubscriptionDataForRender(data));
+//   }, [visible]);
 
-  const isChangingPlan =
-    hasActiveSubscription ||
-    (subscriptionDataForRender &&
-      ['active', 'trialing'].includes(subscriptionDataForRender?.status?.toLowerCase()));
+//   const isChangingPlan =
+//     hasActiveSubscription ||
+//     (subscriptionDataForRender &&
+//       ['active', 'trialing'].includes(subscriptionDataForRender?.status?.toLowerCase()));
 
-  return (
-    <Modal
-      visible={visible}
-      transparent
-      animationType="slide"
-      onRequestClose={onClose}
-    >
-      <View style={styles.modalOverlay}>
-        <Pressable style={styles.backdrop} onPress={onClose} />
-        <View style={styles.modalContent}>
-          <View style={styles.header}>
-            <Text style={styles.title}>Select a Payment Method</Text>
-            <TouchableOpacity style={styles.closeButton} onPress={onClose}>
-              <X size={24} color={colors.black} />
-            </TouchableOpacity>
-          </View>
+//   return (
+//     <Modal
+//       visible={visible}
+//       transparent
+//       animationType="slide"
+//       onRequestClose={onClose}
+//     >
+//       <View style={styles.modalOverlay}>
+//         <Pressable style={styles.backdrop} onPress={onClose} />
+//         <View style={styles.modalContent}>
+//           <View style={styles.header}>
+//             <Text style={styles.title}>Select a Payment Method</Text>
+//             <TouchableOpacity style={styles.closeButton} onPress={onClose}>
+//               <X size={24} color={colors.black} />
+//             </TouchableOpacity>
+//           </View>
 
-          <Text style={styles.subtitle}>
-            {isChangingPlan
-              ? 'Select card to update your subscription plan'
-              : 'Select or add card to make payment'}
-          </Text>
+//           <Text style={styles.subtitle}>
+//             {isChangingPlan
+//               ? 'Select card to update your subscription plan'
+//               : 'Select or add card to make payment'}
+//           </Text>
 
-          {error !== '' && (
-            <View style={styles.errorContainer}>
-              <Text style={styles.errorText}>{error}</Text>
-            </View>
-          )}
+//           {error !== '' && (
+//             <View style={styles.errorContainer}>
+//               <Text style={styles.errorText}>{error}</Text>
+//             </View>
+//           )}
 
-          <ScrollView showsVerticalScrollIndicator={false}>
-            <View style={styles.paymentSection}>
-              <View style={styles.paymentHeader}>
-                <Text style={styles.sectionTitle}>Select a Card</Text>
-                <TouchableOpacity
-                  onPress={() =>
-                    navigation.navigate('AddCard', {
-                      onCardAdded: handleCardAdded,
-                    })
-                  }
-                >
-                  <Text style={styles.addCardLink}>+ Add a Card</Text>
-                </TouchableOpacity>
-              </View>
+//           <ScrollView showsVerticalScrollIndicator={false}>
+//             <View style={styles.paymentSection}>
+//               <View style={styles.paymentHeader}>
+//                 <Text style={styles.sectionTitle}>Select a Card</Text>
+//                 <TouchableOpacity
+//                   onPress={() =>
+//                     navigation.navigate('AddCard', {
+//                       onCardAdded: handleCardAdded,
+//                     })
+//                   }
+//                 >
+//                   <Text style={styles.addCardLink}>+ Add a Card</Text>
+//                 </TouchableOpacity>
+//               </View>
 
-              {cards.length === 0 ? (
-                <View style={styles.noCardsContainer}>
-                  <Text style={styles.noCardsText}>
-                    No payment methods available. Please add a card.
-                  </Text>
-                  <TouchableOpacity
-                    style={styles.addCardButton}
-                    onPress={() =>
-                      navigation.navigate('AddCard', {
-                        onCardAdded: handleCardAdded,
-                      })
-                    }
-                  >
-                    <Text style={styles.addCardButtonText}>Add a Card</Text>
-                  </TouchableOpacity>
-                </View>
-              ) : (
-                <View style={styles.cardsContainer}>
-                  {cards.map(card => (
-                    <TouchableOpacity
-                      key={card.id}
-                      style={[
-                        styles.cardOption,
-                        selectedCard === card.id && styles.cardOptionSelected,
-                      ]}
-                      onPress={() => setSelectedCard(card.id)}
-                    >
-                      <View
-                        style={[
-                          styles.cardVisual,
-                          { backgroundColor: card.color },
-                        ]}
-                      >
-                        <View style={styles.cardRadio}>
-                          {selectedCard === card.id && (
-                            <View style={styles.radioDot} />
-                          )}
-                        </View>
-                        <View style={styles.cardInfo}>
-                          <Text style={styles.cardName}>{card.name}</Text>
-                          <Text style={styles.cardNumber}>
-                            •••• •••• •••• {card.lastFour}
-                          </Text>
-                        </View>
-                      </View>
-                    </TouchableOpacity>
-                  ))}
-                </View>
-              )}
-            </View>
-          </ScrollView>
+//               {cards.length === 0 ? (
+//                 <View style={styles.noCardsContainer}>
+//                   <Text style={styles.noCardsText}>
+//                     No payment methods available. Please add a card.
+//                   </Text>
+//                   <TouchableOpacity
+//                     style={styles.addCardButton}
+//                     onPress={() =>
+//                       navigation.navigate('AddCard', {
+//                         onCardAdded: handleCardAdded,
+//                       })
+//                     }
+//                   >
+//                     <Text style={styles.addCardButtonText}>Add a Card</Text>
+//                   </TouchableOpacity>
+//                 </View>
+//               ) : (
+//                 <View style={styles.cardsContainer}>
+//                   {cards.map(card => (
+//                     <TouchableOpacity
+//                       key={card.id}
+//                       style={[
+//                         styles.cardOption,
+//                         selectedCard === card.id && styles.cardOptionSelected,
+//                       ]}
+//                       onPress={() => setSelectedCard(card.id)}
+//                     >
+//                       <View
+//                         style={[
+//                           styles.cardVisual,
+//                           { backgroundColor: card.color },
+//                         ]}
+//                       >
+//                         <View style={styles.cardRadio}>
+//                           {selectedCard === card.id && (
+//                             <View style={styles.radioDot} />
+//                           )}
+//                         </View>
+//                         <View style={styles.cardInfo}>
+//                           <Text style={styles.cardName}>{card.name}</Text>
+//                           <Text style={styles.cardNumber}>
+//                             •••• •••• •••• {card.lastFour}
+//                           </Text>
+//                         </View>
+//                       </View>
+//                     </TouchableOpacity>
+//                   ))}
+//                 </View>
+//               )}
+//             </View>
+//           </ScrollView>
 
-          <View style={styles.actions}>
-            <TouchableOpacity
-              style={styles.cancelButton}
-              onPress={onClose}
-              disabled={loading}
-            >
-              <Text style={styles.cancelButtonText}>Cancel</Text>
-            </TouchableOpacity>
-            <TouchableOpacity
-              style={[
-                styles.confirmButton,
-                (loading || !selectedCard || cards.length === 0) &&
-                  styles.confirmButtonDisabled,
-              ]}
-              onPress={handleMakePayment}
-              disabled={loading || !selectedCard || cards.length === 0}
-            >
-              {loading ? (
-                <ActivityIndicator color="white" />
-              ) : (
-                <Text style={styles.confirmButtonText}>
-                  {isChangingPlan ? 'Update Plan' : 'Make Payment'}
-                </Text>
-              )}
-            </TouchableOpacity>
-          </View>
-        </View>
-      </View>
-    </Modal>
-  );
-};
+//           <View style={styles.actions}>
+//             <TouchableOpacity
+//               style={styles.cancelButton}
+//               onPress={onClose}
+//               disabled={loading}
+//             >
+//               <Text style={styles.cancelButtonText}>Cancel</Text>
+//             </TouchableOpacity>
+//             <TouchableOpacity
+//               style={[
+//                 styles.confirmButton,
+//                 (loading || !selectedCard || cards.length === 0) &&
+//                   styles.confirmButtonDisabled,
+//               ]}
+//               onPress={handleMakePayment}
+//               disabled={loading || !selectedCard || cards.length === 0}
+//             >
+//               {loading ? (
+//                 <ActivityIndicator color="white" />
+//               ) : (
+//                 <Text style={styles.confirmButtonText}>
+//                   {isChangingPlan ? 'Update Plan' : 'Make Payment'}
+//                 </Text>
+//               )}
+//             </TouchableOpacity>
+//           </View>
+//         </View>
+//       </View>
+//     </Modal>
+//   );
+// };
 
-const styles = StyleSheet.create({
-  modalOverlay: {
-    flex: 1,
-    justifyContent: 'flex-end',
-    backgroundColor: 'rgba(0, 0, 0, 0.5)',
-  },
-  backdrop: {
-    position: 'absolute',
-    top: 0,
-    left: 0,
-    right: 0,
-    bottom: 0,
-  },
-  modalContent: {
-    backgroundColor: 'white',
-    borderRadius: 20,
-    padding: 24,
-    width: '90%',
-    maxHeight: '90%',
-  },
-  header: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    marginBottom: 8,
-  },
-  title: {
-    fontSize: 20,
-    fontWeight: '600',
-    color: colors.black,
-    flex: 1,
-  },
-  closeButton: {
-    padding: 8,
-  },
-  subtitle: {
-    fontSize: 14,
-    color: colors.subtitleColor,
-    marginBottom: 16,
-  },
-  errorContainer: {
-    backgroundColor: '#fee2e2',
-    padding: 12,
-    borderRadius: 8,
-    marginBottom: 16,
-  },
-  errorText: {
-    color: '#dc2626',
-    fontSize: 14,
-  },
-  paymentSection: {
-    marginBottom: 16,
-  },
-  paymentHeader: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    marginBottom: 16,
-  },
-  sectionTitle: {
-    fontSize: 16,
-    fontWeight: '600',
-    color: colors.black,
-  },
-  addCardLink: {
-    color: colors.primary,
-    fontSize: 14,
-    fontWeight: '500',
-  },
-  noCardsContainer: {
-    alignItems: 'center',
-    padding: 32,
-  },
-  noCardsText: {
-    fontSize: 14,
-    color: colors.subtitleColor,
-    marginBottom: 16,
-    textAlign: 'center',
-  },
-  addCardButton: {
-    backgroundColor: colors.primary,
-    paddingVertical: 12,
-    paddingHorizontal: 24,
-    borderRadius: 12,
-  },
-  addCardButtonText: {
-    color: 'white',
-    fontWeight: '600',
-    fontSize: 16,
-  },
-  cardsContainer: {
-    gap: 12,
-  },
-  cardOption: {
-    marginBottom: 12,
-  },
-  cardOptionSelected: {
-    transform: [{ scale: 1.02 }],
-  },
-  cardVisual: {
-    borderRadius: 12,
-    padding: 16,
-    flexDirection: 'row',
-    alignItems: 'center',
-  },
-  cardRadio: {
-    width: 20,
-    height: 20,
-    borderRadius: 10,
-    borderWidth: 2,
-    borderColor: 'white',
-    marginRight: 12,
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  radioDot: {
-    width: 10,
-    height: 10,
-    borderRadius: 5,
-    backgroundColor: 'white',
-  },
-  cardInfo: {
-    flex: 1,
-  },
-  cardName: {
-    color: 'white',
-    fontSize: 16,
-    fontWeight: '600',
-    marginBottom: 4,
-  },
-  cardNumber: {
-    color: 'white',
-    fontSize: 14,
-    opacity: 0.9,
-  },
-  actions: {
-    flexDirection: 'row',
-    gap: 12,
-    marginTop: 16,
-  },
-  cancelButton: {
-    flex: 1,
-    backgroundColor: 'transparent',
-    borderWidth: 1,
-    borderColor: colors.borderColor,
-    padding: 14,
-    borderRadius: 12,
-    alignItems: 'center',
-  },
-  cancelButtonText: {
-    color: colors.subtitleColor,
-    fontWeight: '500',
-    fontSize: 16,
-  },
-  confirmButton: {
-    flex: 1,
-    backgroundColor: colors.primary,
-    padding: 14,
-    borderRadius: 12,
-    alignItems: 'center',
-  },
-  confirmButtonDisabled: {
-    opacity: 0.5,
-  },
-  confirmButtonText: {
-    color: 'white',
-    fontWeight: '600',
-    fontSize: 16,
-  },
-});
+// const styles = StyleSheet.create({
+//   modalOverlay: {
+//     flex: 1,
+//     justifyContent: 'flex-end',
+//     backgroundColor: 'rgba(0, 0, 0, 0.5)',
+//   },
+//   backdrop: {
+//     position: 'absolute',
+//     top: 0,
+//     left: 0,
+//     right: 0,
+//     bottom: 0,
+//   },
+//   modalContent: {
+//     backgroundColor: 'white',
+//     borderRadius: 20,
+//     padding: 24,
+//     width: '90%',
+//     maxHeight: '90%',
+//   },
+//   header: {
+//     flexDirection: 'row',
+//     justifyContent: 'space-between',
+//     alignItems: 'center',
+//     marginBottom: 8,
+//   },
+//   title: {
+//     fontSize: 20,
+//     fontWeight: '600',
+//     color: colors.black,
+//     flex: 1,
+//   },
+//   closeButton: {
+//     padding: 8,
+//   },
+//   subtitle: {
+//     fontSize: 14,
+//     color: colors.subtitleColor,
+//     marginBottom: 16,
+//   },
+//   errorContainer: {
+//     backgroundColor: '#fee2e2',
+//     padding: 12,
+//     borderRadius: 8,
+//     marginBottom: 16,
+//   },
+//   errorText: {
+//     color: '#dc2626',
+//     fontSize: 14,
+//   },
+//   paymentSection: {
+//     marginBottom: 16,
+//   },
+//   paymentHeader: {
+//     flexDirection: 'row',
+//     justifyContent: 'space-between',
+//     alignItems: 'center',
+//     marginBottom: 16,
+//   },
+//   sectionTitle: {
+//     fontSize: 16,
+//     fontWeight: '600',
+//     color: colors.black,
+//   },
+//   addCardLink: {
+//     color: colors.primary,
+//     fontSize: 14,
+//     fontWeight: '500',
+//   },
+//   noCardsContainer: {
+//     alignItems: 'center',
+//     padding: 32,
+//   },
+//   noCardsText: {
+//     fontSize: 14,
+//     color: colors.subtitleColor,
+//     marginBottom: 16,
+//     textAlign: 'center',
+//   },
+//   addCardButton: {
+//     backgroundColor: colors.primary,
+//     paddingVertical: 12,
+//     paddingHorizontal: 24,
+//     borderRadius: 12,
+//   },
+//   addCardButtonText: {
+//     color: 'white',
+//     fontWeight: '600',
+//     fontSize: 16,
+//   },
+//   cardsContainer: {
+//     gap: 12,
+//   },
+//   cardOption: {
+//     marginBottom: 12,
+//   },
+//   cardOptionSelected: {
+//     transform: [{ scale: 1.02 }],
+//   },
+//   cardVisual: {
+//     borderRadius: 12,
+//     padding: 16,
+//     flexDirection: 'row',
+//     alignItems: 'center',
+//   },
+//   cardRadio: {
+//     width: 20,
+//     height: 20,
+//     borderRadius: 10,
+//     borderWidth: 2,
+//     borderColor: 'white',
+//     marginRight: 12,
+//     justifyContent: 'center',
+//     alignItems: 'center',
+//   },
+//   radioDot: {
+//     width: 10,
+//     height: 10,
+//     borderRadius: 5,
+//     backgroundColor: 'white',
+//   },
+//   cardInfo: {
+//     flex: 1,
+//   },
+//   cardName: {
+//     color: 'white',
+//     fontSize: 16,
+//     fontWeight: '600',
+//     marginBottom: 4,
+//   },
+//   cardNumber: {
+//     color: 'white',
+//     fontSize: 14,
+//     opacity: 0.9,
+//   },
+//   actions: {
+//     flexDirection: 'row',
+//     gap: 12,
+//     marginTop: 16,
+//   },
+//   cancelButton: {
+//     flex: 1,
+//     backgroundColor: 'transparent',
+//     borderWidth: 1,
+//     borderColor: colors.borderColor,
+//     padding: 14,
+//     borderRadius: 12,
+//     alignItems: 'center',
+//   },
+//   cancelButtonText: {
+//     color: colors.subtitleColor,
+//     fontWeight: '500',
+//     fontSize: 16,
+//   },
+//   confirmButton: {
+//     flex: 1,
+//     backgroundColor: colors.primary,
+//     padding: 14,
+//     borderRadius: 12,
+//     alignItems: 'center',
+//   },
+//   confirmButtonDisabled: {
+//     opacity: 0.5,
+//   },
+//   confirmButtonText: {
+//     color: 'white',
+//     fontWeight: '600',
+//     fontSize: 16,
+//   },
+// });
 
-export default SelectPaymentMethodModal;
+// export default SelectPaymentMethodModal;
