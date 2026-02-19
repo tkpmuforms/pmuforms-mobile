@@ -8,7 +8,6 @@ import {
   ScrollView,
   ActivityIndicator,
   Alert,
-  Share,
 } from 'react-native';
 import { X, ChevronLeft, Calendar } from 'lucide-react-native';
 import { formatAppointmentTime } from '../../utils/utils';
@@ -18,13 +17,18 @@ import {
 } from '../../services/artistServices';
 import { Config } from 'react-native-config';
 import { SafeAreaView } from 'react-native-safe-area-context';
+import FormSentSuccessModal from './FormSentSuccessModal';
+import { colors } from '../../theme/colors';
 
 interface PreviewAppointmentModalProps {
   visible: boolean;
   onClose: () => void;
   onSuccess: (appointmentUrl?: string) => void;
+  onGoToDashboard?: () => void;
+  onViewAppointments?: () => void;
   clientName: string;
   clientId: string;
+  clientEmail?: string;
   appointmentDate: string;
   selectedServices: string[];
   selectedServiceIds: string[];
@@ -40,8 +44,11 @@ const PreviewAppointmentModal: React.FC<PreviewAppointmentModalProps> = ({
   visible,
   onClose,
   onSuccess,
+  onGoToDashboard,
+  onViewAppointments,
   clientId,
   clientName,
+  clientEmail,
   appointmentDate,
   selectedServices,
   selectedServiceIds,
@@ -49,14 +56,16 @@ const PreviewAppointmentModal: React.FC<PreviewAppointmentModalProps> = ({
   const [formsToSend, setFormsToSend] = useState<FormData[]>([]);
   const [isLoadingForms, setIsLoadingForms] = useState(false);
   const [isBooking, setIsBooking] = useState(false);
+  const [showSuccess, setShowSuccess] = useState(false);
+  const [appointmentUrl, setAppointmentUrl] = useState<string | undefined>();
 
   const fetchFormsForServices = async (serviceIds: string[]) => {
-    if (!serviceIds || serviceIds.length === 0) return;
+    if (!serviceIds || (serviceIds || []).length === 0) return;
 
     setIsLoadingForms(true);
 
     try {
-      const numericServiceIds = serviceIds
+      const numericServiceIds = (serviceIds || [])
         .map(id => parseInt(id, 10))
         .filter(id => !isNaN(id));
 
@@ -65,7 +74,7 @@ const PreviewAppointmentModal: React.FC<PreviewAppointmentModalProps> = ({
       }
 
       const response = await getMyServiceForms(numericServiceIds);
-      setFormsToSend(response.data?.forms || []);
+      setFormsToSend(response?.data?.forms || []);
     } catch (error) {
       console.error('Error fetching forms:', error);
       setFormsToSend([]);
@@ -81,9 +90,10 @@ const PreviewAppointmentModal: React.FC<PreviewAppointmentModalProps> = ({
   }, [visible, selectedServiceIds]);
 
   const getClientInitials = (name: string) => {
-    return name
-      ?.split(' ')
-      .map(word => word.charAt(0).toUpperCase())
+    return (name || '')
+      .split(' ')
+      .filter(word => (word || '').length > 0)
+      .map(word => (word || '').charAt(0).toUpperCase())
       .join('')
       .substring(0, 2);
   };
@@ -95,33 +105,21 @@ const PreviewAppointmentModal: React.FC<PreviewAppointmentModalProps> = ({
       const bookingData = {
         appointmentDate,
         customerId: clientId,
-        services: selectedServiceIds
+        services: (selectedServiceIds || [])
           .map(id => parseInt(id, 10))
           .filter(id => !isNaN(id)),
       };
 
       const response = await bookAppointment(bookingData);
-      const appointmentId = response.data?.appointment?.id;
+      const appointmentId = response?.data?.appointment?.id;
 
       if (appointmentId) {
         const baseUrl =
           Config.USER_WEBSITE_URL || 'https://business.pmuforms.com';
-        const appointmentUrl = `${baseUrl}/#/appointment/${appointmentId}`;
-        try {
-          await Share.share({
-            message: `Your appointment has been booked! View your forms here: ${appointmentUrl}`,
-            url: appointmentUrl,
-          });
-        } catch (shareError) {
-          console.error('Error sharing:', shareError);
-        }
+        const url = `${baseUrl}/#/appointment/${appointmentId}`;
 
-        Alert.alert('Success', 'Appointment booked successfully', [
-          {
-            text: 'OK',
-            onPress: () => onSuccess(appointmentUrl),
-          },
-        ]);
+        setAppointmentUrl(url);
+        setShowSuccess(true);
       } else {
         console.error('No appointment ID returned from API');
         Alert.alert('Error', 'No appointment ID received');
@@ -138,7 +136,7 @@ const PreviewAppointmentModal: React.FC<PreviewAppointmentModalProps> = ({
     if (isLoadingForms) {
       return (
         <View style={styles.loadingContainer}>
-          <ActivityIndicator size="small" color="#8e2d8e" />
+          <ActivityIndicator size="small" color={colors.primary} />
         </View>
       );
     }
@@ -177,11 +175,11 @@ const PreviewAppointmentModal: React.FC<PreviewAppointmentModalProps> = ({
           <View style={styles.modal}>
             <View style={styles.header}>
               <TouchableOpacity style={styles.backButton} onPress={onClose}>
-                <ChevronLeft size={20} color="#000000" />
+                <ChevronLeft size={20} color={colors.black} />
               </TouchableOpacity>
               <Text style={styles.title}>Preview Appointment</Text>
               <TouchableOpacity style={styles.closeButton} onPress={onClose}>
-                <X size={20} color="#64748b" />
+                <X size={20} color={colors.subtitleColor} />
               </TouchableOpacity>
             </View>
 
@@ -206,7 +204,7 @@ const PreviewAppointmentModal: React.FC<PreviewAppointmentModalProps> = ({
                 <View style={styles.detailSection}>
                   <Text style={styles.detailLabel}>Appointment Date</Text>
                   <View style={styles.dateContent}>
-                    <Calendar size={16} color="#8e2d8e" />
+                    <Calendar size={16} color={colors.primary} />
                     <Text style={styles.detailValue}>
                       {formatAppointmentTime(appointmentDate)}
                     </Text>
@@ -248,7 +246,7 @@ const PreviewAppointmentModal: React.FC<PreviewAppointmentModalProps> = ({
               disabled={formsToSend.length === 0 || isBooking}
             >
               {isBooking ? (
-                <ActivityIndicator color="#fff" />
+                <ActivityIndicator color={colors.white} />
               ) : (
                 <Text style={styles.continueButtonText}>Continue</Text>
               )}
@@ -256,6 +254,20 @@ const PreviewAppointmentModal: React.FC<PreviewAppointmentModalProps> = ({
           </View>
         </View>
       </SafeAreaView>
+
+      <FormSentSuccessModal
+        visible={showSuccess}
+        clientName={clientName}
+        clientEmail={clientEmail}
+        onGoToDashboard={() => {
+          setShowSuccess(false);
+          onGoToDashboard ? onGoToDashboard() : onSuccess(appointmentUrl);
+        }}
+        onViewAppointments={() => {
+          setShowSuccess(false);
+          onViewAppointments ? onViewAppointments() : onSuccess(appointmentUrl);
+        }}
+      />
     </Modal>
   );
 };
@@ -270,7 +282,7 @@ const styles = StyleSheet.create({
     justifyContent: 'flex-end',
   },
   modal: {
-    backgroundColor: '#fff',
+    backgroundColor: colors.white,
     borderTopLeftRadius: 20,
     borderTopRightRadius: 20,
     padding: 24,
@@ -288,7 +300,7 @@ const styles = StyleSheet.create({
   title: {
     fontSize: 20,
     fontWeight: '600',
-    color: '#000000',
+    color: colors.black,
     flex: 1,
     textAlign: 'center',
   },
@@ -310,7 +322,7 @@ const styles = StyleSheet.create({
   },
   detailLabel: {
     fontSize: 12,
-    color: '#64748b',
+    color: colors.subtitleColor,
     marginBottom: 8,
     fontWeight: '500',
   },
@@ -330,7 +342,7 @@ const styles = StyleSheet.create({
   avatarText: {
     fontSize: 14,
     fontWeight: '600',
-    color: '#8e2d8e',
+    color: colors.primary,
   },
   dateContent: {
     flexDirection: 'row',
@@ -339,7 +351,7 @@ const styles = StyleSheet.create({
   },
   detailValue: {
     fontSize: 14,
-    color: '#000000',
+    color: colors.black,
     fontWeight: '600',
   },
   divider: {
@@ -353,7 +365,7 @@ const styles = StyleSheet.create({
   sectionLabel: {
     fontSize: 14,
     fontWeight: '600',
-    color: '#000000',
+    color: colors.black,
     marginBottom: 12,
   },
   servicesList: {
@@ -366,7 +378,7 @@ const styles = StyleSheet.create({
   },
   bullet: {
     fontSize: 16,
-    color: '#8e2d8e',
+    color: colors.primary,
   },
   serviceText: {
     fontSize: 14,
@@ -382,7 +394,7 @@ const styles = StyleSheet.create({
   },
   noFormsText: {
     fontSize: 14,
-    color: '#64748b',
+    color: colors.subtitleColor,
   },
   formsList: {
     gap: 12,
@@ -400,11 +412,11 @@ const styles = StyleSheet.create({
   },
   formText: {
     fontSize: 14,
-    color: '#000000',
+    color: colors.black,
     flex: 1,
   },
   continueButton: {
-    backgroundColor: 'linear-gradient(90deg, #8E2D8E 0%, #A654CD 100%)',
+    backgroundColor: colors.primary,
     paddingVertical: 16,
     borderRadius: 12,
     alignItems: 'center',
@@ -414,7 +426,7 @@ const styles = StyleSheet.create({
     opacity: 0.5,
   },
   continueButtonText: {
-    color: '#fff',
+    color: colors.white,
     fontSize: 14,
     fontWeight: '600',
   },

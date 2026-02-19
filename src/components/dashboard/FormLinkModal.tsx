@@ -10,6 +10,7 @@ import {
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import Clipboard from '@react-native-clipboard/clipboard';
+import { colors } from '../../theme/colors';
 
 interface FormLinkModalProps {
   visible: boolean;
@@ -71,7 +72,7 @@ const FormLinkModal: React.FC<FormLinkModalProps> = ({
                   onPress={handleCopyLink}
                 >
                   {copied ? (
-                    <Check size={16} color="#8e2d8e" />
+                    <Check size={16} color={colors.primary} />
                   ) : (
                     <Copy size={16} color="#6b7280" />
                   )}
@@ -111,7 +112,7 @@ const styles = StyleSheet.create({
     justifyContent: 'flex-end',
   },
   modal: {
-    backgroundColor: '#fff',
+    backgroundColor: colors.white,
     borderTopLeftRadius: 20,
     borderTopRightRadius: 20,
     maxHeight: '90%',
@@ -165,7 +166,7 @@ const styles = StyleSheet.create({
     flex: 1,
     padding: 12,
     fontSize: 14,
-    color: '#8e2d8e',
+    color: colors.primary,
     fontFamily: 'monospace',
   },
   copyIconButton: {
@@ -183,19 +184,19 @@ const styles = StyleSheet.create({
     marginBottom: 24,
   },
   copyButton: {
-    backgroundColor: '#8e2d8e',
+    backgroundColor: colors.primary,
     paddingVertical: 16,
     paddingHorizontal: 32,
     borderRadius: 12,
     alignItems: 'center',
-    shadowColor: '#8e2d8e',
+    shadowColor: colors.primary,
     shadowOffset: { width: 0, height: 4 },
     shadowOpacity: 0.3,
     shadowRadius: 15,
     elevation: 4,
   },
   copyButtonText: {
-    color: '#fff',
+    color: colors.white,
     fontSize: 16,
     fontWeight: '600',
   },

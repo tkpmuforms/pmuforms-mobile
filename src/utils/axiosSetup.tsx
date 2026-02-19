@@ -1,6 +1,7 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import axios from 'axios';
 import { jwtDecode } from 'jwt-decode';
+import Toast from 'react-native-toast-message';
 
 const baseURL = 'https://admin.pmuforms.com/';
 
@@ -51,10 +52,20 @@ axiosInstance.interceptors.response.use(
       await AsyncStorage.removeItem('accessToken');
     }
 
+    const isNetworkError = !error.response && error.message === 'Network Error';
+    if (isNetworkError) {
+      Toast.show({
+        type: 'error',
+        text1: 'Connection lost',
+        text2: 'Please check your network and try again',
+      });
+    }
+
     return Promise.reject(
       (error.response && error.response.data) || {
-        message: 'Something went wrong!',
-        error,
+        message: isNetworkError
+          ? 'No internet connection'
+          : 'Something went wrong!',
       },
     );
   },

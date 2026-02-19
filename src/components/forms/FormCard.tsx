@@ -2,6 +2,7 @@ import { ChevronRight } from 'lucide-react-native';
 import React from 'react';
 import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { Forms } from '../../../assets/svg';
+import { colors } from '../../theme/colors';
 
 interface FormCardProps {
   id: string;
@@ -69,7 +70,7 @@ const styles = StyleSheet.create({
   title: {
     fontSize: 14,
     fontWeight: '600',
-    color: '#000000',
+    color: colors.black,
     lineHeight: 20,
   },
   meta: {

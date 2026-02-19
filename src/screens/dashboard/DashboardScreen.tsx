@@ -10,23 +10,26 @@ import {
   View,
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import AddClientModal from '../../components/clients/AddClientModal';
 import AppointmentCard from '../../components/dashboard/AppointmentCard';
 import FeaturesModal from '../../components/dashboard/FeaturesModal';
 import FormLinkModal from '../../components/dashboard/FormLinkModal';
 import MetricsCard from '../../components/dashboard/MetricsCard';
 import QuickActionCard from '../../components/dashboard/QuickActionCard';
-import SubscriptionModal from '../../components/modals/SubscriptionModal';
+import AppointmentCardSkeleton from '../../components/skeleton/AppointmentCardSkeleton';
+import MetricsCardSkeleton from '../../components/skeleton/MetricsCardSkeleton';
 import useAuth from '../../hooks/useAuth';
 import {
   getArtistAppointmentsPaginated,
-  getArtistForms,
   getCustomerById,
   getMyMetrics,
 } from '../../services/artistServices';
 import { colors } from '../../theme/colors';
 import { Appointment } from '../../types';
-import { formatAppointmentTime, transformFormData } from '../../utils/utils';
+import {
+  formatAppointmentTime,
+  getCustomerAvatar,
+  getCustomerName,
+} from '../../utils/utils';
 
 interface Metrics {
   totalClients: number;
@@ -37,10 +40,8 @@ interface Metrics {
 
 const DashboardScreen = ({ navigation }: any) => {
   const { user } = useAuth();
-  const [showSubscriptionModal, setShowSubscriptionModal] = useState(false);
-  const [showFeaturesModal, setShowFeaturesModal] = useState(false);
   const [showFormLinkModal, setShowFormLinkModal] = useState(false);
-  const [showAddClient, setShowAddClient] = useState(false);
+  const [showFeaturesModal, setShowFeaturesModal] = useState(false);
   const [appointments, setAppointments] = useState<Appointment[]>([]);
   const [metrics, setMetrics] = useState<Metrics | null>(null);
   const [loading, setLoading] = useState(true);
@@ -49,7 +50,6 @@ const DashboardScreen = ({ navigation }: any) => {
   const [customers, setCustomers] = useState<
     Record<string, { name: string; avatar?: string }>
   >({});
-  const [recentForms, setRecentForms] = useState<any[]>([]);
 
   const hasActiveSubscription = false;
   // user?.appStorePurchaseActive || user?.stripeSubscriptionActive;
@@ -58,7 +58,7 @@ const DashboardScreen = ({ navigation }: any) => {
     {
       title: 'Add New Client',
       icon: 'user-plus',
-      onPress: () => setShowAddClient(true),
+      onPress: () => navigation.navigate('AddClient'),
     },
     {
       title: 'Manage Forms',
@@ -70,7 +70,7 @@ const DashboardScreen = ({ navigation }: any) => {
       icon: 'send',
       onPress: () => {
         if (!hasActiveSubscription) {
-          setShowSubscriptionModal(true);
+          setShowFeaturesModal(true);
         } else {
           setShowFormLinkModal(true);
         }
@@ -78,38 +78,18 @@ const DashboardScreen = ({ navigation }: any) => {
     },
   ];
 
-  const getCustomerName = (customerId: string) =>
-    customers[customerId]?.name || 'Client 1';
-
-  const getCustomerAvatar = (customerId: string) => {
-    const customerAvatar = customers[customerId]?.avatar;
-    if (customerAvatar) return customerAvatar;
-
-    const customerName = customers[customerId]?.name || 'Unknown Client';
-    return `https://ui-avatars.com/api/?name=${encodeURIComponent(
-      customerName,
-    )}&background=A858F0&color=fff&size=40`;
-  };
-
-  const refreshMetrics = async () => {
-    try {
-      const metricsResponse = await getMyMetrics();
-      setMetrics(metricsResponse.data?.metrics);
-    } catch (error) {
-      console.error('Error refreshing metrics:', error);
-    }
-  };
-
   const fetchData = async () => {
     try {
       const appointmentsResponse = await getArtistAppointmentsPaginated();
-      const returnedApp = appointmentsResponse.data?.appointments || [];
+      const returnedApp = appointmentsResponse?.data?.appointments || [];
       setAppointments(returnedApp);
 
-      const displayedAppointments = appointments.slice(0, 4);
+      const displayedAppointments = (returnedApp || []).slice(0, 4);
       const uniqueCustomerIds = [
         ...new Set(
-          displayedAppointments.map((apt: any) => apt.customerId as string),
+          (displayedAppointments || [])
+            .map((apt: any) => apt?.customerId)
+            .filter(Boolean) as string[],
         ),
       ] as string[];
 
@@ -123,12 +103,12 @@ const DashboardScreen = ({ navigation }: any) => {
 
         const customerResponses = await Promise.all(customerPromises);
         const customerMap = customerResponses.reduce((acc, response, index) => {
-          if (response && response.data) {
+          if (response?.data?.customer) {
             const customerId = uniqueCustomerIds[index];
-            const customer = response.data?.customer;
+            const customer = response.data.customer;
             acc[customerId] = {
-              name: customer.info?.client_name,
-              avatar: customer.info?.avatar_url,
+              name: customer?.info?.client_name || 'Unknown Client',
+              avatar: customer?.info?.avatar_url,
             };
           }
           return acc;
@@ -137,19 +117,14 @@ const DashboardScreen = ({ navigation }: any) => {
         setCustomers(customerMap);
       }
       const metricsResponse = await getMyMetrics();
-      setMetrics(metricsResponse.data?.metrics);
+      setMetrics(metricsResponse?.data?.metrics || null);
       setMetricsLoading(false);
-      const response = await getArtistForms();
-      if (response && response.data && response.data.forms) {
-        const transformedForms = response.data.forms.map(transformFormData);
-        setRecentForms(transformedForms);
-      }
 
       setLoading(false);
     } catch (error) {
-      console.error('Error fetching data:', error);
       setLoading(false);
       setMetricsLoading(false);
+      console.error('Error fetching dashboard data:', error);
     }
   };
 
@@ -163,24 +138,7 @@ const DashboardScreen = ({ navigation }: any) => {
     setRefreshing(false);
   };
 
-  const handleModalFlow = {
-    closeSubscription: () => setShowSubscriptionModal(false),
-    showFeatures: () => {
-      setShowSubscriptionModal(false);
-      setShowFeaturesModal(true);
-    },
-    showSubscription: () => {
-      setShowFeaturesModal(false);
-      setShowSubscriptionModal(true);
-    },
-    closeFeatures: () => setShowFeaturesModal(false),
-    closeFormLink: () => setShowFormLinkModal(false),
-    closeAddClient: () => setShowAddClient(false),
-    closeAddClientAndRefresh: async () => {
-      setShowAddClient(false);
-      await refreshMetrics();
-    },
-  };
+  const handleCloseFormLink = () => setShowFormLinkModal(false);
 
   return (
     <SafeAreaView style={styles.container} edges={['bottom']}>
@@ -196,7 +154,6 @@ const DashboardScreen = ({ navigation }: any) => {
           <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
         }
       >
-        {/* Header */}
         <View style={styles.header}>
           <View style={styles.welcomeSection}>
             <Text style={styles.welcomeTitle}>
@@ -225,60 +182,59 @@ const DashboardScreen = ({ navigation }: any) => {
           </TouchableOpacity>
         </View> */}
 
-        {/* Metrics */}
         <View style={styles.section}>
           <View style={styles.metricsGrid}>
             <View style={styles.metricsRow}>
               <View style={styles.metricItem}>
-                <MetricsCard
-                  title="Total Clients"
-                  value={
-                    metricsLoading
-                      ? 'loading'
-                      : metrics?.totalClients?.toString() || '0'
-                  }
-                  icon="users"
-                  color={colors.primary}
-                  onPress={() => navigation.navigate('Clients')}
-                />
+                {metricsLoading ? (
+                  <MetricsCardSkeleton />
+                ) : (
+                  <MetricsCard
+                    title="Total Clients"
+                    value={metrics?.totalClients?.toString() || '0'}
+                    icon="users"
+                    color={colors.primary}
+                    onPress={() => navigation.navigate('Clients')}
+                  />
+                )}
               </View>
               <View style={styles.metricItem}>
-                <MetricsCard
-                  title="Forms Shared"
-                  value={
-                    metricsLoading
-                      ? 'loading'
-                      : metrics?.formsShared?.toString() || '0'
-                  }
-                  icon="file-text"
-                  color={colors.secondary}
-                />
+                {metricsLoading ? (
+                  <MetricsCardSkeleton />
+                ) : (
+                  <MetricsCard
+                    title="Forms Shared"
+                    value={metrics?.formsShared?.toString() || '0'}
+                    icon="file-text"
+                    color={colors.secondary}
+                  />
+                )}
               </View>
             </View>
             <View style={styles.metricsRow}>
               <View style={styles.metricItem}>
-                <MetricsCard
-                  title="Pending Submissions"
-                  value={
-                    metricsLoading
-                      ? 'loading'
-                      : metrics?.pendingSubmissions?.toString() || '0'
-                  }
-                  icon="clock"
-                  color={colors.warning}
-                />
+                {metricsLoading ? (
+                  <MetricsCardSkeleton />
+                ) : (
+                  <MetricsCard
+                    title="Pending Submissions"
+                    value={metrics?.pendingSubmissions?.toString() || '0'}
+                    icon="clock"
+                    color={colors.warning}
+                  />
+                )}
               </View>
               <View style={styles.metricItem}>
-                <MetricsCard
-                  title="Today's Schedule"
-                  value={
-                    metricsLoading
-                      ? 'loading'
-                      : metrics?.todaysSchedule?.toString() || '0'
-                  }
-                  icon="calendar"
-                  color={colors.error}
-                />
+                {metricsLoading ? (
+                  <MetricsCardSkeleton />
+                ) : (
+                  <MetricsCard
+                    title="Today's Schedule"
+                    value={metrics?.todaysSchedule?.toString() || '0'}
+                    icon="calendar"
+                    color={colors.error}
+                  />
+                )}
               </View>
             </View>
           </View>
@@ -293,7 +249,20 @@ const DashboardScreen = ({ navigation }: any) => {
               <Text style={styles.viewAllButton}>View all</Text>
             </TouchableOpacity>
           </View>
-          {appointments.length === 0 ? (
+          {loading ? (
+            <ScrollView
+              horizontal
+              showsHorizontalScrollIndicator={false}
+              contentContainerStyle={styles.appointmentsScrollContent}
+              style={styles.appointmentsScroll}
+            >
+              {[1, 2, 3].map(index => (
+                <View key={index} style={styles.appointmentItem}>
+                  <AppointmentCardSkeleton />
+                </View>
+              ))}
+            </ScrollView>
+          ) : (appointments || []).length === 0 ? (
             <Text style={styles.emptyText}>No appointments found</Text>
           ) : (
             <ScrollView
@@ -302,23 +271,26 @@ const DashboardScreen = ({ navigation }: any) => {
               contentContainerStyle={styles.appointmentsScrollContent}
               style={styles.appointmentsScroll}
             >
-              {appointments.slice(0, 6).map(appointment => (
+              {(appointments || []).slice(0, 6).map(appointment => (
                 <View key={appointment.id} style={styles.appointmentItem}>
                   <AppointmentCard
                     name={
                       appointment?.customerId
-                        ? getCustomerName(appointment.customerId)
+                        ? getCustomerName(appointment.customerId, customers)
                         : 'Unknown Client'
                     }
-                    avatar={getCustomerAvatar(appointment.customerId)}
-                    time={formatAppointmentTime(appointment.date)}
+                    avatar={getCustomerAvatar(
+                      appointment.customerId,
+                      customers,
+                    )}
+                    time={formatAppointmentTime(appointment?.date)}
                     service={
-                      appointment.serviceDetails[0]?.service ||
+                      (appointment?.serviceDetails || [])[0]?.service ||
                       'Service not specified'
                     }
                     onPress={() =>
                       navigation.navigate('ClientAppointments', {
-                        clientId: appointment.customerId,
+                        clientId: appointment?.customerId || '',
                       })
                     }
                   />
@@ -355,36 +327,18 @@ const DashboardScreen = ({ navigation }: any) => {
         </View>
       </ScrollView>
 
-      {showAddClient && (
-        <AddClientModal
-          visible={showAddClient}
-          onClose={handleModalFlow.closeAddClient}
-          onSuccess={handleModalFlow.closeAddClientAndRefresh}
-        />
-      )}
-
       {showFormLinkModal && (
         <FormLinkModal
           visible={showFormLinkModal}
-          onClose={handleModalFlow.closeFormLink}
+          onClose={handleCloseFormLink}
           businessUri={user?.businessUri || ''}
-        />
-      )}
-
-      {showSubscriptionModal && (
-        <SubscriptionModal
-          visible={showSubscriptionModal}
-          onClose={handleModalFlow.closeSubscription}
-          onShowFeatures={handleModalFlow.showFeatures}
-          onSubscribe={handleModalFlow.closeSubscription}
         />
       )}
 
       {showFeaturesModal && (
         <FeaturesModal
           visible={showFeaturesModal}
-          onClose={handleModalFlow.closeFeatures}
-          onSubscribe={handleModalFlow.showSubscription}
+          onClose={() => setShowFeaturesModal(false)}
         />
       )}
     </SafeAreaView>
@@ -394,7 +348,7 @@ const DashboardScreen = ({ navigation }: any) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#fff',
+    backgroundColor: colors.white,
   },
   scrollView: {
     flex: 1,
@@ -413,12 +367,12 @@ const styles = StyleSheet.create({
   welcomeTitle: {
     fontSize: 22,
     fontWeight: '700',
-    color: '#000000',
+    color: colors.black,
     marginBottom: 2,
   },
   welcomeSubtitle: {
     fontSize: 12,
-    color: '#64748b',
+    color: colors.subtitleColor,
   },
   setupBanner: {
     backgroundColor: '#f3e8ff',
@@ -436,11 +390,11 @@ const styles = StyleSheet.create({
   setupTitle: {
     fontSize: 14,
     fontWeight: '600',
-    color: '#000000',
+    color: colors.black,
   },
   setupSubtitle: {
     fontSize: 12,
-    color: '#64748b',
+    color: colors.subtitleColor,
     lineHeight: 16,
   },
   setupButton: {
@@ -451,7 +405,7 @@ const styles = StyleSheet.create({
     alignSelf: 'flex-start',
   },
   setupButtonText: {
-    color: '#fff',
+    color: colors.white,
     fontSize: 12,
     fontWeight: '600',
   },
@@ -469,7 +423,7 @@ const styles = StyleSheet.create({
     fontSize: 12,
     fontFamily: 'RedditSans-Regular',
     fontWeight: '400',
-    color: '#000000',
+    color: colors.black,
     letterSpacing: -0.12,
     lineHeight: 12,
     marginBottom: 4,
@@ -515,7 +469,7 @@ const styles = StyleSheet.create({
   },
   emptyText: {
     fontSize: 14,
-    color: '#64748b',
+    color: colors.subtitleColor,
     textAlign: 'center',
     paddingVertical: 20,
   },

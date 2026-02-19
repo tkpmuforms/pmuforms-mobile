@@ -1,20 +1,23 @@
+import { AlertCircle } from 'lucide-react-native';
 import React, { useEffect, useState } from 'react';
 import {
-  View,
-  Text,
-  StyleSheet,
-  ScrollView,
-  TouchableOpacity,
   ActivityIndicator,
   Alert,
+  ScrollView,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { Trash2, Edit, AlertCircle, ArrowLeft } from 'lucide-react-native';
-import useAuth from '../../hooks/useAuth';
-import { Section, SingleForm } from '../../types';
-import { deleteFormTemplate, getFormById } from '../../services/artistServices';
+import { DeleteIcon, EditDiffBackground } from '../../../assets/svg';
 import DeleteConfirmModal from '../../components/forms/DeleteConfirmModal';
 import { renderPreviewFormFields } from '../../components/forms/RenderPreviewFormFields';
+import ScreenHeader from '../../components/layout/ScreenHeader';
+import useAuth from '../../hooks/useAuth';
+import { deleteFormTemplate, getFormById } from '../../services/artistServices';
+import { colors } from '../../theme/colors';
+import { Section, SingleForm } from '../../types';
 
 const PreviewFormsScreen = ({ route, navigation }: any) => {
   const { formId } = route.params;
@@ -30,17 +33,17 @@ const PreviewFormsScreen = ({ route, navigation }: any) => {
         const response = await getFormById(formId || '');
 
         if (response?.data?.form) {
-          const formData = response?.data?.form;
+          const formData = response.data.form;
 
           const transformedForm: SingleForm = {
-            id: formData.id || formData._id,
-            title: formData.title,
-            type: formData.type || 'consent',
-            sections: formData.sections
-              .filter((section: Section) => !section.skip)
+            id: formData?.id || formData?._id || '',
+            title: formData?.title || 'Untitled Form',
+            type: formData?.type || 'consent',
+            sections: (formData?.sections || [])
+              .filter((section: Section) => !section?.skip)
               .map((section: Section) => ({
                 ...section,
-                _id: section._id || section.id,
+                _id: section?._id || section?.id,
               })),
           };
 
@@ -91,7 +94,7 @@ const PreviewFormsScreen = ({ route, navigation }: any) => {
   if (loading) {
     return (
       <View style={styles.loadingContainer}>
-        <ActivityIndicator size="large" color="#8e2d8e" />
+        <ActivityIndicator size="large" color={colors.primary} />
       </View>
     );
   }
@@ -113,30 +116,29 @@ const PreviewFormsScreen = ({ route, navigation }: any) => {
   }
 
   return (
-    <SafeAreaView style={styles.container} edges={['top']}>
-      {/* Header */}
-      <View style={styles.header}>
-        <TouchableOpacity onPress={() => navigation.goBack()}>
-          <ArrowLeft size={24} color="#000000" />
-        </TouchableOpacity>
-        <View style={styles.headerActions}>
-          <TouchableOpacity
-            onPress={() => setShowConfirmDeleteModal(true)}
-            style={styles.iconButton}
-          >
-            <Trash2 size={20} color="#ef4444" />
-          </TouchableOpacity>
-          <TouchableOpacity onPress={handleEdit} style={styles.iconButton}>
-            <Edit size={20} color="#8e2d8e" />
-          </TouchableOpacity>
-        </View>
-      </View>
+    <SafeAreaView style={styles.container} edges={[]}>
+      <ScreenHeader
+        title="Preview Form"
+        onBack={() => navigation.goBack()}
+        rightComponent={
+          <View style={styles.headerActions}>
+            <TouchableOpacity
+              onPress={() => setShowConfirmDeleteModal(true)}
+              style={styles.iconButton}
+            >
+              <DeleteIcon />
+            </TouchableOpacity>
+            <TouchableOpacity onPress={handleEdit} style={styles.iconButton}>
+              <EditDiffBackground />
+            </TouchableOpacity>
+          </View>
+        }
+      />
 
       <ScrollView
         style={styles.scrollView}
         contentContainerStyle={styles.scrollContent}
       >
-        {/* Title */}
         <Text style={styles.formTitle}>{form.title}</Text>
 
         {/* Preview Alert */}
@@ -188,22 +190,13 @@ const PreviewFormsScreen = ({ route, navigation }: any) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#fff',
+    backgroundColor: colors.white,
   },
   loadingContainer: {
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: '#fff',
-  },
-  header: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    paddingHorizontal: 20,
-    paddingVertical: 16,
-    borderBottomWidth: 1,
-    borderBottomColor: '#f1f5f9',
+    backgroundColor: colors.white,
   },
   headerActions: {
     flexDirection: 'row',
@@ -281,13 +274,13 @@ const styles = StyleSheet.create({
     marginBottom: 20,
   },
   backButton: {
-    backgroundColor: '#8e2d8e',
+    backgroundColor: colors.primary,
     paddingVertical: 12,
     paddingHorizontal: 24,
     borderRadius: 12,
   },
   backButtonText: {
-    color: '#fff',
+    color: colors.white,
     fontSize: 16,
     fontWeight: '600',
   },

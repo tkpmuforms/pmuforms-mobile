@@ -10,7 +10,10 @@ import {
 } from 'react-native';
 import { useRoute, useNavigation } from '@react-navigation/native';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { FileText, Download, ArrowLeft } from 'lucide-react-native';
+import { FileText, Download } from 'lucide-react-native';
+import { generatePDF } from 'react-native-html-to-pdf';
+import Share from 'react-native-share';
+import ScreenHeader from '../../components/layout/ScreenHeader';
 import Toast from 'react-native-toast-message';
 import useAuth from '../../hooks/useAuth';
 import {
@@ -64,6 +67,7 @@ const FilledFormsPreviewScreen: React.FC = () => {
   const [form, setForm] = useState<Form | null>(null);
   const [filledData, setFilledData] = useState<FilledData>({});
   const [loading, setLoading] = useState(true);
+  const [generatingPDF, setGeneratingPDF] = useState(false);
   const [signatureUrl, setSignatureUrl] = useState<string | null>(null);
 
   useEffect(() => {
@@ -82,7 +86,7 @@ const FilledFormsPreviewScreen: React.FC = () => {
 
         if (appointmentResponse?.data?.appointment) {
           const appointment = appointmentResponse.data.appointment;
-          if (appointment.signed === true && appointment.signature_url) {
+          if (appointment?.signed === true && appointment?.signature_url) {
             setSignatureUrl(appointment.signature_url);
           }
         }
@@ -90,13 +94,13 @@ const FilledFormsPreviewScreen: React.FC = () => {
         if (formResponse?.data?.form) {
           const formData = formResponse.data.form;
           const transformedForm = {
-            id: formData.id || formData._id,
-            title: formData.title,
-            sections: formData.sections
-              .filter((section: FormSection) => !section.skip)
+            id: formData?.id || formData?._id || '',
+            title: formData?.title || 'Untitled Form',
+            sections: (formData?.sections || [])
+              .filter((section: FormSection) => !section?.skip)
               .map((section: FormSection) => ({
                 ...section,
-                _id: section._id || section.id,
+                _id: section?._id || section?.id,
               })),
           };
 
@@ -111,7 +115,7 @@ const FilledFormsPreviewScreen: React.FC = () => {
         }
 
         if (filledResponse?.data?.filledForm?.data) {
-          setFilledData(filledResponse.data.filledForm.data);
+          setFilledData(filledResponse.data.filledForm.data || {});
         }
       } catch (error) {
         console.error('Error fetching data:', error);
@@ -224,12 +228,188 @@ const FilledFormsPreviewScreen: React.FC = () => {
     }
   };
 
-  const handleGeneratePDF = () => {
-    Toast.show({
-      type: 'info',
-      text1: 'Coming Soon',
-      text2: 'PDF generation will be available soon',
-    });
+  const buildFieldHTML = (field: FormField): string => {
+    const fieldId = field.id || field._id;
+    const value = filledData[fieldId];
+
+    switch (field.type) {
+      case 'paragraph':
+      case 'heading':
+        return `<p style="font-size:14px;color:#1f2937;line-height:1.5;">${
+          field.content || ''
+        }</p>`;
+
+      case 'checkbox':
+        if (Array.isArray(value)) {
+          const items = (field.options || [])
+            .map(option => {
+              const checked = value.includes(option);
+              return `<div style="display:flex;align-items:center;margin-bottom:6px;">
+                <span style="display:inline-block;width:18px;height:18px;border:2px solid ${
+                  checked ? colors.primary : '#e5e7eb'
+                };border-radius:3px;background:${
+                checked ? colors.primary : colors.white
+              };color:#fff;text-align:center;font-size:12px;line-height:18px;margin-right:8px;">${
+                checked ? '✓' : ''
+              }</span>
+                <span style="font-size:14px;color:#1f2937;">${option}</span>
+              </div>`;
+            })
+            .join('');
+          return items;
+        }
+        return '<p style="color:#707070;font-style:italic;">None selected</p>';
+
+      case 'radio':
+      case 'select':
+      case 'dropdown':
+        const radioItems = (field.options || [])
+          .map(option => {
+            const selected = value === option;
+            return `<div style="display:flex;align-items:center;margin-bottom:6px;">
+              <span style="display:inline-block;width:18px;height:18px;border:2px solid ${
+                selected ? colors.primary : '#e5e7eb'
+              };border-radius:50%;margin-right:8px;text-align:center;line-height:14px;">${
+              selected
+                ? '<span style="display:inline-block;width:10px;height:10px;border-radius:50%;background:#8e2d8e;"></span>'
+                : ''
+            }</span>
+              <span style="font-size:14px;color:#1f2937;">${option}</span>
+            </div>`;
+          })
+          .join('');
+        return radioItems;
+
+      case 'signature':
+        return value
+          ? `<div style="border:1px solid #e5e7eb;border-radius:8px;padding:12px;background:#fff;">
+              <img src="${value}" style="max-width:300px;max-height:150px;" />
+            </div>`
+          : '<p style="color:#707070;font-style:italic;">No signature provided</p>';
+
+      case 'date':
+        return `<p style="font-size:14px;color:#1f2937;background:#f4eaf4;padding:10px;border-radius:6px;border:1px solid #e5e7eb;">${
+          value ? new Date(value).toLocaleDateString() : 'No date selected'
+        }</p>`;
+
+      case 'textarea':
+        return `<p style="font-size:14px;color:#1f2937;background:#f4eaf4;padding:10px;border-radius:6px;border:1px solid #e5e7eb;min-height:60px;white-space:pre-wrap;">${
+          value || 'No response provided'
+        }</p>`;
+
+      default:
+        return `<p style="font-size:14px;color:#1f2937;background:#f4eaf4;padding:10px;border-radius:6px;border:1px solid #e5e7eb;">${
+          value || 'No response provided'
+        }</p>`;
+    }
+  };
+
+  const buildHTML = (): string => {
+    const sectionsHTML = (form?.sections || [])
+      .map(section => {
+        const fieldsHTML = (section.data || [])
+          .map(field => {
+            const isParagraph =
+              field.type === 'paragraph' || field.type === 'heading';
+            const labelHTML = !isParagraph
+              ? `<label style="display:block;font-size:15px;font-weight:500;color:#1f2937;margin-bottom:6px;">${
+                  field.title
+                }${
+                  field.required ? '<span style="color:#ef4444;"> *</span>' : ''
+                }</label>`
+              : '';
+            return `<div style="margin-bottom:18px;">${labelHTML}${buildFieldHTML(
+              field,
+            )}</div>`;
+          })
+          .join('');
+
+        return `<div style="margin-bottom:30px;">
+          <h3 style="font-size:18px;font-weight:600;color:#1f2937;border-bottom:2px solid #e5e7eb;padding-bottom:8px;margin-bottom:16px;">${section.title}</h3>
+          ${fieldsHTML}
+        </div>`;
+      })
+      .join('');
+
+    let signaturesHTML = '';
+    if (signatureUrl || user?.signature_url) {
+      signaturesHTML =
+        '<div style="margin-top:32px;border-top:1px solid #e5e7eb;padding-top:20px;">';
+      if (signatureUrl) {
+        signaturesHTML += `
+          <div style="margin-bottom:24px;">
+            <h4 style="font-size:16px;font-weight:600;color:#1f2937;margin-bottom:10px;">Customer Signature</h4>
+            <div style="border:1px solid #e5e7eb;border-radius:8px;padding:12px;background:#fff;">
+              <img src="${signatureUrl}" style="max-width:300px;max-height:150px;display:block;" />
+            </div>
+          </div>`;
+      }
+      if (user?.signature_url) {
+        signaturesHTML += `
+          <div style="margin-bottom:24px;">
+            <h4 style="font-size:16px;font-weight:600;color:#1f2937;margin-bottom:10px;">Artist Signature</h4>
+            <div style="border:1px solid #e5e7eb;border-radius:8px;padding:12px;background:#fff;">
+              <img src="${user.signature_url}" style="max-width:300px;max-height:150px;display:block;" />
+            </div>
+          </div>`;
+      }
+      signaturesHTML += '</div>';
+    }
+
+    return `<!DOCTYPE html>
+      <html>
+        <head>
+          <meta charset="utf-8" />
+          <meta name="viewport" content="width=device-width, initial-scale=1" />
+          <style>
+            body { font-family: Arial, Helvetica, sans-serif; margin: 24px; color: #1f2937; }
+            h2 { color: #8e2d8e; margin-bottom: 20px; }
+          </style>
+        </head>
+        <body>
+          <h2>${form?.title || 'Form'}</h2>
+          ${sectionsHTML}
+          ${signaturesHTML}
+        </body>
+      </html>`;
+  };
+
+  const handleGeneratePDF = async () => {
+    if (!form) return;
+
+    try {
+      setGeneratingPDF(true);
+
+      const html = buildHTML();
+      const pdf = await generatePDF({
+        html,
+        fileName: `${
+          form.title?.replace(/[^a-zA-Z0-9]/g, '_') || 'form'
+        }_${Date.now()}`,
+        directory: 'Documents',
+      });
+
+      if (pdf.filePath) {
+        await Share.open({
+          url: `file://${pdf.filePath}`,
+          type: 'application/pdf',
+          title: `${form.title || 'Form'}.pdf`,
+        });
+      }
+    } catch (error: any) {
+      // User cancelled share - not an error
+      if (error?.message?.includes?.('User did not share')) {
+        return;
+      }
+      console.error('Error generating PDF:', error);
+      Toast.show({
+        type: 'error',
+        text1: 'Error',
+        text2: 'Failed to generate PDF',
+      });
+    } finally {
+      setGeneratingPDF(false);
+    }
   };
 
   if (loading) {
@@ -266,25 +446,19 @@ const FilledFormsPreviewScreen: React.FC = () => {
   return (
     <SafeAreaView style={styles.container}>
       <ScrollView style={styles.scrollView}>
-        {/* Header */}
-        <View style={styles.header}>
-          <View style={styles.headerActions}>
+        <ScreenHeader
+          title={form.title}
+          onBack={() => navigation.goBack()}
+          rightComponent={
             <TouchableOpacity
-              style={styles.backButton}
-              onPress={() => navigation.goBack()}
+              style={styles.pdfButton}
+              onPress={handleGeneratePDF}
             >
-              <ArrowLeft size={24} color="#000000" />
+              <Download size={20} color={colors.white} />
+              <Text style={styles.pdfButtonText}>Download PDF</Text>
             </TouchableOpacity>
-            <Text style={styles.title}>{form.title}</Text>
-          </View>
-          <TouchableOpacity
-            style={styles.pdfButton}
-            onPress={handleGeneratePDF}
-          >
-            <Download size={20} color={colors.white} />
-            <Text style={styles.pdfButtonText}>View as PDF</Text>
-          </TouchableOpacity>
-        </View>
+          }
+        />
 
         {/* Info Banner */}
         <View style={styles.infoBanner}>
@@ -297,22 +471,28 @@ const FilledFormsPreviewScreen: React.FC = () => {
 
         {/* Form Sections */}
         <View style={styles.formContent}>
-          {form.sections && form.sections.length > 0 ? (
-            form.sections.map(section => (
-              <View key={section._id || section.id} style={styles.section}>
-                <Text style={styles.sectionTitle}>{section.title}</Text>
-                {section.data && section.data.length > 0 ? (
-                  section.data.map(field => {
-                    const fieldId = field.id || field._id;
+          {(form?.sections || []).length > 0 ? (
+            (form.sections || []).map(section => (
+              <View
+                key={section?._id || section?.id || Math.random().toString()}
+                style={styles.section}
+              >
+                <Text style={styles.sectionTitle}>
+                  {section?.title || 'Untitled Section'}
+                </Text>
+                {(section?.data || []).length > 0 ? (
+                  (section.data || []).map(field => {
+                    const fieldId =
+                      field?.id || field?._id || Math.random().toString();
                     const isParagraph =
-                      field.type === 'paragraph' || field.type === 'heading';
+                      field?.type === 'paragraph' || field?.type === 'heading';
 
                     return (
                       <View key={fieldId} style={styles.field}>
                         {!isParagraph && (
                           <Text style={styles.fieldLabel}>
-                            {field.title}
-                            {field.required && (
+                            {field?.title || 'Untitled Field'}
+                            {field?.required && (
                               <Text style={styles.required}> *</Text>
                             )}
                           </Text>
@@ -372,27 +552,6 @@ const styles = StyleSheet.create({
     backgroundColor: colors.background,
   },
   scrollView: {
-    flex: 1,
-  },
-  header: {
-    backgroundColor: colors.white,
-    padding: 20,
-    borderBottomWidth: 1,
-    borderBottomColor: colors.border,
-  },
-  headerActions: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    marginBottom: 16,
-    gap: 12,
-  },
-  backButton: {
-    padding: 8,
-  },
-  title: {
-    fontSize: 24,
-    fontWeight: '700',
-    color: colors.text,
     flex: 1,
   },
   pdfButton: {

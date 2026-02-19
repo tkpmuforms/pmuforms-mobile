@@ -1,0 +1,7 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(python3 -c \"import sys,json; deps={**json.load\\(sys.stdin\\).get\\(''dependencies'',{}\\),**json.load\\(open\\(''package.json''\\)\\).get\\(''devDependencies'',{}\\)}; [print\\(k,v\\) for k,v in sorted\\(deps.items\\(\\)\\) if ''stripe'' in k.lower\\(\\) or ''payment'' in k.lower\\(\\) or ''card'' in k.lower\\(\\)]\")"
+    ]
+  }
+}

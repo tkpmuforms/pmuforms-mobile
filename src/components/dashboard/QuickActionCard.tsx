@@ -1,6 +1,7 @@
 import React from 'react';
 import { TouchableOpacity, Text, StyleSheet, View } from 'react-native';
 import { UserPlus, FileText, Send } from 'lucide-react-native';
+import { colors } from '../../theme/colors';
 
 interface QuickActionCardProps {
   title: string;
@@ -28,7 +29,7 @@ const QuickActionCard: React.FC<QuickActionCardProps> = ({
 
   const renderIcon = () => {
     const iconSize = 18;
-    const iconColor = '#fff';
+    const iconColor = colors.white;
 
     switch (icon) {
       case 'user-plus':
@@ -71,7 +72,7 @@ const styles = StyleSheet.create({
     fontSize: 14,
     fontWeight: '500',
     lineHeight: 14,
-    color: '#000000',
+    color: colors.black,
     flex: 1,
   },
   iconContainer: {

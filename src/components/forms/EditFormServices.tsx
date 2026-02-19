@@ -1,15 +1,16 @@
+import { X } from 'lucide-react-native';
 import React, { useState } from 'react';
 import {
-  View,
-  Text,
-  StyleSheet,
-  Modal,
-  TouchableOpacity,
-  ScrollView,
-  SafeAreaView,
   ActivityIndicator,
+  Modal,
+  ScrollView,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
 } from 'react-native';
-import { X } from 'lucide-react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
+import { colors } from '../../theme/colors';
 import { Service } from '../../types';
 
 interface EditFormServicesProps {
@@ -32,12 +33,18 @@ const EditFormServices: React.FC<EditFormServicesProps> = ({
   const [tempSelectedServices, setTempSelectedServices] =
     useState<number[]>(selectedServices);
 
+  React.useEffect(() => {
+    if (visible) {
+      setTempSelectedServices(selectedServices);
+    }
+  }, [visible, selectedServices]);
+
   const handleServiceToggle = (serviceId: number) => {
     setTempSelectedServices(prev => {
-      if (prev.includes(serviceId)) {
-        return prev.filter(id => id !== serviceId);
+      if ((prev || []).includes(serviceId)) {
+        return (prev || []).filter(id => id !== serviceId);
       } else {
-        return [...prev, serviceId];
+        return [...(prev || []), serviceId];
       }
     });
   };
@@ -59,7 +66,7 @@ const EditFormServices: React.FC<EditFormServicesProps> = ({
       animationType="slide"
       onRequestClose={handleCancel}
     >
-      <SafeAreaView style={styles.container}>
+      <SafeAreaView style={styles.container} edges={['top', 'bottom', 'left', 'right']}>
         <View style={styles.overlay}>
           <View style={styles.modal}>
             <View style={styles.header}>
@@ -68,7 +75,7 @@ const EditFormServices: React.FC<EditFormServicesProps> = ({
                 style={styles.closeButton}
                 onPress={handleCancel}
               >
-                <X size={24} color="#9ca3af" />
+                <X size={24} color={colors.textLighter} />
               </TouchableOpacity>
             </View>
 
@@ -85,14 +92,16 @@ const EditFormServices: React.FC<EditFormServicesProps> = ({
 
               {loading ? (
                 <View style={styles.loadingContainer}>
-                  <ActivityIndicator size="large" color="#A858F0" />
+                  <ActivityIndicator size="large" color={colors.primary} />
                   <Text style={styles.loadingText}>Loading services...</Text>
                 </View>
               ) : (
                 <View style={styles.servicesGrid}>
-                  {allServices.map(service => {
-                    const serviceId = Number(service.id || service._id);
-                    const isSelected = tempSelectedServices.includes(serviceId);
+                  {(allServices || []).map(service => {
+                    const serviceId = Number(service?.id || service?._id);
+                    const isSelected = (tempSelectedServices || []).includes(
+                      serviceId,
+                    );
 
                     return (
                       <TouchableOpacity
@@ -148,7 +157,7 @@ const styles = StyleSheet.create({
     justifyContent: 'flex-end',
   },
   modal: {
-    backgroundColor: '#fff',
+    backgroundColor: colors.white,
     borderTopLeftRadius: 16,
     borderTopRightRadius: 16,
     maxHeight: '85%',
@@ -165,7 +174,7 @@ const styles = StyleSheet.create({
   title: {
     fontSize: 20,
     fontWeight: '600',
-    color: '#1f2937',
+    color: colors.text,
     textAlign: 'center',
   },
   closeButton: {
@@ -179,21 +188,22 @@ const styles = StyleSheet.create({
     paddingHorizontal: 24,
     paddingTop: 8,
     paddingBottom: 24,
-    color: '#6b7280',
+    color: colors.subtitleColor,
     fontSize: 14,
     lineHeight: 20,
     textAlign: 'center',
   },
   content: {
-    flex: 1,
+    maxHeight: 400,
   },
   contentContainer: {
     paddingHorizontal: 24,
+    flexGrow: 1,
   },
   sectionTitle: {
     fontSize: 14,
     fontWeight: '400',
-    color: '#374151',
+    color: colors.text,
     marginBottom: 16,
   },
   loadingContainer: {
@@ -202,7 +212,7 @@ const styles = StyleSheet.create({
   },
   loadingText: {
     marginTop: 16,
-    color: '#6b7280',
+    color: colors.subtitleColor,
     fontSize: 16,
   },
   servicesGrid: {
@@ -212,8 +222,7 @@ const styles = StyleSheet.create({
     marginBottom: 20,
   },
   serviceTag: {
-    backgroundColor: '#f1f5f9',
-    color: '#475569',
+    backgroundColor: colors.surfaceLight,
     paddingVertical: 10,
     paddingHorizontal: 16,
     borderRadius: 20,
@@ -221,32 +230,32 @@ const styles = StyleSheet.create({
     borderColor: 'transparent',
   },
   serviceTagSelected: {
-    backgroundColor: '#f3e8ff',
-    borderColor: '#A858F0',
+    backgroundColor: colors.backgroundLight,
+    borderColor: colors.primary,
   },
   serviceText: {
     fontSize: 14,
     fontWeight: '500',
-    color: '#475569',
+    color: colors.subtitleColor,
   },
   serviceTextSelected: {
-    color: '#A858F0',
+    color: colors.primary,
   },
   footer: {
     paddingHorizontal: 24,
     paddingTop: 24,
     paddingBottom: 24,
     borderTopWidth: 1,
-    borderTopColor: '#f1f5f9',
-    backgroundColor: '#fafbfc',
+    borderTopColor: colors.border,
+    backgroundColor: colors.surfaceLight,
   },
   continueButton: {
     width: '100%',
-    backgroundColor: '#A858F0',
+    backgroundColor: colors.primary,
     paddingVertical: 14,
     borderRadius: 12,
     alignItems: 'center',
-    shadowColor: '#8b5cf6',
+    shadowColor: colors.primary,
     shadowOffset: { width: 0, height: 4 },
     shadowOpacity: 0.25,
     shadowRadius: 12,
@@ -256,7 +265,7 @@ const styles = StyleSheet.create({
     opacity: 0.6,
   },
   continueButtonText: {
-    color: '#fff',
+    color: colors.white,
     fontSize: 16,
     fontWeight: '600',
   },

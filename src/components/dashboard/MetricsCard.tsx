@@ -7,6 +7,7 @@ import {
   ActivityIndicator,
 } from 'react-native';
 import { Users, FileText, Clock, Calendar } from 'lucide-react-native';
+import { colors } from '../../theme/colors';
 
 export interface MetricsCardProps {
   title: string;
@@ -96,7 +97,7 @@ const styles = StyleSheet.create({
   title: {
     fontSize: 13,
     fontWeight: '500',
-    color: '#000000',
+    color: colors.black,
     flex: 1,
   },
   valueContainer: {

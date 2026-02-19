@@ -1,6 +1,8 @@
 import React from 'react';
 import { StyleSheet, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
+import { colors } from '../../theme/colors';
+import SubscriptionRequiredModal from '../SubscriptionRequiredModal';
 
 interface AuthenticatedLayoutProps {
   children: React.ReactNode;
@@ -14,6 +16,7 @@ const AuthenticatedLayout: React.FC<AuthenticatedLayoutProps> = ({
   return (
     <SafeAreaView style={styles.container} edges={['top']}>
       <View style={styles.content}>{children}</View>
+      <SubscriptionRequiredModal />
     </SafeAreaView>
   );
 };
@@ -21,7 +24,7 @@ const AuthenticatedLayout: React.FC<AuthenticatedLayoutProps> = ({
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#fff',
+    backgroundColor: colors.white,
   },
   content: {
     flex: 1,

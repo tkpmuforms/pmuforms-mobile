@@ -1,102 +1,110 @@
 import React from 'react';
-import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
-import { Calendar, Clock, Trash2, Bell } from 'lucide-react-native';
+import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { Reminder } from '../../types';
-import { formatDate, formatAppointmentTime } from '../../utils/utils';
+import { CheckInIcon, FollowUpIcon } from '../../../assets/svg';
+import { colors } from '../../theme/colors';
 
 interface ReminderCardProps {
   reminder: Reminder;
   onDelete: (reminder: Reminder) => void;
+  onEdit?: (reminder: Reminder) => void;
 }
 
-const ReminderCard: React.FC<ReminderCardProps> = ({ reminder, onDelete }) => {
-  const displayDate = formatDate(reminder.reminderDate);
-  const displayTime = formatAppointmentTime(reminder.reminderTime);
+const ReminderCard: React.FC<ReminderCardProps> = ({
+  reminder,
+  onDelete,
+  onEdit,
+}) => {
+  const reminderDate = new Date(reminder.sendAt);
+
+  const displayDate = reminderDate.toLocaleDateString('en-GB', {
+    day: '2-digit',
+    month: '2-digit',
+    year: 'numeric',
+  });
+  const displayTime = reminderDate.toLocaleTimeString('en-GB', {
+    hour: '2-digit',
+    minute: '2-digit',
+    hour12: false,
+  });
+
+  const getIconForType = () => {
+    if (reminder.type === 'check-in') {
+      return <FollowUpIcon />;
+    }
+    return <CheckInIcon />;
+  };
 
   return (
     <View style={styles.card}>
-      <View style={styles.iconContainer}>
-        <Bell size={24} color={reminder.sent ? '#666' : '#8e2d8e'} />
-      </View>
-
-      <View style={styles.content}>
-        <Text style={styles.message} numberOfLines={2}>
-          {reminder.message}
+      <View style={styles.header}>
+        <View style={styles.iconContainer}>{getIconForType()}</View>
+        <Text style={styles.dateTimeText}>
+          {displayDate} - {displayTime}
         </Text>
-
-        <View style={styles.detailsRow}>
-          <View style={styles.detail}>
-            <Calendar size={14} color="#666" />
-            <Text style={styles.detailText}>{displayDate}</Text>
-          </View>
-
-          <View style={styles.detail}>
-            <Clock size={14} color="#666" />
-            <Text style={styles.detailText}>{displayTime}</Text>
-          </View>
-        </View>
-
-        {reminder.sent && (
-          <View style={styles.sentBadge}>
-            <Text style={styles.sentText}>Sent</Text>
-          </View>
-        )}
+      </View>
+      <View>
+        <Text style={styles.message} numberOfLines={3}>
+          {reminder.note}
+        </Text>
       </View>
 
-      <TouchableOpacity
-        style={styles.deleteButton}
-        onPress={() => onDelete(reminder)}
-      >
-        <Trash2 size={18} color="#FF3B30" />
-      </TouchableOpacity>
+      {reminder.sent && (
+        <View style={styles.sentBadge}>
+          <Text style={styles.sentText}>Sent</Text>
+        </View>
+      )}
+
+      <View style={styles.buttonRow}>
+        {onEdit && (
+          <TouchableOpacity
+            style={styles.editButton}
+            onPress={() => onEdit(reminder)}
+          >
+            <Text style={styles.editButtonText}>Edit</Text>
+          </TouchableOpacity>
+        )}
+        <TouchableOpacity
+          style={styles.deleteButton}
+          onPress={() => onDelete(reminder)}
+        >
+          <Text style={styles.deleteButtonText}>Delete</Text>
+        </TouchableOpacity>
+      </View>
     </View>
   );
 };
 
 const styles = StyleSheet.create({
   card: {
+    backgroundColor: colors.white,
+    borderRadius: 16,
+    borderWidth: 1,
+    borderColor: '#E5E7EB',
+    padding: 16,
+    marginBottom: 8,
+    gap: 8,
+  },
+  header: {
     flexDirection: 'row',
     alignItems: 'center',
-    backgroundColor: '#fff',
-    borderRadius: 12,
-    padding: 16,
-    marginBottom: 12,
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 1 },
-    shadowOpacity: 0.1,
-    shadowRadius: 3,
-    elevation: 2,
     gap: 12,
   },
   iconContainer: {
-    width: 48,
-    height: 48,
-    borderRadius: 24,
-    backgroundColor: '#F0F9FF',
-    justifyContent: 'center',
+    width: 40,
+    height: 40,
     alignItems: 'center',
+    justifyContent: 'center',
   },
-  content: {
-    flex: 1,
+  dateTimeText: {
+    fontSize: 16,
+    fontWeight: '700',
+    color: '#1f2937',
   },
   message: {
-    fontSize: 15,
-    fontWeight: '600',
-    color: '#000000',
-    marginBottom: 8,
-  },
-  detailsRow: {
-    flexDirection: 'row',
-    gap: 16,
-  },
-  detail: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: 4,
-  },
-  detailText: {
-    fontSize: 13,
+    fontSize: 14,
     color: '#666',
+    lineHeight: 20,
   },
   sentBadge: {
     alignSelf: 'flex-start',
@@ -104,15 +112,42 @@ const styles = StyleSheet.create({
     paddingHorizontal: 8,
     paddingVertical: 2,
     borderRadius: 4,
-    marginTop: 8,
   },
   sentText: {
     fontSize: 11,
     fontWeight: '600',
     color: '#666',
   },
+  buttonRow: {
+    flexDirection: 'row',
+    gap: 12,
+    marginTop: 4,
+  },
+  editButton: {
+    flex: 1,
+    backgroundColor: colors.primary,
+    paddingVertical: 12,
+    borderRadius: 10,
+    alignItems: 'center',
+  },
+  editButtonText: {
+    color: colors.white,
+    fontSize: 15,
+    fontWeight: '600',
+  },
   deleteButton: {
-    padding: 8,
+    flex: 1,
+    backgroundColor: 'colors.black0D',
+    paddingVertical: 12,
+    borderRadius: 10,
+    alignItems: 'center',
+    borderWidth: 1,
+    borderColor: '#E5E7EB',
+  },
+  deleteButtonText: {
+    color: colors.black,
+    fontSize: 15,
+    fontWeight: '600',
   },
 });
 

@@ -1,15 +1,26 @@
 import React from 'react';
 import AppointmentsScreen from '../screens/appointments/AppointmentsScreen';
 import AuthScreen from '../screens/auth/Auth';
+import AddClientScreen from '../screens/client/AddClientScreen';
 import ClientAppointmentsScreen from '../screens/client/ClientAppointmentsScreen';
 import ClientDetailsScreen from '../screens/client/ClientDetailsScreen';
 import ClientNotesScreen from '../screens/client/ClientNotesScreen';
 import ClientRemindersScreen from '../screens/client/ClientRemindersScreen';
 import ClientScreen from '../screens/client/ClientScreen';
+import ClientAppointmentFormsScreen from '../screens/client/ClientAppointmentFormsScreen';
+import EditClientScreen from '../screens/client/EditClientScreen';
+import SendConsentFormScreen from '../screens/client/SendConsentFormScreen';
+import AddNoteScreen from '../screens/client/AddNoteScreen';
+import AddReminderScreen from '../screens/client/AddReminderScreen';
+import AddCardScreen from '../screens/payment/AddCardScreen';
+import EditBusinessInformationScreen from '../screens/profile/EditBusinessInformationScreen';
 import FilledFormsPreviewScreen from '../screens/client/FilledFormsPreviewScreen';
 import SignatureScreen from '../screens/client/SignatureScreen';
 import DashboardScreen from '../screens/dashboard/DashboardScreen';
+import AddFieldScreen from '../screens/forms/AddFieldScreen';
 import EditFormsScreen from '../screens/forms/EditFormsScreen';
+import EditParagraphScreen from '../screens/forms/EditParagraphScreen';
+import FieldInputScreen from '../screens/forms/FieldInputScreen';
 import FormsScreen from '../screens/forms/FormsScreen';
 import PreviewFormsScreen from '../screens/forms/PreviewFormsScreen';
 import BusinessInformationScreen from '../screens/profile/BusinessInformationScreen';
@@ -18,6 +29,9 @@ import PaymentScreen from '../screens/profile/PaymentScreen';
 import ProfileScreen from '../screens/profile/ProfileScreen';
 import ContactSupportScreen from '../screens/support/ContactSupportScreen';
 import PrivacyPolicyScreen from '../screens/support/PrivacyPolicyScreen';
+import BusinessNameScreen from '../screens/onboarding/BusinessNameScreen';
+import ServicesSelectionScreen from '../screens/onboarding/ServicesSelectionScreen';
+import PaymentSetupScreen from '../screens/onboarding/PaymentSetupScreen';
 
 interface RouteProps {
   name: string;
@@ -63,6 +77,11 @@ export const authorizedRoutes: RouteProps[] = [
     breadcrumbs: ['Clients', 'Client Details', 'Notes'],
   },
   {
+    name: 'ClientAppointmentForms',
+    component: ClientAppointmentFormsScreen,
+    breadcrumbs: ['Clients', 'Client Details', 'Appointments', 'Forms'],
+  },
+  {
     name: 'AppointmentSignature',
     component: SignatureScreen,
     breadcrumbs: ['Clients', 'Client Details', 'Appointments', 'Signature'],
@@ -94,6 +113,21 @@ export const authorizedRoutes: RouteProps[] = [
     breadcrumbs: ['Forms', 'Edit Form'],
   },
   {
+    name: 'AddField',
+    component: AddFieldScreen,
+    breadcrumbs: ['Forms', 'Edit Form', 'Add Field'],
+  },
+  {
+    name: 'FieldInput',
+    component: FieldInputScreen,
+    breadcrumbs: ['Forms', 'Edit Form', 'Field Input'],
+  },
+  {
+    name: 'EditParagraph',
+    component: EditParagraphScreen,
+    breadcrumbs: ['Forms', 'Edit Form', 'Edit Paragraph'],
+  },
+  {
     name: 'Profile',
     component: ProfileScreen,
     breadcrumbs: ['Profile'],
@@ -123,6 +157,41 @@ export const authorizedRoutes: RouteProps[] = [
     component: PaymentScreen,
     breadcrumbs: ['Profile', 'Payment'],
   },
+  {
+    name: 'AddClient',
+    component: AddClientScreen,
+    breadcrumbs: ['Clients', 'Add Client'],
+  },
+  {
+    name: 'SendConsentForm',
+    component: SendConsentFormScreen,
+    breadcrumbs: ['Clients', 'Send Consent Form'],
+  },
+  {
+    name: 'EditClient',
+    component: EditClientScreen,
+    breadcrumbs: ['Clients', 'Client Details', 'Edit Client'],
+  },
+  {
+    name: 'EditBusinessInformation',
+    component: EditBusinessInformationScreen,
+    breadcrumbs: ['Profile', 'Business Information', 'Edit'],
+  },
+  {
+    name: 'AddNote',
+    component: AddNoteScreen,
+    breadcrumbs: ['Clients', 'Client Details', 'Notes', 'Add Note'],
+  },
+  {
+    name: 'AddReminder',
+    component: AddReminderScreen,
+    breadcrumbs: ['Clients', 'Client Details', 'Reminders', 'Add Reminder'],
+  },
+  // {
+  //   name: 'AddCard',
+  //   component: AddCardScreen,
+  //   breadcrumbs: ['Profile', 'Payment', 'Add Card'],
+  // },
 ];
 
 export const nonAuthRoutes: RouteProps[] = [
@@ -130,5 +199,23 @@ export const nonAuthRoutes: RouteProps[] = [
     name: 'Auth',
     component: AuthScreen,
     breadcrumbs: [],
+  },
+];
+
+export const onboardingRoutes: RouteProps[] = [
+  {
+    name: 'OnboardingBusinessName',
+    component: BusinessNameScreen,
+    breadcrumbs: ['Onboarding', 'Business Information'],
+  },
+  {
+    name: 'OnboardingServices',
+    component: ServicesSelectionScreen,
+    breadcrumbs: ['Onboarding', 'Services'],
+  },
+  {
+    name: 'OnboardingPayment',
+    component: PaymentSetupScreen,
+    breadcrumbs: ['Onboarding', 'Payment'],
   },
 ];

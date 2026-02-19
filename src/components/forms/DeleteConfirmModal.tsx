@@ -8,6 +8,7 @@ import {
   SafeAreaView,
 } from 'react-native';
 import { X, Trash2 } from 'lucide-react-native';
+import { colors } from '../../theme/colors';
 
 interface DeleteConfirmModalProps {
   visible: boolean;
@@ -33,7 +34,7 @@ const DeleteConfirmModal: React.FC<DeleteConfirmModalProps> = ({
         <View style={styles.overlay}>
           <View style={styles.modal}>
             <TouchableOpacity style={styles.closeButton} onPress={onClose}>
-              <X size={20} color="#64748b" />
+              <X size={20} color={colors.subtitleColor} />
             </TouchableOpacity>
 
             <View style={styles.iconContainer}>
@@ -76,7 +77,7 @@ const styles = StyleSheet.create({
     justifyContent: 'flex-end',
   },
   modal: {
-    backgroundColor: '#fff',
+    backgroundColor: colors.white,
     borderRadius: 20,
     padding: 32,
     width: '100%',
@@ -102,13 +103,13 @@ const styles = StyleSheet.create({
   title: {
     fontSize: 20,
     fontWeight: '600',
-    color: '#000000',
+    color: colors.black,
     marginBottom: 12,
     textAlign: 'center',
   },
   description: {
     fontSize: 14,
-    color: '#64748b',
+    color: colors.subtitleColor,
     marginBottom: 32,
     textAlign: 'center',
     lineHeight: 20,
@@ -122,25 +123,25 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: 'transparent',
     borderWidth: 1,
-    borderColor: '#e2e8f0',
+    borderColor: colors.borderColor,
     paddingVertical: 14,
     borderRadius: 12,
     alignItems: 'center',
   },
   cancelButtonText: {
-    color: '#64748b',
+    color: colors.subtitleColor,
     fontSize: 14,
     fontWeight: '500',
   },
   confirmButton: {
     flex: 1,
-    backgroundColor: '#8e2d8e',
+    backgroundColor: colors.primary,
     paddingVertical: 16,
     borderRadius: 12,
     alignItems: 'center',
   },
   confirmButtonText: {
-    color: '#fff',
+    color: colors.white,
     fontSize: 14,
     fontWeight: '600',
   },

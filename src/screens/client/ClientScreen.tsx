@@ -1,8 +1,7 @@
-import { useNavigation } from '@react-navigation/native';
+import { useFocusEffect, useNavigation } from '@react-navigation/native';
 import { Plus, Search } from 'lucide-react-native';
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
 import {
-  ActivityIndicator,
   FlatList,
   StatusBar,
   StyleSheet,
@@ -13,9 +12,10 @@ import {
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import Toast from 'react-native-toast-message';
-import AddClientModal from '../../components/clients/AddClientModal';
 import ClientCard from '../../components/clients/ClientCard';
+import ClientCardSkeleton from '../../components/skeleton/ClientCardSkeleton';
 import { searchCustomers } from '../../services/artistServices';
+import { colors } from '../../theme/colors';
 import { Client, CustomerResponse } from '../../types';
 import { generateColor, generateInitials } from '../../utils/utils';
 
@@ -25,11 +25,11 @@ interface ClientScreenProps {
 
 const ClientScreen: React.FC<ClientScreenProps> = () => {
   const navigation = useNavigation();
-  const [showAddClient, setShowAddClient] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
   const [clients, setClients] = useState<Client[]>([]);
   const [loading, setLoading] = useState(true);
   const [totalClients, setTotalClients] = useState(0);
+  const isFirstMount = useRef(true);
 
   const convertToClient = (
     customer: CustomerResponse['customers'][0],
@@ -45,30 +45,33 @@ const ClientScreen: React.FC<ClientScreenProps> = () => {
     };
   };
 
-  const fetchCustomers = async (searchName?: string, isInitialLoad = false) => {
-    try {
-      if (isInitialLoad) {
-        setLoading(true);
-      }
+  const fetchCustomers = useCallback(
+    async (searchName?: string, isInitialLoad = false) => {
+      try {
+        if (isInitialLoad) {
+          setLoading(true);
+        }
 
-      const response = await searchCustomers(searchName, 1, 30);
-      const data: CustomerResponse = response?.data;
-      const convertedClients = data.customers?.map(convertToClient);
-      setClients(convertedClients);
-      setTotalClients(data.metadata.total);
-    } catch (err) {
-      console.error('Error fetching customers:', err);
-      Toast.show({
-        type: 'error',
-        text1: 'Error',
-        text2: 'Failed to load clients',
-      });
-    } finally {
-      if (isInitialLoad) {
-        setLoading(false);
+        const response = await searchCustomers(searchName, 1, 30);
+        const data: CustomerResponse = response?.data;
+        const convertedClients = (data?.customers || []).map(convertToClient);
+        setClients(convertedClients);
+        setTotalClients(data?.metadata?.total || 0);
+      } catch (err) {
+        console.error('Error fetching customers:', err);
+        Toast.show({
+          type: 'error',
+          text1: 'Error',
+          text2: 'Failed to load clients',
+        });
+      } finally {
+        if (isInitialLoad) {
+          setLoading(false);
+        }
       }
-    }
-  };
+    },
+    [],
+  );
 
   useEffect(() => {
     fetchCustomers(undefined, true);
@@ -86,13 +89,24 @@ const ClientScreen: React.FC<ClientScreenProps> = () => {
     return () => clearTimeout(timeoutId);
   }, [searchQuery]);
 
+  // Refresh client list when screen comes into focus (after add/edit)
+  useFocusEffect(
+    useCallback(() => {
+      // Skip the first mount since useEffect already handles initial load
+      if (isFirstMount.current) {
+        isFirstMount.current = false;
+        return;
+      }
+      fetchCustomers();
+    }, [fetchCustomers]),
+  );
+
   const handleClientClick = (clientId: string) => {
     navigation.navigate('ClientDetails', { clientId });
   };
 
-  const handleAddClientSuccess = () => {
-    setShowAddClient(false);
-    fetchCustomers();
+  const handleAddClient = () => {
+    navigation.navigate('AddClient');
   };
 
   const renderHeader = () => (
@@ -132,8 +146,17 @@ const ClientScreen: React.FC<ClientScreenProps> = () => {
   if (loading && clients.length === 0) {
     return (
       <SafeAreaView style={styles.container}>
-        <View style={styles.loadingContainer}>
-          <ActivityIndicator size="large" color="#8e2d8e" />
+        {renderHeader()}
+        {renderSearchBar()}
+        <View style={styles.addButton}>
+          <Plus size={20} color={colors.primary} />
+          <Text style={styles.addButtonText}>Tap Here to Add a New Client</Text>
+        </View>
+        <Text style={styles.clientCount}>Loading...</Text>
+        <View style={styles.skeletonContainer}>
+          {[1, 2, 3, 4, 5].map(index => (
+            <ClientCardSkeleton key={index} />
+          ))}
         </View>
       </SafeAreaView>
     );
@@ -141,14 +164,15 @@ const ClientScreen: React.FC<ClientScreenProps> = () => {
 
   return (
     <SafeAreaView style={styles.container} edges={['bottom']}>
-      <StatusBar barStyle="dark-content" backgroundColor="transparent" translucent />
+      <StatusBar
+        barStyle="dark-content"
+        backgroundColor="transparent"
+        translucent
+      />
       {renderHeader()}
       {renderSearchBar()}
-      <TouchableOpacity
-        style={styles.addButton}
-        onPress={() => setShowAddClient(true)}
-      >
-        <Plus size={20} color="#8E2D8E" />
+      <TouchableOpacity style={styles.addButton} onPress={handleAddClient}>
+        <Plus size={20} color={colors.primary} />
         <Text style={styles.addButtonText}>Tap Here to Add a New Client</Text>
       </TouchableOpacity>
       <Text style={styles.clientCount}>
@@ -170,13 +194,6 @@ const ClientScreen: React.FC<ClientScreenProps> = () => {
         ]}
         ListEmptyComponent={renderEmptyState}
       />
-
-      {showAddClient && (
-        <AddClientModal
-          onClose={() => setShowAddClient(false)}
-          onSuccess={handleAddClientSuccess}
-        />
-      )}
     </SafeAreaView>
   );
 };
@@ -184,19 +201,18 @@ const ClientScreen: React.FC<ClientScreenProps> = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#F8F9FA',
   },
   header: {
     paddingHorizontal: 16,
     paddingTop: 16,
     paddingBottom: 12,
-    backgroundColor: '#fff',
+    backgroundColor: colors.white,
   },
 
   title: {
     fontSize: 28,
     fontWeight: 'bold',
-    color: '#000000',
+    color: colors.black,
     marginBottom: 8,
   },
   subtitle: {
@@ -217,7 +233,7 @@ const styles = StyleSheet.create({
     gap: 8,
   },
   addButtonText: {
-    color: '#8E2D8E',
+    color: colors.primary,
     fontSize: 14,
     fontWeight: '700',
   },
@@ -240,12 +256,12 @@ const styles = StyleSheet.create({
     flex: 1,
     paddingVertical: 12,
     fontSize: 16,
-    color: '#000000',
+    color: colors.black,
   },
   clientCount: {
     fontSize: 14,
     paddingLeft: 16,
-    color: '#000000',
+    color: colors.black,
     fontWeight: '500',
   },
   listContent: {
@@ -259,6 +275,9 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
   },
+  skeletonContainer: {
+    paddingVertical: 8,
+  },
   emptyState: {
     flex: 1,
     justifyContent: 'center',
@@ -268,7 +287,7 @@ const styles = StyleSheet.create({
   emptyStateTitle: {
     fontSize: 20,
     fontWeight: '600',
-    color: '#000000',
+    color: colors.black,
     marginBottom: 8,
   },
   emptyStateText: {

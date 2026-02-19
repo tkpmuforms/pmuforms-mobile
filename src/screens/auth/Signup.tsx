@@ -9,6 +9,7 @@ import {
   View,
 } from 'react-native';
 import Toast from 'react-native-toast-message';
+import { ChevronLeft } from 'lucide-react-native';
 import useAuth from '../../hooks/useAuth';
 import { colors } from '../../theme/colors';
 import {
@@ -155,7 +156,7 @@ const Signup: React.FC<SignupProps> = ({ onToggleToLogin }) => {
     <View style={styles.formContainer}>
       <View style={styles.header}>
         <TouchableOpacity style={styles.backButton} onPress={handleBack}>
-          {/* <Ionicons name="arrow-back" size={24} color="#8e2d8e" /> */}
+          <ChevronLeft size={24} color={colors.primary} />
         </TouchableOpacity>
         <View style={styles.progressBar}>
           <View style={styles.progressLine}>
@@ -204,7 +205,7 @@ const Signup: React.FC<SignupProps> = ({ onToggleToLogin }) => {
         disabled={loading}
       >
         {loading ? (
-          <ActivityIndicator color="#fff" />
+          <ActivityIndicator color={colors.white} />
         ) : (
           <Text style={styles.buttonText}>Create Account</Text>
         )}
@@ -216,7 +217,7 @@ const Signup: React.FC<SignupProps> = ({ onToggleToLogin }) => {
     <View style={styles.formContainer}>
       <View style={styles.header}>
         <TouchableOpacity style={styles.backButton} onPress={handleBack}>
-          {/* <Ionicons name="arrow-back" size={24} color="#8e2d8e" /> */}
+          <ChevronLeft size={24} color={colors.primary} />
         </TouchableOpacity>
         <View style={styles.progressBar}>
           <View style={styles.progressLine}>
@@ -281,7 +282,7 @@ const styles = StyleSheet.create({
   },
   progressFill: {
     height: '100%',
-    backgroundColor: '#8e2d8e',
+    backgroundColor: colors.primary,
     borderRadius: 4,
   },
   title: {
@@ -293,7 +294,7 @@ const styles = StyleSheet.create({
   },
   subtitle: {
     fontSize: 14,
-    color: '#64748b',
+    color: colors.subtitleColor,
     marginBottom: 32,
     lineHeight: 20,
     textAlign: 'center',
@@ -311,8 +312,8 @@ const styles = StyleSheet.create({
     width: '100%',
     padding: 14,
     borderWidth: 1,
-    borderColor: '#e2e8f0',
-    backgroundColor: '#f8fafc',
+    borderColor: colors.borderColor,
+    backgroundColor: '#BCBBC133',
     borderRadius: 8,
     fontSize: 14,
     color: '#1e293b',
@@ -327,7 +328,7 @@ const styles = StyleSheet.create({
     marginBottom: 24,
   },
   buttonText: {
-    color: '#fff',
+    color: colors.white,
     fontSize: 14,
     fontWeight: '600',
   },
@@ -338,7 +339,7 @@ const styles = StyleSheet.create({
   },
   toggleText: {
     fontSize: 12,
-    color: '#64748b',
+    color: colors.subtitleColor,
     textAlign: 'center',
   },
   toggleTextBold: {
@@ -398,7 +399,7 @@ const styles = StyleSheet.create({
   socialButtonTextApple: {
     fontSize: 14,
     fontWeight: '600',
-    color: '#fff',
+    color: colors.white,
   },
   socialIcon: {
     width: 24,

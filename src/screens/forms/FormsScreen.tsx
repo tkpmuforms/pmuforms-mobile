@@ -1,20 +1,23 @@
+import { Plus } from 'lucide-react-native';
 import React, { useEffect, useState } from 'react';
 import {
-  View,
-  Text,
-  StyleSheet,
-  ScrollView,
-  TouchableOpacity,
-  TextInput,
   RefreshControl,
+  ScrollView,
+  StyleSheet,
+  Text,
+  TextInput,
+  TouchableOpacity,
+  View,
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { Plus, Search } from 'lucide-react-native';
-import { getArtistForms } from '../../services/artistServices';
-import { transformFormData } from '../../utils/utils';
 import FormCard from '../../components/forms/FormCard';
 import UpdateServicesModal from '../../components/profile/UpdateServicesModal';
+import FormCardSkeleton from '../../components/skeleton/FormCardSkeleton';
+import { getArtistForms } from '../../services/artistServices';
 import { Form } from '../../types';
+import { transformFormData } from '../../utils/utils';
+import { AddNewServiceFloat } from '../../../assets/svg';
+import { colors } from '../../theme/colors';
 
 const FormsScreen = ({ navigation }: any) => {
   const [activeTab, setActiveTab] = useState<'consent' | 'care'>('consent');
@@ -25,11 +28,11 @@ const FormsScreen = ({ navigation }: any) => {
   const [refreshing, setRefreshing] = useState(false);
   const [searchTerm, setSearchTerm] = useState('');
 
-  const filteredForms = forms.filter(form => {
-    const matchesTab = form.type === activeTab;
+  const filteredForms = (forms || []).filter(form => {
+    const matchesTab = form?.type === activeTab;
     const matchesSearch =
       searchTerm === '' ||
-      form.title?.toLowerCase().includes(searchTerm.toLowerCase());
+      (form?.title || '').toLowerCase().includes(searchTerm.toLowerCase());
     return matchesTab && matchesSearch;
   });
 
@@ -37,8 +40,10 @@ const FormsScreen = ({ navigation }: any) => {
     try {
       setLoading(true);
       const response = await getArtistForms();
-      if (response && response.data && response.data.forms) {
-        const transformedForms = response.data.forms.map(transformFormData);
+      if (response?.data?.forms) {
+        const transformedForms = (response.data.forms || []).map(
+          transformFormData,
+        );
         setForms(transformedForms);
       }
     } catch (err) {
@@ -62,12 +67,8 @@ const FormsScreen = ({ navigation }: any) => {
     navigation.navigate('FormPreview', { formId });
   };
 
-  const handleEdit = (formId: string) => {
-    navigation.navigate('FormEdit', { formId });
-  };
-
-  const consentCount = forms.filter(f => f.type === 'consent').length;
-  const careCount = forms.filter(f => f.type === 'care').length;
+  const consentCount = (forms || []).filter(f => f?.type === 'consent').length;
+  const careCount = (forms || []).filter(f => f?.type === 'care').length;
 
   return (
     <SafeAreaView style={styles.container} edges={[]}>
@@ -78,7 +79,6 @@ const FormsScreen = ({ navigation }: any) => {
 
       {/* Search */}
       <View style={styles.searchContainer}>
-        <Search size={20} color="#64748b" style={styles.searchIcon} />
         <TextInput
           style={styles.searchInput}
           placeholder="Search forms by title..."
@@ -118,7 +118,6 @@ const FormsScreen = ({ navigation }: any) => {
         </TouchableOpacity>
       </View>
 
-      {/* Forms Grid - Only this scrolls */}
       <ScrollView
         style={styles.scrollView}
         contentContainerStyle={styles.scrollContent}
@@ -127,7 +126,13 @@ const FormsScreen = ({ navigation }: any) => {
         }
       >
         <View style={styles.grid}>
-          {filteredForms.length > 0 ? (
+          {loading ? (
+            <View style={styles.skeletonContainer}>
+              {[1, 2, 3, 4].map(index => (
+                <FormCardSkeleton key={index} />
+              ))}
+            </View>
+          ) : filteredForms.length > 0 ? (
             filteredForms.map(form => (
               <FormCard
                 key={form.id}
@@ -145,7 +150,7 @@ const FormsScreen = ({ navigation }: any) => {
                 style={styles.emptyButton}
                 onPress={() => setShowAddMoreServicesModal(true)}
               >
-                <Plus size={16} color="#fff" />
+                <Plus size={16} color={colors.white} />
                 <Text style={styles.emptyButtonText}>
                   Unlock Your{' '}
                   {activeTab.charAt(0).toUpperCase() + activeTab.slice(1)} Forms
@@ -156,12 +161,11 @@ const FormsScreen = ({ navigation }: any) => {
         </View>
       </ScrollView>
 
-      {/* Floating Action Button */}
       <TouchableOpacity
         style={styles.fab}
         onPress={() => setShowAddMoreServicesModal(true)}
       >
-        <Plus size={24} color="#fff" />
+        <AddNewServiceFloat width={24} height={24} />
       </TouchableOpacity>
 
       {/* Modal */}
@@ -179,7 +183,7 @@ const FormsScreen = ({ navigation }: any) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#fff',
+    backgroundColor: colors.white,
   },
   scrollView: {
     flex: 1,
@@ -195,12 +199,12 @@ const styles = StyleSheet.create({
   title: {
     fontSize: 28,
     fontWeight: '600',
-    color: '#000000',
+    color: colors.black,
     marginBottom: 4,
   },
   subtitle: {
     fontSize: 14,
-    color: '#64748b',
+    color: colors.subtitleColor,
   },
   fab: {
     position: 'absolute',
@@ -209,10 +213,10 @@ const styles = StyleSheet.create({
     width: 56,
     height: 56,
     borderRadius: 28,
-    backgroundColor: '#8E2D8E',
+    backgroundColor: '#D764D759',
     alignItems: 'center',
     justifyContent: 'center',
-    shadowColor: '#000',
+    shadowColor: colors.white,
     shadowOffset: {
       width: 0,
       height: 4,
@@ -223,6 +227,7 @@ const styles = StyleSheet.create({
   },
   searchContainer: {
     flexDirection: 'row',
+
     alignItems: 'center',
     marginBottom: 24,
     position: 'relative',
@@ -239,10 +244,10 @@ const styles = StyleSheet.create({
     paddingLeft: 44,
     paddingRight: 12,
     borderWidth: 1,
-    borderColor: '#e2e8f0',
+    borderColor: colors.borderColor,
     borderRadius: 12,
     fontSize: 16,
-    backgroundColor: '#fff',
+    backgroundColor: '#BCBBC133',
   },
   tabs: {
     flexDirection: 'row',
@@ -256,18 +261,18 @@ const styles = StyleSheet.create({
     paddingVertical: 12,
     paddingHorizontal: 10,
     borderWidth: 1,
-    borderColor: '#e2e8f0',
-    backgroundColor: '#fff',
+    borderColor: colors.borderColor,
+    backgroundColor: colors.white,
     borderRadius: 6,
     alignItems: 'center',
     justifyContent: 'center',
   },
   tabActive: {
     backgroundColor: '#F8F5F8',
-    borderColor: '#e2e8f0',
+    borderColor: colors.borderColor,
   },
   tabText: {
-    color: '#64748b',
+    color: colors.subtitleColor,
     fontSize: 14,
     fontWeight: '500',
   },
@@ -278,12 +283,15 @@ const styles = StyleSheet.create({
   grid: {
     gap: 1,
   },
+  skeletonContainer: {
+    paddingHorizontal: 20,
+  },
   emptyContainer: {
     alignItems: 'center',
     paddingVertical: 20,
   },
   emptyText: {
-    color: '#64748b',
+    color: colors.subtitleColor,
     fontSize: 14,
     marginBottom: 16,
     textAlign: 'center',
@@ -291,14 +299,14 @@ const styles = StyleSheet.create({
   emptyButton: {
     flexDirection: 'row',
     alignItems: 'center',
-    backgroundColor: '#8e2d8e',
+    backgroundColor: colors.primary,
     paddingVertical: 12,
     paddingHorizontal: 20,
     borderRadius: 12,
     gap: 8,
   },
   emptyButtonText: {
-    color: '#fff',
+    color: colors.white,
     fontSize: 14,
     fontWeight: '500',
   },

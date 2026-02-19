@@ -2,6 +2,7 @@ import React from 'react';
 import { View, Text, StyleSheet, TouchableOpacity, Image } from 'react-native';
 import { Camera, Trash2 } from 'lucide-react-native';
 import { Note } from '../../types';
+import { colors } from '../../theme/colors';
 
 interface NoteCardProps {
   note: Note;
@@ -49,7 +50,7 @@ const NoteCard: React.FC<NoteCardProps> = ({
               resizeMode="cover"
             />
             <View style={styles.cameraIcon}>
-              <Camera size={14} color="#fff" />
+              <Camera size={14} color={colors.white} />
             </View>
           </View>
         )}
@@ -77,7 +78,7 @@ const NoteCard: React.FC<NoteCardProps> = ({
 
 const styles = StyleSheet.create({
   card: {
-    backgroundColor: '#fff',
+    backgroundColor: colors.white,
     borderRadius: 12,
     padding: 16,
     marginBottom: 12,
@@ -88,7 +89,7 @@ const styles = StyleSheet.create({
     elevation: 2,
   },
   cardSelected: {
-    borderColor: '#8e2d8e',
+    borderColor: colors.primary,
     borderWidth: 2,
   },
   content: {
@@ -115,7 +116,7 @@ const styles = StyleSheet.create({
   },
   noteText: {
     fontSize: 15,
-    color: '#000000',
+    color: colors.black,
     lineHeight: 22,
   },
   actions: {

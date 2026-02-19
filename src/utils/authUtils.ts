@@ -1,11 +1,22 @@
-import auth from '@react-native-firebase/auth';
+import {
+  getAuth,
+  signInWithCredential,
+  signInWithEmailAndPassword,
+  createUserWithEmailAndPassword,
+  GoogleAuthProvider,
+  AppleAuthProvider,
+} from '@react-native-firebase/auth';
 import { GoogleSignin } from '@react-native-google-signin/google-signin';
 import appleAuth from '@invertase/react-native-apple-authentication';
 import Toast from 'react-native-toast-message';
 import {
   createArtist,
+  getAuthMe,
   sendEmailVerification,
 } from '../services/artistServices';
+import { setUser } from '../redux/auth';
+import { Dispatch } from '@reduxjs/toolkit';
+import { Artist, OnboardingStep } from '../types';
 
 /**
  * Handles Google Sign-In authentication flow
@@ -25,10 +36,11 @@ export const handleGoogleSignIn = async (
     const userInfo = await GoogleSignin.signIn();
 
     if (userInfo.data?.idToken) {
-      const googleCredential = auth.GoogleAuthProvider.credential(
+      const googleCredential = GoogleAuthProvider.credential(
         userInfo.data.idToken,
       );
-      const userCredential = await auth().signInWithCredential(
+      const userCredential = await signInWithCredential(
+        getAuth(),
         googleCredential,
       );
       const userToken = await userCredential.user.getIdToken();
@@ -71,11 +83,11 @@ export const handleAppleSignIn = async (
     }
 
     const { identityToken, nonce } = appleAuthRequestResponse;
-    const appleCredential = auth.AppleAuthProvider.credential(
+    const appleCredential = AppleAuthProvider.credential(
       identityToken,
       nonce,
     );
-    const userCredential = await auth().signInWithCredential(appleCredential);
+    const userCredential = await signInWithCredential(getAuth(), appleCredential);
     const userToken = await userCredential.user.getIdToken();
 
     const res = await createArtist(userToken);
@@ -126,7 +138,8 @@ export const handleEmailPasswordLogin = async (
   if (setLoading) setLoading(true);
 
   try {
-    const userCredential = await auth().signInWithEmailAndPassword(
+    const userCredential = await signInWithEmailAndPassword(
+      getAuth(),
       email,
       password,
     );
@@ -185,7 +198,8 @@ export const handleEmailPasswordSignup = async (
   if (setLoading) setLoading(true);
 
   try {
-    const userCredential = await auth().createUserWithEmailAndPassword(
+    const userCredential = await createUserWithEmailAndPassword(
+      getAuth(),
       email,
       password,
     );
@@ -227,4 +241,35 @@ export const validateEmail = (email: string): boolean => {
  */
 export const validatePassword = (password: string): boolean => {
   return password.length >= 6;
+};
+
+export const refreshAuthUser = async (dispatch: Dispatch): Promise<void> => {
+  try {
+    const response = await getAuthMe();
+    if (response?.data?.user) {
+      dispatch(setUser(response.data.user));
+    }
+  } catch (error) {
+    console.warn(
+      'Error refreshing auth user:',
+      (error as any)?.message || 'Unknown error',
+    );
+    throw error;
+  }
+};
+
+export const determineOnboardingStep = (artist: Artist): OnboardingStep => {
+  if (artist.businessName === 'New Business') {
+    return 'businessName';
+  }
+
+  if (!artist.services || artist.services.length === 0) {
+    return 'services';
+  }
+
+  if (!artist.stripeSubscriptionActive && !artist.appStorePurchaseActive) {
+    return 'payment';
+  }
+
+  return 'completed';
 };

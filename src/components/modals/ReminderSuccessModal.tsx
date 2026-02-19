@@ -8,6 +8,7 @@ import {
   Pressable,
 } from 'react-native';
 import { CheckCircle } from 'lucide-react-native';
+import { colors } from '../../theme/colors';
 
 interface ReminderSuccessModalProps {
   visible: boolean;
@@ -107,20 +108,20 @@ const styles = StyleSheet.create({
   title: {
     fontSize: 24,
     fontWeight: '600',
-    color: '#000000',
+    color: colors.black,
     marginBottom: 8,
     textAlign: 'center',
   },
   message: {
     fontSize: 16,
-    color: '#64748b',
+    color: colors.subtitleColor,
     marginBottom: 32,
     lineHeight: 24,
     textAlign: 'center',
   },
   bold: {
     fontWeight: '600',
-    color: '#000000',
+    color: colors.black,
   },
   actions: {
     width: '100%',
@@ -130,19 +131,19 @@ const styles = StyleSheet.create({
     width: '100%',
     backgroundColor: 'transparent',
     borderWidth: 1,
-    borderColor: '#e2e8f0',
+    borderColor: colors.borderColor,
     padding: 14,
     borderRadius: 12,
     alignItems: 'center',
   },
   secondaryButtonText: {
-    color: '#64748b',
+    color: colors.subtitleColor,
     fontWeight: '500',
     fontSize: 16,
   },
   primaryButton: {
     width: '100%',
-    backgroundColor: '#8e2d8e',
+    backgroundColor: colors.primary,
     padding: 14,
     borderRadius: 12,
     alignItems: 'center',

@@ -18,6 +18,7 @@ import {
 import { SafeAreaView } from 'react-native-safe-area-context';
 import Toast from 'react-native-toast-message';
 import AppointmentCard from '../../components/dashboard/AppointmentCard';
+import ScreenHeader from '../../components/layout/ScreenHeader';
 import {
   getArtistAppointmentsPaginated,
   getCustomerById,
@@ -46,15 +47,15 @@ const AppointmentsScreen = ({ navigation }: any) => {
     try {
       setLoading(true);
       const response = await getArtistAppointmentsPaginated(page, perPage);
-      const data: AppointmentsResponse = response.data;
+      const data: AppointmentsResponse = response?.data;
 
-      if (data && data.appointments) {
-        setAppointments(data.appointments);
+      if (data?.appointments) {
+        setAppointments(data.appointments || []);
         setMetadata({
-          total: data.metadata.total,
-          lastPage: data.metadata.lastPage,
+          total: data?.metadata?.total || 0,
+          lastPage: data?.metadata?.lastPage || 1,
         });
-        await fetchCustomersData(data.appointments);
+        await fetchCustomersData(data.appointments || []);
       }
     } catch (error) {
       console.error('Error fetching appointments:', error);
@@ -70,7 +71,9 @@ const AppointmentsScreen = ({ navigation }: any) => {
 
   const fetchCustomersData = async (appointmentsList: Appointment[]) => {
     const uniqueCustomerIds = [
-      ...new Set(appointmentsList.map(apt => apt.customerId)),
+      ...new Set(
+        (appointmentsList || []).map(apt => apt?.customerId).filter(Boolean),
+      ),
     ].filter(Boolean) as string[];
 
     if (uniqueCustomerIds.length === 0) return;
@@ -85,12 +88,12 @@ const AppointmentsScreen = ({ navigation }: any) => {
 
       const customerResponses = await Promise.all(customerPromises);
       const customerMap = customerResponses.reduce((acc, response, index) => {
-        if (response && response.data) {
+        if (response?.data?.customer) {
           const customerId = uniqueCustomerIds[index];
-          const customer = response.data?.customer;
+          const customer = response.data.customer;
           acc[customerId] = {
-            name: customer.info?.client_name || 'Unknown Client',
-            avatar: customer.info?.avatar_url,
+            name: customer?.info?.client_name || 'Unknown Client',
+            avatar: customer?.info?.avatar_url,
           };
         }
         return acc;
@@ -125,11 +128,17 @@ const AppointmentsScreen = ({ navigation }: any) => {
     const customer = customers[customerId];
     if (customer?.avatar) return customer.avatar;
 
-    const customerName = customer?.name || 'Unknown Client';
+    const customerName = customer?.name || 'Client 1';
     return `https://ui-avatars.com/api/?name=${encodeURIComponent(
       customerName,
     )}&background=A858F0&color=fff&size=40`;
   };
+
+  const filteredAppointments = appointments.filter(appointment => {
+    if (!searchTerm.trim()) return true;
+    const customerName = getCustomerName(appointment.customerId).toLowerCase();
+    return customerName.includes(searchTerm.toLowerCase());
+  });
 
   const renderPagination = () => {
     if (metadata.lastPage <= 1) return null;
@@ -176,9 +185,10 @@ const AppointmentsScreen = ({ navigation }: any) => {
   if (loading && !refreshing) {
     return (
       <SafeAreaView style={styles.container} edges={['top']}>
-        <View style={styles.header}>
-          <Text style={styles.title}>All Appointments</Text>
-        </View>
+        <ScreenHeader
+          title="All Appointments"
+          onBack={() => navigation.goBack()}
+        />
         <View style={styles.loadingContainer}>
           <ActivityIndicator size="large" color={colors.primary} />
         </View>
@@ -187,14 +197,13 @@ const AppointmentsScreen = ({ navigation }: any) => {
   }
 
   return (
-    <SafeAreaView style={styles.container} edges={['top']}>
+    <SafeAreaView style={styles.container} edges={[]}>
       <View style={styles.header}>
-        <View style={styles.titleSection}>
-          <Text style={styles.title}>All Appointments</Text>
-          <Text style={styles.subtitle}>
-            Total: {metadata.total} appointments
-          </Text>
-        </View>
+        <ScreenHeader
+          title="All Appointments"
+          subtitle={`Total: ${metadata.total} appointments`}
+          onBack={() => navigation.goBack()}
+        />
 
         <View style={styles.searchContainer}>
           <Search
@@ -223,18 +232,20 @@ const AppointmentsScreen = ({ navigation }: any) => {
           />
         }
       >
-        {appointments.length === 0 ? (
+        {filteredAppointments.length === 0 ? (
           <View style={styles.emptyState}>
             <Calendar size={48} color={colors.textLighter} />
             <Text style={styles.emptyTitle}>No appointments found</Text>
             <Text style={styles.emptySubtitle}>
-              You haven't scheduled any appointments yet
+              {searchTerm
+                ? 'No appointments match your search'
+                : "You haven't scheduled any appointments yet"}
             </Text>
           </View>
         ) : (
           <>
             <View style={styles.appointmentsGrid}>
-              {appointments.map(appointment => (
+              {filteredAppointments.map(appointment => (
                 <AppointmentCard
                   key={appointment.id}
                   name={
@@ -270,24 +281,11 @@ const styles = StyleSheet.create({
     backgroundColor: colors.background,
   },
   header: {
-    paddingHorizontal: 20,
-    paddingVertical: 16,
+    paddingHorizontal: 10,
+    paddingVertical: 5,
     borderBottomWidth: 1,
     borderBottomColor: colors.border,
     backgroundColor: colors.background,
-  },
-  titleSection: {
-    marginBottom: 16,
-  },
-  title: {
-    fontSize: 24,
-    fontWeight: '700',
-    color: colors.text,
-    marginBottom: 4,
-  },
-  subtitle: {
-    fontSize: 14,
-    color: colors.textLight,
   },
   searchContainer: {
     position: 'relative',
@@ -315,7 +313,7 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   scrollContent: {
-    padding: 20,
+    padding: 10,
     paddingBottom: 40,
   },
   loadingContainer: {
@@ -341,14 +339,12 @@ const styles = StyleSheet.create({
     color: colors.textLight,
     textAlign: 'center',
   },
-  appointmentsGrid: {
-    gap: 16,
-  },
+  appointmentsGrid: {},
   paginationContainer: {
     flexDirection: 'row',
     justifyContent: 'center',
     alignItems: 'center',
-    marginTop: 32,
+
     gap: 20,
   },
   paginationArrow: {

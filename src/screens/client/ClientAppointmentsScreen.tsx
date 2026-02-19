@@ -1,25 +1,19 @@
 import { useNavigation, useRoute } from '@react-navigation/native';
-import { ArrowLeft, Send } from 'lucide-react-native';
 import React, { useEffect, useState } from 'react';
-import {
-  ActivityIndicator,
-  FlatList,
-  StyleSheet,
-  Text,
-  TouchableOpacity,
-  View,
-} from 'react-native';
+import { FlatList, StyleSheet, Text, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import Toast from 'react-native-toast-message';
 import AppointmentCard from '../../components/clients/AppointmentCard';
+import AppointmentCardSkeleton from '../../components/skeleton/AppointmentCardSkeleton';
 import DeleteModal from '../../components/clients/DeleteModal';
-import SendConsentFormModal from '../../components/clients/SendConsentFormModal';
+import ScreenHeader from '../../components/layout/ScreenHeader';
 import {
   DeleteAppointment,
   getAppointmentsForCustomer,
   getCustomerById,
 } from '../../services/artistServices';
 import { ClientAppointmentData } from '../../types';
+import { colors } from '../../theme/colors';
 
 interface ClientAppointmentsScreenProps {}
 
@@ -36,7 +30,6 @@ const ClientAppointmentsScreen: React.FC<
   const [appointments, setAppointments] = useState<ClientAppointmentData[]>([]);
   const [loading, setLoading] = useState(false);
   const [clientName, setClientName] = useState<string>(client?.name || '');
-  const [showSendConsentForm, setShowSendConsentForm] = useState(false);
   const [showDeleteAppointment, setShowDeleteAppointment] = useState(false);
   const [appointmentToDelete, setAppointmentToDelete] = useState<string | null>(
     null,
@@ -91,7 +84,7 @@ const ClientAppointmentsScreen: React.FC<
       try {
         await DeleteAppointment(appointmentToDelete);
         setAppointments(prev =>
-          prev.filter(apt => apt.id !== appointmentToDelete),
+          (prev || []).filter(apt => apt?.id !== appointmentToDelete),
         );
         setShowDeleteAppointment(false);
         setAppointmentToDelete(null);
@@ -112,30 +105,13 @@ const ClientAppointmentsScreen: React.FC<
   };
 
   const renderHeader = () => (
-    <View style={styles.header}>
-      <View style={styles.headerTop}>
-        <TouchableOpacity
-          style={styles.backButton}
-          onPress={() => navigation.goBack()}
-        >
-          <ArrowLeft size={24} color="#000000" />
-        </TouchableOpacity>
-        <View style={styles.headerContent}>
-          <Text style={styles.headerTitle}>{clientName}'s Appointments</Text>
-          <Text style={styles.headerSubtitle}>
-            {appointments.length}{' '}
-            {appointments.length === 1 ? 'Appointment' : 'Appointments'}
-          </Text>
-        </View>
-      </View>
-      <TouchableOpacity
-        style={styles.sendFormButton}
-        onPress={() => setShowSendConsentForm(true)}
-      >
-        <Send size={20} color="#fff" />
-        <Text style={styles.sendFormButtonText}>Send Form</Text>
-      </TouchableOpacity>
-    </View>
+    <ScreenHeader
+      title={`${clientName}'s Appointments`}
+      subtitle={`${appointments.length} ${
+        appointments.length === 1 ? 'Appointment' : 'Appointments'
+      }`}
+      onBack={() => navigation.goBack()}
+    />
   );
 
   const renderEmptyState = () => (
@@ -149,16 +125,19 @@ const ClientAppointmentsScreen: React.FC<
 
   if (loading) {
     return (
-      <SafeAreaView style={styles.container}>
-        <View style={styles.loadingContainer}>
-          <ActivityIndicator size="large" color="#8e2d8e" />
+      <SafeAreaView style={styles.container} edges={[]}>
+        {renderHeader()}
+        <View style={styles.skeletonContainer}>
+          {[1, 2, 3, 4].map(key => (
+            <AppointmentCardSkeleton key={key} />
+          ))}
         </View>
       </SafeAreaView>
     );
   }
 
   return (
-    <SafeAreaView style={styles.container}>
+    <SafeAreaView style={styles.container} edges={[]}>
       {renderHeader()}
 
       <FlatList
@@ -178,22 +157,13 @@ const ClientAppointmentsScreen: React.FC<
         ListEmptyComponent={renderEmptyState}
       />
 
-      {showSendConsentForm && (
-        <SendConsentFormModal
-          clientId={clientId}
-          clientEmail={client?.email || ''}
-          onClose={() => setShowSendConsentForm(false)}
-          onSuccess={() => setShowSendConsentForm(false)}
-        />
-      )}
-
       {showDeleteAppointment && (
         <DeleteModal
           visible={showDeleteAppointment}
-          title="Delete Appointment"
-          message="Are you sure you want to delete this appointment? This action cannot be undone."
+          headerText="Delete Appointment"
+          shorterText="Are you sure you want to delete this appointment? This action cannot be undone."
           onClose={() => setShowDeleteAppointment(false)}
-          onConfirm={handleDeleteConfirm}
+          handleDelete={handleDeleteConfirm}
         />
       )}
     </SafeAreaView>
@@ -203,24 +173,22 @@ const ClientAppointmentsScreen: React.FC<
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#F8F9FA',
   },
-  loadingContainer: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
+  skeletonContainer: {
+    padding: 16,
+    gap: 12,
   },
   header: {
-    backgroundColor: '#fff',
+    backgroundColor: colors.white,
     paddingHorizontal: 16,
-    paddingVertical: 16,
+    paddingVertical: 0,
     borderBottomWidth: 1,
     borderBottomColor: '#E5E5E5',
   },
   headerTop: {
     flexDirection: 'row',
     alignItems: 'center',
-    marginBottom: 16,
+
     gap: 12,
   },
   backButton: {
@@ -230,32 +198,18 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   headerTitle: {
-    fontSize: 24,
+    fontSize: 16,
     fontWeight: 'bold',
-    color: '#000000',
+    color: colors.black,
     marginBottom: 4,
   },
   headerSubtitle: {
     fontSize: 14,
     color: '#666',
   },
-  sendFormButton: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'center',
-    backgroundColor: '#8e2d8e',
-    paddingVertical: 12,
-    paddingHorizontal: 16,
-    borderRadius: 8,
-    gap: 8,
-  },
-  sendFormButtonText: {
-    color: '#fff',
-    fontSize: 16,
-    fontWeight: '600',
-  },
+
   listContent: {
-    paddingVertical: 16,
+    paddingVertical: 5,
   },
   emptyListContent: {
     flexGrow: 1,
@@ -269,7 +223,7 @@ const styles = StyleSheet.create({
   emptyStateTitle: {
     fontSize: 20,
     fontWeight: '600',
-    color: '#000000',
+    color: colors.black,
     marginBottom: 8,
   },
   emptyStateText: {

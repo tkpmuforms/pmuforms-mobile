@@ -13,6 +13,7 @@ import DateTimePicker from '@react-native-community/datetimepicker';
 import useAuth from '../../hooks/useAuth';
 import PreviewAppointmentModal from './PreviewAppointmentModal';
 import { SafeAreaView } from 'react-native-safe-area-context';
+import { colors } from '../../theme/colors';
 
 interface SendConsentFormModalProps {
   visible: boolean;
@@ -85,7 +86,7 @@ const SendConsentFormModal: React.FC<SendConsentFormModalProps> = ({
           <View style={styles.overlay}>
             <View style={styles.modal}>
               <TouchableOpacity style={styles.closeButton} onPress={onClose}>
-                <X size={20} color="#64748b" />
+                <X size={20} color={colors.subtitleColor} />
               </TouchableOpacity>
 
               <View style={styles.header}>
@@ -198,7 +199,7 @@ const styles = StyleSheet.create({
     justifyContent: 'flex-end',
   },
   modal: {
-    backgroundColor: '#fff',
+    backgroundColor: colors.white,
     borderTopLeftRadius: 20,
     borderTopRightRadius: 20,
     paddingTop: 32,
@@ -221,13 +222,13 @@ const styles = StyleSheet.create({
   title: {
     fontSize: 24,
     fontWeight: '600',
-    color: '#000000',
+    color: colors.black,
     marginBottom: 8,
     textAlign: 'center',
   },
   subtitle: {
     fontSize: 14,
-    color: '#64748b',
+    color: colors.subtitleColor,
     textAlign: 'center',
     lineHeight: 20,
   },
@@ -250,13 +251,13 @@ const styles = StyleSheet.create({
     paddingVertical: 14,
     paddingHorizontal: 16,
     borderWidth: 1,
-    borderColor: '#e2e8f0',
+    borderColor: colors.borderColor,
     borderRadius: 12,
-    backgroundColor: '#f8fafc',
+    backgroundColor: '#BCBBC133',
   },
   dateText: {
     fontSize: 14,
-    color: '#000000',
+    color: colors.black,
   },
   servicesGrid: {
     flexDirection: 'row',
@@ -267,23 +268,23 @@ const styles = StyleSheet.create({
     paddingVertical: 8,
     paddingHorizontal: 16,
     borderWidth: 1,
-    borderColor: '#e2e8f0',
+    borderColor: colors.borderColor,
     borderRadius: 20,
-    backgroundColor: '#fff',
+    backgroundColor: colors.white,
   },
   serviceTagSelected: {
-    backgroundColor: '#8e2d8e',
-    borderColor: '#8e2d8e',
+    backgroundColor: colors.primary,
+    borderColor: colors.primary,
   },
   serviceText: {
     fontSize: 14,
-    color: '#64748b',
+    color: colors.subtitleColor,
   },
   serviceTextSelected: {
-    color: '#fff',
+    color: colors.white,
   },
   continueButton: {
-    backgroundColor: 'linear-gradient(90deg, #8E2D8E 0%, #A654CD 100%)',
+    backgroundColor: colors.primary,
     paddingVertical: 16,
     borderRadius: 12,
     alignItems: 'center',
@@ -293,7 +294,7 @@ const styles = StyleSheet.create({
     opacity: 0.5,
   },
   continueButtonText: {
-    color: '#fff',
+    color: colors.white,
     fontSize: 14,
     fontWeight: '600',
   },

@@ -21,6 +21,7 @@ import { launchImageLibrary } from 'react-native-image-picker';
 import useAuth from '../../hooks/useAuth';
 import { setUser } from '../../redux/auth';
 import { getAuthMe, updateBusinessInfo } from '../../services/artistServices';
+import { colors } from '../../theme/colors';
 
 interface EditBusinessInformationModalProps {
   visible: boolean;
@@ -109,7 +110,7 @@ const EditBusinessInformationModal: React.FC<
             <TouchableWithoutFeedback onPress={e => e.stopPropagation()}>
               <View style={styles.modal}>
                 <TouchableOpacity style={styles.closeButton} onPress={onClose}>
-                  <X size={20} color="#64748b" />
+                  <X size={20} color={colors.subtitleColor} />
                 </TouchableOpacity>
 
                 <View style={styles.header}>
@@ -132,7 +133,10 @@ const EditBusinessInformationModal: React.FC<
                       onPress={handleLogoChange}
                     >
                       {logoUri ? (
-                        <Image source={{ uri: logoUri }} style={styles.logoImage} />
+                        <Image
+                          source={{ uri: logoUri }}
+                          style={styles.logoImage}
+                        />
                       ) : (
                         <View style={styles.logoPlaceholder}>
                           <Text style={styles.logoPlaceholderText}>
@@ -141,7 +145,7 @@ const EditBusinessInformationModal: React.FC<
                         </View>
                       )}
                       <View style={styles.editIconContainer}>
-                        <Camera size={16} color="#fff" />
+                        <Camera size={16} color={colors.white} />
                       </View>
                     </TouchableOpacity>
                   </View>
@@ -212,12 +216,15 @@ const EditBusinessInformationModal: React.FC<
                 </ScrollView>
 
                 <TouchableOpacity
-                  style={[styles.saveButton, isSaving && styles.saveButtonDisabled]}
+                  style={[
+                    styles.saveButton,
+                    isSaving && styles.saveButtonDisabled,
+                  ]}
                   onPress={handleSave}
                   disabled={isSaving}
                 >
                   {isSaving ? (
-                    <ActivityIndicator color="#fff" />
+                    <ActivityIndicator color={colors.white} />
                   ) : (
                     <Text style={styles.saveButtonText}>Save Changes</Text>
                   )}
@@ -241,7 +248,7 @@ const styles = StyleSheet.create({
     justifyContent: 'flex-end',
   },
   modal: {
-    backgroundColor: '#fff',
+    backgroundColor: colors.white,
     borderTopLeftRadius: 20,
     borderTopRightRadius: 20,
     paddingTop: 15,
@@ -265,14 +272,14 @@ const styles = StyleSheet.create({
   title: {
     fontSize: 18,
     fontWeight: '700',
-    color: '#000000',
+    color: colors.black,
     lineHeight: 24,
     marginBottom: 8,
     textAlign: 'center',
   },
   subtitle: {
     fontSize: 14,
-    color: '#64748b',
+    color: colors.subtitleColor,
     textAlign: 'center',
     lineHeight: 20,
   },
@@ -315,7 +322,7 @@ const styles = StyleSheet.create({
     width: 28,
     height: 28,
     borderRadius: 14,
-    backgroundColor: '#8e2d8e',
+    backgroundColor: colors.primary,
     justifyContent: 'center',
     alignItems: 'center',
   },
@@ -325,7 +332,7 @@ const styles = StyleSheet.create({
   label: {
     fontSize: 14,
     fontWeight: '500',
-    color: '#000000',
+    color: colors.black,
     lineHeight: 20,
     marginBottom: 8,
   },
@@ -333,18 +340,18 @@ const styles = StyleSheet.create({
     paddingVertical: 12,
     paddingHorizontal: 16,
     borderWidth: 1,
-    borderColor: '#e2e8f0',
+    borderColor: colors.borderColor,
     borderRadius: 12,
     fontSize: 14,
-    color: '#000000',
+    color: colors.black,
     backgroundColor: '#BCBBC133',
   },
   inputDisabled: {
-    backgroundColor: '#f5f5f5',
+    backgroundColor: '#BCBBC133',
     color: '#9ca3af',
   },
   saveButton: {
-    backgroundColor: '#8e2d8e',
+    backgroundColor: colors.primary,
     paddingVertical: 16,
     borderRadius: 12,
     alignItems: 'center',
@@ -357,7 +364,7 @@ const styles = StyleSheet.create({
     opacity: 0.6,
   },
   saveButtonText: {
-    color: '#fff',
+    color: colors.white,
     fontSize: 14,
     fontWeight: '600',
   },

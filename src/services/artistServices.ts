@@ -1,5 +1,4 @@
-import axiosInstance from "../utils/axiosSetup";
-
+import axiosInstance from '../utils/axiosSetup';
 
 export const createArtist = async (accessToken: string) =>
   axiosInstance.post('/api/auth/artist/create', { accessToken });
@@ -28,10 +27,10 @@ export const getArtistAppointments = async () =>
 
 export const getArtistAppointmentsPaginated = async (
   page: number = 1,
-  perPage: number = 10
+  perPage: number = 10,
 ) => {
   return axiosInstance.get(
-    `/api/appointments/artist?page=${page}&perPage=${perPage}`
+    `/api/appointments/artist?page=${page}&perPage=${perPage}`,
   );
 };
 
@@ -42,7 +41,7 @@ export const bookAppointment = async (data: {
 }) =>
   axiosInstance.post(
     '/api/appointments/artist/book-appointment?notify_customer=1',
-    data
+    data,
   );
 
 export const sendMessage = async (data: {
@@ -53,15 +52,15 @@ export const sendMessage = async (data: {
 }) => axiosInstance.post('/api/messages', data);
 
 export const getFilledFormsByAppointment = async (
-  appointmentId: string | number
+  appointmentId: string | number,
 ) => axiosInstance.get(`/api/filled-forms/appointment/${appointmentId}`);
 
 export const getFilledFormByAppointmentAndTemplate = async (
   appointmentId: string,
-  formTemplateId: string
+  formTemplateId: string,
 ) =>
   axiosInstance.get(
-    `/api/filled-forms/appointment/${appointmentId}/form/${formTemplateId}`
+    `/api/filled-forms/appointment/${appointmentId}/form/${formTemplateId}`,
   );
 
 export const getFormsByAppointment = async (appointmentId: string | number) =>
@@ -72,7 +71,7 @@ export const getFormById = async (formTemplateId: string | number) =>
 
 export const updateFormServices = async (
   formTemplateId: string | number,
-  data: { services: number[] }
+  data: { services: number[] },
 ) => axiosInstance.put(`/api/forms/${formTemplateId}/update-services`, data);
 
 export const getMyForms = async () => axiosInstance.get('/forms/my-forms');
@@ -84,30 +83,30 @@ export const updateFormSectionData = async (
   formTemplateId: string | number,
   sectionId: string | number,
   dataId: string | number,
-  data: Record<string, unknown>
+  data: Record<string, unknown>,
 ) =>
   axiosInstance.patch(
     `/api/forms/${formTemplateId}/sections/${sectionId}/data/${dataId}/update`,
-    data
+    data,
   );
 
 export const deleteFormSectionData = async (
   formTemplateId: string | number,
   sectionId: string | number,
-  dataId: string | number
+  dataId: string | number,
 ) =>
   axiosInstance.delete(
-    `/api/forms/${formTemplateId}/sections/${sectionId}/data/${dataId}`
+    `/api/forms/${formTemplateId}/sections/${sectionId}/data/${dataId}`,
   );
 
 export const addFormSectionData = async (
   formTemplateId: string | number,
   sectionId: string | number,
-  data: Record<string, unknown>
+  data: Record<string, unknown>,
 ) =>
   axiosInstance.post(
     `/api/forms/${formTemplateId}/sections/${sectionId}`,
-    data
+    data,
   );
 
 export const updateArtistFcmToken = async (data: { fcmToken: string }) =>
@@ -124,7 +123,7 @@ export const deleteMe = async () =>
 
 export const signAppointment = async (
   appointmentId: string | number,
-  data: { signatureUrl: string }
+  data: { signatureUrl: string },
 ) => axiosInstance.post(`/api/appointments/${appointmentId}/sign`, data);
 
 export const getMyCustomers = async (page?: number) => {
@@ -140,7 +139,7 @@ export const deleteCustomer = async (customerId: string) =>
 
 export const addCustomerNote = async (
   customerId: string | number,
-  data: { note: string; imageUrl?: string }
+  data: { note: string; imageUrl?: string },
 ) =>
   axiosInstance.post(`/api/customers/my-customers/${customerId}/notes`, data);
 
@@ -150,25 +149,25 @@ export const getCustomerNotes = async (customerId: string) =>
 export const updateCustomerNote = async (
   customerId: string | number,
   noteId: string | number,
-  data: { note: string; imageUrl?: string }
+  data: { note: string; imageUrl?: string },
 ) =>
   axiosInstance.put(
     `/api/customers/my-customers/${customerId}/notes/${noteId}`,
-    data
+    data,
   );
 
 export const deleteCustomerNote = async (
   customerId: string | number,
-  noteId: string | number
+  noteId: string | number,
 ) =>
   axiosInstance.delete(
-    `/api/customers/my-customers/${customerId}/notes/${noteId}`
+    `/api/customers/my-customers/${customerId}/notes/${noteId}`,
   );
 
 export const searchCustomers = async (
   name?: string,
   page?: number,
-  limit?: number
+  limit?: number,
 ) => {
   const params = new URLSearchParams();
   if (name) params.append('name', name);
@@ -187,11 +186,11 @@ export const updateCustomerPersonalDetails = async (
     name: string;
     primaryPhone?: string;
     email?: string;
-  }
+  },
 ) =>
   axiosInstance.patch(
     `/api/customers/my-customers/${customerId}/personal-details`,
-    data
+    data,
   );
 
 export const getArtistForms = async () =>
@@ -231,7 +230,7 @@ export const updateReminder = async (
     sendAt?: string;
     type?: string;
     note?: string;
-  }
+  },
 ) => axiosInstance.patch(`/api/reminders/${reminderId}`, data);
 
 export const deleteReminder = async (reminderId: string | number) =>
@@ -240,7 +239,7 @@ export const deleteReminder = async (reminderId: string | number) =>
 export const getMyServiceForms = async (services: number[]) => {
   const servicesParam = services.join(',');
   return axiosInstance.get(
-    `/api/forms/my-service-forms?services=${servicesParam}`
+    `/api/forms/my-service-forms?services=${servicesParam}`,
   );
 };
 
@@ -261,7 +260,7 @@ export const updateMySignature = async (data: { signature_url: string }) =>
 
 export const createSubscription = async (
   priceId: string,
-  paymentMethodId: string
+  paymentMethodId: string,
 ) => {
   return axiosInstance.post('/api/subscriptions/stripe/create-subscription', {
     priceId,
@@ -279,14 +278,14 @@ export const getSubscription = async () => {
 
 export const changeSubscriptionPlan = async (
   newPriceId: string,
-  paymentMethodId: string
+  paymentMethodId: string,
 ) => {
   return axiosInstance.post(
     '/api/subscriptions/stripe/change-subscription-plan',
     {
       newPriceId,
       paymentMethodId,
-    }
+    },
   );
 };
 

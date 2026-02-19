@@ -108,23 +108,23 @@ const SignatureModal: React.FC<SignatureModalProps> = ({
 
   const renderPaths = () => {
     const allPaths = [...paths];
-    if (currentPath.length > 0) {
+    if ((currentPath || []).length > 0) {
       allPaths.push(currentPath);
     }
 
-    return allPaths.map((path, pathIndex) => {
-      if (path.length < 2) return null;
+    return (allPaths || []).map((path, pathIndex) => {
+      if ((path || []).length < 2) return null;
 
-      let pathData = `M ${path[0].x} ${path[0].y}`;
-      for (let i = 1; i < path.length; i++) {
-        pathData += ` L ${path[i].x} ${path[i].y}`;
+      let pathData = `M ${path?.[0]?.x || 0} ${path?.[0]?.y || 0}`;
+      for (let i = 1; i < (path || []).length; i++) {
+        pathData += ` L ${path?.[i]?.x || 0} ${path?.[i]?.y || 0}`;
       }
 
       return (
         <Path
           key={pathIndex}
           d={pathData}
-          stroke="#000000"
+          stroke={colors.text}
           strokeWidth={2}
           fill="none"
           strokeLinecap="round"

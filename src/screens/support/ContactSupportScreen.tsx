@@ -12,10 +12,11 @@ import {
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useNavigation } from '@react-navigation/native';
-import { ArrowLeft } from 'lucide-react-native';
 import Toast from 'react-native-toast-message';
+import ScreenHeader from '../../components/layout/ScreenHeader';
 import useAuth from '../../hooks/useAuth';
 import { sendMessage } from '../../services/artistServices';
+import { colors } from '../../theme/colors';
 
 interface FormData {
   email: string;
@@ -84,7 +85,7 @@ const ContactSupportScreen: React.FC = () => {
   };
 
   return (
-    <SafeAreaView style={styles.container}>
+    <SafeAreaView style={styles.container} edges={[]}>
       <KeyboardAvoidingView
         behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
         style={styles.keyboardView}
@@ -94,19 +95,11 @@ const ContactSupportScreen: React.FC = () => {
           showsVerticalScrollIndicator={false}
         >
           <View style={styles.header}>
-            <View style={styles.headerActions}>
-              <TouchableOpacity
-                style={styles.backButton}
-                onPress={() => navigation.goBack()}
-              >
-                <ArrowLeft size={24} color="#000000" />
-              </TouchableOpacity>
-              <Text style={styles.title}>Contact Support</Text>
-            </View>
-            <Text style={styles.subtitle}>
-              Have a question or need help? Send us a message and we'll get back
-              to you.
-            </Text>
+            <ScreenHeader
+              title="Contact Support"
+              subtitle="Have a question or need help? Send us a message and we'll get back to you."
+              onBack={() => navigation.goBack()}
+            />
           </View>
 
           <View style={styles.form}>
@@ -169,7 +162,7 @@ const ContactSupportScreen: React.FC = () => {
               disabled={isSubmitting}
             >
               {isSubmitting ? (
-                <ActivityIndicator color="#fff" />
+                <ActivityIndicator color={colors.white} />
               ) : (
                 <Text style={styles.submitButtonText}>Submit</Text>
               )}
@@ -184,7 +177,6 @@ const ContactSupportScreen: React.FC = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#F8F9FA',
   },
   keyboardView: {
     flex: 1,
@@ -195,26 +187,6 @@ const styles = StyleSheet.create({
   },
   header: {
     marginBottom: 32,
-  },
-  headerActions: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    marginBottom: 8,
-    gap: 12,
-  },
-  backButton: {
-    padding: 8,
-  },
-  title: {
-    fontSize: 24,
-    fontWeight: 'bold',
-    color: '#000000',
-    flex: 1,
-  },
-  subtitle: {
-    fontSize: 16,
-    color: '#666',
-    lineHeight: 24,
   },
   form: {
     gap: 20,
@@ -231,22 +203,22 @@ const styles = StyleSheet.create({
     paddingVertical: 12,
     paddingHorizontal: 16,
     borderWidth: 1,
-    borderColor: '#e2e8f0',
+    borderColor: colors.borderColor,
     borderRadius: 12,
     fontSize: 16,
     color: '#1e293b',
-    backgroundColor: '#fff',
+    backgroundColor: '#BCBBC133',
   },
   inputDisabled: {
-    backgroundColor: '#f1f5f9',
-    color: '#64748b',
+    backgroundColor: '#BCBBC133',
+    color: colors.subtitleColor,
   },
   textArea: {
     minHeight: 120,
     paddingTop: 12,
   },
   submitButton: {
-    backgroundColor: '#8e2d8e',
+    backgroundColor: colors.primary,
     paddingVertical: 16,
     borderRadius: 12,
     alignItems: 'center',
@@ -256,7 +228,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#94a3b8',
   },
   submitButtonText: {
-    color: '#fff',
+    color: colors.white,
     fontSize: 16,
     fontWeight: '600',
   },

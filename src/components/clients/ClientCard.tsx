@@ -2,6 +2,7 @@ import React from 'react';
 import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
 import { ChevronRight } from 'lucide-react-native';
 import { Client } from '../../types';
+import { colors } from '../../theme/colors';
 
 interface ClientCardProps {
   client: Client;
@@ -40,7 +41,7 @@ const styles = StyleSheet.create({
   card: {
     flexDirection: 'row',
     alignItems: 'center',
-    backgroundColor: '#fff',
+    backgroundColor: colors.white,
     borderRadius: 12,
     padding: 16,
     marginHorizontal: 16,
@@ -67,12 +68,12 @@ const styles = StyleSheet.create({
   name: {
     fontSize: 16,
     fontWeight: '600',
-    color: '#000000',
+    color: colors.black,
     marginBottom: 2,
   },
   email: {
     fontSize: 14,
-    color: '#64748b',
+    color: colors.subtitleColor,
   },
   arrow: {
     flexShrink: 0,

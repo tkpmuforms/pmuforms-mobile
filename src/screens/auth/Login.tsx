@@ -88,7 +88,7 @@ const Login: React.FC<LoginProps> = ({ onToggleToSignup }) => {
             style={styles.eyeIcon}
             onPress={() => setShowPassword(!showPassword)}
           >
-            <EyeIcon size={20} color="#64748b" />
+            <EyeIcon size={20} color={colors.subtitleColor} />
           </TouchableOpacity>
         </View>
       </View>
@@ -103,7 +103,7 @@ const Login: React.FC<LoginProps> = ({ onToggleToSignup }) => {
         disabled={loading}
       >
         {loading ? (
-          <ActivityIndicator color="#fff" />
+          <ActivityIndicator color={colors.white} />
         ) : (
           <Text style={styles.buttonText}>Login</Text>
         )}
@@ -165,7 +165,7 @@ const styles = StyleSheet.create({
   },
   subtitle: {
     fontSize: 14,
-    color: '#64748b',
+    color: colors.subtitleColor,
     marginBottom: 32,
     lineHeight: 20,
     textAlign: 'center',
@@ -183,8 +183,8 @@ const styles = StyleSheet.create({
     width: '100%',
     padding: 14,
     borderWidth: 1,
-    borderColor: '#e2e8f0',
-    backgroundColor: '#f8fafc',
+    borderColor: colors.borderColor,
+    backgroundColor: '#BCBBC133',
     borderRadius: 8,
     fontSize: 14,
     color: '#1e293b',
@@ -219,7 +219,7 @@ const styles = StyleSheet.create({
     marginBottom: 24,
   },
   buttonText: {
-    color: '#fff',
+    color: colors.white,
     fontSize: 14,
     fontWeight: '600',
   },
@@ -230,7 +230,7 @@ const styles = StyleSheet.create({
   },
   toggleText: {
     fontSize: 12,
-    color: '#64748b',
+    color: colors.subtitleColor,
     textAlign: 'center',
   },
   toggleTextBold: {
@@ -282,7 +282,7 @@ const styles = StyleSheet.create({
   socialButtonTextApple: {
     fontSize: 14,
     fontWeight: '600',
-    color: '#fff',
+    color: colors.white,
   },
   socialIcon: {
     width: 24,

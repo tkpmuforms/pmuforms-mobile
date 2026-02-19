@@ -1,6 +1,7 @@
 import React from 'react';
 import { View, Text, StyleSheet, TouchableOpacity, Image } from 'react-native';
 import { Clock, Briefcase } from 'lucide-react-native';
+import { colors } from '../../theme/colors';
 
 interface AppointmentCardProps {
   name?: string;
@@ -47,12 +48,15 @@ const styles = StyleSheet.create({
   card: {
     backgroundColor: '#f8f8f8',
     borderRadius: 12,
-    padding: 14,
+    paddingVertical: 20,
+    paddingHorizontal: 10,
+    borderBottomColor: '#e0e0e0',
+    borderBottomWidth: 1,
   },
   header: {
     flexDirection: 'row',
     alignItems: 'center',
-    gap: 8,
+    gap: 10,
     marginBottom: 8,
   },
   avatarContainer: {
@@ -68,12 +72,12 @@ const styles = StyleSheet.create({
   name: {
     fontSize: 16,
     fontWeight: '600',
-    color: '#000000',
+    color: colors.black,
     flex: 1,
   },
   infoContainer: {
     flexDirection: 'row',
-    gap: 12,
+    gap: 10,
   },
   infoRow: {
     flexDirection: 'row',
@@ -84,7 +88,7 @@ const styles = StyleSheet.create({
     opacity: 0.7,
   },
   infoText: {
-    fontSize: 13,
+    fontSize: 12,
     color: '#5D5D5D',
     fontWeight: '300',
   },

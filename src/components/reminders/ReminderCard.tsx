@@ -2,6 +2,7 @@ import React from 'react';
 import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
 import { Bell, Calendar } from 'lucide-react-native';
 import { formatAppointmentTime } from '../../utils/utils';
+import { colors } from '../../theme/colors';
 
 interface Reminder {
   id: string;
@@ -67,7 +68,6 @@ const ReminderCard: React.FC<ReminderCardProps> = ({
 
 const styles = StyleSheet.create({
   reminderCard: {
-    backgroundColor: '#f8f9fa',
     borderRadius: 12,
     padding: 16,
     marginBottom: 12,
@@ -98,12 +98,12 @@ const styles = StyleSheet.create({
   date: {
     fontSize: 16,
     fontWeight: '600',
-    color: '#000000',
+    color: colors.black,
     marginBottom: 4,
   },
   note: {
     fontSize: 14,
-    color: '#64748b',
+    color: colors.subtitleColor,
     lineHeight: 20,
   },
   actions: {
@@ -112,7 +112,7 @@ const styles = StyleSheet.create({
   },
   editButton: {
     flex: 1,
-    backgroundColor: '#8e2d8e',
+    backgroundColor: colors.primary,
     paddingVertical: 10,
     paddingHorizontal: 16,
     borderRadius: 8,

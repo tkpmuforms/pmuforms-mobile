@@ -1,6 +1,10 @@
-import { useRoute, useNavigation } from '@react-navigation/native';
-import { Plus, ArrowLeft } from 'lucide-react-native';
-import React, { useEffect, useState } from 'react';
+import {
+  useRoute,
+  useNavigation,
+  useFocusEffect,
+} from '@react-navigation/native';
+import { Plus } from 'lucide-react-native';
+import React, { useCallback, useEffect, useState } from 'react';
 import {
   ActivityIndicator,
   FlatList,
@@ -13,7 +17,6 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import Toast from 'react-native-toast-message';
 import DeleteModal from '../../components/clients/DeleteModal';
 import NoteCard from '../../components/clients/NoteCard';
-import NotesModal from '../../components/clients/NotesModal';
 import { Note } from '../../types';
 import {
   getCustomerNotes,
@@ -21,6 +24,9 @@ import {
   updateCustomerNote,
   deleteCustomerNote,
 } from '../../services/artistServices';
+import ScreenHeader from '../../components/layout/ScreenHeader';
+import { colors } from '../../theme/colors';
+import { NotesIcon } from '../../../assets/svg';
 
 interface ClientNotesScreenProps {}
 
@@ -43,7 +49,6 @@ const ClientNotesScreen: React.FC<ClientNotesScreenProps> = () => {
     client?: any;
   };
 
-  const [showNotesModal, setShowNotesModal] = useState(false);
   const [showDeleteModal, setShowDeleteModal] = useState(false);
   const [selectedNote, setSelectedNote] = useState<Note | null>(null);
   const [notes, setNotes] = useState<Note[]>([]);
@@ -55,11 +60,20 @@ const ClientNotesScreen: React.FC<ClientNotesScreenProps> = () => {
     }
   }, [clientId]);
 
+  useFocusEffect(
+    useCallback(() => {
+      if (clientId) {
+        loadNotes();
+      }
+    }, [clientId]),
+  );
+
   const loadNotes = async () => {
     try {
       setLoading(true);
       const response = await getCustomerNotes(clientId);
-      setNotes(response.data?.notes || []);
+      console.log('Notes response:', response?.data?.notes);
+      setNotes(response?.data?.notes || []);
     } catch (error) {
       console.error('Error loading notes:', error);
       Toast.show({
@@ -72,14 +86,85 @@ const ClientNotesScreen: React.FC<ClientNotesScreenProps> = () => {
     }
   };
 
+  const handleSaveNote = async (noteContent: string, imageUrl?: string) => {
+    try {
+      const response = await addCustomerNote(clientId, {
+        note: noteContent,
+        imageUrl,
+      });
+      const newNote = response?.data?.note;
+      if (newNote) {
+        setNotes(prev => [newNote, ...(prev || [])]);
+      }
+      Toast.show({
+        type: 'success',
+        text1: 'Success',
+        text2: 'Note added successfully',
+      });
+    } catch (error) {
+      console.error('Error saving note:', error);
+      Toast.show({
+        type: 'error',
+        text1: 'Error',
+        text2: 'Failed to save note',
+      });
+      throw error;
+    }
+  };
+
+  const handleUpdateNote = async (
+    noteId: string,
+    noteContent: string,
+    imageUrl?: string,
+  ) => {
+    try {
+      await updateCustomerNote(clientId, noteId, {
+        note: noteContent,
+        imageUrl,
+      });
+      setNotes(prev =>
+        (prev || []).map(n =>
+          n?.id === noteId
+            ? {
+                ...n,
+                note: noteContent,
+                imageUrl,
+                updatedAt: new Date().toISOString(),
+              }
+            : n,
+        ),
+      );
+      Toast.show({
+        type: 'success',
+        text1: 'Success',
+        text2: 'Note updated successfully',
+      });
+    } catch (error) {
+      console.error('Error updating note:', error);
+      Toast.show({
+        type: 'error',
+        text1: 'Error',
+        text2: 'Failed to update note',
+      });
+      throw error;
+    }
+  };
+
   const handleAddNote = () => {
-    setSelectedNote(null);
-    setShowNotesModal(true);
+    navigation.navigate('AddNote', {
+      clientId,
+      onSave: handleSaveNote,
+    });
   };
 
   const handleNoteClick = (note: Note) => {
-    setSelectedNote(note);
-    setShowNotesModal(true);
+    navigation.navigate('AddNote', {
+      clientId,
+      note,
+      onSave: async (noteContent: string, imageUrl?: string) => {
+        await handleUpdateNote(note.id, noteContent, imageUrl);
+      },
+    });
   };
 
   const handleDeleteNote = (note: Note) => {
@@ -110,77 +195,13 @@ const ClientNotesScreen: React.FC<ClientNotesScreenProps> = () => {
     }
   };
 
-  const handleSaveNote = async (noteContent: string, imageUrl?: string) => {
-    try {
-      if (selectedNote) {
-        await updateCustomerNote(clientId, selectedNote.id, {
-          note: noteContent,
-          imageUrl,
-        });
-        setNotes(prev =>
-          prev.map(n =>
-            n.id === selectedNote.id
-              ? {
-                  ...n,
-                  note: noteContent,
-                  imageUrl,
-                  updatedAt: new Date().toISOString(),
-                }
-              : n,
-          ),
-        );
-        Toast.show({
-          type: 'success',
-          text1: 'Success',
-          text2: 'Note updated successfully',
-        });
-      } else {
-        const response = await addCustomerNote(clientId, {
-          note: noteContent,
-          imageUrl,
-        });
-        const newNote = response.data.note;
-        setNotes(prev => [newNote, ...prev]);
-        Toast.show({
-          type: 'success',
-          text1: 'Success',
-          text2: 'Note added successfully',
-        });
-      }
-      setShowNotesModal(false);
-      setSelectedNote(null);
-    } catch (error) {
-      console.error('Error saving note:', error);
-      Toast.show({
-        type: 'error',
-        text1: 'Error',
-        text2: 'Failed to save note',
-      });
-    }
-  };
-
   const renderHeader = () => (
-    <View style={styles.header}>
-      <View style={styles.headerTop}>
-        <TouchableOpacity
-          style={styles.backButton}
-          onPress={() => navigation.goBack()}
-        >
-          <ArrowLeft size={24} color="#000000" />
-        </TouchableOpacity>
-        <View style={styles.headerContent}>
-          <Text style={styles.headerTitle}>
-            {client?.name || 'Client'}'s Notes
-          </Text>
-          <Text style={styles.headerSubtitle}>
-            {notes.length} {notes.length === 1 ? 'Note' : 'Notes'}
-          </Text>
-        </View>
-      </View>
-      <TouchableOpacity style={styles.addButton} onPress={handleAddNote}>
-        <Plus size={20} color="#fff" />
-        <Text style={styles.addButtonText}>Add Note</Text>
-      </TouchableOpacity>
+    <View>
+      <ScreenHeader
+        title={`${client?.name || 'Client'}'s Notes`}
+        subtitle={`${notes.length} ${notes.length === 1 ? 'Note' : 'Notes'}`}
+        onBack={() => navigation.goBack()}
+      />
     </View>
   );
 
@@ -197,7 +218,7 @@ const ClientNotesScreen: React.FC<ClientNotesScreenProps> = () => {
     return (
       <SafeAreaView style={styles.container}>
         <View style={styles.loadingContainer}>
-          <ActivityIndicator size="large" color="#8e2d8e" />
+          <ActivityIndicator size="large" color={colors.primary} />
         </View>
       </SafeAreaView>
     );
@@ -206,6 +227,10 @@ const ClientNotesScreen: React.FC<ClientNotesScreenProps> = () => {
   return (
     <SafeAreaView style={styles.container}>
       {renderHeader()}
+      <TouchableOpacity style={styles.addButton} onPress={handleAddNote}>
+        <NotesIcon />
+        <Text style={styles.addButtonText}>Tap Here to Add Note</Text>
+      </TouchableOpacity>
 
       <FlatList
         data={notes}
@@ -226,25 +251,13 @@ const ClientNotesScreen: React.FC<ClientNotesScreenProps> = () => {
         ListEmptyComponent={renderEmptyState}
       />
 
-      {showNotesModal && (
-        <NotesModal
-          visible={showNotesModal}
-          note={selectedNote}
-          onClose={() => {
-            setShowNotesModal(false);
-            setSelectedNote(null);
-          }}
-          onSave={handleSaveNote}
-        />
-      )}
-
       {showDeleteModal && (
         <DeleteModal
           visible={showDeleteModal}
-          title="Delete Note"
-          message="Are you sure you want to delete this note? This action cannot be undone."
+          headerText="Delete Note"
+          shorterText="Are you sure you want to delete this note? This action cannot be undone."
           onClose={() => setShowDeleteModal(false)}
-          onConfirm={handleDeleteConfirm}
+          handleDelete={handleDeleteConfirm}
         />
       )}
     </SafeAreaView>
@@ -254,7 +267,6 @@ const ClientNotesScreen: React.FC<ClientNotesScreenProps> = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#F8F9FA',
   },
   loadingContainer: {
     flex: 1,
@@ -262,7 +274,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   header: {
-    backgroundColor: '#fff',
+    backgroundColor: colors.white,
     paddingHorizontal: 16,
     paddingVertical: 16,
     borderBottomWidth: 1,
@@ -283,7 +295,7 @@ const styles = StyleSheet.create({
   headerTitle: {
     fontSize: 24,
     fontWeight: 'bold',
-    color: '#000000',
+    color: colors.black,
     marginBottom: 4,
   },
   headerSubtitle: {
@@ -294,14 +306,14 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
-    backgroundColor: 'linear-gradient(90deg, #8E2D8E 0%, #A654CD 100%)',
+    backgroundColor: '#F4EAF4',
     paddingVertical: 12,
     paddingHorizontal: 16,
     borderRadius: 8,
     gap: 8,
   },
   addButtonText: {
-    color: '#fff',
+    color: colors.primary,
     fontSize: 16,
     fontWeight: '600',
   },
@@ -321,7 +333,7 @@ const styles = StyleSheet.create({
   emptyStateTitle: {
     fontSize: 20,
     fontWeight: '600',
-    color: '#000000',
+    color: colors.black,
     marginBottom: 8,
   },
   emptyStateText: {

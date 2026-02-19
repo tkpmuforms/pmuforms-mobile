@@ -9,6 +9,7 @@ import {
 import ImageSlider from '../../components/ImageSlider';
 import Login from './Login';
 import Signup from './Signup';
+import { colors } from '../../theme/colors';
 
 type AuthPage = 'login' | 'signup';
 
@@ -45,7 +46,7 @@ const AuthScreen = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#fff',
+    backgroundColor: colors.white,
   },
   content: {
     flex: 1,

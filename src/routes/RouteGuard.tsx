@@ -1,6 +1,6 @@
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { ActivityIndicator, StyleSheet, View } from 'react-native';
 import {
   HomeIcon,
@@ -15,7 +15,13 @@ import {
 import AuthenticatedLayout from '../components/layout/AuthenticatedLayout';
 import useAuth from '../hooks/useAuth';
 import { colors } from '../theme/colors';
-import { authorizedRoutes, nonAuthRoutes } from './routeConfig';
+import {
+  authorizedRoutes,
+  nonAuthRoutes,
+  onboardingRoutes,
+} from './routeConfig';
+import { determineOnboardingStep } from '../utils/authUtils';
+import { OnboardingStep } from '../types';
 
 const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -70,7 +76,7 @@ const AuthenticatedTabs = () => {
         tabBarActiveTintColor: colors.primary,
         tabBarInactiveTintColor: colors.textLight,
         tabBarStyle: {
-          backgroundColor: '#fff',
+          backgroundColor: colors.white,
           borderTopWidth: 1,
           borderTopColor: colors.border,
           paddingBottom: 25,
@@ -124,16 +130,75 @@ const AuthenticatedStack = () => {
   );
 };
 
-const RouteGuard = () => {
-  const { isAuthenticated, loading } = useAuth();
+const stepToRoute: Record<OnboardingStep, string> = {
+  businessName: 'OnboardingBusinessName',
+  services: 'OnboardingServices',
+  payment: 'OnboardingPayment',
+  completed: 'OnboardingBusinessName',
+};
 
-  if (loading) {
+const OnboardingStack = ({ route }: any) => {
+  const step: OnboardingStep = route?.params?.step || 'businessName';
+  const initialRoute = stepToRoute[step];
+
+  return (
+    <Stack.Navigator
+      initialRouteName={initialRoute}
+      screenOptions={{
+        headerShown: false,
+      }}
+    >
+      {onboardingRoutes.map(r => (
+        <Stack.Screen
+          key={r.name}
+          name={r.name}
+          component={r.component}
+        />
+      ))}
+      <Stack.Screen name="Main" component={AuthenticatedStack} />
+      {authorizedRoutes
+        .filter(r => r.name === 'Payment')
+        .map(r => (
+          <Stack.Screen key={r.name} name={r.name}>
+            {props => (
+              <AuthenticatedLayout
+                breadcrumbs={r.breadcrumbs}
+                navigation={props.navigation}
+              >
+                <r.component {...props} />
+              </AuthenticatedLayout>
+            )}
+          </Stack.Screen>
+        ))}
+    </Stack.Navigator>
+  );
+};
+
+const RouteGuard = () => {
+  const { isAuthenticated, loading, user } = useAuth();
+  const [onboardingStep, setOnboardingStep] =
+    useState<OnboardingStep>('completed');
+  const [checkingOnboarding, setCheckingOnboarding] = useState(true);
+
+  useEffect(() => {
+    if (isAuthenticated && user && Object.keys(user).length > 0) {
+      const step = determineOnboardingStep(user as any);
+      setOnboardingStep(step);
+      setCheckingOnboarding(false);
+    } else if (!isAuthenticated) {
+      setCheckingOnboarding(false);
+    }
+  }, [isAuthenticated, user]);
+
+  if (loading || checkingOnboarding) {
     return (
       <View style={styles.loadingContainer}>
-        <ActivityIndicator size="large" color="#8e2d8e" />
+        <ActivityIndicator size="large" color={colors.primary} />
       </View>
     );
   }
+
+  const needsOnboarding = isAuthenticated && onboardingStep !== 'completed';
 
   return (
     <Stack.Navigator screenOptions={{ headerShown: false }}>
@@ -147,6 +212,12 @@ const RouteGuard = () => {
             />
           ))}
         </>
+      ) : needsOnboarding ? (
+        <Stack.Screen
+          name="Onboarding"
+          component={OnboardingStack}
+          initialParams={{ step: onboardingStep }}
+        />
       ) : (
         <Stack.Screen name="Main" component={AuthenticatedStack} />
       )}
@@ -159,7 +230,7 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: '#fff',
+    backgroundColor: colors.white,
   },
 });
 

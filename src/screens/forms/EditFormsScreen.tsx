@@ -1,69 +1,71 @@
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import {
   View,
   Text,
   StyleSheet,
   ScrollView,
   TouchableOpacity,
-  ActivityIndicator,
   Alert,
 } from 'react-native';
-import { useRoute, useNavigation } from '@react-navigation/native';
+import {
+  useRoute,
+  useNavigation,
+  useFocusEffect,
+} from '@react-navigation/native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Edit, Trash2, Plus } from 'lucide-react-native';
 import Toast from 'react-native-toast-message';
 import { colors } from '../../theme/colors';
 import useAuth from '../../hooks/useAuth';
-import AddFieldModal from '../../components/forms/AddFieldModal';
-import FieldInputModal from '../../components/forms/FieldInputModal';
-import EditParagraphModal from '../../components/forms/EditParagraphModal';
 import EditFormServices from '../../components/forms/EditFormServices';
+import EditFormSkeleton from '../../components/skeleton/EditFormSkeleton';
 
 import {
   deleteFormSectionData,
   getFormById,
   getServices,
-  updateFormSectionData,
   updateFormServices,
-  addFormSectionData,
 } from '../../services/artistServices';
 import { FieldData, Section, Service, SingleForm } from '../../types';
 
 const EditFormsScreen: React.FC = () => {
   const route = useRoute();
-  const navigation = useNavigation();
+  const navigation = useNavigation<any>();
   const { user } = useAuth();
   const { formId } = (route.params as { formId?: string }) || {};
 
   const [form, setForm] = useState<SingleForm | null>(null);
   const [loading, setLoading] = useState(true);
   const [allServices, setAllServices] = useState<Service[]>([]);
-  const [showAddFieldModal, setShowAddFieldModal] = useState(false);
-  const [showFieldInputModal, setShowFieldInputModal] = useState(false);
-  const [showEditParagraphModal, setShowEditParagraphModal] = useState(false);
   const [showServicesModal, setShowServicesModal] = useState(false);
-  const [selectedFieldType, setSelectedFieldType] = useState<any>(null);
-  const [selectedField, setSelectedField] = useState<FieldData | null>(null);
-  const [currentSectionId, setCurrentSectionId] = useState<string>('');
+  const [formTemplateId, setFormTemplateId] = useState<string>(formId || '');
 
   useEffect(() => {
     fetchServices();
   }, []);
 
   useEffect(() => {
-    if (formId) {
-      fetchForm();
+    if (!formTemplateId) {
+      navigation.goBack();
     }
-  }, [formId]);
+  }, [formTemplateId, navigation]);
+
+  useFocusEffect(
+    useCallback(() => {
+      if (formTemplateId) {
+        fetchForm();
+      }
+    }, [formTemplateId]),
+  );
 
   const fetchServices = async () => {
     try {
       const response = await getServices();
-      const services: Service[] = response.data.services.map(
+      const services: Service[] = (response?.data?.services || []).map(
         (service: Service) => ({
-          _id: service._id,
-          id: service.id,
-          service: service.service,
+          _id: service?._id || '',
+          id: service?.id || 0,
+          service: service?.service || '',
         }),
       );
       setAllServices(services);
@@ -77,35 +79,48 @@ const EditFormsScreen: React.FC = () => {
     }
   };
 
+  const processFormResponse = (formData: any): SingleForm => {
+    const transformedForm: SingleForm = {
+      id: formData?.id || formData?._id || '',
+      type: formData?.type || 'consent',
+      title: formData?.title || '',
+      sections: (formData?.sections || []).map((section: Section) => ({
+        ...section,
+        _id: section?._id || section?.id,
+      })),
+      services: formData?.services || [],
+    };
+
+    return JSON.parse(
+      JSON.stringify(transformedForm).replace(
+        /\(?\{\{user\.businessName\}\}\)?/g,
+        user?.businessName || 'Your Business Name',
+      ),
+    );
+  };
+
+  const handleFormResponse = (response: any) => {
+    if (response?.data?.form) {
+      const newFormId = response.data.form.id || response.data.form._id;
+      if (newFormId && newFormId !== formTemplateId) {
+        setFormTemplateId(newFormId);
+      }
+      const updatedForm = processFormResponse(response.data.form);
+      setForm(updatedForm);
+      return updatedForm;
+    }
+    return null;
+  };
+
   const fetchForm = async () => {
-    if (!formId) return;
+    if (!formTemplateId) return;
 
     try {
       setLoading(true);
-
-      const response = await getFormById(formId);
+      const response = await getFormById(formTemplateId);
 
       if (response?.data?.form) {
-        const formData = response?.data?.form;
-
-        const transformedForm: SingleForm = {
-          id: formData.id || formData._id,
-          type: formData.type,
-          title: formData.title,
-          sections: formData.sections.map((section: Section) => ({
-            ...section,
-            _id: section._id || section.id,
-          })),
-          services: formData.services || [],
-        };
-
-        const updatedForm = JSON.parse(
-          JSON.stringify(transformedForm).replace(
-            /\(?\{\{user\.businessName\}\}\)?/g,
-            user?.businessName || 'Your Business Name',
-          ),
-        );
-
+        const updatedForm = processFormResponse(response.data.form);
         setForm(updatedForm);
       } else {
         Toast.show({
@@ -124,16 +139,32 @@ const EditFormsScreen: React.FC = () => {
   };
 
   const handleEditField = (field: FieldData) => {
-    setSelectedField(field);
+    if (!form) return;
 
-    if (field.type === 'paragraph' || field.type === 'heading') {
-      setShowEditParagraphModal(true);
-    } else {
-      setSelectedFieldType({
-        type: field.type,
-        title: field.type.charAt(0).toUpperCase() + field.type.slice(1),
+    if (!field.type || field.type === 'paragraph' || field.type === 'heading') {
+      navigation.navigate('EditParagraph', {
+        formId: form.id,
+        sectionId: field.sectionId || '',
+        afterFieldId: '',
+        fieldId: field.id,
+        initialContent: field.content || field.title || '',
+        initialRequired: field.required || false,
+        fieldLine: field.line,
       });
-      setShowFieldInputModal(true);
+    } else {
+      navigation.navigate('FieldInput', {
+        formId: form.id,
+        sectionId: field.sectionId || '',
+        afterFieldId: '',
+        fieldType: {
+          type: field.type,
+          title: field.type.charAt(0).toUpperCase() + field.type.slice(1),
+        },
+        fieldId: field.id,
+        initialTitle: field.title || '',
+        initialRequired: field.required || false,
+        fieldLine: field.line,
+      });
     }
   };
 
@@ -150,26 +181,28 @@ const EditFormsScreen: React.FC = () => {
             if (!form || !field) return;
 
             try {
-              await deleteFormSectionData(
+              const response = await deleteFormSectionData(
                 form.id,
                 field.sectionId || '',
                 field.id,
               );
 
-              const updatedForm = { ...form };
-              updatedForm.sections = updatedForm.sections.map(section => {
-                if (
-                  section.id === field.sectionId ||
-                  section._id === field.sectionId
-                ) {
-                  return {
-                    ...section,
-                    data: section.data.filter(f => f.id !== field.id),
-                  };
-                }
-                return section;
-              });
-              setForm(updatedForm);
+              if (!handleFormResponse(response)) {
+                const updatedForm = { ...form };
+                updatedForm.sections = updatedForm.sections.map(section => {
+                  if (
+                    section.id === field.sectionId ||
+                    section._id === field.sectionId
+                  ) {
+                    return {
+                      ...section,
+                      data: section.data.filter(f => f.id !== field.id),
+                    };
+                  }
+                  return section;
+                });
+                setForm(updatedForm);
+              }
 
               Toast.show({
                 type: 'success',
@@ -190,20 +223,13 @@ const EditFormsScreen: React.FC = () => {
     );
   };
 
-  const handleAddField = (sectionId: string) => {
-    setCurrentSectionId(sectionId);
-    setShowAddFieldModal(true);
-  };
-
-  const handleFieldTypeSelect = (fieldType: any) => {
-    setSelectedFieldType(fieldType);
-    setShowAddFieldModal(false);
-
-    if (fieldType.type === 'paragraph') {
-      setShowEditParagraphModal(true);
-    } else {
-      setShowFieldInputModal(true);
-    }
+  const handleAddField = (sectionId: string, afterFieldId: string) => {
+    if (!form) return;
+    navigation.navigate('AddField', {
+      formId: form.id,
+      sectionId,
+      afterFieldId,
+    });
   };
 
   const handleSaveForm = () => {
@@ -222,11 +248,15 @@ const EditFormsScreen: React.FC = () => {
     if (!form) return;
 
     try {
-      await updateFormServices(form.id, selectedServiceIds);
+      const response = await updateFormServices(form.id, {
+        services: selectedServiceIds,
+      });
 
-      const updatedForm = { ...form };
-      updatedForm.services = selectedServiceIds;
-      setForm(updatedForm);
+      if (!handleFormResponse(response)) {
+        const updatedForm = { ...form };
+        updatedForm.services = selectedServiceIds;
+        setForm(updatedForm);
+      }
 
       Toast.show({
         type: 'success',
@@ -243,207 +273,81 @@ const EditFormsScreen: React.FC = () => {
     }
   };
 
-  const handleSaveFieldInput = async (title: string, isRequired: boolean) => {
-    if (!form) return;
+  const renderAddFieldButton = (sectionId: string, afterFieldId: string) => (
+    <TouchableOpacity
+      style={styles.addFieldButton}
+      onPress={() => handleAddField(sectionId, afterFieldId)}
+    >
+      <Plus size={14} color={colors.primary} />
+      <Text style={styles.addFieldText}>Add Field</Text>
+    </TouchableOpacity>
+  );
 
-    try {
-      if (selectedField) {
-        await updateFormSectionData(
-          form.id,
-          selectedField.sectionId || '',
-          selectedField.id,
-          { title, required: isRequired },
-        );
-
-        const updatedForm = { ...form };
-        updatedForm.sections = updatedForm.sections.map(section => {
-          if (
-            section.id === selectedField.sectionId ||
-            section._id === selectedField.sectionId
-          ) {
-            return {
-              ...section,
-              data: section.data.map(f =>
-                f.id === selectedField.id
-                  ? { ...f, title, required: isRequired }
-                  : f,
-              ),
-            };
-          }
-          return section;
-        });
-        setForm(updatedForm);
-
-        Toast.show({
-          type: 'success',
-          text1: 'Success',
-          text2: 'Field updated successfully',
-        });
-      } else {
-        const newField = {
-          type: selectedFieldType.type,
-          title,
-          required: isRequired,
-        };
-
-        await addFormSectionData(form.id, currentSectionId, newField);
-
-        await fetchForm();
-
-        Toast.show({
-          type: 'success',
-          text1: 'Success',
-          text2: 'Field added successfully',
-        });
-      }
-
-      setShowFieldInputModal(false);
-      setSelectedField(null);
-      setSelectedFieldType(null);
-    } catch (error) {
-      console.error('Error saving field:', error);
-      Toast.show({
-        type: 'error',
-        text1: 'Error',
-        text2: 'Failed to save field',
-      });
-    }
-  };
-
-  const handleSaveParagraph = async (content: string) => {
-    if (!form) return;
-
-    try {
-      if (selectedField) {
-        await updateFormSectionData(
-          form.id,
-          selectedField.sectionId || '',
-          selectedField.id,
-          { content },
-        );
-
-        const updatedForm = { ...form };
-        updatedForm.sections = updatedForm.sections.map(section => {
-          if (
-            section.id === selectedField.sectionId ||
-            section._id === selectedField.sectionId
-          ) {
-            return {
-              ...section,
-              data: section.data.map(f =>
-                f.id === selectedField.id ? { ...f, content } : f,
-              ),
-            };
-          }
-          return section;
-        });
-        setForm(updatedForm);
-
-        Toast.show({
-          type: 'success',
-          text1: 'Success',
-          text2: 'Paragraph updated successfully',
-        });
-      } else {
-        const newParagraph = {
-          type: 'paragraph',
-          content,
-        };
-
-        await addFormSectionData(form.id, currentSectionId, newParagraph);
-
-        await fetchForm();
-
-        Toast.show({
-          type: 'success',
-          text1: 'Success',
-          text2: 'Paragraph added successfully',
-        });
-      }
-
-      setShowEditParagraphModal(false);
-      setSelectedField(null);
-    } catch (error) {
-      console.error('Error saving paragraph:', error);
-      Toast.show({
-        type: 'error',
-        text1: 'Error',
-        text2: 'Failed to save paragraph',
-      });
-    }
-  };
-
-  const renderField = (field: FieldData, index: number) => {
+  const renderField = (field: FieldData, sectionId: string, index: number) => {
     return (
-      <View key={field.id || index} style={styles.fieldItem}>
-        <View style={styles.fieldHeader}>
-          <View style={styles.fieldInfo}>
-            <Text style={styles.fieldTitle}>
-              {field.title}
-              {field.required && <Text style={styles.required}> *</Text>}
-            </Text>
-            <Text style={styles.fieldType}>{field.type}</Text>
-          </View>
-          <View style={styles.fieldActions}>
-            <TouchableOpacity
-              style={styles.iconButton}
-              onPress={() => handleEditField(field)}
-            >
-              <Edit size={16} color={colors.primary} />
-            </TouchableOpacity>
-            <TouchableOpacity
-              style={styles.iconButton}
-              onPress={() => handleDeleteField(field)}
-            >
-              <Trash2 size={16} color={colors.error} />
-            </TouchableOpacity>
+      <View key={field.id || index}>
+        <View style={styles.fieldItem}>
+          <View style={styles.fieldHeader}>
+            <View style={styles.fieldInfo}>
+              <Text style={styles.fieldTitle}>
+                {field.title}
+                {field.required && <Text style={styles.required}> *</Text>}
+              </Text>
+              <Text style={styles.fieldType}>{field.type}</Text>
+            </View>
+            <View style={styles.fieldActions}>
+              <TouchableOpacity
+                style={styles.iconButton}
+                onPress={() => handleEditField(field)}
+              >
+                <Edit size={16} color={colors.primary} />
+              </TouchableOpacity>
+              <TouchableOpacity
+                style={styles.iconButton}
+                onPress={() => handleDeleteField(field)}
+              >
+                <Trash2 size={16} color={colors.error} />
+              </TouchableOpacity>
+            </View>
           </View>
         </View>
+        {renderAddFieldButton(sectionId, field.id)}
       </View>
     );
   };
 
   const renderSection = (section: Section) => {
+    const sectionId = section._id || section.id;
     return (
-      <View key={section._id || section.id} style={styles.section}>
+      <View key={sectionId} style={styles.section}>
         <Text style={styles.sectionTitle}>{section.title}</Text>
 
         {section.data && section.data.length > 0 ? (
           <View style={styles.fieldsList}>
             {section.data.map((field, index) => {
-              const fieldWithSection = {
+              const fieldWithSection: FieldData = {
                 ...field,
-                sectionId: section._id || section.id,
+                type: field.type || 'paragraph',
+                sectionId,
               };
-              return renderField(fieldWithSection, index);
+              return renderField(fieldWithSection, sectionId, index);
             })}
           </View>
         ) : (
-          <Text style={styles.noFieldsText}>No fields in this section</Text>
+          renderAddFieldButton(sectionId, '')
         )}
-
-        <TouchableOpacity
-          style={styles.addFieldButton}
-          onPress={() => handleAddField(section._id || section.id)}
-        >
-          <Plus size={16} color={colors.primary} />
-          <Text style={styles.addFieldText}>Add Field</Text>
-        </TouchableOpacity>
       </View>
     );
   };
 
-  if (!formId) {
-    navigation.goBack();
+  if (!formTemplateId) {
     return null;
   }
 
   if (loading) {
     return (
-      <SafeAreaView style={styles.container}>
-        <View style={styles.loadingContainer}>
-          <ActivityIndicator size="large" color={colors.primary} />
-        </View>
+      <SafeAreaView style={styles.container} edges={[]}>
+        <EditFormSkeleton />
       </SafeAreaView>
     );
   }
@@ -465,7 +369,7 @@ const EditFormsScreen: React.FC = () => {
   }
 
   return (
-    <SafeAreaView style={styles.container}>
+    <SafeAreaView style={styles.container} edges={[]}>
       <View style={styles.header}>
         <Text style={styles.title} numberOfLines={1}>
           {form.title}
@@ -515,36 +419,6 @@ const EditFormsScreen: React.FC = () => {
         )}
       </ScrollView>
 
-      {/* Modals */}
-      <AddFieldModal
-        visible={showAddFieldModal}
-        onClose={() => setShowAddFieldModal(false)}
-        onSelectFieldType={handleFieldTypeSelect}
-      />
-
-      <FieldInputModal
-        visible={showFieldInputModal}
-        onClose={() => {
-          setShowFieldInputModal(false);
-          setSelectedField(null);
-          setSelectedFieldType(null);
-        }}
-        onSave={handleSaveFieldInput}
-        fieldType={selectedFieldType || { type: 'text', title: 'Field' }}
-        initialTitle={selectedField?.title}
-        initialRequired={selectedField?.required}
-      />
-
-      <EditParagraphModal
-        visible={showEditParagraphModal}
-        onClose={() => {
-          setShowEditParagraphModal(false);
-          setSelectedField(null);
-        }}
-        onSave={handleSaveParagraph}
-        initialContent={selectedField?.content}
-      />
-
       <EditFormServices
         visible={showServicesModal}
         onClose={() => setShowServicesModal(false)}
@@ -560,11 +434,6 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: colors.background,
-  },
-  loadingContainer: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
   },
   emptyContainer: {
     flex: 1,
@@ -724,12 +593,6 @@ const styles = StyleSheet.create({
     backgroundColor: colors.white,
     justifyContent: 'center',
     alignItems: 'center',
-  },
-  noFieldsText: {
-    fontSize: 14,
-    color: colors.textLight,
-    fontStyle: 'italic',
-    marginBottom: 12,
   },
   addFieldButton: {
     flexDirection: 'row',

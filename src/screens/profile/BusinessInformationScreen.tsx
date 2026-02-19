@@ -8,24 +8,23 @@ import {
   Image,
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { Edit, ArrowLeft } from 'lucide-react-native';
+import { Edit } from 'lucide-react-native';
 import { useNavigation } from '@react-navigation/native';
 import { colors } from '../../theme/colors';
 import useAuth from '../../hooks/useAuth';
 import { Service } from '../../types';
-import EditBusinessInformationModal from '../../components/profile/EditBusinessInformationModal';
 import UpdateServicesModal from '../../components/profile/UpdateServicesModal';
+import ScreenHeader from '../../components/layout/ScreenHeader';
 
 const BusinessInformationScreen: React.FC = () => {
   const { user } = useAuth();
   const navigation = useNavigation();
-  const [showEditBusinessName, setShowEditBusinessName] = useState(false);
   const [showUpdateServices, setShowUpdateServices] = useState(false);
 
   const registeredServices = (user?.services || []) as Service[];
 
   const handleEditBusinessName = () => {
-    setShowEditBusinessName(true);
+    navigation.navigate('EditBusinessInformation');
   };
 
   const handleEditServices = () => {
@@ -33,25 +32,18 @@ const BusinessInformationScreen: React.FC = () => {
   };
 
   const getInitials = () => {
-    if (user?.firstName && user?.lastName) {
+    if (user?.firstName?.[0] && user?.lastName?.[0]) {
       return `${user.firstName[0]}${user.lastName[0]}`.toUpperCase();
     }
     return 'Logo';
   };
 
   return (
-    <SafeAreaView style={styles.container}>
-      <View style={styles.header}>
-        <View style={styles.headerActions}>
-          <TouchableOpacity
-            style={styles.backButton}
-            onPress={() => navigation.goBack()}
-          >
-            <ArrowLeft size={24} color="#000000" />
-          </TouchableOpacity>
-          <Text style={styles.title}>Business Information</Text>
-        </View>
-      </View>
+    <SafeAreaView style={styles.container} edges={[]}>
+      <ScreenHeader
+        title="Business Information"
+        onBack={() => navigation.goBack()}
+      />
 
       <ScrollView
         style={styles.scrollView}
@@ -136,12 +128,6 @@ const BusinessInformationScreen: React.FC = () => {
         </View>
       </ScrollView>
 
-      <EditBusinessInformationModal
-        visible={showEditBusinessName}
-        onClose={() => setShowEditBusinessName(false)}
-        onSave={() => setShowEditBusinessName(false)}
-      />
-
       <UpdateServicesModal
         visible={showUpdateServices}
         onClose={() => setShowUpdateServices(false)}
@@ -156,45 +142,23 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: colors.background,
   },
-  header: {
-    padding: 16,
-    backgroundColor: colors.white,
-    borderBottomWidth: 1,
-    borderBottomColor: colors.border,
-  },
-  headerActions: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: 12,
-  },
-  backButton: {
-    padding: 8,
-  },
-  title: {
-    fontSize: 24,
-    fontWeight: 'bold',
-    color: colors.text,
-    flex: 1,
-  },
   scrollView: {
     flex: 1,
   },
   scrollContent: {
-    padding: 16,
+    padding: 15,
   },
   section: {
     backgroundColor: colors.white,
     borderRadius: 12,
-    padding: 20,
+    padding: 1,
     marginBottom: 16,
-    borderWidth: 1,
-    borderColor: colors.border,
   },
   sectionContent: {
     marginBottom: 16,
   },
   label: {
-    fontSize: 14,
+    fontSize: 15,
     fontWeight: '600',
     color: colors.textLight,
     marginTop: 16,

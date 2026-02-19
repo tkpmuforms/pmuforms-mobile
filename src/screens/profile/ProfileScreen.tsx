@@ -20,6 +20,7 @@ import ChangePasswordModal from '../../components/profile/ChangePasswordModal';
 import EditBusinessInformationModal from '../../components/profile/EditBusinessInformationModal';
 import UpdateServicesModal from '../../components/profile/UpdateServicesModal';
 import useAuth from '../../hooks/useAuth';
+import { colors } from '../../theme/colors';
 
 interface ProfileScreenProps {
   navigation?: any;
@@ -102,7 +103,7 @@ const ProfileScreen: React.FC<ProfileScreenProps> = ({ navigation }) => {
               style={styles.editButton}
               onPress={() => setShowEditBusinessInfo(true)}
             >
-              <Edit size={16} color="#8E2D8E" />
+              <Edit size={16} color={colors.primary} />
               <Text style={styles.editButtonText}>Edit Profile</Text>
             </TouchableOpacity>
           </View>
@@ -164,7 +165,6 @@ const ProfileScreen: React.FC<ProfileScreenProps> = ({ navigation }) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#F8F9FA',
   },
   scrollView: {
     flex: 1,
@@ -180,7 +180,7 @@ const styles = StyleSheet.create({
   title: {
     fontSize: 28,
     fontWeight: 'bold',
-    color: '#000000',
+    color: colors.black,
     marginBottom: 8,
   },
   subtitle: {
@@ -191,7 +191,7 @@ const styles = StyleSheet.create({
     fontSize: 12,
     fontFamily: 'RedditSans-Regular',
     fontWeight: '400',
-    color: '#000000',
+    color: colors.black,
     letterSpacing: -0.12,
     lineHeight: 12,
     marginBottom: 4,
@@ -201,7 +201,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     paddingBottom: 32,
     marginBottom: 16,
-    backgroundColor: '#fff',
+    backgroundColor: colors.white,
     borderRadius: 16,
     padding: 16,
     alignContent: 'center',
@@ -222,7 +222,7 @@ const styles = StyleSheet.create({
   avatarText: {
     fontSize: 24,
     fontWeight: '700',
-    color: '#8E2D8E',
+    color: colors.primary,
   },
   userInfo: {
     flex: 1,
@@ -230,7 +230,7 @@ const styles = StyleSheet.create({
   businessName: {
     fontSize: 20,
     fontWeight: '700',
-    color: '#000000',
+    color: colors.black,
     marginBottom: 12,
   },
   editButton: {
@@ -244,7 +244,7 @@ const styles = StyleSheet.create({
     alignSelf: 'flex-start',
   },
   editButtonText: {
-    color: '#8E2D8E',
+    color: colors.primary,
     fontSize: 14,
     fontWeight: '600',
   },
@@ -268,7 +268,7 @@ const styles = StyleSheet.create({
   menuTitle: {
     fontSize: 16,
     fontWeight: '500',
-    color: '#000000',
+    color: colors.black,
     flex: 1,
   },
   menuTitleDanger: {

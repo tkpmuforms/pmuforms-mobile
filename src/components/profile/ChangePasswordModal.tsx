@@ -13,7 +13,8 @@ import {
   TouchableWithoutFeedback,
 } from 'react-native';
 import { X } from 'lucide-react-native';
-import auth from '@react-native-firebase/auth';
+import { getAuth, sendPasswordResetEmail } from '@react-native-firebase/auth';
+import { colors } from '../../theme/colors';
 
 interface ChangePasswordModalProps {
   visible: boolean;
@@ -33,7 +34,7 @@ const ChangePasswordModal: React.FC<ChangePasswordModalProps> = ({
     }
 
     try {
-      await auth().sendPasswordResetEmail(email.trim());
+      await sendPasswordResetEmail(getAuth(), email.trim());
       Alert.alert('Success', `Reset link sent to: ${email}`, [
         {
           text: 'OK',
@@ -67,7 +68,7 @@ const ChangePasswordModal: React.FC<ChangePasswordModalProps> = ({
             <TouchableWithoutFeedback onPress={e => e.stopPropagation()}>
               <View style={styles.modal}>
                 <TouchableOpacity style={styles.closeButton} onPress={onClose}>
-                  <X size={20} color="#64748b" />
+                  <X size={20} color={colors.subtitleColor} />
                 </TouchableOpacity>
 
                 <Text style={styles.title}>Change Password</Text>
@@ -94,7 +95,10 @@ const ChangePasswordModal: React.FC<ChangePasswordModalProps> = ({
                   </View>
                 </View>
 
-                <TouchableOpacity style={styles.saveButton} onPress={handleSubmit}>
+                <TouchableOpacity
+                  style={styles.saveButton}
+                  onPress={handleSubmit}
+                >
                   <Text style={styles.saveButtonText}>Send Reset Link</Text>
                 </TouchableOpacity>
               </View>
@@ -116,7 +120,7 @@ const styles = StyleSheet.create({
     justifyContent: 'flex-end',
   },
   modal: {
-    backgroundColor: '#fff',
+    backgroundColor: colors.white,
     borderTopLeftRadius: 20,
     borderTopRightRadius: 20,
     paddingTop: 32,
@@ -138,13 +142,13 @@ const styles = StyleSheet.create({
   title: {
     fontSize: 18,
     fontWeight: '700',
-    color: '#000000',
+    color: colors.black,
     marginBottom: 8,
     textAlign: 'center',
   },
   subtitle: {
     fontSize: 14,
-    color: '#64748b',
+    color: colors.subtitleColor,
     marginBottom: 24,
     textAlign: 'center',
     lineHeight: 20,
@@ -158,7 +162,7 @@ const styles = StyleSheet.create({
   label: {
     fontSize: 14,
     fontWeight: '500',
-    color: '#000000',
+    color: colors.black,
     marginBottom: 8,
   },
   input: {
@@ -166,14 +170,14 @@ const styles = StyleSheet.create({
     paddingVertical: 12,
     paddingHorizontal: 16,
     borderWidth: 1,
-    borderColor: '#e2e8f0',
+    borderColor: colors.borderColor,
     borderRadius: 12,
     fontSize: 14,
-    color: '#000000',
+    color: colors.black,
     backgroundColor: '#BCBBC133',
   },
   saveButton: {
-    backgroundColor: '#8e2d8e',
+    backgroundColor: colors.primary,
     paddingVertical: 16,
     borderRadius: 12,
     alignItems: 'center',
@@ -181,7 +185,7 @@ const styles = StyleSheet.create({
     alignSelf: 'center',
   },
   saveButtonText: {
-    color: '#fff',
+    color: colors.white,
     fontSize: 14,
     fontWeight: '600',
   },

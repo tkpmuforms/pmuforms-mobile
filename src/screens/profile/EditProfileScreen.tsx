@@ -21,7 +21,7 @@ import {
   updateMyProfile,
   updateMySignature,
 } from '../../services/artistServices';
-import { ref, uploadBytes, getDownloadURL } from 'firebase/storage';
+import storage from '@react-native-firebase/storage';
 
 interface ProfileData {
   firstName: string;
@@ -67,15 +67,15 @@ const EditProfileScreen: React.FC = () => {
       const response = await getMyProfile();
 
       const newProfileData = {
-        firstName: response.data?.profile.firstName || user?.firstName || '',
-        lastName: response.data?.profile.lastName || user?.lastName || '',
-        phoneNumber: response.data?.profile.phone || user?.phoneNumber || '',
-        email: response.data?.profile.email || user?.email || '',
+        firstName: response?.data?.profile?.firstName || user?.firstName || '',
+        lastName: response?.data?.profile?.lastName || user?.lastName || '',
+        phoneNumber: response?.data?.profile?.phone || user?.phoneNumber || '',
+        email: response?.data?.profile?.email || user?.email || '',
       };
 
       setProfileData(newProfileData);
 
-      if (response.data?.avatarUrl) {
+      if (response?.data?.avatarUrl) {
         setAvatarUrl(response.data.avatarUrl);
       }
     } catch (err) {
@@ -180,11 +180,9 @@ const EditProfileScreen: React.FC = () => {
       setAvatarUrl(result.assets[0].uri);
 
       try {
-        const response = await fetch(result.assets[0].uri);
-        const blob = await response.blob();
-        const storageRef = ref(storage, `avatars/artists/${user?._id}`);
-        const snapshot = await uploadBytes(storageRef, blob);
-        const downloadUrl = await getDownloadURL(snapshot.ref);
+        const reference = storage().ref(`avatars/artists/${user?._id}`);
+        await reference.putFile(result.assets[0].uri);
+        const downloadUrl = await reference.getDownloadURL();
         setAvatarUrl(downloadUrl);
       } catch (uploadError) {
         console.error('Error uploading avatar:', uploadError);
@@ -278,15 +276,12 @@ const EditProfileScreen: React.FC = () => {
 
   const handleSignatureSubmit = async (_signatureDataUrl: string) => {
     try {
-      const response = await fetch(_signatureDataUrl);
-      const blob = await response.blob();
-
       const timestamp = Date.now();
       const fileName = `signature_${user?._id}_${timestamp}.png`;
 
-      const storageRef = ref(storage, `signatures/artists/${user?._id}`);
-      const snapshot = await uploadBytes(storageRef, blob);
-      const downloadUrl = await getDownloadURL(snapshot.ref);
+      const reference = storage().ref(`signatures/artists/${fileName}`);
+      await reference.putString(_signatureDataUrl, 'data_url');
+      const downloadUrl = await reference.getDownloadURL();
 
       await updateMySignature({ signature_url: downloadUrl });
 
@@ -309,8 +304,8 @@ const EditProfileScreen: React.FC = () => {
   const isFormValid = () => {
     return (
       Object.keys(validationErrors).length === 0 &&
-      profileData.firstName.trim().length >= 2 &&
-      profileData.lastName.trim().length >= 2
+      (profileData?.firstName || '').trim().length >= 2 &&
+      (profileData?.lastName || '').trim().length >= 2
     );
   };
 
@@ -354,8 +349,8 @@ const EditProfileScreen: React.FC = () => {
             ) : (
               <View style={styles.avatarPlaceholder}>
                 <Text style={styles.avatarPlaceholderText}>
-                  {user?.firstName && user?.lastName
-                    ? `${user.firstName[0]}${user.lastName[0]}`.toUpperCase()
+                  {(user?.firstName?.[0] || '') && (user?.lastName?.[0] || '')
+                    ? `${user?.firstName?.[0] ?? ''}${user?.lastName?.[0] ?? ''}`.toUpperCase()
                     : 'U'}
                 </Text>
               </View>

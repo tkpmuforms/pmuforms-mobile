@@ -10,6 +10,7 @@ import {
   TouchableOpacity,
 } from 'react-native';
 import { ArrowRight } from 'lucide-react-native';
+import { colors } from '../theme/colors';
 
 const { width: SCREEN_WIDTH, height: SCREEN_HEIGHT } = Dimensions.get('window');
 
@@ -145,7 +146,7 @@ const ImageSlider: React.FC<ImageSliderProps> = ({ onComplete }) => {
                   onPress={handleNext}
                 >
                   <View style={styles.nextButtonCircle}>
-                    <ArrowRight size={24} color="#fff" />
+                    <ArrowRight size={24} color={colors.white} />
                   </View>
                 </TouchableOpacity>
               </>
@@ -159,7 +160,7 @@ const ImageSlider: React.FC<ImageSliderProps> = ({ onComplete }) => {
                 >
                   <Text style={styles.getStartedButtonText}>Get Started</Text>
                   <View style={styles.getStartedArrowCircle}>
-                    <ArrowRight size={12} color="#fff" />
+                    <ArrowRight size={12} color={colors.white} />
                   </View>
                 </TouchableOpacity>
                 <Text style={styles.termsText}>
@@ -315,7 +316,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   getStartedButtonText: {
-    color: '#fff',
+    color: colors.white,
     fontSize: 14,
     fontWeight: '700',
     fontFamily: 'RedditSans-Bold',

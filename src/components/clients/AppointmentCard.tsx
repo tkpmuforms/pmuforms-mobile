@@ -1,24 +1,17 @@
+import { FileText, MoreVertical, Trash2 } from 'lucide-react-native';
 import React, { useState } from 'react';
 import {
-  View,
-  Text,
-  StyleSheet,
-  TouchableOpacity,
   Modal,
   Pressable,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
 } from 'react-native';
-import {
-  Calendar,
-  Clock,
-  FileText,
-  MoreVertical,
-  Trash2,
-  CheckCircle,
-  XCircle,
-} from 'lucide-react-native';
-
-import { formatAppointmentTime } from '../../utils/utils';
+import { AppointmentDetailsIcon, AppointmentIcon } from '../../../assets/svg';
 import { ClientAppointmentData } from '../../types';
+import { formatAppointmentTime } from '../../utils/utils';
+import { colors } from '../../theme/colors';
 
 interface AppointmentCardProps {
   appointment: ClientAppointmentData;
@@ -31,8 +24,8 @@ const AppointmentCard: React.FC<AppointmentCardProps> = ({
   onViewForms,
   onDeleteAppointment,
 }) => {
+  console.log('Rendering AppointmentCard for appointment:', appointment);
   const [showMenu, setShowMenu] = useState(false);
-
   const primaryService = appointment.serviceDetails?.[0];
   const serviceName = primaryService?.service || 'Unknown Service';
   const appointmentDate = formatAppointmentTime(appointment.date);
@@ -60,23 +53,59 @@ const AppointmentCard: React.FC<AppointmentCardProps> = ({
       onPress={() => onViewForms(appointment.id)}
       activeOpacity={0.7}
     >
-      {/* Header */}
       <View style={styles.header}>
         <View style={styles.serviceInfo}>
           <View style={styles.serviceIcon}>
-            <Calendar size={20} color="#8e2d8e" />
+            <AppointmentIcon />
           </View>
           <View style={styles.serviceContent}>
             <Text style={styles.serviceName} numberOfLines={1}>
               {serviceName}
             </Text>
           </View>
-          <View style={styles.formStatus}>
-            {appointment.allFormsCompleted ? (
-              <CheckCircle size={20} color="#10B981" />
-            ) : (
-              <XCircle size={20} color="#F59E0B" />
-            )}
+          <View
+            style={[
+              styles.formStatusBadge,
+              appointment.allFormsCompleted
+                ? styles.formStatusCompleted
+                : styles.formStatusNotCompleted,
+            ]}
+          >
+            <Text
+              style={[
+                styles.formStatusText,
+                appointment.allFormsCompleted
+                  ? styles.formStatusTextCompleted
+                  : styles.formStatusTextNotCompleted,
+              ]}
+            >
+              {appointment.allFormsCompleted
+                ? 'Forms Completed'
+                : 'Forms Not Completed'}
+            </Text>
+          </View>
+        </View>
+      </View>
+
+      {/* Details */}
+      <View style={styles.detailRow}>
+        <View style={styles.detailItem}>
+          <Text style={styles.detailLabel}>Appointment Date</Text>
+          <View style={styles.detailValueRow}>
+            <AppointmentDetailsIcon />
+            <Text style={styles.detailValue} numberOfLines={1}>
+              {appointmentDate}
+            </Text>
+          </View>
+        </View>
+
+        <View style={styles.detailItem}>
+          <Text style={styles.detailLabel}>Form Filled</Text>
+          <View style={styles.detailValueRow}>
+            <AppointmentDetailsIcon />
+            <Text style={styles.detailValue} numberOfLines={1}>
+              {formFilledDate}
+            </Text>
           </View>
         </View>
 
@@ -84,36 +113,10 @@ const AppointmentCard: React.FC<AppointmentCardProps> = ({
           style={styles.menuButton}
           onPress={() => setShowMenu(true)}
         >
-          <MoreVertical size={16} color="#64748b" />
+          <MoreVertical size={16} color={colors.subtitleColor} />
         </TouchableOpacity>
       </View>
 
-      {/* Details */}
-      <View style={styles.details}>
-        <View style={styles.detailRow}>
-          <View style={styles.detailItem}>
-            <View style={styles.detailHeader}>
-              <Calendar size={14} color="#64748b" />
-              <Text style={styles.detailLabel}>Appointment Date</Text>
-            </View>
-            <Text style={styles.detailValue} numberOfLines={1}>
-              {appointmentDate}
-            </Text>
-          </View>
-
-          <View style={styles.detailItem}>
-            <View style={styles.detailHeader}>
-              <Clock size={14} color="#64748b" />
-              <Text style={styles.detailLabel}>Form Filled</Text>
-            </View>
-            <Text style={styles.detailValue} numberOfLines={1}>
-              {formFilledDate}
-            </Text>
-          </View>
-        </View>
-      </View>
-
-      {/* Dropdown Menu Modal */}
       <Modal
         visible={showMenu}
         transparent
@@ -123,7 +126,7 @@ const AppointmentCard: React.FC<AppointmentCardProps> = ({
         <Pressable style={styles.modalOverlay} onPress={handleMenuClose}>
           <View style={styles.menuContainer}>
             <TouchableOpacity style={styles.menuItem} onPress={handleViewForms}>
-              <FileText size={16} color="#000000" />
+              <FileText size={16} color={colors.black} />
               <Text style={styles.menuItemText}>View Forms</Text>
             </TouchableOpacity>
 
@@ -147,9 +150,9 @@ const AppointmentCard: React.FC<AppointmentCardProps> = ({
 
 const styles = StyleSheet.create({
   card: {
-    backgroundColor: '#fff',
+    backgroundColor: colors.white,
     borderRadius: 12,
-    padding: 16,
+    padding: 20,
     shadowColor: '#000',
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.08,
@@ -167,7 +170,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     flex: 1,
-    gap: 12,
+    gap: 16,
   },
   serviceIcon: {
     width: 40,
@@ -183,39 +186,58 @@ const styles = StyleSheet.create({
   serviceName: {
     fontSize: 16,
     fontWeight: '600',
-    color: '#000000',
+    color: colors.black,
   },
-  formStatus: {
-    marginLeft: 8,
+  formStatusBadge: {
+    paddingHorizontal: 14,
+    paddingVertical: 6,
+    borderRadius: 48,
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  formStatusCompleted: {
+    backgroundColor: '#EBFAEF',
+  },
+  formStatusNotCompleted: {
+    backgroundColor: '#FFF6E9',
+  },
+  formStatusText: {
+    fontSize: 12,
+    fontWeight: '600',
+  },
+  formStatusTextCompleted: {
+    color: '#34C759',
+  },
+  formStatusTextNotCompleted: {
+    color: '#FF9500',
   },
   menuButton: {
     padding: 8,
     borderRadius: 8,
-  },
-  details: {
-    marginTop: 8,
+    alignSelf: 'center',
   },
   detailRow: {
     flexDirection: 'row',
+    alignItems: 'center',
     gap: 16,
   },
   detailItem: {
     flex: 1,
   },
-  detailHeader: {
+  detailLabel: {
+    fontSize: 12,
+    color: colors.subtitleColor,
+    fontWeight: '500',
+    marginBottom: 10,
+  },
+  detailValueRow: {
     flexDirection: 'row',
     alignItems: 'center',
     gap: 6,
-    marginBottom: 4,
-  },
-  detailLabel: {
-    fontSize: 12,
-    color: '#64748b',
-    fontWeight: '500',
   },
   detailValue: {
     fontSize: 14,
-    color: '#000000',
+    color: colors.black,
     fontWeight: '600',
   },
   modalOverlay: {
@@ -226,9 +248,9 @@ const styles = StyleSheet.create({
     padding: 20,
   },
   menuContainer: {
-    backgroundColor: '#fff',
+    backgroundColor: colors.white,
     borderRadius: 12,
-    padding: 8,
+    padding: 10,
     minWidth: 200,
     shadowColor: '#000',
     shadowOffset: { width: 0, height: 4 },
@@ -250,7 +272,7 @@ const styles = StyleSheet.create({
   menuItemText: {
     fontSize: 14,
     fontWeight: '500',
-    color: '#000000',
+    color: colors.black,
   },
   menuItemDeleteText: {
     color: '#ef4444',

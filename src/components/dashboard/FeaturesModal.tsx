@@ -6,7 +6,9 @@ import {
   Modal,
   ScrollView,
   TouchableOpacity,
+  Linking,
 } from 'react-native';
+import LinearGradient from 'react-native-linear-gradient';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import {
   X,
@@ -20,18 +22,14 @@ import {
   Users,
   Crown,
 } from 'lucide-react-native';
+import { colors } from '../../theme/colors';
 
 interface FeaturesModalProps {
   visible: boolean;
   onClose: () => void;
-  onSubscribe: () => void;
 }
 
-const FeaturesModal: React.FC<FeaturesModalProps> = ({
-  visible,
-  onClose,
-  onSubscribe,
-}) => {
+const FeaturesModal: React.FC<FeaturesModalProps> = ({ visible, onClose }) => {
   const features = [
     {
       icon: Edit,
@@ -60,22 +58,11 @@ const FeaturesModal: React.FC<FeaturesModalProps> = ({
       title: 'Make Notes',
       description: 'Make notes about client appointments for future references',
     },
-    {
-      icon: BookTemplate,
-      title: 'Templates Access',
-      description: 'Access to dozens of free PMU form templates',
-    },
-    {
-      icon: Mail,
-      title: 'Service Request',
-      description:
-        'Request for new PMU forms and services to be added to the app',
-    },
-    {
-      icon: Users,
-      title: 'Facebook Group',
-      description: 'Access to the PMU Forms Facebook Group',
-    },
+    // {
+    //   icon: BookTemplate,
+    //   title: 'Templates Access',
+    //   description: 'Access to dozens of free PMU form templates',
+    // },
   ];
 
   return (
@@ -89,7 +76,7 @@ const FeaturesModal: React.FC<FeaturesModalProps> = ({
         <View style={styles.overlay}>
           <View style={styles.modal}>
             <TouchableOpacity style={styles.closeButton} onPress={onClose}>
-              <X size={20} color="#64748b" />
+              <X size={20} color={colors.subtitleColor} />
             </TouchableOpacity>
 
             <ScrollView
@@ -97,7 +84,7 @@ const FeaturesModal: React.FC<FeaturesModalProps> = ({
               showsVerticalScrollIndicator={false}
             >
               <View style={styles.header}>
-                <Crown size={48} color="#8e2d8e" />
+                <Crown size={48} color={colors.primary} />
                 <Text style={styles.title}>Your First 7 days is on us</Text>
                 <Text style={styles.subtitle}>
                   Subscribe to unlock the ultimate experience and enjoy free 7
@@ -109,7 +96,7 @@ const FeaturesModal: React.FC<FeaturesModalProps> = ({
                 {features.map((feature, index) => (
                   <View key={index} style={styles.featureItem}>
                     <View style={styles.featureIcon}>
-                      <feature.icon size={20} color="#8e2d8e" />
+                      <feature.icon size={20} color={colors.primary} />
                     </View>
                     <View style={styles.featureContent}>
                       <Text style={styles.featureTitle}>{feature.title}</Text>
@@ -122,10 +109,18 @@ const FeaturesModal: React.FC<FeaturesModalProps> = ({
               </View>
 
               <TouchableOpacity
-                style={styles.subscribeButton}
-                onPress={onSubscribe}
+                onPress={() => Linking.openURL('https://artist.pmuforms.com')}
               >
-                <Text style={styles.subscribeButtonText}>Subscribe Now</Text>
+                <LinearGradient
+                  colors={[colors.primary, '#A654CD']}
+                  start={{ x: 0, y: 0 }}
+                  end={{ x: 1, y: 0 }}
+                  style={styles.subscribeButton}
+                >
+                  <Text style={styles.subscribeButtonText}>
+                    Subscribe on Website
+                  </Text>
+                </LinearGradient>
               </TouchableOpacity>
             </ScrollView>
           </View>
@@ -145,11 +140,11 @@ const styles = StyleSheet.create({
     justifyContent: 'flex-end',
   },
   modal: {
-    backgroundColor: '#fff',
+    backgroundColor: colors.white,
     borderTopLeftRadius: 20,
     borderTopRightRadius: 20,
     maxHeight: '90%',
-    paddingTop: 20,
+    paddingTop: 10,
   },
   closeButton: {
     position: 'absolute',
@@ -160,7 +155,7 @@ const styles = StyleSheet.create({
     borderRadius: 8,
   },
   scrollContent: {
-    padding: 24,
+    padding: 14,
   },
   header: {
     alignItems: 'center',
@@ -169,14 +164,14 @@ const styles = StyleSheet.create({
   title: {
     fontSize: 24,
     fontWeight: '600',
-    color: '#000000',
+    color: colors.black,
     marginTop: 16,
     marginBottom: 8,
     textAlign: 'center',
   },
   subtitle: {
     fontSize: 14,
-    color: '#64748b',
+    color: colors.subtitleColor,
     textAlign: 'center',
     lineHeight: 20,
   },
@@ -206,22 +201,22 @@ const styles = StyleSheet.create({
   featureTitle: {
     fontSize: 16,
     fontWeight: '600',
-    color: '#000000',
+    color: colors.black,
     marginBottom: 4,
   },
   featureDescription: {
     fontSize: 14,
-    color: '#64748b',
+    color: colors.subtitleColor,
     lineHeight: 20,
   },
   subscribeButton: {
-    backgroundColor: 'linear-gradient(90deg, #8E2D8E 0%, #A654CD 100%)',
     paddingVertical: 16,
     borderRadius: 12,
     alignItems: 'center',
   },
   subscribeButtonText: {
-    color: '#fff',
+    height: 44,
+    color: colors.white,
     fontSize: 16,
     fontWeight: '600',
   },

@@ -30,6 +30,19 @@ export interface User {
   stripeSubscriptionId?: string;
 }
 
+export type OnboardingStep =
+  | 'businessName'
+  | 'services'
+  | 'payment'
+  | 'completed';
+
+export interface Artist {
+  businessName?: string;
+  services?: unknown[];
+  stripeSubscriptionActive?: boolean;
+  appStorePurchaseActive?: boolean;
+}
+
 export interface Service {
   _id: string;
   id: number;
@@ -288,9 +301,9 @@ export interface Reminder {
   _id: string;
   customerId: string;
   artistId: string;
-  reminderDate: string;
-  reminderTime: string;
-  message: string;
+  sendAt: string;
+  type: 'check-in' | 'follow-up';
+  note: string;
   sent: boolean;
   createdAt: string;
   updatedAt: string;
@@ -304,4 +317,13 @@ export interface FieldData {
   options?: string[];
   sectionId?: string;
   [key: string]: any;
+}
+
+export interface Card {
+  id: string;
+  name: string;
+  lastFour: string;
+  brand: 'mastercard' | 'visa' | 'amex' | 'unionpay';
+  isDefault: boolean;
+  color: string;
 }
