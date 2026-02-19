@@ -318,3 +318,12 @@ export interface FieldData {
   sectionId?: string;
   [key: string]: any;
 }
+
+export interface Card {
+  id: string;
+  name: string;
+  lastFour: string;
+  brand: 'mastercard' | 'visa' | 'amex' | 'unionpay';
+  isDefault: boolean;
+  color: string;
+}

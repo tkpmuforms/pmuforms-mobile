@@ -48,6 +48,8 @@
 	</dict>
 	<key>NSAppleIDAuthenticationSupported</key>
 	<true/>
+	<key>NSCalendarsUsageDescription</key>
+	<string>PMUForms needs calendar access to set reminders for your client appointments</string>
 	<key>NSCameraUsageDescription</key>
 	<string>Take photos and videos</string>
 	<key>NSLocationWhenInUseUsageDescription</key>

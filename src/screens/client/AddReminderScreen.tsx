@@ -6,6 +6,7 @@ import {
   ChevronDown,
 } from 'lucide-react-native';
 import React, { useState } from 'react';
+import RNCalendarEvents from 'react-native-calendar-events';
 import ScreenHeader from '../../components/layout/ScreenHeader';
 import {
   ActivityIndicator,
@@ -86,6 +87,27 @@ const AddReminderScreen: React.FC = () => {
             type: reminderType,
             note: note.trim(),
           });
+        }
+
+        // Add native calendar event
+        try {
+          const permission = await RNCalendarEvents.requestPermissions();
+          if (permission === 'authorized') {
+            const endDate = new Date(combinedDate);
+            endDate.setMinutes(endDate.getMinutes() + 30);
+
+            await RNCalendarEvents.saveEvent(
+              `PMU ${reminderType === 'check-in' ? 'Check-in' : 'Follow-up'}: ${clientName || 'Client'}`,
+              {
+                startDate: combinedDate.toISOString(),
+                endDate: endDate.toISOString(),
+                notes: note.trim(),
+                alarms: [{ date: 0 }],
+              },
+            );
+          }
+        } catch (calendarError) {
+          console.warn('Could not add to device calendar:', calendarError);
         }
 
         Toast.show({

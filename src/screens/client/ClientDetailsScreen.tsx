@@ -26,8 +26,10 @@ import {
 import { SafeAreaView } from 'react-native-safe-area-context';
 import Toast from 'react-native-toast-message';
 import DeleteModal from '../../components/clients/DeleteModal';
+import FeaturesModal from '../../components/dashboard/FeaturesModal';
 import MetricsCard from '../../components/dashboard/MetricsCard';
 import ScreenHeader from '../../components/layout/ScreenHeader';
+import useAuth from '../../hooks/useAuth';
 import {
   deleteCustomer,
   getCustomerById,
@@ -49,14 +51,19 @@ const ClientDetailsScreen: React.FC<ClientDetailsScreenProps> = () => {
   const navigation = useNavigation<ClientDetailsNavigationProp>();
   const route = useRoute<ClientDetailsRouteProp>();
   const { clientId } = route.params;
+  const { user } = useAuth();
   const [client, setClient] = useState<ClientDetail | undefined>(undefined);
   const [loading, setLoading] = useState(true);
   const [metricsLoading, setMetricsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [showDeleteClient, setShowDeleteClient] = useState(false);
+  const [showFeaturesModal, setShowFeaturesModal] = useState(false);
   const [clientMetrics, setClientMetrics] = useState<ClientMetrics | null>(
     null,
   );
+
+  const hasActiveSubscription =
+    user?.appStorePurchaseActive || user?.stripeSubscriptionActive;
 
   const fetchClientDetails = useCallback(async () => {
     if (!clientId) {
@@ -159,11 +166,16 @@ const ClientDetailsScreen: React.FC<ClientDetailsScreenProps> = () => {
     {
       icon: <Send size={20} color={colors.primary} />,
       title: 'Send Consent Form',
-      onPress: () =>
-        navigation.navigate('SendConsentForm', {
-          clientId,
-          clientName: client?.name || 'Client',
-        }),
+      onPress: () => {
+        if (!hasActiveSubscription) {
+          setShowFeaturesModal(true);
+        } else {
+          navigation.navigate('SendConsentForm', {
+            clientId,
+            clientName: client?.name || 'Client',
+          });
+        }
+      },
       isDelete: false,
     },
     {
@@ -343,6 +355,13 @@ const ClientDetailsScreen: React.FC<ClientDetailsScreenProps> = () => {
           shorterText={`Are you sure you want to delete ${client.name}? This action cannot be undone.`}
           onClose={() => setShowDeleteClient(false)}
           handleDelete={handleDeleteClient}
+        />
+      )}
+
+      {showFeaturesModal && (
+        <FeaturesModal
+          visible={showFeaturesModal}
+          onClose={() => setShowFeaturesModal(false)}
         />
       )}
     </SafeAreaView>

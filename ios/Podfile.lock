@@ -3922,6 +3922,8 @@ PODS:
   - RecaptchaInterop (101.0.0)
   - RNAppleAuthentication (2.5.0):
     - React-Core
+  - RNCalendarEvents (2.2.0):
+    - React
   - RNCAsyncStorage (1.24.0):
     - boost
     - DoubleConversion
@@ -4613,6 +4615,7 @@ DEPENDENCIES:
   - ReactCodegen (from `build/generated/ios`)
   - ReactCommon/turbomodule/core (from `../node_modules/react-native/ReactCommon`)
   - "RNAppleAuthentication (from `../node_modules/@invertase/react-native-apple-authentication`)"
+  - RNCalendarEvents (from `../node_modules/react-native-calendar-events`)
   - "RNCAsyncStorage (from `../node_modules/@react-native-async-storage/async-storage`)"
   - "RNCClipboard (from `../node_modules/@react-native-clipboard/clipboard`)"
   - "RNDateTimePicker (from `../node_modules/@react-native-community/datetimepicker`)"
@@ -4829,6 +4832,8 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native/ReactCommon"
   RNAppleAuthentication:
     :path: "../node_modules/@invertase/react-native-apple-authentication"
+  RNCalendarEvents:
+    :path: "../node_modules/react-native-calendar-events"
   RNCAsyncStorage:
     :path: "../node_modules/@react-native-async-storage/async-storage"
   RNCClipboard:
@@ -4967,6 +4972,7 @@ SPEC CHECKSUMS:
   ReactCommon: 801eff8cb9c940c04d3a89ce399c343ee3eff654
   RecaptchaInterop: 11e0b637842dfb48308d242afc3f448062325aba
   RNAppleAuthentication: 9027af8aa92b4719ef1b6030a8e954d37079473a
+  RNCalendarEvents: f90f73666b6bcbb3cc8a491ffbb5e48c0db3de37
   RNCAsyncStorage: 87d51a3aa982dd38d07ecb588aa67821a4a14eee
   RNCClipboard: e560338bf6cc4656a09ff90610b62ddc0dbdad65
   RNDateTimePicker: 97a3b0fe0de31eca826f8fc75bb9a84bb5af1fc2
@@ -4996,4 +5002,4 @@ SPEC CHECKSUMS:
 
 PODFILE CHECKSUM: 3f79cbaa249aed6fd52a2ef7bf4a5639db14ea16
 
-COCOAPODS: 1.15.2
+COCOAPODS: 1.16.2
