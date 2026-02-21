@@ -120,6 +120,11 @@ const EditFormsScreen: React.FC = () => {
       const response = await getFormById(formTemplateId);
 
       if (response?.data?.form) {
+        const newFormId =
+          response.data.form.id || response.data.form._id;
+        if (newFormId && newFormId !== formTemplateId) {
+          setFormTemplateId(newFormId);
+        }
         const updatedForm = processFormResponse(response.data.form);
         setForm(updatedForm);
       } else {

@@ -158,7 +158,7 @@ const ClientDetailsScreen: React.FC<ClientDetailsScreenProps> = () => {
   const quickActions = [
     {
       icon: <Calendar size={20} color={colors.primary} />,
-      title: 'View Appointment',
+      title: 'View Appointments',
       onPress: () =>
         navigation.navigate('ClientAppointments', { clientId, client }),
       isDelete: false,
