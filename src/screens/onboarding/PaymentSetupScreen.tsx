@@ -1,5 +1,6 @@
 import React, { useEffect, useRef } from 'react';
 import {
+  AppState,
   View,
   Text,
   StyleSheet,
@@ -52,6 +53,16 @@ const PaymentSetupScreen: React.FC<PaymentSetupScreenProps> = ({
         clearInterval(pollingRef.current);
       }
     };
+  }, [hasActiveSubscription, dispatch]);
+
+  useEffect(() => {
+    const subscription = AppState.addEventListener('change', nextAppState => {
+      if (nextAppState === 'active' && !hasActiveSubscription) {
+        refreshAuthUser(dispatch).catch(() => {});
+      }
+    });
+
+    return () => subscription.remove();
   }, [hasActiveSubscription, dispatch]);
 
   const handleBack = () => {

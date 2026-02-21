@@ -7,7 +7,11 @@ import { Plus } from 'lucide-react-native';
 import React, { useCallback, useEffect, useState } from 'react';
 import {
   ActivityIndicator,
+  Dimensions,
   FlatList,
+  Image,
+  Modal,
+  ScrollView,
   StyleSheet,
   Text,
   TouchableOpacity,
@@ -53,6 +57,9 @@ const ClientNotesScreen: React.FC<ClientNotesScreenProps> = () => {
   const [selectedNote, setSelectedNote] = useState<Note | null>(null);
   const [notes, setNotes] = useState<Note[]>([]);
   const [loading, setLoading] = useState(true);
+  const [viewerImage, setViewerImage] = useState<string | null>(null);
+
+  const { width: screenWidth, height: screenHeight } = Dimensions.get('window');
 
   useEffect(() => {
     if (clientId) {
@@ -241,6 +248,7 @@ const ClientNotesScreen: React.FC<ClientNotesScreenProps> = () => {
             isSelected={selectedNote?.id === item.id}
             onNoteClick={handleNoteClick}
             onDeleteNote={handleDeleteNote}
+            onImagePress={url => setViewerImage(url)}
             formatDate={formatDate}
           />
         )}
@@ -260,6 +268,43 @@ const ClientNotesScreen: React.FC<ClientNotesScreenProps> = () => {
           handleDelete={handleDeleteConfirm}
         />
       )}
+
+      <Modal
+        visible={!!viewerImage}
+        transparent
+        animationType="fade"
+        onRequestClose={() => setViewerImage(null)}
+      >
+        <View style={styles.viewerOverlay}>
+          <TouchableOpacity
+            style={styles.viewerCloseButton}
+            onPress={() => setViewerImage(null)}
+          >
+            <Text style={styles.viewerCloseText}>✕</Text>
+          </TouchableOpacity>
+          <ScrollView
+            style={styles.viewerScrollView}
+            contentContainerStyle={styles.viewerScrollContent}
+            maximumZoomScale={5}
+            minimumZoomScale={1}
+            centerContent
+            showsHorizontalScrollIndicator={false}
+            showsVerticalScrollIndicator={false}
+            bouncesZoom
+          >
+            {viewerImage && (
+              <Image
+                source={{ uri: viewerImage }}
+                style={{
+                  width: screenWidth,
+                  height: screenHeight * 0.8,
+                }}
+                resizeMode="contain"
+              />
+            )}
+          </ScrollView>
+        </View>
+      </Modal>
     </SafeAreaView>
   );
 };
@@ -340,6 +385,38 @@ const styles = StyleSheet.create({
     fontSize: 16,
     color: '#666',
     textAlign: 'center',
+  },
+  viewerOverlay: {
+    flex: 1,
+    backgroundColor: 'rgba(0, 0, 0, 0.95)',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  viewerCloseButton: {
+    position: 'absolute',
+    top: 50,
+    right: 20,
+    zIndex: 10,
+    width: 36,
+    height: 36,
+    borderRadius: 18,
+    backgroundColor: 'rgba(255, 255, 255, 0.2)',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  viewerCloseText: {
+    color: colors.white,
+    fontSize: 18,
+    fontWeight: '600',
+  },
+  viewerScrollView: {
+    flex: 1,
+    width: '100%',
+  },
+  viewerScrollContent: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
   },
 });
 

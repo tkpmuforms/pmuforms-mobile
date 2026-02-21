@@ -34,8 +34,6 @@ const PaymentScreen: React.FC = () => {
         contentContainerStyle={styles.scrollContent}
       >
         <View style={styles.section}>
-          <Text style={styles.sectionTitle}>Your Subscription</Text>
-
           {isMobileSub ? (
             <View style={styles.mobileSubContainer}>
               <Text style={styles.mobileSubTitle}>Active Subscription</Text>

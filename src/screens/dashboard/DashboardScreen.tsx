@@ -51,8 +51,8 @@ const DashboardScreen = ({ navigation }: any) => {
     Record<string, { name: string; avatar?: string }>
   >({});
 
-  const hasActiveSubscription = false;
-  // user?.appStorePurchaseActive || user?.stripeSubscriptionActive;
+  const hasActiveSubscription =
+    user?.appStorePurchaseActive || user?.stripeSubscriptionActive;
 
   const quickActions = [
     {
@@ -166,21 +166,6 @@ const DashboardScreen = ({ navigation }: any) => {
             </Text>
           </View>
         </View>
-
-        {/* Setup Banner */}
-        {/* <View style={styles.setupBanner}>
-          <Text style={styles.setupIcon}>💼</Text>
-          <View style={styles.setupContent}>
-            <Text style={styles.setupTitle}>Let's complete your setup</Text>
-            <Text style={styles.setupSubtitle}>
-              Include your business name, address, contact details, and logo for
-              brand visibility.
-            </Text>
-          </View>
-          <TouchableOpacity style={styles.setupButton}>
-            <Text style={styles.setupButtonText}>Set Up My Business</Text>
-          </TouchableOpacity>
-        </View> */}
 
         <View style={styles.section}>
           <View style={styles.metricsGrid}>

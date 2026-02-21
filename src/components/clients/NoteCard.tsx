@@ -9,6 +9,7 @@ interface NoteCardProps {
   isSelected: boolean;
   onNoteClick: (note: Note) => void;
   onDeleteNote: (note: Note) => void;
+  onImagePress?: (imageUrl: string) => void;
   formatDate: (date: string) => string;
 }
 
@@ -17,6 +18,7 @@ const NoteCard: React.FC<NoteCardProps> = ({
   isSelected,
   onNoteClick,
   onDeleteNote,
+  onImagePress,
   formatDate,
 }) => {
   const getDisplayDate = (note: Note) => {
@@ -43,7 +45,14 @@ const NoteCard: React.FC<NoteCardProps> = ({
     >
       <View style={styles.content}>
         {note.imageUrl && (
-          <View style={styles.imageContainer}>
+          <TouchableOpacity
+            activeOpacity={0.9}
+            onPress={e => {
+              e.stopPropagation();
+              onImagePress?.(note.imageUrl!);
+            }}
+            style={styles.imageContainer}
+          >
             <Image
               source={{ uri: note.imageUrl }}
               style={styles.image}
@@ -52,7 +61,7 @@ const NoteCard: React.FC<NoteCardProps> = ({
             <View style={styles.cameraIcon}>
               <Camera size={14} color={colors.white} />
             </View>
-          </View>
+          </TouchableOpacity>
         )}
         <Text style={styles.noteText} numberOfLines={3}>
           {note.note}
