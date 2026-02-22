@@ -49,8 +49,9 @@ const EditParagraphScreen: React.FC = () => {
 
     setSaving(true);
     try {
+      let response;
       if (isEditing) {
-        await updateFormSectionData(formId, sectionId, fieldId!, {
+        response = await updateFormSectionData(formId, sectionId, fieldId!, {
           title: content,
           line: fieldLine || 'full',
         });
@@ -60,7 +61,7 @@ const EditParagraphScreen: React.FC = () => {
           text2: 'Paragraph updated successfully',
         });
       } else {
-        await addFormSectionData(formId, sectionId, {
+        response = await addFormSectionData(formId, sectionId, {
           type: 'paragraph',
           title: content,
           line: 'full',
@@ -72,7 +73,12 @@ const EditParagraphScreen: React.FC = () => {
           text2: 'Paragraph added successfully',
         });
       }
-      navigation.goBack();
+      const newFormId = response?.data?.form?.id || response?.data?.form?._id;
+      if (newFormId) {
+        navigation.navigate('FormEdit', { formId: newFormId });
+      } else {
+        navigation.goBack();
+      }
     } catch (error) {
       console.error('Error saving paragraph:', error);
       Toast.show({

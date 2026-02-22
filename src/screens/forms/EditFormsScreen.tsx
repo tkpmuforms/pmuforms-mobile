@@ -41,6 +41,12 @@ const EditFormsScreen: React.FC = () => {
   const [formTemplateId, setFormTemplateId] = useState<string>(formId || '');
 
   useEffect(() => {
+    if (formId && formId !== formTemplateId) {
+      setFormTemplateId(formId);
+    }
+  }, [formId]);
+
+  useEffect(() => {
     fetchServices();
   }, []);
 

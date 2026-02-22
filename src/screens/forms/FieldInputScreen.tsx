@@ -52,8 +52,9 @@ const FieldInputScreen: React.FC = () => {
 
     setSaving(true);
     try {
+      let response;
       if (isEditing) {
-        await updateFormSectionData(formId, sectionId, fieldId!, {
+        response = await updateFormSectionData(formId, sectionId, fieldId!, {
           title: title.trim(),
           line: fieldLine || 'full',
           required: isRequired,
@@ -64,7 +65,7 @@ const FieldInputScreen: React.FC = () => {
           text2: 'Field updated successfully',
         });
       } else {
-        await addFormSectionData(formId, sectionId, {
+        response = await addFormSectionData(formId, sectionId, {
           type: fieldType.type,
           title: title.trim(),
           line: 'full',
@@ -77,7 +78,12 @@ const FieldInputScreen: React.FC = () => {
           text2: 'Field added successfully',
         });
       }
-      navigation.goBack();
+      const newFormId = response?.data?.form?.id || response?.data?.form?._id;
+      if (newFormId) {
+        navigation.navigate('FormEdit', { formId: newFormId });
+      } else {
+        navigation.goBack();
+      }
     } catch (error) {
       console.error('Error saving field:', error);
       Toast.show({
