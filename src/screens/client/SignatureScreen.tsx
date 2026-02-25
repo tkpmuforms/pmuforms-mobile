@@ -80,19 +80,6 @@ const SignatureScreen: React.FC = () => {
 
   const services = currentAppointment?.serviceDetails || [];
 
-  const formatAppointmentTime = (dateString: string) => {
-    if (!dateString) return 'Unknown date';
-    const date = new Date(dateString);
-    return date.toLocaleDateString('en-US', {
-      weekday: 'long',
-      year: 'numeric',
-      month: 'long',
-      day: 'numeric',
-      hour: '2-digit',
-      minute: '2-digit',
-    });
-  };
-
   const handleBackClick = () => {
     navigation.goBack();
   };
@@ -124,13 +111,12 @@ const SignatureScreen: React.FC = () => {
     setIsSubmitting(true);
 
     try {
-      const reference = storage().ref(
-        `signatures/${user?._id}/${appointmentId}/${Date.now()}.png`,
-      );
-      const response = await fetch(signatureDataUrl);
-      const blob = await response.blob();
+      const storagePath = `6signatures/${
+        user?._id
+      }/${appointmentId}/${Date.now()}.png`;
+      const reference = storage().ref(storagePath);
 
-      await reference.put(blob);
+      await reference.putString(signatureDataUrl, 'data_url');
       const downloadUrl = await reference.getDownloadURL();
 
       await signAppointment(appointmentId, {
@@ -188,12 +174,11 @@ const SignatureScreen: React.FC = () => {
   }
 
   return (
-    <SafeAreaView style={styles.container}>
+    <SafeAreaView style={styles.container} edges={[]}>
       <ScrollView style={styles.scrollView}>
         <View style={styles.card}>
           <ScreenHeader
             title="Sign Appointment Forms"
-            subtitle="Sign Client Appointment Forms"
             onBack={() => navigation.goBack()}
           />
 
@@ -221,20 +206,6 @@ const SignatureScreen: React.FC = () => {
             </Text>
           </TouchableOpacity>
 
-          {/* Intro Section */}
-          <View style={styles.introSection}>
-            <Text style={styles.introText}>
-              {currentAppointment?.allFormsCompleted
-                ? `Thank you for completing all the forms for your appointment on ${formatAppointmentTime(
-                    currentAppointment?.date,
-                  )}! Now, all you need to do is sign!`
-                : `Please complete all required forms before signing for your appointment on ${formatAppointmentTime(
-                    currentAppointment?.date,
-                  )}.`}
-            </Text>
-          </View>
-
-          {/* Instruction Section */}
           <View style={styles.instructionSection}>
             <Text style={styles.instructionTitle}>Please read carefully</Text>
             <Text style={styles.instructionText}>
@@ -332,7 +303,7 @@ const styles = StyleSheet.create({
     backgroundColor: colors.white,
     margin: 16,
     borderRadius: 12,
-    padding: 20,
+    padding: 10,
     shadowColor: '#000',
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.1,

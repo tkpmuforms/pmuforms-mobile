@@ -134,7 +134,7 @@ const ClientAppointmentFormsScreen: React.FC = () => {
               !canSign && styles.signButtonTextDisabled,
             ]}
           >
-            Tap Here to sign Forms for this Appointment
+            Tap Here to sign forms for this Appointment
           </Text>
         </TouchableOpacity>
       </View>
@@ -211,7 +211,7 @@ const styles = StyleSheet.create({
     backgroundColor: colors.border,
   },
   signButtonText: {
-    color: colors.primary,
+    color: colors.white,
     fontSize: 16,
     fontWeight: '600',
   },

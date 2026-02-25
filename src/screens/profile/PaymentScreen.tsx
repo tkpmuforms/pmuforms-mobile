@@ -18,7 +18,6 @@ const WEB_URL = 'https://artist.pmuforms.com';
 const PaymentScreen: React.FC = () => {
   const navigation = useNavigation<any>();
   const { user } = useAuth();
-  console.log('User data in PaymentScreen:', user);
 
   const isMobileSub = user?.appStorePurchaseActive ?? false;
 

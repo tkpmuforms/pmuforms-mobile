@@ -193,6 +193,7 @@ const FilledFormsPreviewScreen: React.FC = () => {
         );
 
       case 'signature':
+      case 'image':
         return value ? (
           <View style={styles.signatureContainer}>
             <Image
@@ -220,6 +221,21 @@ const FilledFormsPreviewScreen: React.FC = () => {
         );
 
       default:
+        if (
+          typeof value === 'string' &&
+          (value.startsWith('https://firebasestorage.googleapis.com') ||
+            value.startsWith('https://storage.googleapis.com'))
+        ) {
+          return (
+            <View style={styles.signatureContainer}>
+              <Image
+                source={{ uri: value }}
+                style={styles.signatureImage}
+                resizeMode="contain"
+              />
+            </View>
+          );
+        }
         return (
           <Text style={styles.fieldValue}>
             {value || 'No response provided'}
@@ -281,6 +297,7 @@ const FilledFormsPreviewScreen: React.FC = () => {
         return radioItems;
 
       case 'signature':
+      case 'image':
         return value
           ? `<div style="border:1px solid #e5e7eb;border-radius:8px;padding:12px;background:#fff;">
               <img src="${value}" style="max-width:300px;max-height:150px;" />
@@ -298,6 +315,15 @@ const FilledFormsPreviewScreen: React.FC = () => {
         }</p>`;
 
       default:
+        if (
+          typeof value === 'string' &&
+          (value.startsWith('https://firebasestorage.googleapis.com') ||
+            value.startsWith('https://storage.googleapis.com'))
+        ) {
+          return `<div style="border:1px solid #e5e7eb;border-radius:8px;padding:12px;background:#fff;">
+              <img src="${value}" style="max-width:300px;max-height:150px;" />
+            </div>`;
+        }
         return `<p style="font-size:14px;color:#1f2937;background:#f4eaf4;padding:10px;border-radius:6px;border:1px solid #e5e7eb;">${
           value || 'No response provided'
         }</p>`;
@@ -444,7 +470,7 @@ const FilledFormsPreviewScreen: React.FC = () => {
   }
 
   return (
-    <SafeAreaView style={styles.container}>
+    <SafeAreaView style={styles.container} edges={[]}>
       <ScrollView style={styles.scrollView}>
         <ScreenHeader
           title={form.title}

@@ -12,7 +12,7 @@ import {
 } from 'react-native';
 import { X, Trash2, Check, Undo } from 'lucide-react-native';
 import Svg, { Path } from 'react-native-svg';
-import { GestureDetector, Gesture } from 'react-native-gesture-handler';
+import { GestureDetector, Gesture, GestureHandlerRootView } from 'react-native-gesture-handler';
 import { captureRef } from 'react-native-view-shot';
 import { colors } from '../../theme/colors';
 
@@ -54,6 +54,7 @@ const SignatureModal: React.FC<SignatureModalProps> = ({
   }, [existingSignature]);
 
   const panGesture = Gesture.Pan()
+    .runOnJS(true)
     .onUpdate(event => {
       const { x, y } = event;
       setCurrentPath(prev => [...prev, { x, y }]);
@@ -141,7 +142,7 @@ const SignatureModal: React.FC<SignatureModalProps> = ({
       transparent={true}
       onRequestClose={onClose}
     >
-      <View style={styles.modalOverlay}>
+      <GestureHandlerRootView style={styles.modalOverlay}>
         <View style={styles.modalContent}>
           <View style={styles.modalHeader}>
             <Text style={styles.modalTitle}>{title}</Text>
@@ -238,7 +239,7 @@ const SignatureModal: React.FC<SignatureModalProps> = ({
             </TouchableOpacity>
           </View>
         </View>
-      </View>
+      </GestureHandlerRootView>
     </Modal>
   );
 };

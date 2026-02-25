@@ -85,7 +85,11 @@ const Signup: React.FC<SignupProps> = ({ onToggleToLogin }) => {
   };
 
   const useAppleSignIn = async () => {
-    await handleAppleSignIn(handleAuthSuccess, setLoading);
+    try {
+      await handleAppleSignIn(handleAuthSuccess, setLoading);
+    } catch {
+      // Error already handled in authUtils
+    }
   };
 
   const renderEmailStep = () => (
@@ -132,7 +136,8 @@ const Signup: React.FC<SignupProps> = ({ onToggleToLogin }) => {
         <Text style={styles.socialButtonText}>Google</Text>
       </TouchableOpacity>
 
-      <TouchableOpacity
+      {/* Apple sign-in hidden temporarily */}
+      {/* <TouchableOpacity
         style={styles.socialButtonApple}
         onPress={useAppleSignIn}
       >
@@ -141,7 +146,7 @@ const Signup: React.FC<SignupProps> = ({ onToggleToLogin }) => {
           style={styles.socialIcon}
         />
         <Text style={styles.socialButtonTextApple}>Apple</Text>
-      </TouchableOpacity>
+      </TouchableOpacity> */}
 
       <TouchableOpacity style={styles.toggleButton} onPress={onToggleToLogin}>
         <Text style={styles.toggleText}>

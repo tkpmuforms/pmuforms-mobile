@@ -12,7 +12,6 @@ import {
 import useAuth from '../../hooks/useAuth';
 import { colors } from '../../theme/colors';
 import {
-  handleAppleSignIn,
   handleEmailPasswordLogin,
   handleGoogleSignIn,
 } from '../../utils/authUtils';
@@ -39,10 +38,6 @@ const Login: React.FC<LoginProps> = ({ onToggleToSignup }) => {
 
   const useGoogleSignIn = async () => {
     await handleGoogleSignIn(handleAuthSuccess, setLoading);
-  };
-
-  const useAppleSignIn = async () => {
-    await handleAppleSignIn(handleAuthSuccess, setLoading);
   };
 
   return (
@@ -123,7 +118,8 @@ const Login: React.FC<LoginProps> = ({ onToggleToSignup }) => {
         <Text style={styles.socialButtonText}>Sign in with Google</Text>
       </TouchableOpacity>
 
-      <TouchableOpacity
+      {/* Apple sign-in hidden temporarily */}
+      {/* <TouchableOpacity
         style={styles.socialButtonApple}
         onPress={useAppleSignIn}
       >
@@ -132,7 +128,7 @@ const Login: React.FC<LoginProps> = ({ onToggleToSignup }) => {
           style={styles.socialIcon}
         />
         <Text style={styles.socialButtonTextApple}>Sign in with Apple</Text>
-      </TouchableOpacity>
+      </TouchableOpacity> */}
 
       <TouchableOpacity style={styles.toggleButton} onPress={onToggleToSignup}>
         <Text style={styles.toggleText}>

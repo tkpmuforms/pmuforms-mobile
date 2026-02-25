@@ -60,7 +60,7 @@ const ClientRemindersScreen: React.FC<ClientRemindersScreenProps> = () => {
     try {
       setLoading(true);
       const response = await getRemindersByCustomer(clientId);
-      console.log('Reminders response:', response);
+
       setReminders(response.data?.reminders || []);
     } catch (error) {
       console.error('Error loading reminders:', error);

@@ -1,5 +1,5 @@
 import Clipboard from '@react-native-clipboard/clipboard';
-import { RouteProp, useNavigation, useRoute } from '@react-navigation/native';
+import { RouteProp, useFocusEffect, useNavigation, useRoute } from '@react-navigation/native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import {
   Calendar,
@@ -12,7 +12,7 @@ import {
   Trash2,
   User,
 } from 'lucide-react-native';
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { useCallback, useState } from 'react';
 import {
   ActivityIndicator,
   Linking,
@@ -110,10 +110,12 @@ const ClientDetailsScreen: React.FC<ClientDetailsScreenProps> = () => {
     }
   }, [clientId]);
 
-  useEffect(() => {
-    fetchClientDetails();
-    fetchClientMetrics();
-  }, [fetchClientDetails, fetchClientMetrics]);
+  useFocusEffect(
+    useCallback(() => {
+      fetchClientDetails();
+      fetchClientMetrics();
+    }, [fetchClientDetails, fetchClientMetrics]),
+  );
 
   const handleCopyToClipboard = async (text: string, label: string) => {
     Clipboard.setString(text);

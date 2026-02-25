@@ -61,8 +61,10 @@ const AddNoteScreen: React.FC = () => {
     }
   };
 
+  const hasContent = !!(noteContent.trim() || imageUrl);
+
   const handleSave = async () => {
-    if (noteContent.trim() && onSave) {
+    if (hasContent && onSave) {
       setIsSaving(true);
       try {
         let finalImageUrl = imageUrl;
@@ -158,11 +160,10 @@ const AddNoteScreen: React.FC = () => {
               <TouchableOpacity
                 style={[
                   styles.saveButton,
-                  (!noteContent.trim() || isSaving) &&
-                    styles.saveButtonDisabled,
+                  (!hasContent || isSaving) && styles.saveButtonDisabled,
                 ]}
                 onPress={handleSave}
-                disabled={!noteContent.trim() || isSaving}
+                disabled={!hasContent || isSaving}
               >
                 {isSaving ? (
                   <ActivityIndicator color={colors.white} />

@@ -24,7 +24,6 @@ const AppointmentCard: React.FC<AppointmentCardProps> = ({
   onViewForms,
   onDeleteAppointment,
 }) => {
-  console.log('Rendering AppointmentCard for appointment:', appointment);
   const [showMenu, setShowMenu] = useState(false);
   const primaryService = appointment.serviceDetails?.[0];
   const serviceName = primaryService?.service || 'Unknown Service';

@@ -12,51 +12,11 @@ const FormInputTypes = {
 };
 
 export const renderPreviewFormFields = (fields: any[]) => {
-  const rows: any[][] = [];
-  let currentRow: any[] = [];
-
-  (fields || []).forEach((field: any) => {
-    if (!field || !field?.id) return;
-    if (field.line === 'half') {
-      currentRow.push(field);
-      if (currentRow.length === 2) {
-        rows.push(currentRow);
-        currentRow = [];
-      }
-    } else {
-      if (currentRow.length > 0) {
-        rows.push(currentRow);
-        currentRow = [];
-      }
-      rows.push([field]);
-    }
-  });
-  if (currentRow.length > 0) {
-    rows.push(currentRow);
-  }
-
-  return rows.map((row, rowIndex) => {
-    if (row.length === 2) {
-      return (
-        <View key={`row-${rowIndex}`} style={styles.row}>
-          {row.map(field => (
-            <View key={field.id} style={styles.halfField}>
-              {renderSingleField(field)}
-            </View>
-          ))}
-        </View>
-      );
-    }
-    const field = row[0];
-    const isHalf = field.line === 'half';
-    return (
-      <View key={`row-${rowIndex}`} style={isHalf ? styles.row : undefined}>
-        <View style={isHalf ? styles.halfField : undefined}>
-          {renderSingleField(field)}
-        </View>
-      </View>
-    );
-  });
+  return (fields || [])
+    .filter((field: any) => field && field?.id)
+    .map((field: any) => (
+      <View key={field.id}>{renderSingleField(field)}</View>
+    ));
 };
 
 const renderSingleField = (field: any) => {
@@ -178,13 +138,6 @@ const renderSingleField = (field: any) => {
 };
 
 const styles = StyleSheet.create({
-  row: {
-    flexDirection: 'row',
-    gap: 12,
-  },
-  halfField: {
-    flex: 1,
-  },
   readOnlyField: {
     marginBottom: 16,
   },
