@@ -20,6 +20,7 @@ import SignatureModal from '../../components/signature/SignatureModal';
 import { signAppointment } from '../../services/artistServices';
 import { colors } from '../../theme/colors';
 import storage from '@react-native-firebase/storage';
+import { getAuth } from '@react-native-firebase/auth';
 import useAuth from '../../hooks/useAuth';
 
 interface FormTemplate {
@@ -111,6 +112,20 @@ const SignatureScreen: React.FC = () => {
     setIsSubmitting(true);
 
     try {
+      // Ensure Firebase Auth session is active before uploading
+      const firebaseUser = getAuth().currentUser;
+      if (!firebaseUser) {
+        Toast.show({
+          type: 'error',
+          text1: 'Session Expired',
+          text2: 'Please log out and log back in to continue.',
+        });
+        setIsSubmitting(false);
+        return;
+      }
+      // Force token refresh to ensure the auth token is valid
+      await firebaseUser.getIdToken(true);
+
       const storagePath = `6signatures/${
         user?._id
       }/${appointmentId}/${Date.now()}.png`;
