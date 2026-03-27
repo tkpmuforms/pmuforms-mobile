@@ -11,9 +11,10 @@ import {
   useRoute,
   useNavigation,
   useFocusEffect,
+  CommonActions,
 } from '@react-navigation/native';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { Edit, Trash2, Plus } from 'lucide-react-native';
+import { Edit, Trash2, Plus, ChevronLeft } from 'lucide-react-native';
 import Toast from 'react-native-toast-message';
 import { colors } from '../../theme/colors';
 import useAuth from '../../hooks/useAuth';
@@ -126,8 +127,7 @@ const EditFormsScreen: React.FC = () => {
       const response = await getFormById(formTemplateId);
 
       if (response?.data?.form) {
-        const newFormId =
-          response.data.form.id || response.data.form._id;
+        const newFormId = response.data.form.id || response.data.form._id;
         if (newFormId && newFormId !== formTemplateId) {
           setFormTemplateId(newFormId);
         }
@@ -240,14 +240,6 @@ const EditFormsScreen: React.FC = () => {
       formId: form.id,
       sectionId,
       afterFieldId,
-    });
-  };
-
-  const handleSaveForm = () => {
-    Toast.show({
-      type: 'success',
-      text1: 'Success',
-      text2: 'Form saved successfully',
     });
   };
 
@@ -369,10 +361,10 @@ const EditFormsScreen: React.FC = () => {
         <View style={styles.emptyContainer}>
           <Text style={styles.emptyText}>No form found</Text>
           <TouchableOpacity
-            style={styles.backButton}
+            style={styles.emptyBackButton}
             onPress={() => navigation.goBack()}
           >
-            <Text style={styles.backButtonText}>Go Back</Text>
+            <Text style={styles.emptyBackButtonText}>Go Back</Text>
           </TouchableOpacity>
         </View>
       </SafeAreaView>
@@ -382,10 +374,19 @@ const EditFormsScreen: React.FC = () => {
   return (
     <SafeAreaView style={styles.container} edges={[]}>
       <View style={styles.header}>
+        <TouchableOpacity
+          style={styles.backButton}
+          onPress={() => navigation.popToTop()}
+        >
+          <ChevronLeft size={24} color={colors.text} />
+        </TouchableOpacity>
         <Text style={styles.title} numberOfLines={1}>
           {form.title}
         </Text>
-        <TouchableOpacity style={styles.saveButton} onPress={handleSaveForm}>
+        <TouchableOpacity
+          style={styles.saveButton}
+          onPress={() => navigation.replace('FormPreview', { formId: form.id })}
+        >
           <Text style={styles.saveButtonText}>Save</Text>
         </TouchableOpacity>
       </View>
@@ -457,43 +458,48 @@ const styles = StyleSheet.create({
     color: colors.textLight,
     marginBottom: 16,
   },
-  backButton: {
+  emptyBackButton: {
     backgroundColor: colors.primary,
     paddingHorizontal: 24,
     paddingVertical: 12,
     borderRadius: 8,
   },
-  backButtonText: {
+  emptyBackButtonText: {
     color: colors.white,
     fontSize: 16,
     fontWeight: '600',
   },
   header: {
     flexDirection: 'row',
-    justifyContent: 'space-between',
     alignItems: 'center',
     padding: 16,
     backgroundColor: colors.white,
     borderBottomWidth: 1,
     borderBottomColor: colors.border,
+    gap: 12,
+  },
+  backButton: {
+    width: 36,
+    height: 36,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  saveButton: {
+    paddingHorizontal: 16,
+    paddingVertical: 8,
+    borderRadius: 8,
+    backgroundColor: colors.primary,
+  },
+  saveButtonText: {
+    color: colors.white,
+    fontSize: 14,
+    fontWeight: '600',
   },
   title: {
     flex: 1,
     fontSize: 20,
     fontWeight: 'bold',
     color: colors.text,
-    marginRight: 16,
-  },
-  saveButton: {
-    backgroundColor: colors.primary,
-    paddingHorizontal: 16,
-    paddingVertical: 8,
-    borderRadius: 6,
-  },
-  saveButtonText: {
-    color: colors.white,
-    fontSize: 14,
-    fontWeight: '600',
   },
   scrollView: {
     flex: 1,

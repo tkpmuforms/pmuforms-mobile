@@ -1,5 +1,5 @@
 import { Plus } from 'lucide-react-native';
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import {
   RefreshControl,
   ScrollView,
@@ -9,6 +9,7 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native';
+import { useFocusEffect } from '@react-navigation/native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import FormCard from '../../components/forms/FormCard';
 import UpdateServicesModal from '../../components/profile/UpdateServicesModal';
@@ -28,13 +29,18 @@ const FormsScreen = ({ navigation }: any) => {
   const [refreshing, setRefreshing] = useState(false);
   const [searchTerm, setSearchTerm] = useState('');
 
-  const filteredForms = (forms || []).filter(form => {
-    const matchesTab = form?.type === activeTab;
-    const matchesSearch =
-      searchTerm === '' ||
-      (form?.title || '').toLowerCase().includes(searchTerm.toLowerCase());
-    return matchesTab && matchesSearch;
-  });
+  const filteredForms = (forms || [])
+    .filter(form => {
+      const matchesTab = form?.type === activeTab;
+      const matchesSearch =
+        searchTerm === '' ||
+        (form?.title || '').toLowerCase().includes(searchTerm.toLowerCase());
+      return matchesTab && matchesSearch;
+    })
+    .sort(
+      (a, b) =>
+        new Date(b.updatedAt).getTime() - new Date(a.updatedAt).getTime(),
+    );
 
   const fetchForms = async () => {
     try {
@@ -53,9 +59,11 @@ const FormsScreen = ({ navigation }: any) => {
     }
   };
 
-  useEffect(() => {
-    fetchForms();
-  }, []);
+  useFocusEffect(
+    useCallback(() => {
+      fetchForms();
+    }, []),
+  );
 
   const onRefresh = async () => {
     setRefreshing(true);

@@ -16,7 +16,7 @@ import { RootState } from '../../redux/store';
 import { refreshAuthUser } from '../../utils/authUtils';
 import useAuth from '../../hooks/useAuth';
 
-const WEB_URL = 'https://artist.pmuforms.com';
+const WEB_URL = 'https://artist.pmuforms.com?from=app';
 
 interface PaymentSetupScreenProps {
   navigation: any;

@@ -119,7 +119,7 @@ const PreviewFormsScreen = ({ route, navigation }: any) => {
     <SafeAreaView style={styles.container} edges={[]}>
       <ScreenHeader
         title="Preview Form"
-        onBack={() => navigation.goBack()}
+        onBack={() => navigation.navigate('Tabs', { screen: 'Forms' })}
         rightComponent={
           <View style={styles.headerActions}>
             <TouchableOpacity
