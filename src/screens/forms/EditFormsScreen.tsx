@@ -1,25 +1,24 @@
+import {
+  useFocusEffect,
+  useNavigation,
+  useRoute,
+} from '@react-navigation/native';
+import { ChevronLeft, Edit, Plus, Trash2 } from 'lucide-react-native';
 import React, { useCallback, useEffect, useState } from 'react';
 import {
-  View,
-  Text,
-  StyleSheet,
-  ScrollView,
-  TouchableOpacity,
   Alert,
+  ScrollView,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
 } from 'react-native';
-import {
-  useRoute,
-  useNavigation,
-  useFocusEffect,
-  CommonActions,
-} from '@react-navigation/native';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { Edit, Trash2, Plus, ChevronLeft } from 'lucide-react-native';
 import Toast from 'react-native-toast-message';
-import { colors } from '../../theme/colors';
-import useAuth from '../../hooks/useAuth';
 import EditFormServices from '../../components/forms/EditFormServices';
 import EditFormSkeleton from '../../components/skeleton/EditFormSkeleton';
+import useAuth from '../../hooks/useAuth';
+import { colors } from '../../theme/colors';
 
 import {
   deleteFormSectionData,
@@ -383,12 +382,12 @@ const EditFormsScreen: React.FC = () => {
         <Text style={styles.title} numberOfLines={1}>
           {form.title}
         </Text>
-        <TouchableOpacity
+        {/* <TouchableOpacity
           style={styles.saveButton}
           onPress={() => navigation.replace('FormPreview', { formId: form.id })}
         >
           <Text style={styles.saveButtonText}>Save</Text>
-        </TouchableOpacity>
+        </TouchableOpacity> */}
       </View>
 
       <ScrollView

@@ -232,7 +232,7 @@ const ClientNotesScreen: React.FC<ClientNotesScreenProps> = () => {
   }
 
   return (
-    <SafeAreaView style={styles.container}>
+    <SafeAreaView style={styles.container} edges={[]}>
       {renderHeader()}
       <TouchableOpacity style={styles.addButton} onPress={handleAddNote}>
         <NotesIcon />
