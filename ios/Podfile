@@ -1,4 +1,3 @@
-# Resolve react_native_pods.rb with node to allow for hoisting
 require Pod::Executable.execute_command('node', ['-p',
   'require.resolve(
     "react-native/scripts/react_native_pods.rb",
@@ -28,17 +27,47 @@ target 'PMUForms' do
     :hermes_enabled => true
   )
 
+  pre_install do |installer|
+    installer.pod_targets.each do |pod|
+      if pod.name == 'stripe-react-native'
+        def pod.build_type
+          Pod::BuildType.static_framework
+        end
+      end
+    end
+  end
+
   post_install do |installer|
     react_native_post_install(
       installer,
       config[:reactNativePath],
       :mac_catalyst_enabled => false
     )
-    
+
     installer.pods_project.targets.each do |target|
+      target.build_configurations.each do |config|
+        config.build_settings['OTHER_CFLAGS'] = '$(inherited) -Wno-elaborated-enum-base'
+      end
+
       if target.name == 'hermes-engine'
         target.build_configurations.each do |config|
           config.build_settings['GCC_GENERATE_DEBUGGING_SYMBOLS'] = 'NO'
+        end
+      end
+
+      if target.name == 'fmt'
+        target.build_configurations.each do |config|
+          config.build_settings['CLANG_CXX_LANGUAGE_STANDARD'] = 'c++17'
+          config.build_settings['GCC_PREPROCESSOR_DEFINITIONS'] ||= ['$(inherited)']
+          config.build_settings['GCC_PREPROCESSOR_DEFINITIONS'] << 'FMT_CONSTEVAL='
+        end
+      end
+
+      if target.name == 'stripe-react-native'
+        target.build_configurations.each do |config|
+          config.build_settings['DEFINES_MODULE'] = 'YES'
+          config.build_settings['CLANG_ALLOW_NON_MODULAR_INCLUDES_IN_FRAMEWORK_MODULES'] = 'YES'
+          config.build_settings['OTHER_SWIFT_FLAGS'] = '$(inherited) -Xfrontend -disable-objc-attr-requires-foundation-module'
         end
       end
     end

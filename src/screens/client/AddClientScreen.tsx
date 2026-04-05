@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import {
+  ActivityIndicator,
   View,
   Text,
   StyleSheet,
@@ -26,29 +27,53 @@ const AddClientScreen: React.FC = () => {
     email: '',
     phone: '',
   });
+  const [fieldErrors, setFieldErrors] = useState<Partial<typeof formData>>({});
+  const [loading, setLoading] = useState(false);
 
   const handleInputChange = (field: keyof typeof formData, value: string) => {
     setFormData(prev => ({ ...prev, [field]: value }));
+    if (fieldErrors[field]) {
+      setFieldErrors(prev => ({ ...prev, [field]: '' }));
+    }
   };
 
-  const isFormValid = () => {
-    return (
-      formData.firstName.trim() !== '' &&
-      formData.lastName.trim() !== '' &&
-      formData.email.trim() !== ''
-    );
+  const validate = () => {
+    const errors: Partial<typeof formData> = {};
+    if (!formData.firstName.trim()) errors.firstName = 'First name is required';
+    if (!formData.lastName.trim()) errors.lastName = 'Last name is required';
+    if (!formData.email.trim()) {
+      errors.email = 'Email is required';
+    } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email.trim())) {
+      errors.email = 'Enter a valid email address';
+    }
+    setFieldErrors(errors);
+    return Object.keys(errors).length === 0;
   };
 
   const handleSubmit = async () => {
-    if (!isFormValid()) {
-      return;
-    }
+    if (!validate() || loading) return;
+    setLoading(true);
     try {
-      await createClient({
+      const payload = {
         name: `${formData.firstName} ${formData.lastName}`,
         primaryPhone: formData.phone,
+        cell_phone: formData.phone,
         email: formData.email,
-      });
+      };
+      const response = await createClient(payload);
+
+      const customer = response?.data?.customer;
+      const createdAt = customer?.createdAt ? new Date(customer.createdAt).getTime() : 0;
+      const isExisting = Date.now() - createdAt > 10000; // older than 10s = pre-existing
+
+      if (isExisting) {
+        Toast.show({
+          type: 'error',
+          text1: 'Email already in use',
+          text2: 'A client with this email already exists.',
+        });
+        return;
+      }
 
       Toast.show({
         type: 'success',
@@ -57,13 +82,18 @@ const AddClientScreen: React.FC = () => {
       });
 
       navigation.goBack();
-    } catch (error) {
-      console.error('Error adding client:', error);
+    } catch (error: any) {
+      const message =
+        error?.message ||
+        error?.error ||
+        'Failed to add client. Please try again.';
       Toast.show({
         type: 'error',
         text1: 'Error',
-        text2: 'Failed to add client. Please try again.',
+        text2: message,
       });
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -90,31 +120,37 @@ const AddClientScreen: React.FC = () => {
               <View style={styles.formGroup}>
                 <Text style={styles.label}>First Name *</Text>
                 <TextInput
-                  style={styles.input}
+                  style={[styles.input, fieldErrors.firstName ? styles.inputError : null]}
                   placeholder="First Name"
                   placeholderTextColor="#94a3b8"
                   value={formData.firstName}
                   onChangeText={value => handleInputChange('firstName', value)}
                   returnKeyType="next"
                 />
+                {!!fieldErrors.firstName && (
+                  <Text style={styles.errorText}>{fieldErrors.firstName}</Text>
+                )}
               </View>
 
               <View style={styles.formGroup}>
                 <Text style={styles.label}>Last Name *</Text>
                 <TextInput
-                  style={styles.input}
+                  style={[styles.input, fieldErrors.lastName ? styles.inputError : null]}
                   placeholder="Last Name"
                   placeholderTextColor="#94a3b8"
                   value={formData.lastName}
                   onChangeText={value => handleInputChange('lastName', value)}
                   returnKeyType="next"
                 />
+                {!!fieldErrors.lastName && (
+                  <Text style={styles.errorText}>{fieldErrors.lastName}</Text>
+                )}
               </View>
 
               <View style={styles.formGroup}>
                 <Text style={styles.label}>Email Address *</Text>
                 <TextInput
-                  style={styles.input}
+                  style={[styles.input, fieldErrors.email ? styles.inputError : null]}
                   placeholder="Email Address"
                   placeholderTextColor="#94a3b8"
                   value={formData.email}
@@ -123,6 +159,9 @@ const AddClientScreen: React.FC = () => {
                   autoCapitalize="none"
                   returnKeyType="next"
                 />
+                {!!fieldErrors.email && (
+                  <Text style={styles.errorText}>{fieldErrors.email}</Text>
+                )}
               </View>
 
               <View style={styles.formGroup}>
@@ -144,12 +183,16 @@ const AddClientScreen: React.FC = () => {
               <TouchableOpacity
                 style={[
                   styles.submitButton,
-                  !isFormValid() && styles.submitButtonDisabled,
+                  loading && styles.submitButtonDisabled,
                 ]}
                 onPress={handleSubmit}
-                disabled={!isFormValid()}
+                disabled={loading}
               >
-                <Text style={styles.submitButtonText}>Add Client</Text>
+                {loading ? (
+                  <ActivityIndicator color={colors.white} />
+                ) : (
+                  <Text style={styles.submitButtonText}>Add Client</Text>
+                )}
               </TouchableOpacity>
             </View>
           </View>
@@ -194,6 +237,14 @@ const styles = StyleSheet.create({
     fontSize: 16,
     color: colors.black,
     backgroundColor: '#BCBBC133',
+  },
+  inputError: {
+    borderColor: colors.error,
+  },
+  errorText: {
+    marginTop: 4,
+    fontSize: 12,
+    color: colors.error,
   },
   footer: {
     padding: 16,

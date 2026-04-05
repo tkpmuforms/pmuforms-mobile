@@ -1,4 +1,5 @@
-import React, { useEffect, useState } from 'react';
+import { useFocusEffect } from '@react-navigation/native';
+import React, { useCallback, useState } from 'react';
 import {
   Dimensions,
   RefreshControl,
@@ -128,9 +129,11 @@ const DashboardScreen = ({ navigation }: any) => {
     }
   };
 
-  useEffect(() => {
-    fetchData();
-  }, []);
+  useFocusEffect(
+    useCallback(() => {
+      fetchData();
+    }, []),
+  );
 
   const onRefresh = async () => {
     setRefreshing(true);

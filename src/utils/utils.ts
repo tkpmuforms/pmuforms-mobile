@@ -52,8 +52,10 @@ export const generateInitials = (name: string): string => {
     .join('');
 };
 
-export const formatAppointmentTime = (dateString: string) => {
-  const date = new Date(dateString);
+export const formatAppointmentTime = (dateString: string | undefined | null) => {
+  if (!dateString) return 'N/A';
+  const date = new Date(dateString.replace(' ', 'T'));
+  if (isNaN(date.getTime())) return 'N/A';
   return date.toLocaleString('en-US', {
     weekday: 'short',
     month: 'short',
