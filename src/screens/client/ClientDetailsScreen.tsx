@@ -1,5 +1,10 @@
 import Clipboard from '@react-native-clipboard/clipboard';
-import { RouteProp, useFocusEffect, useNavigation, useRoute } from '@react-navigation/native';
+import {
+  RouteProp,
+  useFocusEffect,
+  useNavigation,
+  useRoute,
+} from '@react-navigation/native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import {
   Calendar,
@@ -16,6 +21,7 @@ import React, { useCallback, useState } from 'react';
 import {
   ActivityIndicator,
   Linking,
+  Platform,
   ScrollView,
   StatusBar,
   StyleSheet,
@@ -118,17 +124,51 @@ const ClientDetailsScreen: React.FC<ClientDetailsScreenProps> = () => {
   );
 
   const handleCopyToClipboard = async (text: string, label: string) => {
+    if (!text || text === 'No email provided') {
+      Toast.show({
+        type: 'error',
+        text1: 'Unavailable',
+        text2: `${label} is not available`,
+      });
+      return;
+    }
+
     Clipboard.setString(text);
-    Toast.show({
-      type: 'success',
-      text1: 'Copied',
-      text2: `${label} copied to clipboard`,
-    });
   };
 
-  const handleEmailPress = () => {
-    if (client?.email) {
-      Linking.openURL(`mailto:${client.email}`);
+  const handleEmailPress = async () => {
+    const email = client?.email;
+    if (!email || email === 'No email provided') {
+      Toast.show({
+        type: 'error',
+        text1: 'Unavailable',
+        text2: 'Email is not available',
+      });
+      return;
+    }
+
+    const mailtoUrl = `mailto:${email.trim()}`;
+
+    if (Platform.OS === 'android') {
+      const canOpen = await Linking.canOpenURL(mailtoUrl);
+      if (!canOpen) {
+        Toast.show({
+          type: 'error',
+          text1: 'Error',
+          text2: 'No email app found on this device',
+        });
+        return;
+      }
+    }
+
+    try {
+      await Linking.openURL(mailtoUrl);
+    } catch {
+      Toast.show({
+        type: 'error',
+        text1: 'Error',
+        text2: 'Unable to open email app',
+      });
     }
   };
 
@@ -141,11 +181,6 @@ const ClientDetailsScreen: React.FC<ClientDetailsScreenProps> = () => {
   const handleDeleteClient = async () => {
     try {
       await deleteCustomer(clientId);
-      Toast.show({
-        type: 'success',
-        text1: 'Success',
-        text2: 'Client deleted successfully',
-      });
       navigation.goBack();
     } catch (err) {
       console.error('Error deleting client:', err);
@@ -293,11 +328,16 @@ const ClientDetailsScreen: React.FC<ClientDetailsScreenProps> = () => {
               <TouchableOpacity
                 style={styles.contactActionButton}
                 onPress={handleEmailPress}
+                hitSlop={{ top: 10, bottom: 10, left: 10, right: 10 }}
+                activeOpacity={0.7}
               >
                 <Send size={16} color={colors.primary} />
               </TouchableOpacity>
               <TouchableOpacity
+                style={styles.contactActionButton}
                 onPress={() => handleCopyToClipboard(client.email, 'Email')}
+                hitSlop={{ top: 10, bottom: 10, left: 10, right: 10 }}
+                activeOpacity={0.7}
               >
                 <Copy size={16} color={colors.primary} />
               </TouchableOpacity>
@@ -459,7 +499,7 @@ const styles = StyleSheet.create({
     color: colors.black,
   },
   contactActionButton: {
-    padding: 4,
+    padding: 8,
   },
   metricsContainer: {
     flexDirection: 'row',

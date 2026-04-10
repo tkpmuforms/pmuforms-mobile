@@ -40,9 +40,8 @@ const AddNoteScreen: React.FC = () => {
 
   const uploadImageToFirebase = async (uri: string): Promise<string> => {
     const reference = storage().ref(`images/${user?._id}/${Date.now()}.jpg`);
-    const response = await fetch(uri);
-    const blob = await response.blob();
-    await reference.put(blob);
+    // putFile handles both file:// (iOS) and content:// (Android) URIs natively
+    await reference.putFile(uri);
     return await reference.getDownloadURL();
   };
 

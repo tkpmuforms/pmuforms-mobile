@@ -67,11 +67,6 @@ const ContactSupportScreen: React.FC = () => {
         message: '',
       });
 
-      Toast.show({
-        type: 'success',
-        text1: 'Success',
-        text2: 'Message sent successfully',
-      });
     } catch (error) {
       console.error('Error sending message:', error);
       Toast.show({

@@ -214,11 +214,6 @@ const EditFormsScreen: React.FC = () => {
                 setForm(updatedForm);
               }
 
-              Toast.show({
-                type: 'success',
-                text1: 'Success',
-                text2: 'Field deleted successfully',
-              });
             } catch (error) {
               console.error('Error deleting field:', error);
               Toast.show({
@@ -260,11 +255,6 @@ const EditFormsScreen: React.FC = () => {
         setForm(updatedForm);
       }
 
-      Toast.show({
-        type: 'success',
-        text1: 'Success',
-        text2: 'Services updated successfully',
-      });
     } catch (error) {
       console.error('Error updating services:', error);
       Toast.show({

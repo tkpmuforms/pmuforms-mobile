@@ -7,6 +7,7 @@ import React, { useCallback, useEffect, useState } from 'react';
 import {
   ActivityIndicator,
   FlatList,
+  Platform,
   StyleSheet,
   Text,
   TouchableOpacity,
@@ -103,11 +104,6 @@ const ClientRemindersScreen: React.FC<ClientRemindersScreenProps> = () => {
         );
         setShowDeleteModal(false);
         setSelectedReminder(null);
-        Toast.show({
-          type: 'success',
-          text1: 'Success',
-          text2: 'Reminder deleted successfully',
-        });
       } catch (error) {
         console.error('Error deleting reminder:', error);
         Toast.show({
@@ -138,6 +134,11 @@ const ClientRemindersScreen: React.FC<ClientRemindersScreenProps> = () => {
     );
   }
 
+  const addReminderButtonLabel =
+    Platform.OS === 'android'
+      ? 'Tap to Add Reminder'
+      : 'Tap Here to Add a New Reminder';
+
   return (
     <SafeAreaView style={styles.container} edges={[]}>
       <ScreenHeader
@@ -149,7 +150,7 @@ const ClientRemindersScreen: React.FC<ClientRemindersScreenProps> = () => {
       />
       <TouchableOpacity style={styles.addButton} onPress={handleAddReminder}>
         <Alarm />
-        <Text style={styles.addButtonText}>Tap Here to Add a New Reminder</Text>
+        <Text style={styles.addButtonText}>{addReminderButtonLabel}</Text>
       </TouchableOpacity>
 
       <FlatList

@@ -7,6 +7,7 @@ import {
   TouchableOpacity,
   ActivityIndicator,
   Image,
+  Platform,
 } from 'react-native';
 import { useRoute, useNavigation } from '@react-navigation/native';
 import { SafeAreaView } from 'react-native-safe-area-context';
@@ -67,7 +68,7 @@ const FilledFormsPreviewScreen: React.FC = () => {
   const [form, setForm] = useState<Form | null>(null);
   const [filledData, setFilledData] = useState<FilledData>({});
   const [loading, setLoading] = useState(true);
-  const [generatingPDF, setGeneratingPDF] = useState(false);
+  const [, setGeneratingPDF] = useState(false);
   const [signatureUrl, setSignatureUrl] = useState<string | null>(null);
 
   useEffect(() => {
@@ -401,33 +402,71 @@ const FilledFormsPreviewScreen: React.FC = () => {
   };
 
   const handleGeneratePDF = async () => {
+    console.log('[PDF] handleGeneratePDF called, form:', form?.title);
     if (!form) return;
 
     try {
       setGeneratingPDF(true);
 
       const html = buildHTML();
+      const fileName = `${
+        form.title?.replace(/[^a-zA-Z0-9]/g, '_') || 'form'
+      }_${Date.now()}`;
+      console.log(
+        '[PDF] Generating PDF with fileName:',
+        fileName,
+        'platform:',
+        Platform.OS,
+      );
+
       const pdf = await generatePDF({
         html,
-        fileName: `${
-          form.title?.replace(/[^a-zA-Z0-9]/g, '_') || 'form'
-        }_${Date.now()}`,
-        directory: 'Documents',
+        fileName,
+        // On Android 10+, writing to 'Documents' fails due to scoped storage.
+        // Use the app-private cache dir instead; FileProvider exposes it for sharing.
+        directory: Platform.OS === 'android' ? 'Cache' : 'Documents',
       });
 
-      if (pdf.filePath) {
-        await Share.open({
-          url: `file://${pdf.filePath}`,
-          type: 'application/pdf',
-          title: `${form.title || 'Form'}.pdf`,
-        });
+      console.log('[PDF] generatePDF result:', JSON.stringify(pdf));
+
+      const rawFilePath =
+        typeof pdf?.filePath === 'string' ? pdf.filePath.trim() : '';
+
+      console.log(
+        '[PDF] rawFilePath:',
+        rawFilePath,
+        'type:',
+        typeof pdf?.filePath,
+      );
+
+      if (!rawFilePath) {
+        throw new Error('PDF file path is empty');
       }
+
+      const normalizedUrl = rawFilePath.startsWith('file://')
+        ? rawFilePath
+        : `file://${rawFilePath}`;
+
+      console.log('[PDF] normalizedUrl:', normalizedUrl);
+      console.log('[PDF] Calling Share.open...');
+
+      await Share.open({
+        url: normalizedUrl,
+        type: 'application/pdf',
+        title: `${form.title || 'Form'}.pdf`,
+        failOnCancel: false,
+      });
+
+      console.log('[PDF] Share.open completed');
     } catch (error: any) {
       // User cancelled share - not an error
       if (error?.message?.includes?.('User did not share')) {
+        console.log('[PDF] User cancelled share');
         return;
       }
-      console.error('Error generating PDF:', error);
+      console.error('[PDF] Error generating PDF:', error);
+      console.error('[PDF] Error message:', error?.message);
+      console.error('[PDF] Error stack:', error?.stack);
       Toast.show({
         type: 'error',
         text1: 'Error',

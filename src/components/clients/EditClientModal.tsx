@@ -55,11 +55,6 @@ const EditClientModal: React.FC<EditClientModalProps> = ({
     try {
       await updateCustomerPersonalDetails(client.id, updatedData);
       setSuccess(true);
-      Toast.show({
-        type: 'success',
-        text1: 'Success',
-        text2: 'Client details updated successfully',
-      });
 
       // Wait a bit to show the success state, then close
       setTimeout(() => {

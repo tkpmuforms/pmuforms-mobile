@@ -47,12 +47,6 @@ const BusinessNameScreen: React.FC<BusinessNameScreenProps> = ({
         businessName: businessName.trim(),
       });
 
-      Toast.show({
-        type: 'success',
-        text1: 'Success',
-        text2: 'Business information saved',
-      });
-
       navigation.navigate('OnboardingServices');
 
       // Refresh user data in background after navigation to avoid

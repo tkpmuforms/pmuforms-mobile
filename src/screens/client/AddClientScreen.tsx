@@ -75,12 +75,6 @@ const AddClientScreen: React.FC = () => {
         return;
       }
 
-      Toast.show({
-        type: 'success',
-        text1: 'Success',
-        text2: 'Client added successfully!',
-      });
-
       navigation.goBack();
     } catch (error: any) {
       const message =

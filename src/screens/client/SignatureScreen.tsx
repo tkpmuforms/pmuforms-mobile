@@ -141,11 +141,6 @@ const SignatureScreen: React.FC = () => {
       setSignatureUrl(downloadUrl);
       setShowSignModal(false);
 
-      Toast.show({
-        type: 'success',
-        text1: 'Success',
-        text2: 'Signature submitted successfully',
-      });
 
       if (forms && forms.length > 0) {
         (navigation as any).navigate('FilledFormsPreview', {

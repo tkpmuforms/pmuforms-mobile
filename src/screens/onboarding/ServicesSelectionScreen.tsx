@@ -98,12 +98,6 @@ const ServicesSelectionScreen: React.FC<ServicesSelectionScreenProps> = ({
         .filter(Boolean);
       await updateServices({ services: serviceIds });
 
-      Toast.show({
-        type: 'success',
-        text1: 'Success',
-        text2: 'Services saved successfully',
-      });
-
       navigation.navigate('OnboardingPayment');
 
       // Refresh user data in background after navigation to avoid

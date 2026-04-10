@@ -59,11 +59,6 @@ const FieldInputScreen: React.FC = () => {
           line: fieldLine || 'full',
           required: isRequired,
         });
-        Toast.show({
-          type: 'success',
-          text1: 'Success',
-          text2: 'Field updated successfully',
-        });
       } else {
         response = await addFormSectionData(formId, sectionId, {
           type: fieldType.type,
@@ -71,11 +66,6 @@ const FieldInputScreen: React.FC = () => {
           line: 'full',
           required: isRequired,
           after: afterFieldId,
-        });
-        Toast.show({
-          type: 'success',
-          text1: 'Success',
-          text2: 'Field added successfully',
         });
       }
       const newFormId = response?.data?.form?.id || response?.data?.form?._id;

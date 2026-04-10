@@ -15,6 +15,14 @@
       },
       "oauth_client": [
         {
+          "client_id": "265429654619-bmqs43m01mti4egtvugkfk9kv521h7pr.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.pmuforms.mobile",
+            "certificate_hash": "5e8f16062ea3cd2c4a0d547876baa6f38cabf625"
+          }
+        },
+        {
           "client_id": "265429654619-lglm3v5quq9tnlv9mp64c6fipso6id0g.apps.googleusercontent.com",
           "client_type": 3
         }

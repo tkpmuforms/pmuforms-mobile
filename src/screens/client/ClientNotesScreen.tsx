@@ -103,11 +103,6 @@ const ClientNotesScreen: React.FC<ClientNotesScreenProps> = () => {
       if (newNote) {
         setNotes(prev => [newNote, ...(prev || [])]);
       }
-      Toast.show({
-        type: 'success',
-        text1: 'Success',
-        text2: 'Note added successfully',
-      });
     } catch (error) {
       console.error('Error saving note:', error);
       Toast.show({
@@ -141,11 +136,6 @@ const ClientNotesScreen: React.FC<ClientNotesScreenProps> = () => {
             : n,
         ),
       );
-      Toast.show({
-        type: 'success',
-        text1: 'Success',
-        text2: 'Note updated successfully',
-      });
     } catch (error) {
       console.error('Error updating note:', error);
       Toast.show({
@@ -186,11 +176,6 @@ const ClientNotesScreen: React.FC<ClientNotesScreenProps> = () => {
         setNotes(prev => prev.filter(n => n.id !== selectedNote.id));
         setShowDeleteModal(false);
         setSelectedNote(null);
-        Toast.show({
-          type: 'success',
-          text1: 'Success',
-          text2: 'Note deleted successfully',
-        });
       } catch (error) {
         console.error('Error deleting note:', error);
         Toast.show({

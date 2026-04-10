@@ -257,11 +257,6 @@ const EditProfileScreen: React.FC = () => {
 
       await updateMyProfile(updateData);
 
-      Toast.show({
-        type: 'success',
-        text1: 'Success',
-        text2: 'Profile updated successfully',
-      });
     } catch (err: any) {
       console.error('Failed to update profile:', err);
       setError(
@@ -286,11 +281,6 @@ const EditProfileScreen: React.FC = () => {
       await updateMySignature({ signature_url: downloadUrl });
 
       setShowSignModal(false);
-      Toast.show({
-        type: 'success',
-        text1: 'Success',
-        text2: 'Signature updated successfully',
-      });
     } catch (err) {
       console.error('Failed to update signature:', err);
       Toast.show({

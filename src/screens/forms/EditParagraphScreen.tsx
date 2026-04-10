@@ -55,22 +55,12 @@ const EditParagraphScreen: React.FC = () => {
           title: content,
           line: fieldLine || 'full',
         });
-        Toast.show({
-          type: 'success',
-          text1: 'Success',
-          text2: 'Paragraph updated successfully',
-        });
       } else {
         response = await addFormSectionData(formId, sectionId, {
           type: 'paragraph',
           title: content,
           line: 'full',
           after: afterFieldId,
-        });
-        Toast.show({
-          type: 'success',
-          text1: 'Success',
-          text2: 'Paragraph added successfully',
         });
       }
       const newFormId = response?.data?.form?.id || response?.data?.form?._id;

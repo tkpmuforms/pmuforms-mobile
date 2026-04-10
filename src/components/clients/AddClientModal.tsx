@@ -56,12 +56,6 @@ const AddClientModal: React.FC<AddClientModalProps> = ({
         email: formData?.email,
       });
 
-      Toast.show({
-        type: 'success',
-        text1: 'Success',
-        text2: 'Client added successfully!',
-      });
-
       setFormData({
         firstName: '',
         lastName: '',

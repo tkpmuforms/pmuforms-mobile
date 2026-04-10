@@ -1,5 +1,5 @@
-import { useNavigation, useRoute } from '@react-navigation/native';
-import React, { useEffect, useState } from 'react';
+import { useFocusEffect, useNavigation, useRoute } from '@react-navigation/native';
+import React, { useCallback, useState } from 'react';
 import { FlatList, StyleSheet, Text, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import Toast from 'react-native-toast-message';
@@ -35,35 +35,37 @@ const ClientAppointmentsScreen: React.FC<
     null,
   );
 
-  useEffect(() => {
-    const fetchData = async () => {
-      if (!clientId) return;
+  useFocusEffect(
+    useCallback(() => {
+      const fetchData = async () => {
+        if (!clientId) return;
 
-      setLoading(true);
-      try {
-        if (!clientName) {
-          const clientResponse = await getCustomerById(clientId);
-          const fetchedClientName =
-            clientResponse?.data?.customer?.name || 'Client';
-          setClientName(fetchedClientName);
+        setLoading(true);
+        try {
+          if (!clientName) {
+            const clientResponse = await getCustomerById(clientId);
+            const fetchedClientName =
+              clientResponse?.data?.customer?.name || 'Client';
+            setClientName(fetchedClientName);
+          }
+
+          const appointmentsResponse = await getAppointmentsForCustomer(clientId);
+          setAppointments(appointmentsResponse?.data?.appointments || []);
+        } catch (error) {
+          console.error('Error fetching data:', error);
+          Toast.show({
+            type: 'error',
+            text1: 'Error',
+            text2: 'Failed to load appointments',
+          });
+        } finally {
+          setLoading(false);
         }
+      };
 
-        const appointmentsResponse = await getAppointmentsForCustomer(clientId);
-        setAppointments(appointmentsResponse?.data?.appointments || []);
-      } catch (error) {
-        console.error('Error fetching data:', error);
-        Toast.show({
-          type: 'error',
-          text1: 'Error',
-          text2: 'Failed to load appointments',
-        });
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    fetchData();
-  }, [clientId]);
+      fetchData();
+    }, [clientId]),
+  );
 
   const onViewForms = (appointmentId: string) => {
     navigation.navigate('ClientAppointmentForms', {
@@ -88,11 +90,6 @@ const ClientAppointmentsScreen: React.FC<
         );
         setShowDeleteAppointment(false);
         setAppointmentToDelete(null);
-        Toast.show({
-          type: 'success',
-          text1: 'Success',
-          text2: 'Appointment deleted successfully',
-        });
       } catch (error) {
         console.error('Error deleting appointment:', error);
         Toast.show({

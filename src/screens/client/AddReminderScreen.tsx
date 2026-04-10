@@ -110,13 +110,6 @@ const AddReminderScreen: React.FC = () => {
           console.warn('Could not add to device calendar:', calendarError);
         }
 
-        Toast.show({
-          type: 'success',
-          text1: 'Success',
-          text2: isEditing
-            ? 'Reminder updated successfully'
-            : 'Reminder set successfully',
-        });
         navigation.goBack();
       } catch (error) {
         console.error('Error saving reminder:', error);

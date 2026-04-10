@@ -83,11 +83,11 @@ export const handleAppleSignIn = async (
     }
 
     const { identityToken, nonce } = appleAuthRequestResponse;
-    const appleCredential = AppleAuthProvider.credential(
-      identityToken,
-      nonce,
+    const appleCredential = AppleAuthProvider.credential(identityToken, nonce);
+    const userCredential = await signInWithCredential(
+      getAuth(),
+      appleCredential,
     );
-    const userCredential = await signInWithCredential(getAuth(), appleCredential);
     const userToken = await userCredential.user.getIdToken();
 
     const res = await createArtist(userToken);

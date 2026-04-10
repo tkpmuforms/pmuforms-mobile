@@ -53,11 +53,6 @@ const EditClientScreen: React.FC = () => {
     try {
       await updateCustomerPersonalDetails(clientId, updatedData);
       setSuccess(true);
-      Toast.show({
-        type: 'success',
-        text1: 'Success',
-        text2: 'Client details updated successfully',
-      });
 
       // Wait a bit to show the success state, then go back
       setTimeout(() => {

@@ -1,9 +1,14 @@
-import { useNavigation, useRoute } from '@react-navigation/native';
+import {
+  useFocusEffect,
+  useNavigation,
+  useRoute,
+} from '@react-navigation/native';
 import { FileText } from 'lucide-react-native';
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useState } from 'react';
 import {
   ActivityIndicator,
   FlatList,
+  Platform,
   StyleSheet,
   Text,
   TouchableOpacity,
@@ -46,43 +51,43 @@ const ClientAppointmentFormsScreen: React.FC = () => {
     paramAppointments || [],
   );
 
-  useEffect(() => {
-    const fetchData = async () => {
-      if (!appointmentId || !clientId) return;
+  useFocusEffect(
+    useCallback(() => {
+      const fetchData = async () => {
+        if (!appointmentId || !clientId) return;
 
-      setLoading(true);
-      try {
-        if (!clientName) {
-          const clientResponse = await getCustomerById(clientId);
-          const fetchedClientName =
-            clientResponse?.data?.customer?.name || 'Client';
-          setClientName(fetchedClientName);
-        }
+        setLoading(true);
+        try {
+          if (!paramClientName) {
+            const clientResponse = await getCustomerById(clientId);
+            const fetchedClientName =
+              clientResponse?.data?.customer?.name || 'Client';
+            setClientName(fetchedClientName);
+          }
 
-        if (!paramAppointments || paramAppointments.length === 0) {
-          const appointmentsResponse = await getAppointmentsForCustomer(
-            clientId,
-          );
+          const [appointmentsResponse, formsResponse] = await Promise.all([
+            getAppointmentsForCustomer(clientId),
+            getFilledFormsByAppointment(appointmentId),
+          ]);
+
           setAppointments(appointmentsResponse?.data?.appointments || []);
+          setForms(formsResponse.data?.filledForms || []);
+        } catch (error) {
+          console.error('Error fetching data:', error);
+          setForms([]);
+          Toast.show({
+            type: 'error',
+            text1: 'Error',
+            text2: 'Failed to load forms',
+          });
+        } finally {
+          setLoading(false);
         }
+      };
 
-        const formsResponse = await getFilledFormsByAppointment(appointmentId);
-        setForms(formsResponse.data?.filledForms || []);
-      } catch (error) {
-        console.error('Error fetching data:', error);
-        setForms([]);
-        Toast.show({
-          type: 'error',
-          text1: 'Error',
-          text2: 'Failed to load forms',
-        });
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    fetchData();
-  }, [appointmentId, clientId]);
+      fetchData();
+    }, [appointmentId, clientId, paramClientName]),
+  );
 
   const isAllFormsCompleted = (forms || []).every(
     form => form?.status === 'complete' || form?.status === 'completed',
@@ -118,6 +123,10 @@ const ClientAppointmentFormsScreen: React.FC = () => {
     if (forms.length === 0) return null;
 
     const canSign = forms.length > 0 && isAllFormsCompleted;
+    const signButtonLabel =
+      Platform.OS === 'android'
+        ? 'Tap to Sign Forms'
+        : 'Tap Here to sign forms for this Appointment';
 
     return (
       <View style={styles.signButtonContainer}>
@@ -134,7 +143,7 @@ const ClientAppointmentFormsScreen: React.FC = () => {
               !canSign && styles.signButtonTextDisabled,
             ]}
           >
-            Tap Here to sign forms for this Appointment
+            {signButtonLabel}
           </Text>
         </TouchableOpacity>
       </View>

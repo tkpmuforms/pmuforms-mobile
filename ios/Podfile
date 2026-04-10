@@ -46,6 +46,7 @@ target 'PMUForms' do
 
     installer.pods_project.targets.each do |target|
       target.build_configurations.each do |config|
+        config.build_settings['REACT_NATIVE_PATH'] = '$(SRCROOT)/../../node_modules/react-native'
         config.build_settings['OTHER_CFLAGS'] = '$(inherited) -Wno-elaborated-enum-base'
       end
 

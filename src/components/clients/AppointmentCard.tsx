@@ -27,6 +27,13 @@ const AppointmentCard: React.FC<AppointmentCardProps> = ({
   const [showMenu, setShowMenu] = useState(false);
   const primaryService = appointment.serviceDetails?.[0];
   const serviceName = primaryService?.service || 'Unknown Service';
+  const isFormSigned = appointment.signed;
+  const areFormsCompleted = appointment.allFormsCompleted;
+  const formStatusLabel = isFormSigned
+    ? 'Form Signed'
+    : areFormsCompleted
+    ? 'Forms Completed'
+    : 'Forms Not Completed';
   const appointmentDate = formatAppointmentTime(appointment.date);
   const formFilledDate = appointment.allFormsCompleted
     ? `${appointmentDate}`
@@ -65,7 +72,7 @@ const AppointmentCard: React.FC<AppointmentCardProps> = ({
           <View
             style={[
               styles.formStatusBadge,
-              appointment.allFormsCompleted
+              isFormSigned || areFormsCompleted
                 ? styles.formStatusCompleted
                 : styles.formStatusNotCompleted,
             ]}
@@ -73,14 +80,12 @@ const AppointmentCard: React.FC<AppointmentCardProps> = ({
             <Text
               style={[
                 styles.formStatusText,
-                appointment.allFormsCompleted
+                isFormSigned || areFormsCompleted
                   ? styles.formStatusTextCompleted
                   : styles.formStatusTextNotCompleted,
               ]}
             >
-              {appointment.allFormsCompleted
-                ? 'Forms Completed'
-                : 'Forms Not Completed'}
+              {formStatusLabel}
             </Text>
           </View>
         </View>
