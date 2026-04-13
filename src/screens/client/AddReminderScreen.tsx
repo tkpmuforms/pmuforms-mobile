@@ -1,13 +1,11 @@
-import { RouteProp, useNavigation, useRoute } from '@react-navigation/native';
 import DateTimePicker from '@react-native-community/datetimepicker';
+import { RouteProp, useNavigation, useRoute } from '@react-navigation/native';
 import {
   Calendar as CalendarIcon,
-  Clock as ClockIcon,
   ChevronDown,
+  Clock as ClockIcon,
 } from 'lucide-react-native';
 import React, { useState } from 'react';
-import RNCalendarEvents from 'react-native-calendar-events';
-import ScreenHeader from '../../components/layout/ScreenHeader';
 import {
   ActivityIndicator,
   Keyboard,
@@ -21,11 +19,13 @@ import {
   TouchableWithoutFeedback,
   View,
 } from 'react-native';
+import RNCalendarEvents from 'react-native-calendar-events';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import Toast from 'react-native-toast-message';
-import { RootStackParamList } from '../../types/navigation';
+import ScreenHeader from '../../components/layout/ScreenHeader';
 import { createReminder, updateReminder } from '../../services/artistServices';
 import { colors } from '../../theme/colors';
+import { RootStackParamList } from '../../types/navigation';
 
 type AddReminderRouteProp = RouteProp<RootStackParamList, 'AddReminder'>;
 
@@ -97,7 +97,9 @@ const AddReminderScreen: React.FC = () => {
             endDate.setMinutes(endDate.getMinutes() + 30);
 
             await RNCalendarEvents.saveEvent(
-              `PMU ${reminderType === 'check-in' ? 'Check-in' : 'Follow-up'}: ${clientName || 'Client'}`,
+              `PMU ${reminderType === 'check-in' ? 'Check-in' : 'Follow-up'}: ${
+                clientName || 'Client'
+              }`,
               {
                 startDate: combinedDate.toISOString(),
                 endDate: endDate.toISOString(),

@@ -1,3 +1,4 @@
+import Clipboard from '@react-native-clipboard/clipboard';
 import { Check, Copy, X } from 'lucide-react-native';
 import React, { useState } from 'react';
 import {
@@ -9,7 +10,6 @@ import {
   View,
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import Clipboard from '@react-native-clipboard/clipboard';
 import { colors } from '../../theme/colors';
 
 interface FormLinkModalProps {

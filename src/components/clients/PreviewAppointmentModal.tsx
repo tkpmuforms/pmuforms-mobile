@@ -1,24 +1,24 @@
-import React, { useState, useEffect } from 'react';
+import { Calendar, ChevronLeft, X } from 'lucide-react-native';
+import React, { useEffect, useState } from 'react';
 import {
-  View,
-  Text,
-  StyleSheet,
-  Modal,
-  TouchableOpacity,
-  ScrollView,
   ActivityIndicator,
   Alert,
+  Modal,
+  ScrollView,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
 } from 'react-native';
-import { X, ChevronLeft, Calendar } from 'lucide-react-native';
-import { formatAppointmentTime } from '../../utils/utils';
-import {
-  getMyServiceForms,
-  bookAppointment,
-} from '../../services/artistServices';
 import { Config } from 'react-native-config';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import FormSentSuccessModal from './FormSentSuccessModal';
+import {
+  bookAppointment,
+  getMyServiceForms,
+} from '../../services/artistServices';
 import { colors } from '../../theme/colors';
+import { formatAppointmentTime } from '../../utils/utils';
+import FormSentSuccessModal from './FormSentSuccessModal';
 
 interface PreviewAppointmentModalProps {
   visible: boolean;

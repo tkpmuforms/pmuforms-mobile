@@ -1,5 +1,6 @@
+import { useFocusEffect } from '@react-navigation/native';
 import { Plus } from 'lucide-react-native';
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { useCallback, useState } from 'react';
 import {
   RefreshControl,
   ScrollView,
@@ -9,16 +10,15 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native';
-import { useFocusEffect } from '@react-navigation/native';
 import { SafeAreaView } from 'react-native-safe-area-context';
+import { AddNewServiceFloat } from '../../../assets/svg';
 import FormCard from '../../components/forms/FormCard';
 import UpdateServicesModal from '../../components/profile/UpdateServicesModal';
 import FormCardSkeleton from '../../components/skeleton/FormCardSkeleton';
 import { getArtistForms } from '../../services/artistServices';
+import { colors } from '../../theme/colors';
 import { Form } from '../../types';
 import { transformFormData } from '../../utils/utils';
-import { AddNewServiceFloat } from '../../../assets/svg';
-import { colors } from '../../theme/colors';
 
 const FormsScreen = ({ navigation }: any) => {
   const [activeTab, setActiveTab] = useState<'consent' | 'care'>('consent');

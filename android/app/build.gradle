@@ -78,13 +78,21 @@ android {
     compileSdk rootProject.ext.compileSdkVersion
 
     namespace "com.pmuforms.mobile"
-defaultConfig {
-    applicationId "com.pmuforms.mobile"
-    minSdkVersion rootProject.ext.minSdkVersion
-    targetSdkVersion rootProject.ext.targetSdkVersion
-    versionCode 1
-    versionName "1.0"
-}
+
+    defaultConfig {
+        applicationId "com.pmuforms.mobile"
+        minSdkVersion rootProject.ext.minSdkVersion
+        targetSdkVersion rootProject.ext.targetSdkVersion
+        versionCode 1
+        versionName "1.0"
+    }
+
+    applicationVariants.all { variant ->
+        variant.outputs.all {
+            outputFileName = "PMUForms-v${variant.versionName}.apk"
+        }
+    }
+
     signingConfigs {
         debug {
             storeFile file('debug.keystore')
@@ -98,8 +106,6 @@ defaultConfig {
             signingConfig signingConfigs.debug
         }
         release {
-            // Caution! In production, you need to generate your own keystore file.
-            // see https://reactnative.dev/docs/signed-apk-android.
             signingConfig signingConfigs.debug
             minifyEnabled enableProguardInReleaseBuilds
             proguardFiles getDefaultProguardFile("proguard-android.txt"), "proguard-rules.pro"

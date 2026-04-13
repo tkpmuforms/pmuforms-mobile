@@ -1,15 +1,15 @@
-import React, { useRef, useState, useEffect, useCallback } from 'react';
-import {
-  View,
-  Image,
-  StyleSheet,
-  Dimensions,
-  ScrollView,
-  Text,
-  Animated,
-  TouchableOpacity,
-} from 'react-native';
 import { ArrowRight } from 'lucide-react-native';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
+import {
+  Animated,
+  Dimensions,
+  Image,
+  ScrollView,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
+} from 'react-native';
 import { colors } from '../theme/colors';
 
 const { width: SCREEN_WIDTH, height: SCREEN_HEIGHT } = Dimensions.get('window');

@@ -1,27 +1,27 @@
+import storage from '@react-native-firebase/storage';
+import { Camera, Edit3 } from 'lucide-react-native';
 import React, { useEffect, useState } from 'react';
 import {
-  View,
-  Text,
-  StyleSheet,
+  ActivityIndicator,
+  Image,
   ScrollView,
+  StyleSheet,
+  Text,
   TextInput,
   TouchableOpacity,
-  Image,
-  ActivityIndicator,
+  View,
 } from 'react-native';
-import { SafeAreaView } from 'react-native-safe-area-context';
-import { Camera, Edit3 } from 'lucide-react-native';
 import { launchImageLibrary } from 'react-native-image-picker';
+import { SafeAreaView } from 'react-native-safe-area-context';
 import Toast from 'react-native-toast-message';
-import { colors } from '../../theme/colors';
-import useAuth from '../../hooks/useAuth';
 import SignatureModal from '../../components/signature/SignatureModal';
+import useAuth from '../../hooks/useAuth';
 import {
   getMyProfile,
   updateMyProfile,
   updateMySignature,
 } from '../../services/artistServices';
-import storage from '@react-native-firebase/storage';
+import { colors } from '../../theme/colors';
 
 interface ProfileData {
   firstName: string;
@@ -256,7 +256,6 @@ const EditProfileScreen: React.FC = () => {
       }
 
       await updateMyProfile(updateData);
-
     } catch (err: any) {
       console.error('Failed to update profile:', err);
       setError(
@@ -340,7 +339,9 @@ const EditProfileScreen: React.FC = () => {
               <View style={styles.avatarPlaceholder}>
                 <Text style={styles.avatarPlaceholderText}>
                   {(user?.firstName?.[0] || '') && (user?.lastName?.[0] || '')
-                    ? `${user?.firstName?.[0] ?? ''}${user?.lastName?.[0] ?? ''}`.toUpperCase()
+                    ? `${user?.firstName?.[0] ?? ''}${
+                        user?.lastName?.[0] ?? ''
+                      }`.toUpperCase()
                     : 'U'}
                 </Text>
               </View>

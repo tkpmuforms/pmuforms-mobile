@@ -1,20 +1,20 @@
+import { Camera, Image as ImageIcon, X } from 'lucide-react-native';
 import React, { useState } from 'react';
 import {
-  View,
-  Text,
-  StyleSheet,
-  Modal,
-  TouchableOpacity,
-  TextInput,
-  ScrollView,
-  Image,
   ActivityIndicator,
+  Image,
+  Modal,
+  ScrollView,
+  StyleSheet,
+  Text,
+  TextInput,
+  TouchableOpacity,
+  View,
 } from 'react-native';
-import { SafeAreaView } from 'react-native-safe-area-context';
-import { X, Camera, Image as ImageIcon } from 'lucide-react-native';
 import { launchImageLibrary } from 'react-native-image-picker';
-import { Note } from '../../types';
+import { SafeAreaView } from 'react-native-safe-area-context';
 import { colors } from '../../theme/colors';
+import { Note } from '../../types';
 
 interface NotesModalProps {
   visible: boolean;

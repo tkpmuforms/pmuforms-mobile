@@ -1,20 +1,20 @@
+import DateTimePicker from '@react-native-community/datetimepicker';
+import { RouteProp, useNavigation, useRoute } from '@react-navigation/native';
 import React, { useState } from 'react';
 import {
-  View,
-  Text,
-  StyleSheet,
-  TouchableOpacity,
-  ScrollView,
   Platform,
+  ScrollView,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { useNavigation, useRoute, RouteProp } from '@react-navigation/native';
-import ScreenHeader from '../../components/layout/ScreenHeader';
-import DateTimePicker from '@react-native-community/datetimepicker';
-import useAuth from '../../hooks/useAuth';
 import PreviewAppointmentModal from '../../components/clients/PreviewAppointmentModal';
-import { RootStackParamList } from '../../types/navigation';
+import ScreenHeader from '../../components/layout/ScreenHeader';
+import useAuth from '../../hooks/useAuth';
 import { colors } from '../../theme/colors';
+import { RootStackParamList } from '../../types/navigation';
 
 type SendConsentFormRouteProp = RouteProp<
   RootStackParamList,

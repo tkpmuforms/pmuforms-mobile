@@ -4,8 +4,8 @@ import React, { createContext, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { setAuthenticated, setLoading, setUser } from '../redux/auth';
 import { RootState } from '../redux/store';
-import axiosInstance from '../utils/axiosSetup';
 import { User } from '../types';
+import axiosInstance from '../utils/axiosSetup';
 
 const TESTING_MODE = false;
 

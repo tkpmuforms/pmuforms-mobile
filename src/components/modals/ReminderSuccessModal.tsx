@@ -1,13 +1,13 @@
+import { CheckCircle } from 'lucide-react-native';
 import React from 'react';
 import {
-  View,
-  Text,
   Modal,
-  TouchableOpacity,
-  StyleSheet,
   Pressable,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
 } from 'react-native';
-import { CheckCircle } from 'lucide-react-native';
 import { colors } from '../../theme/colors';
 
 interface ReminderSuccessModalProps {

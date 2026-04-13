@@ -1,8 +1,8 @@
 import React from 'react';
 import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
-import { Reminder } from '../../types';
 import { CheckInIcon, FollowUpIcon } from '../../../assets/svg';
 import { colors } from '../../theme/colors';
+import { Reminder } from '../../types';
 
 interface ReminderCardProps {
   reminder: Reminder;

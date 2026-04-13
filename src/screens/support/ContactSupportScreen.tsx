@@ -1,17 +1,17 @@
+import { useNavigation } from '@react-navigation/native';
 import React, { useState } from 'react';
 import {
-  View,
-  Text,
-  StyleSheet,
-  ScrollView,
-  TextInput,
-  TouchableOpacity,
   ActivityIndicator,
   KeyboardAvoidingView,
   Platform,
+  ScrollView,
+  StyleSheet,
+  Text,
+  TextInput,
+  TouchableOpacity,
+  View,
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { useNavigation } from '@react-navigation/native';
 import Toast from 'react-native-toast-message';
 import ScreenHeader from '../../components/layout/ScreenHeader';
 import useAuth from '../../hooks/useAuth';
@@ -66,7 +66,6 @@ const ContactSupportScreen: React.FC = () => {
         subject: '',
         message: '',
       });
-
     } catch (error) {
       console.error('Error sending message:', error);
       Toast.show({

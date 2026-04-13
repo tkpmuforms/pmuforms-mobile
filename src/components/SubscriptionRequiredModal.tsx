@@ -1,16 +1,16 @@
 import React, { useEffect, useRef } from 'react';
 import {
-  View,
-  Text,
-  StyleSheet,
-  Modal,
-  TouchableOpacity,
   Linking,
+  Modal,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { colors } from '../theme/colors';
-import { useSelector, useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '../redux/store';
+import { colors } from '../theme/colors';
 import { refreshAuthUser } from '../utils/authUtils';
 
 const WEB_URL = 'https://artist.pmuforms.com';

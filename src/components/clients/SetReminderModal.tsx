@@ -1,20 +1,20 @@
-import React, { useState } from 'react';
+import DateTimePicker from '@react-native-community/datetimepicker';
 import {
-  View,
-  Text,
-  StyleSheet,
-  Modal,
-  TouchableOpacity,
-  TextInput,
-  ScrollView,
-  Platform,
-} from 'react-native';
-import {
-  X,
   Calendar as CalendarIcon,
   Clock as ClockIcon,
+  X,
 } from 'lucide-react-native';
-import DateTimePicker from '@react-native-community/datetimepicker';
+import React, { useState } from 'react';
+import {
+  Modal,
+  Platform,
+  ScrollView,
+  StyleSheet,
+  Text,
+  TextInput,
+  TouchableOpacity,
+  View,
+} from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { colors } from '../../theme/colors';
 

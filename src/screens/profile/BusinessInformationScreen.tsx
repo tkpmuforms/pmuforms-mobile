@@ -1,20 +1,20 @@
+import { useNavigation } from '@react-navigation/native';
+import { Edit } from 'lucide-react-native';
 import React, { useState } from 'react';
 import {
-  View,
-  Text,
-  StyleSheet,
-  ScrollView,
-  TouchableOpacity,
   Image,
+  ScrollView,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { Edit } from 'lucide-react-native';
-import { useNavigation } from '@react-navigation/native';
-import { colors } from '../../theme/colors';
-import useAuth from '../../hooks/useAuth';
-import { Service } from '../../types';
-import UpdateServicesModal from '../../components/profile/UpdateServicesModal';
 import ScreenHeader from '../../components/layout/ScreenHeader';
+import UpdateServicesModal from '../../components/profile/UpdateServicesModal';
+import useAuth from '../../hooks/useAuth';
+import { colors } from '../../theme/colors';
+import { Service } from '../../types';
 
 const BusinessInformationScreen: React.FC = () => {
   const { user } = useAuth();

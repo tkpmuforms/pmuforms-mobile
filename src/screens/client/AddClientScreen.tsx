@@ -1,21 +1,21 @@
+import { useNavigation } from '@react-navigation/native';
 import React, { useState } from 'react';
 import {
   ActivityIndicator,
-  View,
-  Text,
-  StyleSheet,
-  TouchableOpacity,
-  TextInput,
-  ScrollView,
+  Keyboard,
   KeyboardAvoidingView,
   Platform,
-  Keyboard,
+  ScrollView,
+  StyleSheet,
+  Text,
+  TextInput,
+  TouchableOpacity,
   TouchableWithoutFeedback,
+  View,
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { useNavigation } from '@react-navigation/native';
-import ScreenHeader from '../../components/layout/ScreenHeader';
 import Toast from 'react-native-toast-message';
+import ScreenHeader from '../../components/layout/ScreenHeader';
 import { createClient } from '../../services/artistServices';
 import { colors } from '../../theme/colors';
 
@@ -63,7 +63,9 @@ const AddClientScreen: React.FC = () => {
       const response = await createClient(payload);
 
       const customer = response?.data?.customer;
-      const createdAt = customer?.createdAt ? new Date(customer.createdAt).getTime() : 0;
+      const createdAt = customer?.createdAt
+        ? new Date(customer.createdAt).getTime()
+        : 0;
       const isExisting = Date.now() - createdAt > 10000; // older than 10s = pre-existing
 
       if (isExisting) {
@@ -114,7 +116,10 @@ const AddClientScreen: React.FC = () => {
               <View style={styles.formGroup}>
                 <Text style={styles.label}>First Name *</Text>
                 <TextInput
-                  style={[styles.input, fieldErrors.firstName ? styles.inputError : null]}
+                  style={[
+                    styles.input,
+                    fieldErrors.firstName ? styles.inputError : null,
+                  ]}
                   placeholder="First Name"
                   placeholderTextColor="#94a3b8"
                   value={formData.firstName}
@@ -129,7 +134,10 @@ const AddClientScreen: React.FC = () => {
               <View style={styles.formGroup}>
                 <Text style={styles.label}>Last Name *</Text>
                 <TextInput
-                  style={[styles.input, fieldErrors.lastName ? styles.inputError : null]}
+                  style={[
+                    styles.input,
+                    fieldErrors.lastName ? styles.inputError : null,
+                  ]}
                   placeholder="Last Name"
                   placeholderTextColor="#94a3b8"
                   value={formData.lastName}
@@ -144,7 +152,10 @@ const AddClientScreen: React.FC = () => {
               <View style={styles.formGroup}>
                 <Text style={styles.label}>Email Address *</Text>
                 <TextInput
-                  style={[styles.input, fieldErrors.email ? styles.inputError : null]}
+                  style={[
+                    styles.input,
+                    fieldErrors.email ? styles.inputError : null,
+                  ]}
                   placeholder="Email Address"
                   placeholderTextColor="#94a3b8"
                   value={formData.email}

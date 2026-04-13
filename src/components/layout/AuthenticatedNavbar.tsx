@@ -19,8 +19,6 @@ const AuthenticatedNavbar: React.FC<AuthenticatedNavbarProps> = ({
     }
   };
 
-  const lastBreadcrumb =
-    breadcrumbs.length > 0 ? breadcrumbs[breadcrumbs.length - 1] : null;
   const showBackButton = breadcrumbs.length > 1 || navigation?.canGoBack();
 
   return (

@@ -1,13 +1,13 @@
+import { Trash2, X } from 'lucide-react-native';
 import React from 'react';
 import {
-  View,
-  Text,
-  StyleSheet,
   Modal,
-  TouchableOpacity,
   SafeAreaView,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
 } from 'react-native';
-import { X, Trash2 } from 'lucide-react-native';
 import { colors } from '../../theme/colors';
 
 interface DeleteConfirmModalProps {

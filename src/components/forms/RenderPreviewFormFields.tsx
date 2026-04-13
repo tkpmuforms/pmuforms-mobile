@@ -1,6 +1,6 @@
-import React from 'react';
-import { View, Text, TextInput, StyleSheet } from 'react-native';
 import { Calendar } from 'lucide-react-native';
+import React from 'react';
+import { StyleSheet, Text, TextInput, View } from 'react-native';
 
 const FormInputTypes = {
   TEXT: 'text',

@@ -23,8 +23,8 @@ import {
   deleteReminder,
   getRemindersByCustomer,
 } from '../../services/artistServices';
-import { Reminder } from '../../types';
 import { colors } from '../../theme/colors';
+import { Reminder } from '../../types';
 
 interface ClientRemindersScreenProps {}
 

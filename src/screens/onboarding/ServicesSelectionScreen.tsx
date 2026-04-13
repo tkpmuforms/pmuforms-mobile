@@ -1,20 +1,20 @@
-import React, { useState, useEffect } from 'react';
+import { ChevronLeft } from 'lucide-react-native';
+import React, { useEffect, useState } from 'react';
 import {
-  View,
-  Text,
-  StyleSheet,
-  TouchableOpacity,
-  ScrollView,
   ActivityIndicator,
+  ScrollView,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import Toast from 'react-native-toast-message';
-import { ChevronLeft } from 'lucide-react-native';
+import { useDispatch, useSelector } from 'react-redux';
+import { RootState } from '../../redux/store';
 import { getServices, updateServices } from '../../services/artistServices';
 import { colors } from '../../theme/colors';
 import { refreshAuthUser } from '../../utils/authUtils';
-import { useDispatch, useSelector } from 'react-redux';
-import { RootState } from '../../redux/store';
 
 interface Service {
   _id: string;

@@ -1,8 +1,8 @@
-import React from 'react';
-import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
 import { Bell, Calendar } from 'lucide-react-native';
-import { formatAppointmentTime } from '../../utils/utils';
+import React from 'react';
+import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { colors } from '../../theme/colors';
+import { formatAppointmentTime } from '../../utils/utils';
 
 interface Reminder {
   id: string;

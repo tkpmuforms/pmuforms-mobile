@@ -1,27 +1,27 @@
+import { getAuth } from '@react-native-firebase/auth';
+import storage from '@react-native-firebase/storage';
+import { useNavigation, useRoute } from '@react-navigation/native';
+import {
+  AlertTriangle,
+  CheckCircle,
+  Edit3,
+  FileText,
+} from 'lucide-react-native';
 import React, { useState } from 'react';
 import {
-  View,
-  Text,
-  StyleSheet,
   ScrollView,
+  StyleSheet,
+  Text,
   TouchableOpacity,
+  View,
 } from 'react-native';
-import { useRoute, useNavigation } from '@react-navigation/native';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import {
-  FileText,
-  CheckCircle,
-  AlertTriangle,
-  Edit3,
-} from 'lucide-react-native';
-import ScreenHeader from '../../components/layout/ScreenHeader';
 import Toast from 'react-native-toast-message';
+import ScreenHeader from '../../components/layout/ScreenHeader';
 import SignatureModal from '../../components/signature/SignatureModal';
+import useAuth from '../../hooks/useAuth';
 import { signAppointment } from '../../services/artistServices';
 import { colors } from '../../theme/colors';
-import storage from '@react-native-firebase/storage';
-import { getAuth } from '@react-native-firebase/auth';
-import useAuth from '../../hooks/useAuth';
 
 interface FormTemplate {
   appointmentId: string;
@@ -140,7 +140,6 @@ const SignatureScreen: React.FC = () => {
 
       setSignatureUrl(downloadUrl);
       setShowSignModal(false);
-
 
       if (forms && forms.length > 0) {
         (navigation as any).navigate('FilledFormsPreview', {

@@ -1,12 +1,12 @@
+import { Calendar, Clock, FileText, Users } from 'lucide-react-native';
 import React from 'react';
 import {
-  View,
-  Text,
-  StyleSheet,
-  TouchableOpacity,
   ActivityIndicator,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
 } from 'react-native';
-import { Users, FileText, Clock, Calendar } from 'lucide-react-native';
 import { colors } from '../../theme/colors';
 
 export interface MetricsCardProps {

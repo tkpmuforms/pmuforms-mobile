@@ -1,21 +1,21 @@
-import React from 'react';
-import {
-  View,
-  Text,
-  StyleSheet,
-  ScrollView,
-  TouchableOpacity,
-} from 'react-native';
-import { useRoute, useNavigation } from '@react-navigation/native';
-import { SafeAreaView } from 'react-native-safe-area-context';
+import { useNavigation, useRoute } from '@react-navigation/native';
 import {
   ArrowLeft,
-  FileText,
-  Type,
-  CheckSquare,
-  Hash,
   Calendar,
+  CheckSquare,
+  FileText,
+  Hash,
+  Type,
 } from 'lucide-react-native';
+import React from 'react';
+import {
+  ScrollView,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
+} from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
 import { colors } from '../../theme/colors';
 
 interface FieldType {

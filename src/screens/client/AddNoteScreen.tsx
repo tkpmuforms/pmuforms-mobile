@@ -1,6 +1,6 @@
+import storage from '@react-native-firebase/storage';
 import { RouteProp, useNavigation, useRoute } from '@react-navigation/native';
 import { Camera, Image as ImageIcon } from 'lucide-react-native';
-import ScreenHeader from '../../components/layout/ScreenHeader';
 import React, { useState } from 'react';
 import {
   ActivityIndicator,
@@ -18,11 +18,11 @@ import {
 } from 'react-native';
 import { launchImageLibrary } from 'react-native-image-picker';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import storage from '@react-native-firebase/storage';
 import Toast from 'react-native-toast-message';
-import { RootStackParamList } from '../../types/navigation';
-import { colors } from '../../theme/colors';
+import ScreenHeader from '../../components/layout/ScreenHeader';
 import useAuth from '../../hooks/useAuth';
+import { colors } from '../../theme/colors';
+import { RootStackParamList } from '../../types/navigation';
 
 type AddNoteRouteProp = RouteProp<RootStackParamList, 'AddNote'>;
 

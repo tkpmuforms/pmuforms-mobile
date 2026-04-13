@@ -1,8 +1,8 @@
-import React from 'react';
-import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
 import { ChevronRight } from 'lucide-react-native';
-import { Client } from '../../types';
+import React from 'react';
+import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { colors } from '../../theme/colors';
+import { Client } from '../../types';
 
 interface ClientCardProps {
   client: Client;

@@ -1,26 +1,26 @@
-import React, { useState, useEffect } from 'react';
+import { useNavigation, useRoute } from '@react-navigation/native';
+import { Download, FileText } from 'lucide-react-native';
+import React, { useEffect, useState } from 'react';
 import {
-  View,
-  Text,
-  StyleSheet,
-  ScrollView,
-  TouchableOpacity,
   ActivityIndicator,
   Image,
   Platform,
+  ScrollView,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
 } from 'react-native';
-import { useRoute, useNavigation } from '@react-navigation/native';
-import { SafeAreaView } from 'react-native-safe-area-context';
-import { FileText, Download } from 'lucide-react-native';
 import { generatePDF } from 'react-native-html-to-pdf';
+import { SafeAreaView } from 'react-native-safe-area-context';
 import Share from 'react-native-share';
-import ScreenHeader from '../../components/layout/ScreenHeader';
 import Toast from 'react-native-toast-message';
+import ScreenHeader from '../../components/layout/ScreenHeader';
 import useAuth from '../../hooks/useAuth';
 import {
+  getAppointmentById,
   getFilledFormByAppointmentAndTemplate,
   getFormById,
-  getAppointmentById,
 } from '../../services/artistServices';
 import { colors } from '../../theme/colors';
 

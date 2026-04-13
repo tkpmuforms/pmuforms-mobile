@@ -19,11 +19,11 @@ import {
 import { launchImageLibrary } from 'react-native-image-picker';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useDispatch } from 'react-redux';
+import ScreenHeader from '../../components/layout/ScreenHeader';
 import useAuth from '../../hooks/useAuth';
 import { setUser } from '../../redux/auth';
 import { getAuthMe, updateBusinessInfo } from '../../services/artistServices';
 import { colors } from '../../theme/colors';
-import ScreenHeader from '../../components/layout/ScreenHeader';
 
 const EditBusinessInformationScreen: React.FC = () => {
   const { user } = useAuth();

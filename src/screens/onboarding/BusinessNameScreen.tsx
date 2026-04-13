@@ -12,7 +12,6 @@ import {
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import Toast from 'react-native-toast-message';
-
 import { useDispatch } from 'react-redux';
 import { updateBusinessName } from '../../services/artistServices';
 import { colors } from '../../theme/colors';
@@ -53,7 +52,10 @@ const BusinessNameScreen: React.FC<BusinessNameScreenProps> = ({
       // race condition where RouteGuard unmounts OnboardingStack
       refreshAuthUser(dispatch).catch(() => {});
     } catch (error) {
-      console.warn('Error updating business info:', (error as any)?.message || 'Unknown error');
+      console.warn(
+        'Error updating business info:',
+        (error as any)?.message || 'Unknown error',
+      );
       Toast.show({
         type: 'error',
         text1: 'Error',

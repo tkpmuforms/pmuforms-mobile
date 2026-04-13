@@ -1,19 +1,19 @@
+import DateTimePicker from '@react-native-community/datetimepicker';
+import { X } from 'lucide-react-native';
 import React, { useState } from 'react';
 import {
-  View,
-  Text,
-  StyleSheet,
   Modal,
-  TouchableOpacity,
-  ScrollView,
   Platform,
+  ScrollView,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
 } from 'react-native';
-import { X } from 'lucide-react-native';
-import DateTimePicker from '@react-native-community/datetimepicker';
-import useAuth from '../../hooks/useAuth';
-import PreviewAppointmentModal from './PreviewAppointmentModal';
 import { SafeAreaView } from 'react-native-safe-area-context';
+import useAuth from '../../hooks/useAuth';
 import { colors } from '../../theme/colors';
+import PreviewAppointmentModal from './PreviewAppointmentModal';
 
 interface SendConsentFormModalProps {
   visible: boolean;

@@ -1,8 +1,8 @@
-import React from 'react';
-import { View, Text, StyleSheet, TouchableOpacity, Image } from 'react-native';
 import { Camera, Trash2 } from 'lucide-react-native';
-import { Note } from '../../types';
+import React from 'react';
+import { Image, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { colors } from '../../theme/colors';
+import { Note } from '../../types';
 
 interface NoteCardProps {
   note: Note;

@@ -16,8 +16,8 @@ import {
   TouchableWithoutFeedback,
   View,
 } from 'react-native';
-import { useDispatch } from 'react-redux';
 import { launchImageLibrary } from 'react-native-image-picker';
+import { useDispatch } from 'react-redux';
 import useAuth from '../../hooks/useAuth';
 import { setUser } from '../../redux/auth';
 import { getAuthMe, updateBusinessInfo } from '../../services/artistServices';

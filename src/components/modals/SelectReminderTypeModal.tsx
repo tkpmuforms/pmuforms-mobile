@@ -1,13 +1,13 @@
+import { Bell, Calendar, ChevronRight, X } from 'lucide-react-native';
 import React from 'react';
 import {
-  View,
-  Text,
   Modal,
-  TouchableOpacity,
-  StyleSheet,
   Pressable,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
 } from 'react-native';
-import { X, Calendar, Bell, ChevronRight } from 'lucide-react-native';
 import { colors } from '../../theme/colors';
 
 interface SelectReminderTypeModalProps {

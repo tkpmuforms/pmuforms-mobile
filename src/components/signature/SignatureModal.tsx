@@ -1,18 +1,22 @@
-import React, { useState, useEffect, useRef } from 'react';
+import { Check, Trash2, Undo, X } from 'lucide-react-native';
+import React, { useEffect, useRef, useState } from 'react';
 import {
-  View,
-  Text,
-  StyleSheet,
-  Modal,
-  TouchableOpacity,
   ActivityIndicator,
   Alert,
   Dimensions,
   Image,
+  Modal,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
 } from 'react-native';
-import { X, Trash2, Check, Undo } from 'lucide-react-native';
+import {
+  Gesture,
+  GestureDetector,
+  GestureHandlerRootView,
+} from 'react-native-gesture-handler';
 import Svg, { Path } from 'react-native-svg';
-import { GestureDetector, Gesture, GestureHandlerRootView } from 'react-native-gesture-handler';
 import { captureRef } from 'react-native-view-shot';
 import { colors } from '../../theme/colors';
 

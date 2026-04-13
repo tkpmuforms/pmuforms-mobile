@@ -1,15 +1,15 @@
+import { ArrowLeft } from 'lucide-react-native';
 import React, { useEffect, useState } from 'react';
 import {
-  View,
-  Text,
-  StyleSheet,
   Modal,
-  TouchableOpacity,
-  TextInput,
   ScrollView,
+  StyleSheet,
+  Text,
+  TextInput,
+  TouchableOpacity,
+  View,
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { ArrowLeft } from 'lucide-react-native';
 import { colors } from '../../theme/colors';
 
 interface EditParagraphModalProps {
@@ -47,11 +47,7 @@ const EditParagraphModal: React.FC<EditParagraphModalProps> = ({
   };
 
   return (
-    <Modal
-      visible={visible}
-      animationType="slide"
-      onRequestClose={handleClose}
-    >
+    <Modal visible={visible} animationType="slide" onRequestClose={handleClose}>
       <SafeAreaView
         style={styles.container}
         edges={['top', 'bottom', 'left', 'right']}

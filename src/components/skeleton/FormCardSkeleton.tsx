@@ -1,7 +1,7 @@
 import React from 'react';
 import { StyleSheet, View } from 'react-native';
-import Skeleton from './Skeleton';
 import { colors } from '../../theme/colors';
+import Skeleton from './Skeleton';
 
 const FormCardSkeleton: React.FC = () => {
   return (

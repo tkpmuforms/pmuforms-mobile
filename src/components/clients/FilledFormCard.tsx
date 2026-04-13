@@ -1,9 +1,9 @@
 import React from 'react';
 import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { AppointmentDetailsIcon, AppointmentIcon } from '../../../assets/svg';
+import { colors } from '../../theme/colors';
 import { FilledForm } from '../../types';
 import { formatAppointmentTime } from '../../utils/utils';
-import { colors } from '../../theme/colors';
 
 interface FilledFormCardProps {
   form: FilledForm;

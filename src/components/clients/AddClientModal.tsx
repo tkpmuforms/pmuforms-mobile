@@ -1,18 +1,18 @@
+import { X } from 'lucide-react-native';
 import React, { useState } from 'react';
 import {
-  View,
-  Text,
-  StyleSheet,
-  Modal,
-  TouchableOpacity,
-  TextInput,
-  ScrollView,
-  KeyboardAvoidingView,
-  Platform,
   Keyboard,
+  KeyboardAvoidingView,
+  Modal,
+  Platform,
+  ScrollView,
+  StyleSheet,
+  Text,
+  TextInput,
+  TouchableOpacity,
   TouchableWithoutFeedback,
+  View,
 } from 'react-native';
-import { X } from 'lucide-react-native';
 import Toast from 'react-native-toast-message';
 import { createClient } from '../../services/artistServices';
 import { colors } from '../../theme/colors';

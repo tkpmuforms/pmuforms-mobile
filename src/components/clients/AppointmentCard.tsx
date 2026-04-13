@@ -35,7 +35,7 @@ const AppointmentCard: React.FC<AppointmentCardProps> = ({
     ? 'Forms Completed'
     : 'Forms Not Completed';
   const appointmentDate = formatAppointmentTime(appointment.date);
-  const formFilledDate = appointment.allFormsCompleted
+  const formFilledDate = appointment?.allFormsCompleted
     ? `${appointmentDate}`
     : 'Not completed yet';
 

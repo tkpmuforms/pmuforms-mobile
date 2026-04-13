@@ -1,6 +1,5 @@
 import { RouteProp, useNavigation, useRoute } from '@react-navigation/native';
 import { Check } from 'lucide-react-native';
-import ScreenHeader from '../../components/layout/ScreenHeader';
 import React, { useState } from 'react';
 import {
   ActivityIndicator,
@@ -17,9 +16,10 @@ import {
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import Toast from 'react-native-toast-message';
+import ScreenHeader from '../../components/layout/ScreenHeader';
 import { updateCustomerPersonalDetails } from '../../services/artistServices';
-import { RootStackParamList } from '../../types/navigation';
 import { colors } from '../../theme/colors';
+import { RootStackParamList } from '../../types/navigation';
 
 type EditClientRouteProp = RouteProp<RootStackParamList, 'EditClient'>;
 

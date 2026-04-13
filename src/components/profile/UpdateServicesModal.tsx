@@ -1,15 +1,16 @@
+import { X } from 'lucide-react-native';
 import React, { useEffect, useState } from 'react';
 import {
-  View,
-  Text,
-  StyleSheet,
-  Modal,
-  TouchableOpacity,
-  ScrollView,
   ActivityIndicator,
+  Alert,
+  Modal,
+  ScrollView,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { X } from 'lucide-react-native';
 import { useDispatch } from 'react-redux';
 import useAuth from '../../hooks/useAuth';
 import { setUser } from '../../redux/auth';
@@ -18,9 +19,8 @@ import {
   getServices,
   updateServices,
 } from '../../services/artistServices';
-import { Service } from '../../types';
-import { Alert } from 'react-native';
 import { colors } from '../../theme/colors';
+import { Service } from '../../types';
 
 interface UpdateServicesModalProps {
   visible: boolean;

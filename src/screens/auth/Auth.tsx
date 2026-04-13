@@ -7,9 +7,9 @@ import {
   View,
 } from 'react-native';
 import ImageSlider from '../../components/ImageSlider';
+import { colors } from '../../theme/colors';
 import Login from './Login';
 import Signup from './Signup';
-import { colors } from '../../theme/colors';
 
 type AuthPage = 'login' | 'signup';
 

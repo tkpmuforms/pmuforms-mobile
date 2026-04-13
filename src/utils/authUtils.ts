@@ -1,21 +1,21 @@
+import appleAuth from '@invertase/react-native-apple-authentication';
 import {
+  AppleAuthProvider,
+  createUserWithEmailAndPassword,
   getAuth,
+  GoogleAuthProvider,
   signInWithCredential,
   signInWithEmailAndPassword,
-  createUserWithEmailAndPassword,
-  GoogleAuthProvider,
-  AppleAuthProvider,
 } from '@react-native-firebase/auth';
 import { GoogleSignin } from '@react-native-google-signin/google-signin';
-import appleAuth from '@invertase/react-native-apple-authentication';
+import { Dispatch } from '@reduxjs/toolkit';
 import Toast from 'react-native-toast-message';
+import { setUser } from '../redux/auth';
 import {
   createArtist,
   getAuthMe,
   sendEmailVerification,
 } from '../services/artistServices';
-import { setUser } from '../redux/auth';
-import { Dispatch } from '@reduxjs/toolkit';
 import { Artist, OnboardingStep } from '../types';
 
 /**

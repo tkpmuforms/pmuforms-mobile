@@ -3,25 +3,25 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import React, { useEffect, useState } from 'react';
 import { ActivityIndicator, StyleSheet, View } from 'react-native';
 import {
-  HomeIcon,
-  HomeActiveIcon,
-  ClientsIcon,
   ClientsActiveIcon,
-  FormsActiveIcon,
+  ClientsIcon,
   FormIcon,
-  ProfileIcon,
+  FormsActiveIcon,
+  HomeActiveIcon,
+  HomeIcon,
   ProfileActiveIcon,
+  ProfileIcon,
 } from '../../assets/svg';
 import AuthenticatedLayout from '../components/layout/AuthenticatedLayout';
 import useAuth from '../hooks/useAuth';
 import { colors } from '../theme/colors';
+import { OnboardingStep } from '../types';
+import { determineOnboardingStep } from '../utils/authUtils';
 import {
   authorizedRoutes,
   nonAuthRoutes,
   onboardingRoutes,
 } from './routeConfig';
-import { determineOnboardingStep } from '../utils/authUtils';
-import { OnboardingStep } from '../types';
 
 const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -149,11 +149,7 @@ const OnboardingStack = ({ route }: any) => {
       }}
     >
       {onboardingRoutes.map(r => (
-        <Stack.Screen
-          key={r.name}
-          name={r.name}
-          component={r.component}
-        />
+        <Stack.Screen key={r.name} name={r.name} component={r.component} />
       ))}
       <Stack.Screen name="Main" component={AuthenticatedStack} />
       {authorizedRoutes

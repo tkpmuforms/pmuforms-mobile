@@ -1,20 +1,20 @@
+import { ChevronLeft } from 'lucide-react-native';
 import React, { useEffect, useRef } from 'react';
 import {
   AppState,
-  View,
-  Text,
-  StyleSheet,
-  TouchableOpacity,
-  ScrollView,
   Linking,
+  ScrollView,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { ChevronLeft } from 'lucide-react-native';
-import { colors } from '../../theme/colors';
-import { useSelector, useDispatch } from 'react-redux';
-import { RootState } from '../../redux/store';
-import { refreshAuthUser } from '../../utils/authUtils';
+import { useDispatch, useSelector } from 'react-redux';
 import useAuth from '../../hooks/useAuth';
+import { RootState } from '../../redux/store';
+import { colors } from '../../theme/colors';
+import { refreshAuthUser } from '../../utils/authUtils';
 
 const WEB_URL = 'https://artist.pmuforms.com?from=app';
 
@@ -134,9 +134,7 @@ const PaymentSetupScreen: React.FC<PaymentSetupScreenProps> = ({
           <Text style={styles.messageText}>
             Your previous mobile subscription has ended.
           </Text>
-          <Text style={styles.messageText}>
-            To continue, please sign in at
-          </Text>
+          <Text style={styles.messageText}>To continue, please sign in at</Text>
           <TouchableOpacity onPress={handleOpenWebsite}>
             <Text style={styles.linkText}>artist.pmuforms.com</Text>
           </TouchableOpacity>
@@ -191,10 +189,7 @@ const PaymentSetupScreen: React.FC<PaymentSetupScreenProps> = ({
 
       <View style={styles.footer}>
         {hasActiveSubscription && (
-          <TouchableOpacity
-            style={styles.button}
-            onPress={handleCompleteSetup}
-          >
+          <TouchableOpacity style={styles.button} onPress={handleCompleteSetup}>
             <Text style={styles.buttonText}>Complete Setup</Text>
           </TouchableOpacity>
         )}

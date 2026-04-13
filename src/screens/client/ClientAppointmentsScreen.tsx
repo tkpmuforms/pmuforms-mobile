@@ -1,19 +1,23 @@
-import { useFocusEffect, useNavigation, useRoute } from '@react-navigation/native';
+import {
+  useFocusEffect,
+  useNavigation,
+  useRoute,
+} from '@react-navigation/native';
 import React, { useCallback, useState } from 'react';
 import { FlatList, StyleSheet, Text, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import Toast from 'react-native-toast-message';
 import AppointmentCard from '../../components/clients/AppointmentCard';
-import AppointmentCardSkeleton from '../../components/skeleton/AppointmentCardSkeleton';
 import DeleteModal from '../../components/clients/DeleteModal';
 import ScreenHeader from '../../components/layout/ScreenHeader';
+import AppointmentCardSkeleton from '../../components/skeleton/AppointmentCardSkeleton';
 import {
   DeleteAppointment,
   getAppointmentsForCustomer,
   getCustomerById,
 } from '../../services/artistServices';
-import { ClientAppointmentData } from '../../types';
 import { colors } from '../../theme/colors';
+import { ClientAppointmentData } from '../../types';
 
 interface ClientAppointmentsScreenProps {}
 
@@ -49,7 +53,9 @@ const ClientAppointmentsScreen: React.FC<
             setClientName(fetchedClientName);
           }
 
-          const appointmentsResponse = await getAppointmentsForCustomer(clientId);
+          const appointmentsResponse = await getAppointmentsForCustomer(
+            clientId,
+          );
           setAppointments(appointmentsResponse?.data?.appointments || []);
         } catch (error) {
           console.error('Error fetching data:', error);

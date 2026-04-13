@@ -1,23 +1,23 @@
+import { Check, X } from 'lucide-react-native';
 import React, { useState } from 'react';
 import {
-  View,
-  Text,
-  StyleSheet,
-  Modal,
-  TouchableOpacity,
-  TextInput,
-  ScrollView,
-  KeyboardAvoidingView,
-  Platform,
-  Keyboard,
-  TouchableWithoutFeedback,
   ActivityIndicator,
+  Keyboard,
+  KeyboardAvoidingView,
+  Modal,
+  Platform,
+  ScrollView,
+  StyleSheet,
+  Text,
+  TextInput,
+  TouchableOpacity,
+  TouchableWithoutFeedback,
+  View,
 } from 'react-native';
-import { X, Check } from 'lucide-react-native';
 import Toast from 'react-native-toast-message';
-import { ClientDetail } from '../../types';
 import { updateCustomerPersonalDetails } from '../../services/artistServices';
 import { colors } from '../../theme/colors';
+import { ClientDetail } from '../../types';
 
 interface EditClientModalProps {
   client: ClientDetail;

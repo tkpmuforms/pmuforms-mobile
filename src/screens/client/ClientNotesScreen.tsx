@@ -1,9 +1,8 @@
 import {
-  useRoute,
-  useNavigation,
   useFocusEffect,
+  useNavigation,
+  useRoute,
 } from '@react-navigation/native';
-import { Plus } from 'lucide-react-native';
 import React, { useCallback, useEffect, useState } from 'react';
 import {
   ActivityIndicator,
@@ -19,18 +18,18 @@ import {
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import Toast from 'react-native-toast-message';
+import { NotesIcon } from '../../../assets/svg';
 import DeleteModal from '../../components/clients/DeleteModal';
 import NoteCard from '../../components/clients/NoteCard';
-import { Note } from '../../types';
-import {
-  getCustomerNotes,
-  addCustomerNote,
-  updateCustomerNote,
-  deleteCustomerNote,
-} from '../../services/artistServices';
 import ScreenHeader from '../../components/layout/ScreenHeader';
+import {
+  addCustomerNote,
+  deleteCustomerNote,
+  getCustomerNotes,
+  updateCustomerNote,
+} from '../../services/artistServices';
 import { colors } from '../../theme/colors';
-import { NotesIcon } from '../../../assets/svg';
+import { Note } from '../../types';
 
 interface ClientNotesScreenProps {}
 

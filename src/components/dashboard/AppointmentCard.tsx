@@ -1,6 +1,6 @@
+import { Briefcase, Clock } from 'lucide-react-native';
 import React from 'react';
-import { View, Text, StyleSheet, TouchableOpacity, Image } from 'react-native';
-import { Clock, Briefcase } from 'lucide-react-native';
+import { Image, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { colors } from '../../theme/colors';
 
 interface AppointmentCardProps {

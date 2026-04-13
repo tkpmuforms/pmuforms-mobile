@@ -1,6 +1,6 @@
-import React from 'react';
-import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
 import { ArrowLeft } from 'lucide-react-native';
+import React from 'react';
+import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { colors } from '../../theme/colors';
 
 interface ScreenHeaderProps {

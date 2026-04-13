@@ -1,6 +1,6 @@
+import { FileText, Send, UserPlus } from 'lucide-react-native';
 import React from 'react';
-import { TouchableOpacity, Text, StyleSheet, View } from 'react-native';
-import { UserPlus, FileText, Send } from 'lucide-react-native';
+import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { colors } from '../../theme/colors';
 
 interface QuickActionCardProps {

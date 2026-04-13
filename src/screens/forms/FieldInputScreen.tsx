@@ -1,23 +1,23 @@
+import { useNavigation, useRoute } from '@react-navigation/native';
+import { ArrowLeft } from 'lucide-react-native';
 import React, { useState } from 'react';
 import {
-  View,
-  Text,
-  StyleSheet,
-  ScrollView,
-  TouchableOpacity,
-  TextInput,
   KeyboardAvoidingView,
   Platform,
+  ScrollView,
+  StyleSheet,
+  Text,
+  TextInput,
+  TouchableOpacity,
+  View,
 } from 'react-native';
-import { useRoute, useNavigation } from '@react-navigation/native';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { ArrowLeft } from 'lucide-react-native';
 import Toast from 'react-native-toast-message';
-import { colors } from '../../theme/colors';
 import {
   addFormSectionData,
   updateFormSectionData,
 } from '../../services/artistServices';
+import { colors } from '../../theme/colors';
 
 const FieldInputScreen: React.FC = () => {
   const navigation = useNavigation<any>();

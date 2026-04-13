@@ -1,3 +1,4 @@
+import { ChevronLeft } from 'lucide-react-native';
 import React, { useState } from 'react';
 import {
   ActivityIndicator,
@@ -9,7 +10,6 @@ import {
   View,
 } from 'react-native';
 import Toast from 'react-native-toast-message';
-import { ChevronLeft } from 'lucide-react-native';
 import useAuth from '../../hooks/useAuth';
 import { colors } from '../../theme/colors';
 import {

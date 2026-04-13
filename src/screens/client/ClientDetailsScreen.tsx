@@ -41,9 +41,9 @@ import {
   getCustomerById,
   getCustomerMetrics,
 } from '../../services/artistServices';
+import { colors } from '../../theme/colors';
 import { ClientDetail, ClientMetrics } from '../../types';
 import { RootStackParamList } from '../../types/navigation';
-import { colors } from '../../theme/colors';
 
 type ClientDetailsNavigationProp = NativeStackNavigationProp<
   RootStackParamList,

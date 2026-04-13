@@ -1,19 +1,19 @@
+import { getAuth, sendPasswordResetEmail } from '@react-native-firebase/auth';
+import { X } from 'lucide-react-native';
 import React, { useState } from 'react';
 import {
-  View,
-  Text,
-  StyleSheet,
-  Modal,
-  TouchableOpacity,
-  TextInput,
   Alert,
   Keyboard,
   KeyboardAvoidingView,
+  Modal,
   Platform,
+  StyleSheet,
+  Text,
+  TextInput,
+  TouchableOpacity,
   TouchableWithoutFeedback,
+  View,
 } from 'react-native';
-import { X } from 'lucide-react-native';
-import { getAuth, sendPasswordResetEmail } from '@react-native-firebase/auth';
 import { colors } from '../../theme/colors';
 
 interface ChangePasswordModalProps {

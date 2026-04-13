@@ -1,7 +1,7 @@
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import React, { createContext, useCallback, useEffect, useState } from 'react';
 import { useColorScheme } from 'react-native';
-import AsyncStorage from '@react-native-async-storage/async-storage';
-import { colors as lightColors, darkColors } from '../theme/colors';
+import { darkColors, colors as lightColors } from '../theme/colors';
 
 type ThemeMode = 'light' | 'dark' | 'system';
 

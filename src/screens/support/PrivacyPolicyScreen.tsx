@@ -1,14 +1,14 @@
+import { useNavigation } from '@react-navigation/native';
 import React from 'react';
 import {
-  View,
-  Text,
-  StyleSheet,
-  ScrollView,
   Linking,
+  ScrollView,
+  StyleSheet,
+  Text,
   TouchableOpacity,
+  View,
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { useNavigation } from '@react-navigation/native';
 import ScreenHeader from '../../components/layout/ScreenHeader';
 import { colors } from '../../theme/colors';
 
