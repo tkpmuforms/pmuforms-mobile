@@ -17,6 +17,8 @@ import { StripeProvider } from '@stripe/stripe-react-native';
 import { GoogleSignin } from '@react-native-google-signin/google-signin';
 import { Config } from 'react-native-config';
 import { notificationService } from './src/services/notificationService';
+import { updateArtistFcmToken } from './src/services/artistServices';
+import { getAccessToken } from './src/utils/axiosSetup';
 
 // Handle background/quit-state messages
 notificationService.setBackgroundMessageHandler(async _message => {});
@@ -39,22 +41,32 @@ function AppContent() {
       }
 
       const token = await notificationService.getFCMToken();
+      console.log('==== FCM TOKEN ====', token ?? 'NULL - no token returned');
       if (token) {
-        // TODO: send token to your backend here
-        console.log('FCM token:', token);
+        try {
+          await updateArtistFcmToken({ fcmToken: token });
+          console.log('==== FCM TOKEN SAVED TO BACKEND OK ====');
+        } catch (e) {
+          console.log('==== FCM TOKEN SAVE FAILED ====', e);
+        }
+      }
+
+      const accessToken = await getAccessToken();
+      if (accessToken) {
+        console.log('==== ARTIST ACCESS TOKEN ====', accessToken);
       }
 
       unsubscribeForeground = notificationService.onForegroundMessage(
         message => {
           console.log('Foreground notification:', message);
-          // TODO: show in-app notification UI here
         },
       );
 
-      unsubscribeTokenRefresh = notificationService.onTokenRefresh(newToken => {
-        // TODO: update token on your backend here
-        console.log('FCM token refreshed:', newToken);
-      });
+      unsubscribeTokenRefresh = notificationService.onTokenRefresh(
+        async newToken => {
+          await updateArtistFcmToken({ fcmToken: newToken }).catch(() => {});
+        },
+      );
 
       // Handle notification that opened the app from background state
       notificationService.onNotificationOpenedApp(message => {

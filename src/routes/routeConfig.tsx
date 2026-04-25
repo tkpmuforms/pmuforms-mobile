@@ -29,6 +29,7 @@ import EditBusinessInformationScreen from '../screens/profile/EditBusinessInform
 import EditProfileScreen from '../screens/profile/EditProfileScreen';
 import PaymentScreen from '../screens/profile/PaymentScreen';
 import ProfileScreen from '../screens/profile/ProfileScreen';
+import ServicesScreen from '../screens/services/ServicesScreen';
 import ContactSupportScreen from '../screens/support/ContactSupportScreen';
 import PrivacyPolicyScreen from '../screens/support/PrivacyPolicyScreen';
 
@@ -125,6 +126,11 @@ export const authorizedRoutes: RouteProps[] = [
     name: 'EditParagraph',
     component: EditParagraphScreen,
     breadcrumbs: ['Forms', 'Edit Form', 'Edit Paragraph'],
+  },
+  {
+    name: 'Services',
+    component: ServicesScreen,
+    breadcrumbs: ['Services'],
   },
   {
     name: 'Profile',

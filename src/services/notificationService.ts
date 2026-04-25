@@ -1,12 +1,26 @@
-import messaging, { FirebaseMessagingTypes } from '@react-native-firebase/messaging';
-import { Platform, PermissionsAndroid } from 'react-native';
+import { getApp } from '@react-native-firebase/app';
+import messaging, {
+  AuthorizationStatus,
+  FirebaseMessagingTypes,
+  getInitialNotification,
+  getMessaging,
+  getToken,
+  onMessage,
+  onNotificationOpenedApp,
+  onTokenRefresh,
+  requestPermission,
+  setBackgroundMessageHandler,
+} from '@react-native-firebase/messaging';
+import { PermissionsAndroid, Platform } from 'react-native';
 
-async function requestPermission(): Promise<boolean> {
+const getMsg = () => getMessaging(getApp());
+
+async function _requestPermission(): Promise<boolean> {
   if (Platform.OS === 'ios') {
-    const authStatus = await messaging().requestPermission();
+    const authStatus = await requestPermission(getMsg());
     return (
-      authStatus === messaging.AuthorizationStatus.AUTHORIZED ||
-      authStatus === messaging.AuthorizationStatus.PROVISIONAL
+      authStatus === AuthorizationStatus.AUTHORIZED ||
+      authStatus === AuthorizationStatus.PROVISIONAL
     );
   }
 
@@ -21,10 +35,20 @@ async function requestPermission(): Promise<boolean> {
 }
 
 async function getFCMToken(): Promise<string | null> {
+  if (Platform.OS === 'ios') {
+    try {
+      await messaging().registerDeviceForRemoteMessages();
+    } catch (e) {
+      console.log('==== APNs REGISTRATION FAILED ====', e);
+      return null;
+    }
+  }
+
   try {
-    const token = await messaging().getToken();
+    const token = await getToken(getMsg());
     return token;
-  } catch {
+  } catch (e) {
+    console.log('==== FCM TOKEN ERROR ====', e);
     return null;
   }
 }
@@ -32,35 +56,35 @@ async function getFCMToken(): Promise<string | null> {
 function onForegroundMessage(
   handler: (message: FirebaseMessagingTypes.RemoteMessage) => void,
 ): () => void {
-  return messaging().onMessage(handler);
+  return onMessage(getMsg(), handler);
 }
 
-function onNotificationOpenedApp(
+function _onNotificationOpenedApp(
   handler: (message: FirebaseMessagingTypes.RemoteMessage) => void,
 ): () => void {
-  return messaging().onNotificationOpenedApp(handler);
+  return onNotificationOpenedApp(getMsg(), handler);
 }
 
-async function getInitialNotification(): Promise<FirebaseMessagingTypes.RemoteMessage | null> {
-  return messaging().getInitialNotification();
+async function _getInitialNotification(): Promise<FirebaseMessagingTypes.RemoteMessage | null> {
+  return getInitialNotification(getMsg());
 }
 
-function setBackgroundMessageHandler(
+function _setBackgroundMessageHandler(
   handler: (message: FirebaseMessagingTypes.RemoteMessage) => Promise<void>,
 ): void {
-  messaging().setBackgroundMessageHandler(handler);
+  setBackgroundMessageHandler(getMsg(), handler);
 }
 
-function onTokenRefresh(handler: (token: string) => void): () => void {
-  return messaging().onTokenRefresh(handler);
+function _onTokenRefresh(handler: (token: string) => void): () => void {
+  return onTokenRefresh(getMsg(), handler);
 }
 
 export const notificationService = {
-  requestPermission,
+  requestPermission: _requestPermission,
   getFCMToken,
   onForegroundMessage,
-  onNotificationOpenedApp,
-  getInitialNotification,
-  setBackgroundMessageHandler,
-  onTokenRefresh,
+  onNotificationOpenedApp: _onNotificationOpenedApp,
+  getInitialNotification: _getInitialNotification,
+  setBackgroundMessageHandler: _setBackgroundMessageHandler,
+  onTokenRefresh: _onTokenRefresh,
 };

@@ -1,7 +1,7 @@
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import React, { useEffect, useState } from 'react';
-import { ActivityIndicator, StyleSheet, View } from 'react-native';
+import { ActivityIndicator, StyleSheet, Text, View } from 'react-native';
 import {
   ClientsActiveIcon,
   ClientsIcon,
@@ -11,6 +11,8 @@ import {
   HomeIcon,
   ProfileActiveIcon,
   ProfileIcon,
+  ServicesActiveIcon,
+  ServicesIcon,
 } from '../../assets/svg';
 import AuthenticatedLayout from '../components/layout/AuthenticatedLayout';
 import useAuth from '../hooks/useAuth';
@@ -26,7 +28,7 @@ import {
 const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
 
-const mainTabRoutes = ['Dashboard', 'Clients', 'Forms', 'Profile'];
+const mainTabRoutes = ['Dashboard', 'Clients', 'Forms', 'Services', 'Profile'];
 
 const getTabIcon = (routeName: string, focused: boolean) => {
   const iconSize = { width: 50, height: 50 };
@@ -51,6 +53,12 @@ const getTabIcon = (routeName: string, focused: boolean) => {
       ) : (
         <FormIcon {...iconSize} />
       );
+    case 'Services':
+      return focused ? (
+        <ServicesActiveIcon {...activeIconSize} />
+      ) : (
+        <ServicesIcon {...iconSize} />
+      );
     case 'Profile':
       return focused ? (
         <ProfileActiveIcon {...activeIconSize} />
@@ -66,22 +74,36 @@ const getTabIcon = (routeName: string, focused: boolean) => {
   }
 };
 
+const tabLabel: Record<string, string> = {
+  Dashboard: 'Home',
+  Clients: 'Clients',
+  Forms: 'Forms',
+  Services: 'Services',
+  Profile: 'Profile',
+};
+
 const AuthenticatedTabs = () => {
   return (
     <Tab.Navigator
       screenOptions={({ route }) => ({
         headerShown: false,
         tabBarIcon: ({ focused }) => getTabIcon(route.name, focused),
-        tabBarShowLabel: false,
+        tabBarShowLabel: true,
+        tabBarLabel: ({ focused, color }) =>
+          focused ? null : (
+            <Text style={{ fontSize: 11, fontWeight: '500', color, marginTop: 4 }}>
+              {tabLabel[route.name] ?? route.name}
+            </Text>
+          ),
         tabBarActiveTintColor: colors.primary,
         tabBarInactiveTintColor: colors.textLight,
         tabBarStyle: {
           backgroundColor: colors.white,
           borderTopWidth: 1,
           borderTopColor: colors.border,
-          paddingBottom: 25,
-          paddingTop: 8,
-          height: 80,
+          paddingBottom: 20,
+          paddingTop: 6,
+          height: 86,
         },
       })}
     >

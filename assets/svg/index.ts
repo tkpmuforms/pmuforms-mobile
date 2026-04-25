@@ -30,3 +30,5 @@ export { default as FollowUpIcon } from './FollowUpIcon.svg';
 export { default as AddNewServiceFloat } from './AddNewServiceFloat.svg';
 export { default as Alarm } from './Alarm.svg';
 export { default as NotesIcon } from './NotesIcon.svg';
+export { default as ServicesIcon } from './ServicesIcon.svg';
+export { default as ServicesActiveIcon } from './ServicesActiveIcon.svg';

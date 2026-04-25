@@ -1,4 +1,6 @@
 import { useNavigation } from '@react-navigation/native';
+import { NativeStackNavigationProp } from '@react-navigation/native-stack';
+import { RootStackParamList } from '../../types/navigation';
 import React, { useState } from 'react';
 import {
   ActivityIndicator,
@@ -20,7 +22,8 @@ import { createClient } from '../../services/artistServices';
 import { colors } from '../../theme/colors';
 
 const AddClientScreen: React.FC = () => {
-  const navigation = useNavigation();
+  const navigation =
+    useNavigation<NativeStackNavigationProp<RootStackParamList>>();
   const [formData, setFormData] = useState({
     firstName: '',
     lastName: '',
@@ -77,7 +80,7 @@ const AddClientScreen: React.FC = () => {
         return;
       }
 
-      navigation.goBack();
+      navigation.replace('ClientDetails', { clientId: customer.id });
     } catch (error: any) {
       const message =
         error?.message ||
